@@ -23,6 +23,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
+    "@mxfb/tools": "^0.0.17",
     "@types/react-dom": "^18.2.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
