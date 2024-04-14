@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "skipLibCheck": true,
@@ -19,5 +20,6 @@
       "~/utils/*": ["./utils/*"]
     }
   },
-  "include": ["./"]
+  "include": ["**/*"],
+  "files": ["./index.d.ts"]
 }

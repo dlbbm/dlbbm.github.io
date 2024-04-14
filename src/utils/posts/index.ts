@@ -1,18 +1,18 @@
-import isRecord from '@mxfb/tools/utils/agnostic/is-record'
+import isRecord from '@design-edito/tools/utils/agnostic/is-record'
 
 export namespace Posts {
   type AnyPost = {
-    song_title: string
-    song_performer: string
-    performance_type: 'studio' | 'live'
-    performance_venue: string | null
-    performance_date: string | null
-    source_type: 'youtube'
-    source_url: string
+    songTitle: string
+    songPerformer: string
+    performanceType: 'studio' | 'live'
+    performanceVenue: string | null
+    performanceDate: string | null
+    sourceType: 'youtube'
+    sourceUrl: string
   }
   
-  export type JsonPost = AnyPost & { publish_on: string }
-  export type Post = AnyPost & { publish_on: number }
+  export type JsonPost = AnyPost & { publishOn: string }
+  export type Post = AnyPost & { publishOn: number }
 
   export async function fetch () {
     const response = await window.fetch('/data/posts.json')
@@ -24,14 +24,14 @@ export namespace Posts {
 
   export function makeDefault (): Post {
     return {
-      publish_on: 0,
-      song_title: '<unnamed song>',
-      song_performer: '<unnamed performer>',
-      performance_type: 'studio',
-      performance_venue: null,
-      performance_date: null,
-      source_type: 'youtube',
-      source_url: ''
+      publishOn: 0,
+      songTitle: '<unnamed song>',
+      songPerformer: '<unnamed performer>',
+      performanceType: 'studio',
+      performanceVenue: null,
+      performanceDate: null,
+      sourceType: 'youtube',
+      sourceUrl: ''
     }
   }
 
@@ -42,7 +42,7 @@ export namespace Posts {
     const returned: Post = { ...defaultPost }
     allowedKeys.forEach(key => {
       if (!(key in input)) return;
-      if (key === 'publish_on') {
+      if (key === 'publishOn') {
         const raw = input[key] as string
         const date = new Date(raw)
         const millis = date.getTime()
@@ -54,13 +54,13 @@ export namespace Posts {
   }
 
   export function toJson (input: Post) {
-    const publishOnMs = input.publish_on
+    const publishOnMs = input.publishOn
     const publishOnDate = new Date(publishOnMs)
     const publishOnStr = publishOnDate.toISOString()
     const inputCopy = { ...input }
-    delete (inputCopy as any).publish_on;
+    delete (inputCopy as any).publishOn;
     const returned: JsonPost = {
-      publish_on: publishOnStr,
+      publishOn: publishOnStr,
       ...inputCopy as AnyPost
     }
     return returned
@@ -68,7 +68,7 @@ export namespace Posts {
 
   export function isPublished (post: Post) {
     const now = new Date()
-    const postMillis = new Date(post.publish_on)
+    const postMillis = new Date(post.publishOn)
     return now >= postMillis
   }
 }

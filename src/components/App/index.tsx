@@ -25,14 +25,13 @@ export default class App extends Component<Props, State> {
 
   async componentDidMount() {
     const posts = await Posts.fetch()
-    const sorted = posts.sort((a, b) => b.publish_on - a.publish_on)
-    const published = sorted.filter(Posts.isPublished)
+    const sorted = posts.sort((a, b) => b.publishOn - a.publishOn)
+    const published = sorted.filter(() => true/*Posts.isPublished*/)
     this.setState({
       posts: published,
       posts_loading: false,
       posts_error: null
     })
-    console.log(published)
   }
 
   handleLoadMore () {

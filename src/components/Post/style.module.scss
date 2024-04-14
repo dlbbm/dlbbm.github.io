@@ -1,0 +1,21 @@
+.wrapper {
+  background-color: coral;
+  margin: 40px 0;
+}
+
+.wrapper_to-be-published {
+  opacity: .4;
+}
+
+.song-title + .song-performer::before {
+  content: ' — ';
+}
+
+.performance-type + .performance-venue::before {
+  content: ' at ';
+}
+
+.performance-venue + .performance-date::before {
+  content: ' ';
+}
+
