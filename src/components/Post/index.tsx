@@ -1,12 +1,18 @@
 import { Component } from 'react'
+import ReactYoutube from 'react-youtube'
 import { Posts } from '~/utils/posts'
 import styles from './style.module.scss'
 
-type YoutuvePlayerProps = {
+type YoutubePlayerProps = {
   url: string
 }
 
-const YoutubePlayer = (props: YoutuvePlayerProps) => <></>
+const YoutubePlayer = (props: YoutubePlayerProps) => <>
+  <ReactYoutube
+    videoId='PLIAp5nr0q0' />
+</>
+
+
 
 type Props = Posts.Post
 
