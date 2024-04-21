@@ -2,16 +2,15 @@ import isRecord from '@design-edito/tools/utils/agnostic/is-record'
 
 export namespace Posts {
   type AnyPost = {
-    songTitle: string
-    songPerformer: string
-    performanceType: 'studio' | 'live'
-    performanceVenue: string | null
-    performanceDate: string | null
-    sourceType: 'youtube'
-    sourceUrl: string
+    publishOnRaw: string | null
+    songTitle: string | null
+    youtubeId: string | null,
+    youtubeTitle: string | null
+    postUrl: string | null
+    postId: string | null
   }
   
-  export type JsonPost = AnyPost & { publishOn: string }
+  export type JsonPost = AnyPost & { publishOn: string | null }
   export type Post = AnyPost & { publishOn: number }
 
   export async function fetch () {
@@ -25,13 +24,12 @@ export namespace Posts {
   export function makeDefault (): Post {
     return {
       publishOn: 0,
+      publishOnRaw: null,
       songTitle: '<unnamed song>',
-      songPerformer: '<unnamed performer>',
-      performanceType: 'studio',
-      performanceVenue: null,
-      performanceDate: null,
-      sourceType: 'youtube',
-      sourceUrl: ''
+      youtubeId: null,
+      youtubeTitle: null,
+      postUrl: null,
+      postId: null
     }
   }
 

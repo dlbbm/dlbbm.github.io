@@ -1,6 +1,9 @@
 import { Component } from 'react'
 import Post from '~/components/Post'
+import Logo from '~/components/Logo'
 import { Posts } from '~/utils/posts'
+import styles from './styles.module.scss'
+import './styles.scss'
 
 type Props = {}
 type State = {
@@ -15,7 +18,7 @@ export default class App extends Component<Props, State> {
     posts: null,
     posts_loading: true,
     posts_error: null,
-    posts_display_limit: 0
+    posts_display_limit: 10
   }
 
   constructor (props: Props) {
@@ -45,13 +48,12 @@ export default class App extends Component<Props, State> {
     const { state, handleLoadMore } = this
     const visiblePosts = state.posts?.slice(0, state.posts_display_limit)
     const limitIsLowerThanPostsLength = state.posts_display_limit < (state.posts?.length ?? 0)
-    return <div>
-      <div>Head section</div>
-      <div>{visiblePosts?.map(postData => <Post {...postData} />)}</div>
-      {limitIsLowerThanPostsLength && <div>
-        Load more section
-        <button onClick={handleLoadMore}>Load more.</button>
-      </div>}
+    return <div className={styles['wrapper']}>
+      <div className={styles['inner']}>
+        <div className={styles['head']}><Logo /></div>
+        <div className={styles['posts']}>{visiblePosts?.map(postData => <Post {...postData} />)}</div>
+        {limitIsLowerThanPostsLength && <button className={styles['load-more']} onClick={handleLoadMore}>Load more</button>}
+      </div>
     </div>
   }
 }

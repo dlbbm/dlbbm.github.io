@@ -1,21 +1,33 @@
 .wrapper {
-  background-color: coral;
-  margin: 40px 0;
+  margin: 400px 0;
 }
 
 .wrapper_to-be-published {
   opacity: .4;
 }
 
-.song-title + .song-performer::before {
-  content: ' — ';
+.media {
+  margin-bottom: 32px;
 }
 
-.performance-type + .performance-venue::before {
-  content: ' at ';
+.song-title {
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #1B1C16;
+  background-color: #FFFFEB;
+  display: inline-block;
+  line-height: 3;
 }
 
-.performance-venue + .performance-date::before {
-  content: ' ';
+.post-date {
+  font-family: monospace;
+  font-size: 12px;
+  font-style: italic;
+  color: #8C8F74;
+  background-color: #FFFFEB;
+  display: inline-block;
+  line-height: 2;
 }
 
