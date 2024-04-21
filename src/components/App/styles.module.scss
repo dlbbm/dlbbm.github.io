@@ -27,13 +27,18 @@
 .head {
   position: sticky;
   top: var(--inner-padding);
+  z-index: 2;
+  margin-bottom: 20vh;
 }
 
 .posts {
   max-width: 680px;
+  z-index: 1;
 }
 
-.load-more {
+.prev-page,
+.next-page {
+  z-index: 1;
   cursor: pointer;
   font-family: monospace;
   font-weight: 600;
@@ -42,10 +47,20 @@
   background-color: transparent;
   padding: 0;
   display: inline;
-  border-bottom: 2px solid #B0FB4F;
+  border-bottom: 2px solid #1B1C16;
   transition: border-bottom 200ms;
 }
 
-.load-more:hover {
-  border-bottom: 80px solid #B0FB4F;
+@media (hover :hover) {
+  .prev-page:hover,
+  .next-page:hover {
+    border-bottom: 40px solid #1B1C16;
+  }
+}
+
+.pages-cnt {
+  font-family: monospace;
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 8px;
 }
