@@ -16,7 +16,7 @@
     "serve:dist": "npm run make:dist && npx http-server dist --port ${PORT} --cors -c-1",
     "start": "npx concurrently -n 'watch:src  ,watch:pages,serve:dist ' 'npm run watch:src' 'npm run watch:pages' 'PORT=${PORT_DIST:-3000} npm run serve:dist'",
     "start:preact": "PREACT=true npm start",
-    "prepublish": "npm run build:src:preact && npm run build:pages && cp -r dist docs"
+    "prepublishOnly": "npm run build:src:preact && npm run build:pages && cp -r dist docs"
   },
   "author": "",
   "license": "ISC",
