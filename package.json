@@ -1,0 +1,25 @@
+{
+  "name": "dlbbm",
+  "private": true,
+  "description": "De la bien bonne musique",
+  "type": "module",
+  "author": "Maxime Fabas",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dlbbm/dlbbm.github.io"
+  },
+  "scripts": {
+    "typecheck": "npx tsc --noEmit",
+    "build:scripts": "npx tsc -p .",
+    "post": "npm run build:scripts && node build/scripts/post/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@design-edito/tools": "^0.5.39",
+    "@inquirer/prompts": "^8.7.4"
+  }
+}
