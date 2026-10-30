@@ -11,7 +11,7 @@ import { existsSync } from 'node:fs'
 import { appendFile, copyFile, mkdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { Artist, Post, Recording, Song } from '../../types.js'
-import { DATA, DATA_FILES, FILES } from '../_config/index.js'
+import { DATA, DATA_FILES, FILES, FILES_SHARD_DEPTH } from '../_config/index.js'
 
 export type Db = {
   artists: Artist[]
@@ -28,19 +28,21 @@ export function createId (): string {
 }
 
 /**
- * Takes a copy of a file into `data/files`, named after its contents.
+ * Takes a copy of a file into `data/files`, named after its contents and filed under them.
  *
  * Returns the path to store, relative to the repository root, and nothing else — the same
- * file copied twice lands on the same name, which is the point of hashing the contents
+ * file copied twice lands on the same path, which is the point of hashing the contents
  * rather than drawing an id.
  */
 export async function storeFile (sourcePath: string): Promise<string> {
   const contents = await readFile(sourcePath)
   const hash = createHash('sha256').update(contents).digest('hex').slice(0, 16)
+  const shards = Array
+    .from({ length: FILES_SHARD_DEPTH }, (_, depth) => hash.slice(depth * 2, depth * 2 + 2))
   const name = `${hash}${path.extname(sourcePath).toLowerCase()}`
-  await mkdir(FILES, { recursive: true })
-  await copyFile(sourcePath, path.join(FILES, name))
-  return `data/files/${name}`
+  await mkdir(path.join(FILES, ...shards), { recursive: true })
+  await copyFile(sourcePath, path.join(FILES, ...shards, name))
+  return ['data', 'files', ...shards, name].join('/')
 }
 
 async function readCollection<T> (filePath: string): Promise<T[]> {
