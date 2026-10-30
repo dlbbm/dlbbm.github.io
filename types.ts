@@ -110,11 +110,12 @@ export type Song = {
  * @property kind - `null` on the 341 posts of 400 that annotate nothing. There is no
  * `studio` member standing in for them: an unannotated take is a take nobody said anything
  * about, which is not the same claim.
- * @property title - A name this version carries that the work does not — `Chevals remix`.
- * `null` on the common case, where the work's title is the whole of it.
  * @property byArtistIds - `byArtist`. A list, since the archive credits up to four.
  * @property featuringArtistIds - Kept apart from `byArtistIds` because the blog writes
  * them apart, as `(ft. …)`, and because a guest is not a co-credit.
+ * @property remixedByArtistIds - Who reworked it. schema.org has no `remixer` and the
+ * archive hides the name inside the title — `(Pilooski remix)` — but it is a credit like
+ * any other, and the one the blog states most often after the billing itself.
  * @property performedOn - When it was played, which for a live take is the concert.
  * @property performedAt - Where it was played. schema.org would model the concert as a
  * `MusicEvent` and has no property tying a recording to one, so venue and date sit here
@@ -131,9 +132,9 @@ export type Recording = {
   id: RecordingId
   songId: SongId
   kind: RecordingKind | null
-  title: string | null
   byArtistIds: ArtistId[]
   featuringArtistIds: ArtistId[]
+  remixedByArtistIds: ArtistId[]
   performedOn: PartialDate | null
   performedAt: Place | null
   releasedOn: PartialDate | null

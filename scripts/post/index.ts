@@ -317,10 +317,14 @@ const recordingKind: RecordingKind | null = pickedKind !== OTHER_KIND
     validate: value => value.trim() !== '' || 'A kind is needed.'
   })).trim()
 
-let recordingTitle: string | null = null
-if (recordingKind !== null) {
-  const raw = (await input({ message: 'Recording title' })).trim()
-  recordingTitle = raw === '' ? null : raw
+const remixedByArtists: Artist[] = []
+if (recordingKind === 'remix') {
+  const names = splitCredits(await input({
+    message: `Remixed by (separated by ${CREDIT_SEPARATOR})`
+  }))
+  for (const name of names) {
+    remixedByArtists.push(await resolveArtist(name, artistPool, created.artists))
+  }
 }
 
 let performedOn: PartialDate | null = null
@@ -413,9 +417,9 @@ const recording: Recording = {
   id: createId(),
   songId: song.id,
   kind: recordingKind,
-  title: recordingTitle,
   byArtistIds: creditedArtists.map(artist => artist.id),
   featuringArtistIds: featuringArtists.map(artist => artist.id),
+  remixedByArtistIds: remixedByArtists.map(artist => artist.id),
   performedOn,
   performedAt,
   releasedOn: null,
@@ -450,7 +454,8 @@ const featuring = featuringArtists.length === 0
 console.log(styles.info('\nPost'))
 console.log(styles.important(`${credits}${featuring} — ${song.title}`))
 console.log(styles.light(`published on ${formatPartialDate(publishedOn)}`))
-if (recordingKind !== null) console.log(styles.light(`${recordingKind}${recordingTitle === null ? '' : ` · ${recordingTitle}`}`))
+if (recordingKind !== null) console.log(styles.light(recordingKind))
+if (remixedByArtists.length > 0) console.log(styles.light(`remixed by ${remixedByArtists.map(artist => artist.name).join(', ')}`))
 if (performedOn !== null) console.log(styles.light(`played ${formatPartialDate(performedOn)}`))
 if (performedAt !== null) {
   const place = [performedAt.venue, performedAt.city, performedAt.country]
