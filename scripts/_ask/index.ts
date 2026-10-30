@@ -112,6 +112,15 @@ function timestampAsString (timestamp: Timestamp): string {
   return `${timestamp.slice(0, 10)} ${timestamp.slice(11, 16)}`
 }
 
+/** A `Date` as a `Timestamp`, carrying the offset this machine had on that very day. */
+export function toTimestamp (date: Date): Timestamp {
+  const offset = -date.getTimezoneOffset()
+  const sign = offset < 0 ? '-' : '+'
+  return `${pad(date.getFullYear(), 4)}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+    + `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+    + `${sign}${pad(Math.floor(Math.abs(offset) / 60))}:${pad(Math.abs(offset) % 60)}`
+}
+
 /**
  * The moment the answer names, in this machine's timezone.
  *
@@ -130,11 +139,7 @@ function parseTimestamp (raw: string): Timestamp | null {
   const date = new Date(year, month - 1, day, hour, minute, second)
   if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null
   if (date.getHours() !== hour || date.getMinutes() !== minute) return null
-  const offset = -date.getTimezoneOffset()
-  const sign = offset < 0 ? '-' : '+'
-  return `${pad(year, 4)}-${pad(month)}-${pad(day)}`
-    + `T${pad(hour)}:${pad(minute)}:${pad(second)}`
-    + `${sign}${pad(Math.floor(Math.abs(offset) / 60))}:${pad(Math.abs(offset) % 60)}`
+  return toTimestamp(date)
 }
 
 function youtubeVideoId (url: URL): string | null {
