@@ -85,17 +85,19 @@ export type RecordingKind = typeof recordingKinds[number] | string
  * A song as a work: the thing that stays the same across every version of it.
  *
  * `MusicComposition`. A title, and nothing about how it sounded on a given day — that
- * belongs to a {@link Recording}. There is no *original version* flag: the work is the
- * identity, and every recording hangs off it as a peer. No `composer` and no `lyricist`
- * either, although schema.org offers both: this blog credits the name a record came out
- * under and never the humans behind it.
+ * belongs to a {@link Recording}, and every recording hangs off the work as a peer: there
+ * is no first-recording pointer, because posting order is not evidence of anything. No
+ * `composer` and no `lyricist` either, although schema.org offers both: this blog credits
+ * the name a record came out under and never the humans behind it.
  *
  * @property title - The work's title, in the form the blog uses it.
  * @property titleAliases - Other titles it goes by, translations included.
- * @property firstRecordingId - The earliest known recording, which is what lets a later
- * one be *called* a cover without a cover concept existing. The one concession to
- * privileging a version, and droppable the day recording dates are complete enough to
- * sort on.
+ * @property originalArtistIds - Whose song it is, stated once when the work enters the
+ * data. It is what makes a cover a cover: a recording credited to these artists is a
+ * version of their own song, one credited to anyone else is a cover of it. Empty when
+ * nobody claimed. The third named divergence — schema.org says this by pointing
+ * `recordedAs` at the original `MusicRecording`, which would mean minting a recording for
+ * a version the blog never posted.
  * @property sources - Identity assertions about the work itself, such as a MusicBrainz
  * work URI. Never an embed: a work is not playable.
  */
@@ -103,7 +105,7 @@ export type Song = {
   id: SongId
   title: string
   titleAliases: string[]
-  firstRecordingId: RecordingId | null
+  originalArtistIds: ArtistId[]
   sources: IdentitySource[]
 }
 
@@ -111,8 +113,8 @@ export type Song = {
  * One version of a song, as performed and captured once.
  *
  * `MusicRecording`, linked to its work by `recordingOf`. A cover needs nothing of its own:
- * it is a recording of a known song by an artist other than
- * {@link Song.firstRecordingId}'s, which is how `(Bill Withers cover)` is rendered without
+ * it is a recording credited to someone other than the work's
+ * {@link Song.originalArtistIds}, which is how `(Bill Withers cover)` is rendered without
  * leaving the vocabulary.
  *
  * @property kind - `null` on the 341 posts of 400 that annotate nothing. There is no

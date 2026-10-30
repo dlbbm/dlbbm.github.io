@@ -266,7 +266,7 @@ async function resolveSong (
     id: createId(),
     title,
     titleAliases: [],
-    firstRecordingId: null,
+    originalArtistIds: [],
     sources: []
   }
   songPool.push(song)
@@ -380,6 +380,29 @@ if (recordingKind === 'remix') {
   }
 }
 
+// A work states whose song it is once, when it enters the data; an existing one keeps what
+// it says, since nothing here rewrites a line.
+const newSong = created.songs.find(candidate => candidate.id === song.id)
+if (newSong !== undefined) {
+  // A live take, a remix, a demo or an alternate take is a version of something by
+  // definition, so the question is only worth asking of an unannotated recording.
+  const isOriginal = recordingKind === null
+    && await confirm({ message: 'Original recording?', default: true })
+  if (isOriginal) {
+    newSong.originalArtistIds = creditedArtists.map(artist => artist.id)
+  } else {
+    const originalNames = splitCredits(await input({
+      message: `Original artist (separated by ${CREDIT_SEPARATOR})`,
+      default: creditedArtists.map(artist => artist.name).join(`${CREDIT_SEPARATOR} `)
+    }))
+    const originalArtists: Artist[] = []
+    for (const name of originalNames) {
+      originalArtists.push(await resolveArtist(name, artistPool, created.artists))
+    }
+    newSong.originalArtistIds = originalArtists.map(artist => artist.id)
+  }
+}
+
 let performedOn: PartialDate | null = null
 let performedAt: Place | null = null
 if (recordingKind === 'live') {
@@ -483,11 +506,6 @@ const recording: Recording = {
 }
 created.recordings.push(recording)
 
-// A work learns its earliest recording from the first one written for it; an existing work
-// keeps whatever it already points at, since nothing here rewrites a line.
-const newSong = created.songs.find(candidate => candidate.id === song.id)
-if (newSong !== undefined) { newSong.firstRecordingId = recording.id }
-
 const post: Post = {
   id: createId(),
   publishedOn,
@@ -511,6 +529,12 @@ console.log(styles.important(`${credits}${featuring} — ${song.title}`))
 console.log(styles.light(`published on ${publishedOn}`))
 if (recordingKind !== null) console.log(styles.light(recordingKind))
 if (remixedByArtists.length > 0) console.log(styles.light(`remixed by ${remixedByArtists.map(artist => artist.name).join(', ')}`))
+if (newSong !== undefined) {
+  const originals = newSong.originalArtistIds
+    .map(id => findArtistById(id, artistPool)?.name ?? id)
+    .join(', ')
+  console.log(styles.light(`originally ${originals === '' ? 'unclaimed' : originals}`))
+}
 if (performedOn !== null) console.log(styles.light(`played ${formatPartialDate(performedOn)}`))
 if (performedAt !== null) {
   const place = [performedAt.venue, performedAt.city, performedAt.country]
