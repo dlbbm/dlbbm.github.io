@@ -21,7 +21,8 @@ how it maps onto schema.org and where it deliberately diverges.
   the page `build:shells` fills in once per URL, and `basics/`, `components/`, `layouts/`,
   `pages/` and `utils/` are what it is made of. Nothing generated lives here.
   **`basics/`** holds the components bound for `mf-tools`: none of them knows anything of
-  this blog, which is checkable — a basic imports nothing from `shared/`.
+  this blog, which is checkable — a basic imports nothing from `shared/` and nothing from
+  `components/`.
 - **`dist/`** — everything the site is made of, written by the build and served as is, in
   development as well as in production. Never committed.
 

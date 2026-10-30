@@ -4,8 +4,8 @@ import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import type { BuiltArtist, BuiltPost } from '../../../shared/types/built.js'
 import type { FileSource, MediaSource, Source } from '../../../shared/types/index.js'
 import { formatPlace } from '../../utils/format/index.js'
-import { FileMedia } from '../../basics/FileMedia/index.js'
 import { Embed } from '../Embed/index.js'
+import { FileMedia } from '../FileMedia/index.js'
 import { PartialDate } from '../PartialDate/index.js'
 
 const bem = clss('post')
