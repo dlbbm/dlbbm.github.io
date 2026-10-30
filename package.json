@@ -10,9 +10,15 @@
     "url": "https://github.com/dlbbm/dlbbm.github.io"
   },
   "scripts": {
-    "typecheck": "npx tsc -p .",
+    "typecheck": "npm run check:scripts && npm run check:src",
+    "check:scripts": "npx tsc -p .",
+    "check:src": "npx tsc -p src",
     "clean:scripts": "find scripts types routes -name '*.js' -delete",
     "build:scripts": "npm run clean:scripts && npx tsc -p scripts",
+    "build:data": "npm run build:scripts && node scripts/build-data/index.js",
+    "build:src": "npm run build:scripts && DLBBM_MODE=production node scripts/build-src/index.js",
+    "watch:src": "ESBUILD_WATCH=true node scripts/build-src/index.js",
+    "serve:dist": "npx http-server dist --port ${PORT:-3000} -c-1 --ext html",
     "post": "npm run post:create",
     "post:create": "npm run build:scripts && node scripts/post-create/index.js",
     "post:edit": "npm run build:scripts && node scripts/post-edit/index.js",
@@ -23,15 +29,20 @@
     "list:artists": "npm run list -- artists",
     "list:slugs": "npm run list -- slugs",
     "data:generate-slugs": "npm run build:scripts && node scripts/data-generate-slugs/index.js",
-    "data:generate-test-data": "npm run build:scripts && node scripts/data-generate-test-data/index.js",
-    "build:data": "npm run build:scripts && node scripts/build-data/index.js"
+    "data:generate-test-data": "npm run build:scripts && node scripts/data-generate-test-data/index.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^10.0.6",
+    "esbuild": "^0.28.2",
+    "http-server": "^14.1.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "@design-edito/tools": "^0.5.39",
-    "@inquirer/prompts": "^8.7.4"
+    "@inquirer/prompts": "^8.7.4",
+    "preact": "^10.29.8",
+    "wouter-preact": "^3.13.0"
   }
 }
