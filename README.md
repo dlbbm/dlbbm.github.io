@@ -78,6 +78,13 @@ in this repository that pushes.
   anything yet. The first real decision is what a post looks like.
 - **`/posts` and `/artists`** are routes with nothing behind them, waiting for a visual
   idea of what a register is.
+- **A scheduled post coming of age while the tab is open.** `posts.json` gives the trigger
+  for free: the nearest `publishedOn` ahead of now. Schedule one timer at a time, capped at
+  around ten minutes and re-armed on each fire, and re-check on `visibilitychange` — a
+  sleeping laptop makes a long timer fire late, and `setTimeout` overflows past 24.8 days
+  anyway. When it fires, prepend rather than re-slice: a page showing eleven posts until
+  the reader navigates is gentler than a post vanishing under their eyes. A client whose
+  clock is behind shows it late, which is nobody's problem.
 - **Genres.** A `genre` on `Song` — schema.org has the property — plus `/genres` and
   `/genre/<slug>`. Worth doing once the stream exists and the vocabulary is obvious.
 - **The archive.** 401 posts live in `maximefabas/_DATA/delabienbonnemusique.tumblr.com/`
