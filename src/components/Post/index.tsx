@@ -3,7 +3,7 @@ import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import type { BuiltArtist, BuiltPost } from '../../../types/built.js'
 import type { FileSource, MediaSource, Place, Source } from '../../../types/index.js'
-import { formatPartialDate } from '../../format/index.js'
+import { formatPartialDate } from '../../utils/format/index.js'
 import { Embed } from '../Embed/index.js'
 import { FileMedia } from '../FileMedia/index.js'
 

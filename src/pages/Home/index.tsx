@@ -2,7 +2,7 @@ import { useEffect, useState } from 'preact/hooks'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { Pagination } from '../../components/Pagination/index.js'
 import { Post } from '../../components/Post/index.js'
-import { fetchPostPage, type PostPage } from '../../fetch/index.js'
+import { fetchPostPage, type PostPage } from '../../utils/fetch/index.js'
 
 const bem = clss('page-home')
 

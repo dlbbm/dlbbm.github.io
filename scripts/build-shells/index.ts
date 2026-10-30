@@ -19,7 +19,7 @@ import type { BuiltManifest, BuiltRoute } from '../../types/built.js'
 import { CWD, DIST, DIST_DATA } from '../_config/index.js'
 import { readJson } from '../_db/index.js'
 
-const SHELL = path.join(CWD, 'src/shell.html')
+const SHELL = path.join(CWD, 'src/index.html')
 
 console.log('')
 console.log(styles.title('Building the shells...'))

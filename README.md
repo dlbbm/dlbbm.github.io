@@ -17,8 +17,9 @@ how it maps onto schema.org and where it deliberately diverges.
   `scripts/post-create`. Compiled in place, next to its sources.
 - **`routes/`** — the URL patterns, imported by the app and by the shell generator, so the
   two cannot disagree about what a URL looks like.
-- **`src/`** — the Preact app, plus `shell.html`, the page `build:shells` fills in once
-  per URL. Nothing generated lives here.
+- **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
+  the page `build:shells` fills in once per URL, and `components/`, `layouts/`, `pages/`
+  and `utils/` are what it is made of. Nothing generated lives here.
 - **`dist/`** — everything the site is made of, written by the build and served as is, in
   development as well as in production. Never committed.
 

@@ -3,7 +3,7 @@
  */
 
 import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
-import type { PartialDate } from '../../types/index.js'
+import type { PartialDate } from '../../../types/index.js'
 
 /**
  * A date, rendered as precisely as it is known and no more.

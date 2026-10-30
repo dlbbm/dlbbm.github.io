@@ -1,7 +1,7 @@
 import type { ComponentChildren } from 'preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { Logo } from '../../Logo/index.js'
-import { MainNav } from '../../MainNav/index.js'
+import { Logo } from '../../components/Logo/index.js'
+import { MainNav } from '../../components/MainNav/index.js'
 
 const bem = clss('main-layout')
 
