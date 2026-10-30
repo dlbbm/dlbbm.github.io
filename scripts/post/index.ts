@@ -269,19 +269,21 @@ if (titleNote !== null) {
   console.log(styles.light(`> dropped "(${titleNote})" from the title — the annotations below carry it`))
 }
 
-const rawArtistName = await input({
-  message: 'Artist?',
-  validate: value => value.trim() !== '' || 'An artist is needed.'
-})
-
-const mainArtist = await resolveArtist(rawArtistName.trim(), artistPool, created.artists)
-
-const extraCreditNames = splitCredits(await input({
-  message: `Credited alongside ${mainArtist.name}? (separate with a ${CREDIT_SEPARATOR}, empty to skip)`
+const creditNames = splitCredits(await input({
+  message: `Artist? (several credits separate with a ${CREDIT_SEPARATOR})`,
+  validate: value => splitCredits(value).length > 0 || 'An artist is needed.'
 }))
-const extraCreditArtists: Artist[] = []
-for (const name of extraCreditNames) {
-  extraCreditArtists.push(await resolveArtist(name, artistPool, created.artists))
+const creditedArtists: Artist[] = []
+for (const name of creditNames) {
+  creditedArtists.push(await resolveArtist(name, artistPool, created.artists))
+}
+
+// First credit named. It is the one a work is matched against, which is what decides
+// whether this is a cover.
+const mainArtist = creditedArtists[0]
+if (mainArtist === undefined) {
+  console.log(styles.error('No artist to credit.'))
+  process.exit(1)
 }
 
 const featuringNames = splitCredits(await input({
@@ -375,7 +377,7 @@ const recording: Recording = {
   songId: song.id,
   kind: recordingKind,
   title: recordingTitle,
-  byArtistIds: [mainArtist.id, ...extraCreditArtists.map(artist => artist.id)],
+  byArtistIds: creditedArtists.map(artist => artist.id),
   featuringArtistIds: featuringArtists.map(artist => artist.id),
   performedOn,
   performedAt,
@@ -403,7 +405,7 @@ created.posts.push(post)
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-const credits = [mainArtist, ...extraCreditArtists].map(artist => artist.name).join(', ')
+const credits = creditedArtists.map(artist => artist.name).join(', ')
 const featuring = featuringArtists.length === 0
   ? ''
   : ` (ft. ${featuringArtists.map(artist => artist.name).join(', ')})`
