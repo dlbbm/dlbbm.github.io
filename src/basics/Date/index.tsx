@@ -3,7 +3,7 @@ import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { mergeClassNames } from '@design-edito/tools/agnostic/css/merge-class-names/index.js'
 import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
 import type { DateToken } from '@design-edito/tools/agnostic/time/dates/format-date/types.js'
-import { formattedDate as publicClassName } from '../public-classnames.js'
+import { date as publicClassName } from '../public-classnames.js'
 import type { ClassNameProps } from '../types.js'
 import { dateTokenUnits } from './types.js'
 
@@ -32,7 +32,7 @@ function toPieces (format: string): Piece[] {
 }
 
 /**
- * Props for the {@link FormattedDate} component.
+ * Props for the {@link DateComponent} component.
  *
  * @property date - The moment to render. An invalid `Date` renders nothing at all.
  * @property format - The template, in `formatDate`'s own grammar:
@@ -75,7 +75,7 @@ export type Props = {
  * rather than a value a stylesheet computes with, it goes to a `data-` attribute and not
  * to a custom property.
  */
-export const FormattedDate: FunctionComponent<Props> = ({
+export const DateComponent: FunctionComponent<Props> = ({
   date,
   format,
   locale,

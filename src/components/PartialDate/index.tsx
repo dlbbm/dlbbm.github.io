@@ -1,7 +1,7 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
 import type { PartialDate as PartialDateValue } from '../../../shared/types/index.js'
-import { FormattedDate } from '../../basics/FormattedDate/index.js'
+import { DateComponent } from '../../basics/Date/index.js'
 
 const bem = clss('partial-date')
 
@@ -28,7 +28,7 @@ export function PartialDate ({ date }: PartialDateProps) {
 
   const filled = new Date(year ?? 2000, (month ?? 1) - 1, day ?? 1)
   const statable = year !== null && (month !== null || day === null)
-  return <FormattedDate
+  return <DateComponent
     date={filled}
     format={format}
     dateTime={statable ? formatDate(filled, format) : null}
