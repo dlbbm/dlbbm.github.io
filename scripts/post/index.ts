@@ -1,9 +1,9 @@
 /**
  * Writes one post into the database, by asking for it.
  *
- * The questions follow the shape the old blog actually had: a title line reading
- * `Artist — Title`, a playable source, and almost always nothing else. Everything the
- * archive leaves blank on 341 posts out of 400 is a question that defaults to nothing.
+ * The questions follow the shape the old blog actually had: a title, an artist, a playable
+ * source, and almost always nothing else. Everything the archive leaves blank on 341 posts
+ * out of 400 is a question that defaults to nothing.
  */
 
 import process from 'node:process'
@@ -23,9 +23,6 @@ import type {
 } from '../../types.js'
 import { append, createId, readDb, type Db } from '../_db/index.js'
 
-// The blog's convention, em dash and all. The en dash and the hyphen are accepted because
-// two of the 400 archived titles used one, and because nobody types an em dash reliably.
-const TITLE_SEPARATOR = /\s+[—–-]\s+/
 const TRAILING_PARENTHETICAL = /\s*\(([^()]*)\)\s*$/
 const PARTIAL_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/
 const CREDIT_SEPARATOR = ';'
@@ -53,15 +50,6 @@ const MEDIA_HOSTS: Array<{
   { hostname: /(^|\.)mixcloud\.com$/, service: 'mixcloud', kind: 'audio' },
   { hostname: /(^|\.)soundowl\.com$/, service: 'soundowl', kind: 'audio' }
 ]
-
-function splitTitleLine (raw: string): { artistName: string, songTitle: string } | null {
-  const match = TITLE_SEPARATOR.exec(raw)
-  if (match === null) return null
-  const artistName = raw.slice(0, match.index).trim()
-  const songTitle = raw.slice(match.index + match[0].length).trim()
-  if (artistName === '' || songTitle === '') return null
-  return { artistName, songTitle }
-}
 
 function splitParenthetical (raw: string): { title: string, note: string | null } {
   const match = TRAILING_PARENTHETICAL.exec(raw)
@@ -278,27 +266,26 @@ const recordingPool = [...db.recordings]
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * The title line
+ * The title, then the artist
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-const titleLine = await input({
-  message: 'Title line, as it reads on the blog (Artist — Title)',
-  validate: value => splitTitleLine(value) !== null || 'Expected an artist and a title, separated by a dash.'
+const rawSongTitle = await input({
+  message: 'Title?',
+  validate: value => value.trim() !== '' || 'A title is needed.'
 })
 
-const split = splitTitleLine(titleLine)
-if (split === null) {
-  console.log(styles.error('Could not read a title line out of that.'))
-  process.exit(1)
-}
-
-const { title: songTitle, note: titleNote } = splitParenthetical(split.songTitle)
+const { title: songTitle, note: titleNote } = splitParenthetical(rawSongTitle)
 if (titleNote !== null) {
   console.log(styles.light(`> dropped "(${titleNote})" from the title — the annotations below carry it`))
 }
 
-const mainArtist = await resolveArtist(split.artistName, artistPool, created.artists)
+const rawArtistName = await input({
+  message: 'Artist?',
+  validate: value => value.trim() !== '' || 'An artist is needed.'
+})
+
+const mainArtist = await resolveArtist(rawArtistName.trim(), artistPool, created.artists)
 
 const extraCreditNames = splitCredits(await input({
   message: `Credited alongside ${mainArtist.name}? (separate with a ${CREDIT_SEPARATOR}, empty to skip)`
