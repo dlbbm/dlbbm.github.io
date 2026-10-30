@@ -21,6 +21,8 @@
     "list:recordings": "npm run list -- recordings",
     "list:songs": "npm run list -- songs",
     "list:artists": "npm run list -- artists",
+    "list:slugs": "npm run list -- slugs",
+    "data:generate-slugs": "npm run build:scripts && node scripts/data-generate-slugs/index.js",
     "data:generate-test-data": "npm run build:scripts && node scripts/data-generate-test-data/index.js"
   },
   "devDependencies": {

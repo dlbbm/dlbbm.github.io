@@ -11,6 +11,7 @@ import {
   describeArtist,
   describePost,
   describeRecording,
+  describeSlug,
   describeSong,
   type Described
 } from '../_describe/index.js'
@@ -22,7 +23,8 @@ const describers: Record<DbCollection, (db: Db) => Array<{ id: string } & Descri
     .map(post => ({ id: post.id, ...describePost(post, db) })),
   recordings: db => db.recordings.map(recording => ({ id: recording.id, ...describeRecording(recording, db) })),
   songs: db => db.songs.map(song => ({ id: song.id, ...describeSong(song, db) })),
-  artists: db => db.artists.map(artist => ({ id: artist.id, ...describeArtist(artist, db) }))
+  artists: db => db.artists.map(artist => ({ id: artist.id, ...describeArtist(artist, db) })),
+  slugs: db => db.slugs.map(slug => ({ id: slug.targetId, ...describeSlug(slug, db) }))
 }
 
 const collections = Object.keys(describers) as DbCollection[]

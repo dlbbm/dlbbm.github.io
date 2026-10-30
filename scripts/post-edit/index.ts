@@ -60,6 +60,7 @@ printDraft(draft)
 
 const changes = [
   draft.createdArtists.length === 0 ? null : `${draft.createdArtists.length} artist appended`,
+  draft.createdSlugs.length === 0 ? null : `${draft.createdSlugs.length} slug appended`,
   draft.createdSongs.length === 0 ? null : '1 song appended',
   '1 recording rewritten',
   '1 post rewritten'
@@ -79,6 +80,7 @@ await storeDraftFile(draft)
 
 // New entities first, so the rewritten lines never point at something not yet on disk.
 await append('artists', draft.createdArtists)
+await append('slugs', draft.createdSlugs)
 await append('songs', draft.createdSongs)
 await write('recordings', db.recordings.map(candidate =>
   candidate.id === draft.recording.id ? draft.recording : candidate))
@@ -91,6 +93,7 @@ console.log(styles.success(`${db.posts.length} posts in the data`))
 
 printRecords({
   artists: draft.createdArtists,
+  slugs: draft.createdSlugs,
   songs: draft.createdSongs,
   recordings: [draft.recording],
   posts: [draft.post]

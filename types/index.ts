@@ -15,6 +15,30 @@ export type ArtistId = string
 export type PostId = string
 
 /**
+ * What a thing is called in a URL.
+ *
+ * Addressing rather than fact, which is why it sits in a file of its own instead of on the
+ * entity: `Artist` says who recorded something, not how the blog links to them. Minted
+ * once and never recomputed, so renaming an artist leaves their URL alone, and a slug that
+ * reads badly is a hand edit like every other correction.
+ *
+ * @property kind - What the slug addresses. One file serves every addressable thing, and
+ * uniqueness is per kind: `/artist/x` and a future `/genre/x` do not collide.
+ * @property targetId - The record it points at.
+ */
+export type Slug = {
+  kind: SlugKind
+  targetId: string
+  slug: string
+}
+
+/** The kinds of thing that have a URL of their own. Genres join the day genres exist. */
+export const slugKinds = ['artist'] as const
+
+/** Which kind a single slug addresses. */
+export type SlugKind = typeof slugKinds[number]
+
+/**
  * One exact moment, as an ISO 8601 string carrying its offset.
  *
  * `2019-01-31T18:39:00+01:00`. The offset is kept rather than normalised to UTC because

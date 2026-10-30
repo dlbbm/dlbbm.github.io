@@ -10,8 +10,11 @@ export const FILES = path.join(DATA, 'files')
 // single directory ever holds more than 256 entries.
 export const FILES_SHARD_DEPTH = 4
 
+export const ABOUT_FILE = path.join(DATA, 'about.json')
+
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
+  slugs: path.join(DATA, 'slugs.ndjson'),
   songs: path.join(DATA, 'songs.ndjson'),
   recordings: path.join(DATA, 'recordings.ndjson'),
   posts: path.join(DATA, 'posts.ndjson')

@@ -24,6 +24,7 @@ printDraft(draft)
 
 const newRecords = [
   draft.createdArtists.length === 0 ? null : `${draft.createdArtists.length} artist`,
+  draft.createdSlugs.length === 0 ? null : `${draft.createdSlugs.length} slug`,
   draft.createdSongs.length === 0 ? null : '1 song',
   '1 recording',
   '1 post'
@@ -45,6 +46,7 @@ await storeDraftFile(draft)
 // Entities before the post that points at them: a crash between two appends leaves an
 // unreferenced song or artist, never a post pointing at a recording that is not there.
 await append('artists', draft.createdArtists)
+await append('slugs', draft.createdSlugs)
 await append('songs', draft.createdSongs)
 await append('recordings', [draft.recording])
 await append('posts', [draft.post])
@@ -55,6 +57,7 @@ console.log(styles.success(`${db.posts.length + 1} posts in the data`))
 
 printRecords({
   artists: draft.createdArtists,
+  slugs: draft.createdSlugs,
   songs: draft.createdSongs,
   recordings: [draft.recording],
   posts: [draft.post]

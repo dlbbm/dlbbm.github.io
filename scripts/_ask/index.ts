@@ -27,12 +27,14 @@ import type {
   Post,
   Recording,
   RecordingKind,
+  Slug,
   Song,
   Timestamp
 } from '../../types/index.js'
 import { CWD } from '../_config/index.js'
 import { createId, storeFile, type Db } from '../_db/index.js'
 import { findArtistById, formatPartialDate } from '../_describe/index.js'
+import { mintSlug } from '../_slug/index.js'
 
 // Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
 // one of them is parsed into a number anyway.
@@ -326,6 +328,7 @@ export type Editing = {
 
 export type Draft = {
   createdArtists: Artist[]
+  createdSlugs: Slug[]
   createdSongs: Song[]
   song: Song
   recording: Recording
@@ -348,6 +351,7 @@ export type Draft = {
 export async function askDraft (db: Db, editing: Editing | null): Promise<Draft> {
   const createdArtists: Artist[] = []
   const createdSongs: Song[] = []
+  const slugPool = [...db.slugs]
   const artistPool = [...db.artists]
   const songPool = [...db.songs]
   const recordingPool = [...db.recordings]
@@ -544,6 +548,11 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     recordingId: recording.id
   }
 
+  // Every artist named for the first time gets its URL now, so nothing addressable ever
+  // reaches the data without one.
+  const createdSlugs = createdArtists.map(artist =>
+    mintSlug('artist', artist.id, artist.name, slugPool))
+
   const featuring = featuringArtists.length === 0
     ? ''
     : ` (ft. ${featuringArtists.map(artist => artist.name).join(', ')})`
@@ -564,6 +573,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
 
   return {
     createdArtists,
+    createdSlugs,
     createdSongs,
     song,
     recording,

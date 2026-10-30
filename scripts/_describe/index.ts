@@ -5,7 +5,7 @@
  * `list` command showing the same posts should not disagree about how one reads.
  */
 
-import type { Artist, PartialDate, Post, Recording, Song } from '../../types/index.js'
+import type { Artist, PartialDate, Post, Recording, Slug, Song } from '../../types/index.js'
 import type { Db } from '../_db/index.js'
 
 /** What a record reads as: a `name` that identifies it, and the detail under it. */
@@ -100,5 +100,15 @@ export function describeArtist (artist: Artist, db: Db): Described {
       remixed === 0 ? null : `remixed ${remixed}`,
       original === 0 ? null : `originally wrote ${original}`
     ].filter((part): part is string => part !== null).join(' · ') || 'nothing points at it'
+  }
+}
+
+export function describeSlug (slug: Slug, db: Db): Described {
+  const target = slug.kind === 'artist'
+    ? findArtistById(slug.targetId, db.artists)?.name
+    : undefined
+  return {
+    name: `${slug.kind}/${slug.slug}`,
+    description: target ?? 'points at nothing'
   }
 }

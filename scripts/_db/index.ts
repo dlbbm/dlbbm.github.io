@@ -10,11 +10,12 @@ import { createHash, randomBytes } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { appendFile, copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import type { Artist, Post, Recording, Song } from '../../types/index.js'
+import type { Artist, Post, Recording, Slug, Song } from '../../types/index.js'
 import { DATA, DATA_FILES, FILES, FILES_SHARD_DEPTH } from '../_config/index.js'
 
 export type Db = {
   artists: Artist[]
+  slugs: Slug[]
   songs: Song[]
   recordings: Recording[]
   posts: Post[]
@@ -59,13 +60,14 @@ async function readCollection<T> (filePath: string): Promise<T[]> {
 }
 
 export async function readDb (): Promise<Db> {
-  const [artists, songs, recordings, posts] = await Promise.all([
+  const [artists, slugs, songs, recordings, posts] = await Promise.all([
     readCollection<Artist>(DATA_FILES.artists),
+    readCollection<Slug>(DATA_FILES.slugs),
     readCollection<Song>(DATA_FILES.songs),
     readCollection<Recording>(DATA_FILES.recordings),
     readCollection<Post>(DATA_FILES.posts)
   ])
-  return { artists, songs, recordings, posts }
+  return { artists, slugs, songs, recordings, posts }
 }
 
 function toLines (records: object[]): string {
