@@ -23,7 +23,8 @@ import type {
   Post,
   Recording,
   RecordingKind,
-  Song
+  Song,
+  Timestamp
 } from '../../types.js'
 import { CWD } from '../_config/index.js'
 import { append, createId, readDb, storeFile, type Db } from '../_db/index.js'
@@ -31,6 +32,7 @@ import { append, createId, readDb, storeFile, type Db } from '../_db/index.js'
 // Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
 // one of them is parsed into a number anyway.
 const PARTIAL_DATE = /^(\d{4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/
+const TIMESTAMP = /^(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/
 const CREDIT_SEPARATOR = ';'
 
 // Stands for the free-text answer in the kind choices. A sentinel rather than a string,
@@ -87,11 +89,39 @@ function formatPartialDate (date: PartialDate): string {
   return parts.length === 0 ? 'unknown' : parts.join('-')
 }
 
-function todayAsString (): string {
+function pad (value: number, width = 2): string {
+  return `${value}`.padStart(width, '0')
+}
+
+function nowAsString (): string {
   const now = new Date()
-  return `${now.getFullYear()}`
-    + `-${`${now.getMonth() + 1}`.padStart(2, '0')}`
-    + `-${`${now.getDate()}`.padStart(2, '0')}`
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
+    + ` ${pad(now.getHours())}:${pad(now.getMinutes())}`
+}
+
+/**
+ * The moment the answer names, in this machine's timezone.
+ *
+ * `null` on anything incomplete or impossible: a `Timestamp` is the one date here that
+ * cannot be vague. The round-trip through `Date` is what rejects 31 February, and reading
+ * the offset off that same date is what gets summer time right.
+ */
+function parseTimestamp (raw: string): Timestamp | null {
+  const match = TIMESTAMP.exec(raw.trim())
+  if (match === null) return null
+  const [year, month, day, hour, minute, second] = match
+    .slice(1)
+    .map(part => part === undefined ? 0 : Number.parseInt(part, 10))
+  if (year === undefined || month === undefined || day === undefined) return null
+  if (hour === undefined || minute === undefined || second === undefined) return null
+  const date = new Date(year, month - 1, day, hour, minute, second)
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null
+  if (date.getHours() !== hour || date.getMinutes() !== minute) return null
+  const offset = -date.getTimezoneOffset()
+  const sign = offset < 0 ? '-' : '+'
+  return `${pad(year, 4)}-${pad(month)}-${pad(day)}`
+    + `T${pad(hour)}:${pad(minute)}:${pad(second)}`
+    + `${sign}${pad(Math.floor(Math.abs(offset) / 60))}:${pad(Math.abs(offset) % 60)}`
 }
 
 function toEmbedUrl (service: MediaService, url: URL): string | null {
@@ -398,12 +428,12 @@ if (source !== null && source.nature === 'file') {
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 const rawPublishedOn = await input({
-  message: 'Published on (YYYY, YYYY-MM or YYYY-MM-DD)',
-  default: todayAsString(),
-  validate: value => parsePartialDate(value) !== null || 'Expected YYYY, YYYY-MM or YYYY-MM-DD.'
+  message: 'Published on (YYYY-MM-DD HH:MM)',
+  default: nowAsString(),
+  validate: value => parseTimestamp(value) !== null || 'Expected a complete YYYY-MM-DD HH:MM.'
 })
 
-const publishedOn = parsePartialDate(rawPublishedOn)
+const publishedOn = parseTimestamp(rawPublishedOn)
 if (publishedOn === null) {
   console.log(styles.error('Could not read that date.'))
   process.exit(1)
@@ -455,7 +485,7 @@ const featuring = featuringArtists.length === 0
 
 console.log(styles.info('\nPost'))
 console.log(styles.important(`${credits}${featuring} — ${song.title}`))
-console.log(styles.light(`published on ${formatPartialDate(publishedOn)}`))
+console.log(styles.light(`published on ${publishedOn}`))
 if (recordingKind !== null) console.log(styles.light(recordingKind))
 if (remixedByArtists.length > 0) console.log(styles.light(`remixed by ${remixedByArtists.map(artist => artist.name).join(', ')}`))
 if (performedOn !== null) console.log(styles.light(`played ${formatPartialDate(performedOn)}`))

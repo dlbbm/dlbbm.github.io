@@ -15,6 +15,14 @@ export type ArtistId = string
 export type PostId = string
 
 /**
+ * One exact moment, as an ISO 8601 string carrying its offset.
+ *
+ * `2019-01-31T18:39:00+01:00`. The offset is kept rather than normalised to UTC because
+ * the hour a post went out is a Paris evening, and that is what the blog is saying.
+ */
+export type Timestamp = string
+
+/**
  * A date known to whatever precision it is known.
  *
  * `schema.org` expects a `Date`, which cannot say *1968 and no better*. A third of the
@@ -248,11 +256,14 @@ export type FileSource = {
  * `BlogPosting` with `about` pointing at the recording. The post is the writing; the music
  * is its subject and outlives it.
  *
+ * @property publishedOn - `datePublished`. Complete to the minute, and the one date in
+ * these types that is never partial: a moment ahead of now is how a post is scheduled, so
+ * the front has to be able to compare it with now.
  * @property recordingId - What this post is about. Exactly one: the old blog posted one
  * track at a time and there is no reason to loosen that.
  */
 export type Post = {
   id: PostId
-  publishedOn: PartialDate
+  publishedOn: Timestamp
   recordingId: RecordingId
 }
