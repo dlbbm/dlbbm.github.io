@@ -28,7 +28,9 @@ import type {
 import { CWD } from '../_config/index.js'
 import { append, createId, readDb, storeFile, type Db } from '../_db/index.js'
 
-const PARTIAL_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/
+// Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
+// one of them is parsed into a number anyway.
+const PARTIAL_DATE = /^(\d{4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/
 const CREDIT_SEPARATOR = ';'
 
 // Stands for the free-text answer in the kind choices. A sentinel rather than a string,
