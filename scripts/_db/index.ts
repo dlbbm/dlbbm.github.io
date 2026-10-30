@@ -6,11 +6,12 @@
  * whole reason the format is one record per line.
  */
 
-import { randomBytes } from 'node:crypto'
+import { createHash, randomBytes } from 'node:crypto'
 import { existsSync } from 'node:fs'
-import { appendFile, mkdir, readFile } from 'node:fs/promises'
+import { appendFile, copyFile, mkdir, readFile } from 'node:fs/promises'
+import path from 'node:path'
 import type { Artist, Post, Recording, Song } from '../../types.js'
-import { DATA, DATA_FILES } from '../_config/index.js'
+import { DATA, DATA_FILES, FILES } from '../_config/index.js'
 
 export type Db = {
   artists: Artist[]
@@ -24,6 +25,22 @@ export type DbCollection = keyof Db
 /** Sixteen hex characters, drawn at creation and never derived from the record. */
 export function createId (): string {
   return randomBytes(8).toString('hex')
+}
+
+/**
+ * Takes a copy of a file into `data/files`, named after its contents.
+ *
+ * Returns the path to store, relative to the repository root, and nothing else — the same
+ * file copied twice lands on the same name, which is the point of hashing the contents
+ * rather than drawing an id.
+ */
+export async function storeFile (sourcePath: string): Promise<string> {
+  const contents = await readFile(sourcePath)
+  const hash = createHash('sha256').update(contents).digest('hex').slice(0, 16)
+  const name = `${hash}${path.extname(sourcePath).toLowerCase()}`
+  await mkdir(FILES, { recursive: true })
+  await copyFile(sourcePath, path.join(FILES, name))
+  return `data/files/${name}`
 }
 
 async function readCollection<T> (filePath: string): Promise<T[]> {

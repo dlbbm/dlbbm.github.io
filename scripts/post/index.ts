@@ -26,7 +26,7 @@ import type {
   Song
 } from '../../types.js'
 import { CWD } from '../_config/index.js'
-import { append, createId, readDb, type Db } from '../_db/index.js'
+import { append, createId, readDb, storeFile, type Db } from '../_db/index.js'
 
 const PARTIAL_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/
 const CREDIT_SEPARATOR = ';'
@@ -123,11 +123,8 @@ function toMediaSource (service: MediaService, raw: string): MediaSource | null 
   }
 }
 
-function toFileSource (raw: string): FileSource | null {
-  const filePath = raw.trim()
-  const kind = FILE_KINDS[path.extname(filePath).toLowerCase()]
-  if (kind === undefined) return null
-  return { nature: 'file', kind, path: filePath }
+function fileKind (filePath: string): FileSource['kind'] | undefined {
+  return FILE_KINDS[path.extname(filePath).toLowerCase()]
 }
 
 function splitCredits (raw: string): string[] {
@@ -353,17 +350,26 @@ const sourceNature = await select<MediaService | 'file' | null>({
 })
 
 let source: MediaSource | FileSource | null = null
+// Where the file came from, kept until the post is confirmed: nothing is copied into the
+// repository for a run that ends up answering no.
+let fileToStore: string | null = null
 if (sourceNature === 'file') {
-  source = toFileSource(await input({
+  const answer = await input({
     message: 'File path',
-    validate: value => toFileSource(value) !== null
-      || `Expected a path ending in ${Object.keys(FILE_KINDS).join(', ')}.`
-  }))
-  // A file may well be committed after the post that points at it, so a missing one is
-  // said out loud and left alone.
-  if (source !== null && !existsSync(path.resolve(CWD, source.path))) {
-    console.log(styles.warning(`> ${source.path} is not on disk`))
+    validate: value => {
+      const given = path.resolve(CWD, value.trim())
+      if (fileKind(given) === undefined) return `Expected a path ending in ${Object.keys(FILE_KINDS).join(', ')}.`
+      return existsSync(given) || `${given} is not on disk.`
+    }
+  })
+  fileToStore = path.resolve(CWD, answer.trim())
+  const kind = fileKind(fileToStore)
+  if (kind === undefined) {
+    console.log(styles.error('Could not tell audio from video for that file.'))
+    process.exit(1)
   }
+  // The stored path is known once the file is copied, which only happens on confirmation.
+  source = { nature: 'file', kind, path: '' }
 } else if (sourceNature !== null) {
   source = toMediaSource(sourceNature, await input({
     message: 'Source URL',
@@ -376,7 +382,7 @@ if (source !== null && source.nature === 'media') {
   console.log(styles.light(`> ${source.kind} · ${source.embedUrl ?? 'no embedUrl'}`))
 }
 if (source !== null && source.nature === 'file') {
-  console.log(styles.light(`> ${source.kind}`))
+  console.log(styles.light(`> ${source.kind} · to be copied into data/files`))
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -452,7 +458,7 @@ if (performedAt !== null) {
     .join(', ')
   console.log(styles.light(`at ${place}`))
 }
-console.log(styles.light(source === null ? 'null' : source.nature === 'file' ? source.path : source.url))
+console.log(styles.light(source === null ? 'null' : source.nature === 'file' ? fileToStore ?? 'file' : source.url))
 
 const newRecords = [
   created.artists.length === 0 ? null : `${created.artists.length} artist`,
@@ -468,6 +474,15 @@ const confirmed = await confirm({ message: 'Post?', default: true })
 if (!confirmed) {
   console.log(styles.warning('Nothing written.'))
   process.exit(0)
+}
+
+// The file before the records that name it, for the same reason the records go in this
+// order: a crash leaves something unreferenced rather than a reference to nothing. The
+// recording's `sources` holds this very object, so filling the path in here is what gets
+// written on the line below.
+if (fileToStore !== null && source !== null && source.nature === 'file') {
+  source.path = await storeFile(fileToStore)
+  console.log(styles.light(`> ${source.path}`))
 }
 
 // Entities before the post that points at them: a crash between two appends leaves an
