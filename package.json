@@ -13,7 +13,8 @@
     "typecheck": "npx tsc -p .",
     "clean:scripts": "find scripts types -name '*.js' -delete",
     "build:scripts": "npm run clean:scripts && npx tsc -p scripts",
-    "post": "npm run build:scripts && node scripts/post/index.js"
+    "post": "npm run build:scripts && node scripts/post/index.js",
+    "post:edit": "npm run build:scripts && node scripts/post-edit/index.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
