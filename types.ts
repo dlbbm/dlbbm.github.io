@@ -68,10 +68,10 @@ export const recordingKinds = [
  * Which kind a single recording is.
  *
  * Any string, because the archive annotates `Club 12" Mix` and `reprise` too, and a closed
- * union would have no room for them. The `string & {}` arm is what keeps the four above
- * suggested by an editor while the rest stays legal — a bare `| string` would swallow them.
+ * union would have no room for them. The members are named anyway, as the documentation of
+ * what is expected — TypeScript widens the union to `string` and loses nothing.
  */
-export type RecordingKind = typeof recordingKinds[number] | (string & {})
+export type RecordingKind = typeof recordingKinds[number] | string
 
 /**
  * A song as a work: the thing that stays the same across every version of it.

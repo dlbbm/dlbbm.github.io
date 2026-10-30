@@ -3,7 +3,8 @@
  *
  * The questions follow the shape the old blog actually had: a title, an artist, a playable
  * source, and almost always nothing else. Everything the archive leaves blank on 341 posts
- * out of 400 is a question that defaults to nothing.
+ * out of 400 is a question that defaults to nothing. A title is taken exactly as typed: the
+ * parenthetical of `Giving My Love (Chevals remix)` is the import's problem, not this one.
  */
 
 import { existsSync } from 'node:fs'
@@ -27,7 +28,6 @@ import type {
 import { CWD } from '../_config/index.js'
 import { append, createId, readDb, type Db } from '../_db/index.js'
 
-const TRAILING_PARENTHETICAL = /\s*\(([^()]*)\)\s*$/
 const PARTIAL_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/
 const CREDIT_SEPARATOR = ';'
 
@@ -62,16 +62,6 @@ const FILE_KINDS: Record<string, FileSource['kind']> = {
   '.mp4': 'video',
   '.webm': 'video',
   '.mov': 'video'
-}
-
-function splitParenthetical (raw: string): { title: string, note: string | null } {
-  const match = TRAILING_PARENTHETICAL.exec(raw)
-  if (match === null) return { title: raw.trim(), note: null }
-  const note = match[1]?.trim() ?? ''
-  return {
-    title: raw.slice(0, match.index).trim(),
-    note: note === '' ? null : note
-  }
 }
 
 function parsePartialDate (raw: string): PartialDate | null {
@@ -186,9 +176,8 @@ function findArtistById (id: string, pool: Artist[]): Artist | undefined {
 /**
  * The work this recording is a version of.
  *
- * One work of that title, recorded by the same artist, is taken to be it without asking.
- * Anything else is a question: a match under another artist's name is what makes a cover a
- * cover, and several works of the same title are exactly the case a guess gets wrong.
+ * Every work of that title is listed, whoever recorded it — a match under the same artist
+ * is no safer a guess than any other, it just comes first in the list.
  */
 async function resolveSong (
   title: string,
@@ -202,20 +191,17 @@ async function resolveSong (
   const candidates = songPool.filter(song => song.title.toLowerCase() === needle
     || song.titleAliases.some(alias => alias.toLowerCase() === needle))
 
-  const bySameArtist = candidates.find(song => recordingPool.some(recording =>
+  const byMainArtist = (song: Song): boolean => recordingPool.some(recording =>
     recording.songId === song.id
-    && recording.byArtistIds.includes(mainArtist.id)))
-  if (bySameArtist !== undefined && candidates.length === 1) {
-    console.log(styles.light(`> ${bySameArtist.title}, a work already recorded by ${mainArtist.name}`))
-    return bySameArtist
-  }
+    && recording.byArtistIds.includes(mainArtist.id))
+  const listed = [...candidates].sort((one, other) =>
+    Number(byMainArtist(other)) - Number(byMainArtist(one)))
 
-  if (candidates.length > 0) {
+  if (listed.length > 0) {
     const chosen = await select<Song | null>({
       message: 'Song',
-      default: bySameArtist,
       choices: [
-        ...candidates.map(song => ({
+        ...listed.map(song => ({
           name: song.title,
           description: `recorded by ${describeSongCredits(song, recordingPool, artistPool)}`,
           value: song as Song | null
@@ -280,15 +266,10 @@ const recordingPool = [...db.recordings]
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-const rawSongTitle = await input({
+const songTitle = (await input({
   message: 'Title',
   validate: value => value.trim() !== '' || 'A title is needed.'
-})
-
-const { title: songTitle, note: titleNote } = splitParenthetical(rawSongTitle)
-if (titleNote !== null) {
-  console.log(styles.light(`> dropped "(${titleNote})" from the title — the annotations below carry it`))
-}
+})).trim()
 
 const creditNames = splitCredits(await input({
   message: `Artist (separated by ${CREDIT_SEPARATOR})`,
@@ -323,11 +304,8 @@ const song = await resolveSong(songTitle, mainArtist, songPool, recordingPool, a
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-const preselectedKind = recordingKinds.find(kind => kind === titleNote?.toLowerCase()) ?? null
-
 const pickedKind = await select<RecordingKind | null | typeof OTHER_KIND>({
   message: 'Recording kind',
-  default: preselectedKind,
   choices: [
     { name: 'null', value: null },
     ...recordingKinds.map(kind => ({ name: kind, value: kind as RecordingKind })),
