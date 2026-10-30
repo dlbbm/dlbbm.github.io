@@ -27,6 +27,10 @@ const TRAILING_PARENTHETICAL = /\s*\(([^()]*)\)\s*$/
 const PARTIAL_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/
 const CREDIT_SEPARATOR = ';'
 
+// Stands for the free-text answer in the kind choices. A sentinel rather than a string,
+// since `RecordingKind` accepts any string and would swallow a marker.
+const OTHER_KIND = Symbol('other kind')
+
 const MEDIA_HOSTS: Array<{
   hostname: RegExp
   service: MediaService
@@ -298,14 +302,22 @@ const song = await resolveSong(songTitle, mainArtist, songPool, recordingPool, a
 
 const preselectedKind = recordingKinds.find(kind => kind === titleNote?.toLowerCase()) ?? null
 
-const recordingKind = await select<RecordingKind | null>({
+const pickedKind = await select<RecordingKind | null | typeof OTHER_KIND>({
   message: 'Recording kind',
   default: preselectedKind,
   choices: [
     { name: 'null', value: null },
-    ...recordingKinds.map(kind => ({ name: kind, value: kind as RecordingKind | null }))
+    ...recordingKinds.map(kind => ({ name: kind, value: kind as RecordingKind })),
+    { name: 'other', value: OTHER_KIND }
   ]
 })
+
+const recordingKind: RecordingKind | null = pickedKind !== OTHER_KIND
+  ? pickedKind
+  : (await input({
+    message: 'Recording kind',
+    validate: value => value.trim() !== '' || 'A kind is needed.'
+  })).trim()
 
 let recordingTitle: string | null = null
 if (recordingKind !== null) {

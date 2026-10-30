@@ -50,22 +50,28 @@ export type Place = {
 }
 
 /**
- * The kinds of recording the archive actually annotates.
+ * The kinds of recording the archive annotates often enough to be offered as a choice.
  *
  * schema.org has no recording-level equivalent — `MusicAlbumProductionType` classifies
  * albums, not takes — so this list is not a standard being followed. It is the vocabulary
- * the old blog used, and nothing more: a value earns its place here by appearing in a
- * post, not by being imaginable.
+ * the old blog used, in the order it used it: a value earns its place here by appearing in
+ * enough posts to be worth a keystroke.
  */
 export const recordingKinds = [
   'live',
+  'remix',
   'demo',
-  'alternate-take',
-  'remix'
+  'alternate-take'
 ] as const
 
-/** Which kind a single recording is. */
-export type RecordingKind = typeof recordingKinds[number]
+/**
+ * Which kind a single recording is.
+ *
+ * Any string, because the archive annotates `Club 12" Mix` and `reprise` too, and a closed
+ * union would have no room for them. The `string & {}` arm is what keeps the four above
+ * suggested by an editor while the rest stays legal — a bare `| string` would swallow them.
+ */
+export type RecordingKind = typeof recordingKinds[number] | (string & {})
 
 /**
  * A song as a work: the thing that stays the same across every version of it.
