@@ -10,7 +10,7 @@ import { createHash, randomBytes } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { appendFile, copyFile, mkdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import type { Artist, Post, Recording, Song } from '../../types.js'
+import type { Artist, Post, Recording, Song } from '../../types/index.js'
 import { DATA, DATA_FILES, FILES, FILES_SHARD_DEPTH } from '../_config/index.js'
 
 export type Db = {

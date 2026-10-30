@@ -12,7 +12,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { confirm, input, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import { mediaServices, recordingKinds } from '../../types.js'
+import { mediaServices, recordingKinds } from '../../types/index.js'
 import type {
   Artist,
   FileSource,
@@ -25,7 +25,7 @@ import type {
   RecordingKind,
   Song,
   Timestamp
-} from '../../types.js'
+} from '../../types/index.js'
 import { CWD } from '../_config/index.js'
 import { append, createId, readDb, storeFile, type Db } from '../_db/index.js'
 
