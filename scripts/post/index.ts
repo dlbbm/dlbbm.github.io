@@ -159,9 +159,9 @@ function findArtistById (id: string, pool: Artist[]): Artist | undefined {
 /**
  * The work this recording is a version of.
  *
- * Same title and same artist is taken to be the same work without asking. A match under
- * another artist's name is the interesting case — it is what makes a cover a cover — so
- * that one is always a question.
+ * One work of that title, recorded by the same artist, is taken to be it without asking.
+ * Anything else is a question: a match under another artist's name is what makes a cover a
+ * cover, and several works of the same title are exactly the case a guess gets wrong.
  */
 async function resolveSong (
   title: string,
@@ -178,7 +178,7 @@ async function resolveSong (
   const bySameArtist = candidates.find(song => recordingPool.some(recording =>
     recording.songId === song.id
     && recording.byArtistIds.includes(mainArtist.id)))
-  if (bySameArtist !== undefined) {
+  if (bySameArtist !== undefined && candidates.length === 1) {
     console.log(styles.light(`> ${bySameArtist.title}, a work already recorded by ${mainArtist.name}`))
     return bySameArtist
   }
@@ -186,6 +186,7 @@ async function resolveSong (
   if (candidates.length > 0) {
     const chosen = await select<Song | null>({
       message: 'Song',
+      default: bySameArtist,
       choices: [
         ...candidates.map(song => ({
           name: song.title,
