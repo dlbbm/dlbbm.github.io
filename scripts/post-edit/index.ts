@@ -14,22 +14,9 @@ import process from 'node:process'
 import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Post, Recording } from '../../types/index.js'
-import { askDraft, findArtistById, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
+import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
 import { append, readDb, write, type Db } from '../_db/index.js'
-
-function describePost (post: Post, db: Db): { name: string, description: string } {
-  const recording = db.recordings.find(candidate => candidate.id === post.recordingId)
-  const song = db.songs.find(candidate => candidate.id === recording?.songId)
-  const credits = (recording?.byArtistIds ?? [])
-    .map(id => findArtistById(id, db.artists)?.name ?? id)
-    .join(', ')
-  return {
-    name: `${post.hidden ? '(hidden) ' : ''}${credits} — ${song?.title ?? 'unknown song'}`,
-    description: [post.publishedOn, recording?.kind]
-      .filter(part => part !== null && part !== undefined)
-      .join(' · ')
-  }
-}
+import { describePost } from '../_describe/index.js'
 
 const db: Db = await readDb()
 

@@ -32,6 +32,7 @@ import type {
 } from '../../types/index.js'
 import { CWD } from '../_config/index.js'
 import { createId, storeFile, type Db } from '../_db/index.js'
+import { findArtistById, formatPartialDate } from '../_describe/index.js'
 
 // Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
 // one of them is parsed into a number anyway.
@@ -94,15 +95,6 @@ function parsePartialDate (raw: string): PartialDate | null {
   if (month !== null && (month < 1 || month > 12)) return null
   if (day !== null && (day < 1 || day > 31)) return null
   return { year, month, day }
-}
-
-export function formatPartialDate (date: PartialDate): string {
-  const parts = [
-    date.year === null ? null : `${date.year}`.padStart(4, '0'),
-    date.month === null ? null : `${date.month}`.padStart(2, '0'),
-    date.day === null ? null : `${date.day}`.padStart(2, '0')
-  ].filter((part): part is string => part !== null)
-  return parts.length === 0 ? 'unknown' : parts.join('-')
 }
 
 function pad (value: number, width = 2): string {
@@ -205,10 +197,6 @@ function findArtist (name: string, pool: Artist[]): Artist | undefined {
   const needle = name.trim().toLowerCase()
   return pool.find(artist => artist.name.toLowerCase() === needle
     || artist.nameAliases.some(alias => alias.toLowerCase() === needle))
-}
-
-export function findArtistById (id: string, pool: Artist[]): Artist | undefined {
-  return pool.find(artist => artist.id === id)
 }
 
 function namesOf (ids: string[], pool: Artist[]): Artist[] {
