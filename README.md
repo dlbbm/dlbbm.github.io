@@ -17,7 +17,8 @@ how it maps onto schema.org and where it deliberately diverges.
   `scripts/post-create`. Compiled in place, next to its sources.
 - **`routes/`** — the URL patterns, imported by the app and by the shell generator, so the
   two cannot disagree about what a URL looks like.
-- **`src/`** — the Preact app. Nothing generated lives here.
+- **`src/`** — the Preact app, plus `shell.html`, the page `build:shells` fills in once
+  per URL. Nothing generated lives here.
 - **`dist/`** — everything the site is made of, written by the build and served as is, in
   development as well as in production. Never committed.
 
@@ -25,15 +26,22 @@ how it maps onto schema.org and where it deliberately diverges.
 
 | Command | What it does |
 | --- | --- |
-| `npm start` | Builds, then watches `src` and serves `dist` |
-| `npm run build` | `build:data`, `build:src` and `build:shells` |
-| `npm run deploy` | Builds and publishes `dist` to the `production` branch |
+| `npm start` | Builds, then watches `src` and serves `dist` on port 3000 |
+| `npm run build` | `build:data`, then `build:src`, then `build:shells` |
+| `npm run deploy` | Builds and pushes `dist` to the `production` branch |
+| `npm run typecheck` | `check:scripts` and `check:src` |
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`) |
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:generate-test-data` | Replaces the database with fifty test posts |
-| `npm run typecheck` | Everything, in one pass |
+
+The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
+and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
+composes, and `clean:scripts` is what `build:scripts` runs first.
+
+Two typecheck passes rather than one, because `src` is a different language setting from
+the rest: it is JSX resolved for the bundler, while `scripts` is NodeNext and emits.
 
 ## How it is served
 
@@ -51,7 +59,11 @@ OpenGraph tags, so a link pasted into a conversation says what it is. They all l
 same bundle; the content still arrives as JSON.
 
 `deploy` copies `dist/` into a worktree on the `production` branch, which is what GitHub
-Pages serves, and pushes it. It is the only command in this repository that pushes.
+Pages serves, and pushes it. A worktree rather than a checkout, so it never moves the
+branch you are working on. It refuses a dirty tree, since the commit it names has to
+exist, and it keeps a normal history there rather than squashing: `production` is derived
+in full from that commit, so nothing in it is worth a force push. It is the only command
+in this repository that pushes.
 
 # Roadmap
 
