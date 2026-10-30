@@ -226,20 +226,17 @@ export type IdentitySource = {
 /**
  * The hosts the archive actually embedded from, by frequency.
  *
- * Eight names for 303 embeds: YouTube 262, Spotify 14, Vimeo 12, SoundCloud 6, Grooveshark
- * 6, and one each of Bandcamp, Mixcloud and SoundOwl. Grooveshark and SoundOwl are long
- * dead and stay in the list because the links are still in the data — a host earns its
- * place by having been used, not by still working.
+ * Six names for 296 embeds: YouTube 262, Spotify 14, Vimeo 12, SoundCloud 6, and one each
+ * of Bandcamp and Mixcloud. Grooveshark (6 links) and SoundOwl (1) are left out: both
+ * services are dead, so there is nothing to play and nothing worth importing.
  */
 export const mediaServices = [
   'youtube',
   'spotify',
   'vimeo',
   'soundcloud',
-  'grooveshark',
   'bandcamp',
-  'mixcloud',
-  'soundowl'
+  'mixcloud'
 ] as const
 
 /** Which host a single playable source sits on. */

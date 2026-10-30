@@ -52,7 +52,8 @@ const OTHER_KIND = Symbol('other kind')
 // `forms` is echoed back once the host is picked, and says what the prompt will accept.
 // Only YouTube has an embed form derived from it, which is also the only one whose URL is
 // refused when no id can be read out of it — the rest are stored as given, with a null
-// `embedUrl`, until the front needs more than a link.
+// `embedUrl`. The front cuts its own embed URL out of the canonical one, so what is stored
+// here is a convenience and never the thing rendered.
 const MEDIA_HOSTS: Record<MediaService, {
   hostnames: RegExp[]
   kind: MediaSource['kind']
@@ -71,10 +72,8 @@ const MEDIA_HOSTS: Record<MediaService, {
   },
   vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video', forms: 'https://vimeo.com/… · no embedUrl' },
   soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio', forms: 'https://soundcloud.com/… · no embedUrl' },
-  grooveshark: { hostnames: [/(^|\.)grooveshark\.com$/], kind: 'audio', forms: 'https://grooveshark.com/… · no embedUrl' },
   bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio', forms: 'https://<artist>.bandcamp.com/… · no embedUrl' },
-  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'https://www.mixcloud.com/… · no embedUrl' },
-  soundowl: { hostnames: [/(^|\.)soundowl\.com$/], kind: 'audio', forms: 'https://soundowl.com/… · no embedUrl' }
+  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'https://www.mixcloud.com/… · no embedUrl' }
 }
 
 const FILE_KINDS: Record<string, FileSource['kind']> = {
