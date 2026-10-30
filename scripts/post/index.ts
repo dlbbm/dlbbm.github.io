@@ -532,4 +532,12 @@ await append('posts', created.posts)
 console.log('')
 console.log(styles.title('Post written.'))
 console.log(styles.success(`${db.posts.length + 1} posts in the data`))
+
+// The lines exactly as they landed, one record per line, so a correction can be made by
+// hand on the file without reading it back first.
+for (const [collection, records] of Object.entries(created)) {
+  if (records.length === 0) continue
+  console.log(styles.info(`\n${collection}`))
+  for (const record of records) { console.log(styles.regular(JSON.stringify(record))) }
+}
 console.log('')
