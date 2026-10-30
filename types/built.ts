@@ -92,6 +92,7 @@ export type BuiltArtistIndexEntry = BuiltArtist & {
 
 /** What the blog says about itself, and the only built file that is prose. */
 export type BuiltAbout = {
+  url: string
   title: string
   description: string
   paragraphs: string[]

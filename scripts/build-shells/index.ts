@@ -15,7 +15,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import type { BuiltRoute } from '../../types/built.js'
+import type { BuiltManifest, BuiltRoute } from '../../types/built.js'
 import { CWD, DIST, DIST_DATA } from '../_config/index.js'
 import { readJson } from '../_db/index.js'
 
@@ -31,7 +31,18 @@ if (routes === null) {
   process.exit(1)
 }
 
+const manifest = await readJson<BuiltManifest>(path.join(DIST_DATA, 'manifest.json'))
+if (manifest === null) {
+  console.log(styles.error('No dist/data/manifest.json to read.'))
+  console.log(styles.warning('> npm run build:data'))
+  process.exit(1)
+}
+
 const shell = await readFile(SHELL, { encoding: 'utf-8' })
+
+// `og:url` is read by machines that have no idea where the page is served from, so it is
+// the only url here that cannot be relative.
+const siteUrl = manifest.about.url.replace(/\/+$/, '')
 
 // Only the five characters that can close an attribute or open a tag. The values are a
 // blog's own titles, not anybody's input, but a quote in a song title would be enough.
@@ -48,7 +59,7 @@ function fill (route: BuiltRoute): string {
   return shell
     .replace(/\{\{title\}\}/g, escapeHtml(route.title))
     .replace(/\{\{description\}\}/g, escapeHtml(route.description))
-    .replace(/\{\{url\}\}/g, escapeHtml(route.url))
+    .replace(/\{\{url\}\}/g, escapeHtml(`${siteUrl}${route.url}`))
 }
 
 // `/` is `index.html`; every other URL is a directory with one inside, so the path serves
