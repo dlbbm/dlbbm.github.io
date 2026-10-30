@@ -185,14 +185,14 @@ async function resolveSong (
 
   if (candidates.length > 0) {
     const chosen = await select<Song | null>({
-      message: `A work called ${title} is already in the data. Is this a version of it?`,
+      message: 'Song',
       choices: [
         ...candidates.map(song => ({
-          name: `Yes — ${song.title}`,
+          name: song.title,
           description: `recorded by ${describeSongCredits(song, recordingPool, artistPool)}`,
           value: song as Song | null
         })),
-        { name: 'No, a work of its own', value: null }
+        { name: 'new song', value: null }
       ]
     })
     if (chosen !== null) return chosen
@@ -211,9 +211,9 @@ async function resolveSong (
 }
 
 async function askPlace (): Promise<Place | null> {
-  const venue = (await input({ message: 'Venue? (empty to skip)' })).trim()
-  const city = (await input({ message: 'City? (empty to skip)' })).trim()
-  const country = (await input({ message: 'Country? (empty to skip)' })).trim()
+  const venue = (await input({ message: 'Venue' })).trim()
+  const city = (await input({ message: 'City' })).trim()
+  const country = (await input({ message: 'Country' })).trim()
   if (venue === '' && city === '' && country === '') return null
   return {
     venue: venue === '' ? null : venue,
@@ -308,7 +308,7 @@ const recordingKind = await select<RecordingKind | null>({
 
 let recordingTitle: string | null = null
 if (recordingKind !== null) {
-  const raw = (await input({ message: 'A name this version carries? (empty to skip)' })).trim()
+  const raw = (await input({ message: 'Recording title' })).trim()
   recordingTitle = raw === '' ? null : raw
 }
 
@@ -316,7 +316,7 @@ let performedOn: PartialDate | null = null
 let performedAt: Place | null = null
 if (recordingKind === 'live') {
   const rawPerformedOn = await input({
-    message: 'Played when? (YYYY, YYYY-MM or YYYY-MM-DD, empty to skip)',
+    message: 'Performed on (YYYY, YYYY-MM or YYYY-MM-DD)',
     validate: value => value.trim() === '' || parsePartialDate(value) !== null || 'Expected YYYY, YYYY-MM or YYYY-MM-DD.'
   })
   performedOn = rawPerformedOn.trim() === '' ? null : parsePartialDate(rawPerformedOn)
@@ -330,7 +330,7 @@ if (recordingKind === 'live') {
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 const rawMediaUrl = await input({
-  message: 'Link to hear it? (empty for a post with no source)',
+  message: 'Source URL',
   validate: value => value.trim() === '' || toMediaSource(value) !== null
     || `Expected a URL on one of: ${MEDIA_HOSTS.map(host => host.service).join(', ')}.`
 })
@@ -348,7 +348,7 @@ if (mediaSource !== null) {
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 const rawPublishedOn = await input({
-  message: 'Published on? (a date ahead of today schedules it)',
+  message: 'Published on (YYYY, YYYY-MM or YYYY-MM-DD)',
   default: todayAsString(),
   validate: value => parsePartialDate(value) !== null || 'Expected YYYY, YYYY-MM or YYYY-MM-DD.'
 })
@@ -426,7 +426,7 @@ console.log(styles.info('\nTo be appended'))
 console.log(styles.light(newRecords.join(', ')))
 console.log('')
 
-const confirmed = await confirm({ message: 'Write it?', default: true })
+const confirmed = await confirm({ message: 'Post?', default: true })
 if (!confirmed) {
   console.log(styles.warning('Nothing written.'))
   process.exit(0)
