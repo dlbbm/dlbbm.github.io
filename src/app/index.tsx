@@ -1,22 +1,26 @@
 import { Redirect, Route, Switch } from 'wouter-preact'
 import { routePatterns, routeUrl } from '../../routes/index.js'
-
-// Every route resolves and none of them shows anything yet. What a post looks like is the
-// next decision, and guessing it here would mean building it twice.
-function Nothing (): null {
-  return null
-}
+import { MainLayout } from '../components/layouts/MainLayout/index.js'
+import { About } from '../pages/About/index.js'
+import { Artist } from '../pages/Artist/index.js'
+import { Artists } from '../pages/Artists/index.js'
+import { Home } from '../pages/Home/index.js'
+import { NotFound } from '../pages/NotFound/index.js'
+import { Post } from '../pages/Post/index.js'
+import { Posts } from '../pages/Posts/index.js'
 
 export function App () {
-  return <Switch>
-    <Route path={routeUrl('page', { page: 1 })}><Redirect to={routePatterns.home} replace /></Route>
-    <Route path={routePatterns.home} component={Nothing} />
-    <Route path={routePatterns.page} component={Nothing} />
-    <Route path={routePatterns.posts} component={Nothing} />
-    <Route path={routePatterns.post} component={Nothing} />
-    <Route path={routePatterns.artists} component={Nothing} />
-    <Route path={routePatterns.artist} component={Nothing} />
-    <Route path={routePatterns.about} component={Nothing} />
-    <Route component={Nothing} />
-  </Switch>
+  return <MainLayout>
+    <Switch>
+      <Route path={routeUrl('page', { page: 1 })}><Redirect to={routePatterns.home} replace /></Route>
+      <Route path={routePatterns.home}><Home page={1} /></Route>
+      <Route path={routePatterns.page}>{({ page }) => <Home page={Number(page)} />}</Route>
+      <Route path={routePatterns.posts} component={Posts} />
+      <Route path={routePatterns.post}>{({ id }) => <Post id={id} />}</Route>
+      <Route path={routePatterns.artists} component={Artists} />
+      <Route path={routePatterns.artist}>{({ slug }) => <Artist slug={slug} />}</Route>
+      <Route path={routePatterns.about} component={About} />
+      <Route component={NotFound} />
+    </Switch>
+  </MainLayout>
 }
