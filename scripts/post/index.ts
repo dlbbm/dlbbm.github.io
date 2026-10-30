@@ -260,7 +260,7 @@ const recordingPool = [...db.recordings]
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 const rawSongTitle = await input({
-  message: 'Title?',
+  message: 'Title',
   validate: value => value.trim() !== '' || 'A title is needed.'
 })
 
@@ -270,7 +270,7 @@ if (titleNote !== null) {
 }
 
 const creditNames = splitCredits(await input({
-  message: `Artist? (several credits separate with a ${CREDIT_SEPARATOR})`,
+  message: `Artist (separated by ${CREDIT_SEPARATOR})`,
   validate: value => splitCredits(value).length > 0 || 'An artist is needed.'
 }))
 const creditedArtists: Artist[] = []
@@ -287,7 +287,7 @@ if (mainArtist === undefined) {
 }
 
 const featuringNames = splitCredits(await input({
-  message: `Featuring? (separate with a ${CREDIT_SEPARATOR}, empty to skip)`
+  message: `Featuring (separated by ${CREDIT_SEPARATOR})`
 }))
 const featuringArtists: Artist[] = []
 for (const name of featuringNames) {
