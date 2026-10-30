@@ -6,12 +6,15 @@
  * out of 400 is a question that defaults to nothing.
  */
 
+import { existsSync } from 'node:fs'
+import path from 'node:path'
 import process from 'node:process'
 import { confirm, input, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import { recordingKinds } from '../../types.js'
+import { mediaServices, recordingKinds } from '../../types.js'
 import type {
   Artist,
+  FileSource,
   MediaService,
   MediaSource,
   PartialDate,
@@ -21,6 +24,7 @@ import type {
   RecordingKind,
   Song
 } from '../../types.js'
+import { CWD } from '../_config/index.js'
 import { append, createId, readDb, type Db } from '../_db/index.js'
 
 const TRAILING_PARENTHETICAL = /\s*\(([^()]*)\)\s*$/
@@ -31,22 +35,34 @@ const CREDIT_SEPARATOR = ';'
 // since `RecordingKind` accepts any string and would swallow a marker.
 const OTHER_KIND = Symbol('other kind')
 
-const MEDIA_HOSTS: Array<{
-  hostname: RegExp
-  service: MediaService
+const MEDIA_HOSTS: Record<MediaService, {
+  hostnames: RegExp[]
   kind: MediaSource['kind']
-}> = [
-  { hostname: /(^|\.)youtube\.com$/, service: 'youtube', kind: 'video' },
-  { hostname: /(^|\.)youtube-nocookie\.com$/, service: 'youtube', kind: 'video' },
-  { hostname: /^youtu\.be$/, service: 'youtube', kind: 'video' },
-  { hostname: /(^|\.)spotify\.com$/, service: 'spotify', kind: 'audio' },
-  { hostname: /(^|\.)vimeo\.com$/, service: 'vimeo', kind: 'video' },
-  { hostname: /(^|\.)soundcloud\.com$/, service: 'soundcloud', kind: 'audio' },
-  { hostname: /(^|\.)grooveshark\.com$/, service: 'grooveshark', kind: 'audio' },
-  { hostname: /(^|\.)bandcamp\.com$/, service: 'bandcamp', kind: 'audio' },
-  { hostname: /(^|\.)mixcloud\.com$/, service: 'mixcloud', kind: 'audio' },
-  { hostname: /(^|\.)soundowl\.com$/, service: 'soundowl', kind: 'audio' }
-]
+}> = {
+  youtube: {
+    hostnames: [/(^|\.)youtube\.com$/, /(^|\.)youtube-nocookie\.com$/, /^youtu\.be$/],
+    kind: 'video'
+  },
+  spotify: { hostnames: [/(^|\.)spotify\.com$/], kind: 'audio' },
+  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video' },
+  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio' },
+  grooveshark: { hostnames: [/(^|\.)grooveshark\.com$/], kind: 'audio' },
+  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio' },
+  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio' },
+  soundowl: { hostnames: [/(^|\.)soundowl\.com$/], kind: 'audio' }
+}
+
+const FILE_KINDS: Record<string, FileSource['kind']> = {
+  '.mp3': 'audio',
+  '.m4a': 'audio',
+  '.ogg': 'audio',
+  '.opus': 'audio',
+  '.wav': 'audio',
+  '.flac': 'audio',
+  '.mp4': 'video',
+  '.webm': 'video',
+  '.mov': 'video'
+}
 
 function splitParenthetical (raw: string): { title: string, note: string | null } {
   const match = TRAILING_PARENTHETICAL.exec(raw)
@@ -102,19 +118,26 @@ function toEmbedUrl (service: MediaService, url: URL): string | null {
   return null
 }
 
-function toMediaSource (raw: string): MediaSource | null {
+function toMediaSource (service: MediaService, raw: string): MediaSource | null {
   let url: URL
   try { url = new URL(raw.trim()) }
   catch { return null }
-  const host = MEDIA_HOSTS.find(candidate => candidate.hostname.test(url.hostname))
-  if (host === undefined) return null
+  const host = MEDIA_HOSTS[service]
+  if (!host.hostnames.some(hostname => hostname.test(url.hostname))) return null
   return {
     nature: 'media',
-    service: host.service,
+    service,
     kind: host.kind,
     url: url.toString(),
-    embedUrl: toEmbedUrl(host.service, url)
+    embedUrl: toEmbedUrl(service, url)
   }
+}
+
+function toFileSource (raw: string): FileSource | null {
+  const filePath = raw.trim()
+  const kind = FILE_KINDS[path.extname(filePath).toLowerCase()]
+  if (kind === undefined) return null
+  return { nature: 'file', kind, path: filePath }
 }
 
 function splitCredits (raw: string): string[] {
@@ -342,16 +365,40 @@ if (recordingKind === 'live') {
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-const rawMediaUrl = await input({
-  message: 'Source URL',
-  validate: value => value.trim() === '' || toMediaSource(value) !== null
-    || `Expected a URL on one of: ${MEDIA_HOSTS.map(host => host.service).join(', ')}.`
+const sourceNature = await select<MediaService | 'file' | null>({
+  message: 'Source',
+  choices: [
+    { name: 'null', value: null },
+    ...mediaServices.map(service => ({ name: service, value: service as MediaService })),
+    { name: 'file', value: 'file' as const }
+  ]
 })
 
-const mediaSource = rawMediaUrl.trim() === '' ? null : toMediaSource(rawMediaUrl)
-if (mediaSource !== null) {
-  const embed = mediaSource.embedUrl === null ? 'no embed url' : mediaSource.embedUrl
-  console.log(styles.light(`> ${mediaSource.service}, ${mediaSource.kind} · ${embed}`))
+let source: MediaSource | FileSource | null = null
+if (sourceNature === 'file') {
+  source = toFileSource(await input({
+    message: 'File path',
+    validate: value => toFileSource(value) !== null
+      || `Expected a path ending in ${Object.keys(FILE_KINDS).join(', ')}.`
+  }))
+  // A file may well be committed after the post that points at it, so a missing one is
+  // said out loud and left alone.
+  if (source !== null && !existsSync(path.resolve(CWD, source.path))) {
+    console.log(styles.warning(`> ${source.path} is not on disk`))
+  }
+} else if (sourceNature !== null) {
+  source = toMediaSource(sourceNature, await input({
+    message: 'Source URL',
+    validate: value => toMediaSource(sourceNature, value) !== null
+      || `Expected a ${sourceNature} URL.`
+  }))
+}
+
+if (source !== null && source.nature === 'media') {
+  console.log(styles.light(`> ${source.kind} · ${source.embedUrl ?? 'no embedUrl'}`))
+}
+if (source !== null && source.nature === 'file') {
+  console.log(styles.light(`> ${source.kind}`))
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -389,7 +436,7 @@ const recording: Recording = {
   performedAt,
   releasedOn: null,
   durationMs: null,
-  sources: mediaSource === null ? [] : [mediaSource]
+  sources: source === null ? [] : [source]
 }
 created.recordings.push(recording)
 
@@ -427,7 +474,7 @@ if (performedAt !== null) {
     .join(', ')
   console.log(styles.light(`at ${place}`))
 }
-console.log(styles.light(mediaSource === null ? 'no source' : mediaSource.url))
+console.log(styles.light(source === null ? 'null' : source.nature === 'file' ? source.path : source.url))
 
 const newRecords = [
   created.artists.length === 0 ? null : `${created.artists.length} artist`,

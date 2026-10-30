@@ -168,6 +168,7 @@ export type Artist = {
 export type Source =
   | IdentitySource
   | MediaSource
+  | FileSource
 
 /**
  * A claim that this thing is the thing over there.
@@ -222,6 +223,22 @@ export type MediaSource = {
   kind: 'audio' | 'video'
   url: string
   embedUrl: string | null
+}
+
+/**
+ * Something hosted by the blog itself.
+ *
+ * `AudioObject` / `VideoObject` again, with `contentUrl` resolved when the front builds.
+ * Nothing in the archive is one: the eight hosts covered every post, and this exists for
+ * what gets posted from now on, where the only copy may be a file on disk.
+ *
+ * @property path - Where the file sits relative to the repository root. Not a URL: the
+ * front owns the public path, and a path written here would be wrong the day it changes.
+ */
+export type FileSource = {
+  nature: 'file'
+  kind: 'audio' | 'video'
+  path: string
 }
 
 /**
