@@ -2,10 +2,11 @@ import type { ComponentChildren } from 'preact'
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import type { BuiltArtist, BuiltPost } from '../../../types/built.js'
-import type { FileSource, MediaSource, Place, Source } from '../../../types/index.js'
-import { formatPartialDate } from '../../utils/format/index.js'
+import type { FileSource, MediaSource, Source } from '../../../types/index.js'
+import { formatPlace } from '../../utils/format/index.js'
 import { Embed } from '../Embed/index.js'
 import { FileMedia } from '../FileMedia/index.js'
+import { PartialDate } from '../PartialDate/index.js'
 
 const bem = clss('post')
 
@@ -20,11 +21,6 @@ function isPlayable (source: Source): source is PlayableSource {
 function sourceLink (source: Source): { href: string, label: string } {
   if (source.nature === 'file') return { href: `/${source.path}`, label: source.path }
   return { href: source.url, label: source.service }
-}
-
-function formatPlace (place: Place): string | null {
-  const parts = [place.venue, place.city, place.country].filter((part): part is string => part !== null)
-  return parts.length === 0 ? null : parts.join(', ')
 }
 
 function Media ({ source, title }: { source: PlayableSource, title: string }) {
@@ -55,7 +51,6 @@ export function Post ({ post }: PostProps) {
   const { recording } = post
   const [played, ...alternates] = recording.sources.filter(isPlayable)
   const others = [...alternates, ...recording.sources.filter(source => source.nature === 'identity')]
-  const performedOn = recording.performedOn === null ? null : formatPartialDate(recording.performedOn)
   const performedAt = recording.performedAt === null ? null : formatPlace(recording.performedAt)
 
   return <article class={bem()}>
@@ -81,7 +76,9 @@ export function Post ({ post }: PostProps) {
           ? <MetaRow label="originally by"><ArtistList artists={post.originalArtists} /></MetaRow>
           : null}
         {recording.kind === null ? null : <MetaRow label="kind">{recording.kind}</MetaRow>}
-        {performedOn === null ? null : <MetaRow label="performed on">{performedOn}</MetaRow>}
+        {recording.performedOn === null
+          ? null
+          : <MetaRow label="performed on"><PartialDate date={recording.performedOn} /></MetaRow>}
         {performedAt === null ? null : <MetaRow label="performed at">{performedAt}</MetaRow>}
         <MetaRow label="published on">
           <time class={bem('published')} dateTime={post.publishedOn}>{post.publishedOn}</time>
