@@ -46,16 +46,20 @@ the rest: it is JSX resolved for the bundler, while `scripts` is NodeNext and em
 ## How it is served
 
 The site is a Preact app that fetches JSON. The build does every join, so the browser
-never resolves an id: `build:data` reads `data/` and writes `dist/data/` as pages of ten
-posts, one file per post, one per artist, and the indexes the registers need.
+never resolves an id: `build:data` reads `data/` and writes `dist/data/` as `posts.json`,
+the whole stream in order and lean, one file per post, one per artist, and the index
+`/artists` needs.
+
+Pagination belongs to the front, not to the build. It fetches `posts.json` once, drops
+what is still ahead of now, and page N is a slice of what remains — always ten, whatever
+the build thought. Pages cut at build time would read short, and fixed-size slabs would
+leave the front unable to say where page ten starts without reading the nine before it.
 
 A post marked `hidden` is dropped at that point: it is a standing decision, so nothing
 ships. A scheduled post — one whose `publishedOn` is still ahead — does ship, and the front
 is what withholds it, which is the only way it can appear at the minute it names instead of
-at the next deploy. So every page must compare `publishedOn` with now before displaying a
-post. The trade is that a scheduled post's JSON can be read before its date; the pages are
-cut with it included, so the boundaries never move and a page holding one shows nine posts
-until it holds ten.
+at the next deploy. So anything that displays a post compares `publishedOn` with now first.
+The trade is that a scheduled post's JSON and its shell can be read before its date.
 
 `build:shells` then writes one HTML file per URL, each carrying its own `<title>` and
 OpenGraph tags, so a link pasted into a conversation says what it is. They all load the

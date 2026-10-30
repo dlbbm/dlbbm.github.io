@@ -2,9 +2,13 @@
  * What the build emits and the front reads.
  *
  * Nothing here is stored: `build:data` derives all of it from `data/`, resolving every id
- * on the way out so that one page of the blog is one fetch and the browser never joins two
- * files. A hidden post never reaches these shapes; a scheduled one does, and the front is
- * what withholds it.
+ * on the way out so the browser never joins two files.
+ *
+ * Pagination is the front's, not the build's. A hidden post never reaches these shapes,
+ * but a scheduled one does — it has to, or it could not appear at the minute it names
+ * without a rebuild — so how many posts are displayable is only known at runtime. The
+ * front reads {@link BuiltPostIndexEntry} once, drops what is still ahead of now, and the
+ * page it wants is a slice of what remains: always ten, whatever the build thought.
  */
 
 import type { RouteKind } from '../routes/index.js'
@@ -60,14 +64,6 @@ export type BuiltPost = {
   }
 }
 
-/** A page of the stream, newest first. */
-export type BuiltPage = {
-  page: number
-  pageCount: number
-  postCount: number
-  posts: BuiltPost[]
-}
-
 /** One post on its own. */
 export type BuiltPostPage = {
   post: BuiltPost
@@ -76,10 +72,16 @@ export type BuiltPostPage = {
 /** One artist, and every post they appear on, credited or featured or remixing. */
 export type BuiltArtistPage = {
   artist: BuiltArtist
-  posts: BuiltPost[]
+  posts: BuiltPostIndexEntry[]
 }
 
-/** The lean lines `/posts` lists, without the sources an embed would need. */
+/**
+ * One line of the stream: enough to order it, paginate it and list it, and no more.
+ *
+ * The whole list of these is one file, fetched once and filtered on `publishedOn`, which
+ * is what makes a page of ten exactly ten. What it takes to display a post comes from
+ * {@link BuiltPostPage}, one file per post, cached by id.
+ */
 export type BuiltPostIndexEntry = {
   id: PostId
   url: string
@@ -114,7 +116,8 @@ export type BuiltRoute = {
 export type BuiltManifest = {
   about: BuiltAbout
   pageSize: number
-  pageCount: number
+  // Everything shipped, scheduled posts included. How many are displayable is a question
+  // only the front can answer, and it answers it by filtering the index.
   postCount: number
   artistCount: number
   builtAt: Timestamp

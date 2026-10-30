@@ -9,9 +9,15 @@
  *
  * A scheduled one does make it out, and the front is what withholds it — that is the only
  * way it can appear at the minute it names rather than at the next build. The cost is that
- * its JSON is readable before its date, which for this blog is a fair trade. Pages are cut
- * here, scheduled posts included, so the boundaries never move: a page holding one shows
- * nine posts until it holds ten.
+ * its JSON is readable before its date, which for this blog is a fair trade.
+ *
+ * Which is why nothing here is cut into pages. How many posts are displayable changes
+ * between two builds, so a page cut here would read short, and a slab of a fixed size
+ * would leave the front unable to say where page ten starts without reading the nine
+ * before it. Instead `posts.json` is the whole stream in order, lean enough to fetch in
+ * one go, and the front slices ten displayable posts out of it. The page shells still
+ * cover the shipped count, which is an upper bound: an extra page renders empty until its
+ * posts come of age.
  */
 
 import { existsSync } from 'node:fs'
@@ -26,7 +32,6 @@ import type {
   BuiltArtistIndexEntry,
   BuiltArtistPage,
   BuiltManifest,
-  BuiltPage,
   BuiltPost,
   BuiltPostIndexEntry,
   BuiltPostPage,
@@ -103,6 +108,17 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
   }
 }
 
+function indexEntry (post: BuiltPost): BuiltPostIndexEntry {
+  return {
+    id: post.id,
+    url: post.url,
+    publishedOn: post.publishedOn,
+    title: post.title,
+    kind: post.recording.kind,
+    isCover: post.isCover
+  }
+}
+
 const posts: BuiltPost[] = []
 for (const post of shipped) {
   const recording = db.recordings.find(candidate => candidate.id === post.recordingId)
@@ -143,10 +159,9 @@ function describePost (post: BuiltPost): string {
 // leaves no file behind to be found by a stale link.
 await rm(DIST_DATA, { recursive: true, force: true })
 
+// A url per page of the shipped stream, which is at least as many as the front will ever
+// show. Nothing is emitted for them beyond the shell: the data is the index.
 for (let page = 1; page <= pageCount; page += 1) {
-  const slice = posts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-  const built: BuiltPage = { page, pageCount, postCount: posts.length, posts: slice }
-  await emit(`page/${page}.json`, built)
   // Page one is the home page, and `/page/1` redirects to it, so it carries the same name.
   route(
     page === 1 ? 'home' : 'page',
@@ -171,21 +186,14 @@ for (const artist of db.artists) {
   if (built === null) continue
   const theirs = posts.filter(post => appearsOn(built, post))
   if (theirs.length === 0) continue
-  const page: BuiltArtistPage = { artist: built, posts: theirs }
+  const page: BuiltArtistPage = { artist: built, posts: theirs.map(indexEntry) }
   await emit(`artist/${built.slug}.json`, page)
   artistEntries.push({ ...built, postCount: theirs.length })
   route('artist', built.url, `${built.name} · ${about.title}`, `${theirs.length} post(s)`)
 }
 
-const postIndex: BuiltPostIndexEntry[] = posts.map(post => ({
-  id: post.id,
-  url: post.url,
-  publishedOn: post.publishedOn,
-  title: post.title,
-  kind: post.recording.kind,
-  isCover: post.isCover
-}))
-await emit('posts.json', postIndex)
+// The stream itself, in order and whole: this is what pagination is computed from.
+await emit('posts.json', posts.map(indexEntry))
 route('posts', routeUrl('posts'), `All posts · ${about.title}`, `${posts.length} posts`)
 
 artistEntries.sort((one, other) => one.name.localeCompare(other.name))
@@ -198,7 +206,6 @@ route('about', routeUrl('about'), `About · ${about.title}`, about.description)
 const manifest: BuiltManifest = {
   about,
   pageSize: PAGE_SIZE,
-  pageCount,
   postCount: posts.length,
   artistCount: artistEntries.length,
   builtAt: now
@@ -215,7 +222,7 @@ if (existsSync(files)) {
 
 const hidden = db.posts.length - posts.length
 const scheduled = posts.filter(post => post.publishedOn > now).length
-console.log(styles.light(`> ${posts.length} posts over ${pageCount} page(s) of ${PAGE_SIZE}`))
+console.log(styles.light(`> ${posts.length} posts, ${pageCount} page url(s) of ${PAGE_SIZE}`))
 console.log(styles.light(`> ${artistEntries.length} artists with a page, ${routes.length} urls`))
 if (hidden > 0) { console.log(styles.warning(`${hidden} hidden post(s) left out`)) }
 if (scheduled > 0) { console.log(styles.warning(`${scheduled} scheduled post(s) shipped, for the front to withhold until their date`)) }
