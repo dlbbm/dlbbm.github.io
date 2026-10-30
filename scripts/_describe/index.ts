@@ -5,22 +5,14 @@
  * `list` command showing the same posts should not disagree about how one reads.
  */
 
-import type { Artist, PartialDate, Post, Recording, Slug, Song } from '../../types/index.js'
+import type { Artist, Post, Recording, Slug, Song } from '../../types/index.js'
+import { formatPartialDate } from '../_date/index.js'
 import type { Db } from '../_db/index.js'
 
 /** What a record reads as: a `name` that identifies it, and the detail under it. */
 export type Described = {
   name: string
   description: string
-}
-
-export function formatPartialDate (date: PartialDate): string {
-  const parts = [
-    date.year === null ? null : `${date.year}`.padStart(4, '0'),
-    date.month === null ? null : `${date.month}`.padStart(2, '0'),
-    date.day === null ? null : `${date.day}`.padStart(2, '0')
-  ].filter((part): part is string => part !== null)
-  return parts.length === 0 ? 'unknown' : parts.join('-')
 }
 
 export function findArtistById (id: string, pool: Artist[]): Artist | undefined {

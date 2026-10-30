@@ -33,13 +33,15 @@ import type {
 } from '../../types/index.js'
 import { CWD } from '../_config/index.js'
 import { createId, storeFile, type Db } from '../_db/index.js'
-import { findArtistById, formatPartialDate } from '../_describe/index.js'
+import {
+  formatPartialDate,
+  nowAsString,
+  parsePartialDate,
+  parseTimestamp,
+  timestampAsString
+} from '../_date/index.js'
+import { findArtistById } from '../_describe/index.js'
 import { mintSlug } from '../_slug/index.js'
-
-// Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
-// one of them is parsed into a number anyway.
-const PARTIAL_DATE = /^(\d{4})(?:-(\d{1,2})(?:-(\d{1,2}))?)?$/
-const TIMESTAMP = /^(\d{4})-(\d{1,2})-(\d{1,2})[ T](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/
 
 export const CREDIT_SEPARATOR = ';'
 
@@ -85,63 +87,6 @@ const FILE_KINDS: Record<string, FileSource['kind']> = {
   '.mp4': 'video',
   '.webm': 'video',
   '.mov': 'video'
-}
-
-function parsePartialDate (raw: string): PartialDate | null {
-  const match = PARTIAL_DATE.exec(raw.trim())
-  if (match === null) return null
-  const [, rawYear, rawMonth, rawDay] = match
-  const year = rawYear === undefined ? null : Number.parseInt(rawYear, 10)
-  const month = rawMonth === undefined ? null : Number.parseInt(rawMonth, 10)
-  const day = rawDay === undefined ? null : Number.parseInt(rawDay, 10)
-  if (month !== null && (month < 1 || month > 12)) return null
-  if (day !== null && (day < 1 || day > 31)) return null
-  return { year, month, day }
-}
-
-function pad (value: number, width = 2): string {
-  return `${value}`.padStart(width, '0')
-}
-
-function nowAsString (): string {
-  const now = new Date()
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
-    + ` ${pad(now.getHours())}:${pad(now.getMinutes())}`
-}
-
-/** `2019-01-31T18:39:00+01:00` back into the `2019-01-31 18:39` the prompt asks for. */
-function timestampAsString (timestamp: Timestamp): string {
-  return `${timestamp.slice(0, 10)} ${timestamp.slice(11, 16)}`
-}
-
-/** A `Date` as a `Timestamp`, carrying the offset this machine had on that very day. */
-export function toTimestamp (date: Date): Timestamp {
-  const offset = -date.getTimezoneOffset()
-  const sign = offset < 0 ? '-' : '+'
-  return `${pad(date.getFullYear(), 4)}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-    + `T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
-    + `${sign}${pad(Math.floor(Math.abs(offset) / 60))}:${pad(Math.abs(offset) % 60)}`
-}
-
-/**
- * The moment the answer names, in this machine's timezone.
- *
- * `null` on anything incomplete or impossible: a `Timestamp` is the one date here that
- * cannot be vague. The round-trip through `Date` is what rejects 31 February, and reading
- * the offset off that same date is what gets summer time right.
- */
-function parseTimestamp (raw: string): Timestamp | null {
-  const match = TIMESTAMP.exec(raw.trim())
-  if (match === null) return null
-  const [year, month, day, hour, minute, second] = match
-    .slice(1)
-    .map(part => part === undefined ? 0 : Number.parseInt(part, 10))
-  if (year === undefined || month === undefined || day === undefined) return null
-  if (hour === undefined || minute === undefined || second === undefined) return null
-  const date = new Date(year, month - 1, day, hour, minute, second)
-  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null
-  if (date.getHours() !== hour || date.getMinutes() !== minute) return null
-  return toTimestamp(date)
 }
 
 function youtubeVideoId (url: URL): string | null {

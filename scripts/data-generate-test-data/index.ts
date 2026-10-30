@@ -23,7 +23,7 @@ import type {
   RecordingKind,
   Song
 } from '../../types/index.js'
-import { toTimestamp } from '../_ask/index.js'
+import { toTimestamp } from '../_date/index.js'
 import { createId, write } from '../_db/index.js'
 
 type Spec = {

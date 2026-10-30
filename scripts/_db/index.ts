@@ -59,6 +59,13 @@ async function readCollection<T> (filePath: string): Promise<T[]> {
   return records
 }
 
+/** A single JSON document, or `null` when there is none to read. */
+export async function readJson<T> (filePath: string): Promise<T | null> {
+  if (!existsSync(filePath)) return null
+  try { return JSON.parse(await readFile(filePath, { encoding: 'utf-8' })) as T }
+  catch { return null }
+}
+
 export async function readDb (): Promise<Db> {
   const [artists, slugs, songs, recordings, posts] = await Promise.all([
     readCollection<Artist>(DATA_FILES.artists),

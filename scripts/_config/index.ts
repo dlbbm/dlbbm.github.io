@@ -3,6 +3,11 @@ import process from 'node:process'
 
 export const CWD = process.cwd()
 export const DATA = path.join(CWD, 'data')
+export const DIST = path.join(CWD, 'dist')
+export const DIST_DATA = path.join(DIST, 'data')
+
+/** How many posts a page of the stream holds. The old blog showed ten. */
+export const PAGE_SIZE = 10
 
 export const FILES = path.join(DATA, 'files')
 
