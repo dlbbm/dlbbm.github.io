@@ -50,10 +50,9 @@ export const CREDIT_SEPARATOR = ';'
 const OTHER_KIND = Symbol('other kind')
 
 // `forms` is echoed back once the host is picked, and says what the prompt will accept.
-// Only YouTube has an embed form derived from it, which is also the only one whose URL is
-// refused when no id can be read out of it — the rest are stored as given, with a null
-// `embedUrl`. The front cuts its own embed URL out of the canonical one, so what is stored
-// here is a convenience and never the thing rendered.
+// YouTube is the one host whose URL is refused when no video id can be read out of it; the
+// rest are stored as given. Nothing derives an embed URL here — the component rendering a
+// host is the one place that knows how to cut one out of the canonical URL.
 const MEDIA_HOSTS: Record<MediaService, {
   hostnames: RegExp[]
   kind: MediaSource['kind']
@@ -70,10 +69,10 @@ const MEDIA_HOSTS: Record<MediaService, {
     kind: 'audio',
     forms: 'https://open.spotify.com/{track,album,episode}/ID'
   },
-  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video', forms: 'https://vimeo.com/… · no embedUrl' },
-  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio', forms: 'https://soundcloud.com/… · no embedUrl' },
-  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio', forms: 'https://<artist>.bandcamp.com/… · no embedUrl' },
-  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'https://www.mixcloud.com/… · no embedUrl' }
+  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video', forms: 'https://vimeo.com/…' },
+  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio', forms: 'https://soundcloud.com/…' },
+  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio', forms: 'https://<artist>.bandcamp.com/…' },
+  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'https://www.mixcloud.com/…' }
 }
 
 const FILE_KINDS: Record<string, FileSource['kind']> = {
@@ -98,34 +97,18 @@ function youtubeVideoId (url: URL): string | null {
   return /^\/(?:shorts|embed|live|v)\/([^/]+)/.exec(url.pathname)?.[1] ?? null
 }
 
-function toEmbedUrl (service: MediaService, url: URL): string | null {
-  if (service === 'youtube') {
-    const videoId = youtubeVideoId(url)
-    if (videoId === null) return null
-    return `https://www.youtube.com/embed/${videoId}`
-  }
-  if (service === 'spotify') {
-    const match = /^\/(track|album|episode)\/([A-Za-z0-9]+)/.exec(url.pathname)
-    if (match === null) return null
-    return `https://open.spotify.com/embed/${match[1]}/${match[2]}`
-  }
-  return null
-}
-
 function toMediaSource (service: MediaService, raw: string): MediaSource | null {
   let url: URL
   try { url = new URL(raw.trim()) }
   catch { return null }
   const host = MEDIA_HOSTS[service]
   if (!host.hostnames.some(hostname => hostname.test(url.hostname))) return null
-  const embedUrl = toEmbedUrl(service, url)
-  if (service === 'youtube' && embedUrl === null) return null
+  if (service === 'youtube' && youtubeVideoId(url) === null) return null
   return {
     nature: 'media',
     service,
     kind: host.kind,
-    url: url.toString(),
-    embedUrl
+    url: url.toString()
   }
 }
 
@@ -447,7 +430,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   }
 
   if (source !== null && source.nature === 'media') {
-    console.log(styles.light(`> ${source.kind} · ${source.embedUrl ?? 'no embedUrl'}`))
+    console.log(styles.light(`> ${source.kind} · ${source.service}`))
   }
   if (source !== null && source.nature === 'file') {
     console.log(styles.light(`> ${source.kind} · to be copied into data/files`))

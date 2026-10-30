@@ -113,13 +113,11 @@ function mediaId (length: number): string {
 
 function toSource (service: Spec['source']): MediaSource {
   if (service === 'spotify') {
-    const id = mediaId(22)
     return {
       nature: 'media',
       service: 'spotify',
       kind: 'audio',
-      url: `https://open.spotify.com/track/${id}`,
-      embedUrl: `https://open.spotify.com/embed/track/${id}`
+      url: `https://open.spotify.com/track/${mediaId(22)}`
     }
   }
   if (service === 'vimeo') {
@@ -127,17 +125,14 @@ function toSource (service: Spec['source']): MediaSource {
       nature: 'media',
       service: 'vimeo',
       kind: 'video',
-      url: `https://vimeo.com/${10_000_000 + Math.floor(Math.random() * 89_999_999)}`,
-      embedUrl: null
+      url: `https://vimeo.com/${10_000_000 + Math.floor(Math.random() * 89_999_999)}`
     }
   }
-  const id = mediaId(11)
   return {
     nature: 'media',
     service: 'youtube',
     kind: 'video',
-    url: `https://www.youtube.com/watch?v=${id}`,
-    embedUrl: `https://www.youtube.com/embed/${id}`
+    url: `https://www.youtube.com/watch?v=${mediaId(11)}`
   }
 }
 

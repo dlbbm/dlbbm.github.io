@@ -247,14 +247,14 @@ export type MediaService = typeof mediaServices[number]
  *
  * `AudioObject` / `VideoObject`.
  *
- * @property embedUrl - `embedUrl`, when the host offers one distinct from `url`.
+ * Only the canonical URL is stored: what an iframe needs is cut out of it by the
+ * component that renders the host, which is the single place that knows that grammar.
  */
 export type MediaSource = {
   nature: 'media'
   service: MediaService
   kind: 'audio' | 'video'
   url: string
-  embedUrl: string | null
 }
 
 /**
