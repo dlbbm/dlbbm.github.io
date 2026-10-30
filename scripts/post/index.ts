@@ -139,18 +139,10 @@ async function resolveArtist (name: string, pool: Artist[], created: Artist[]): 
     console.log(styles.light(`> ${existing.name}, already known`))
     return existing
   }
-  const kind = await select<Artist['kind']>({
-    message: `${name} — one person, or several?`,
-    choices: [
-      { name: 'One person', value: 'solo' },
-      { name: 'Several', value: 'group' }
-    ]
-  })
   const artist: Artist = {
     id: createId(),
     name,
     nameAliases: [],
-    kind,
     memberships: [],
     sources: []
   }

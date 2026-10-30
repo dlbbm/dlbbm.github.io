@@ -147,15 +147,12 @@ export type Recording = {
  * `alternateName`, so the tie between the two names is this shared membership and
  * nothing else.
  *
- * @property kind - Whether the name stands for one person or several. A solo artist still
- * gets a `Membership`, to the person who is them.
  * @property memberships - Who is behind the name, and when.
  */
 export type Artist = {
   id: ArtistId
   name: string
   nameAliases: string[]
-  kind: 'solo' | 'group'
   memberships: Membership[]
   sources: IdentitySource[]
 }
