@@ -1,6 +1,6 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
-import type { PartialDate as PartialDateValue } from '../../../types/index.js'
+import type { PartialDate as PartialDateValue } from '../../../shared/types/index.js'
 import { FormattedDate } from '../FormattedDate/index.js'
 
 const bem = clss('partial-date')

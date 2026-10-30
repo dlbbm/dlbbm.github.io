@@ -16,7 +16,7 @@
     "typecheck": "npm run check:scripts && npm run check:src",
     "check:scripts": "npx tsc -p .",
     "check:src": "npx tsc -p src",
-    "clean:scripts": "find scripts types routes -name '*.js' -delete",
+    "clean:scripts": "find scripts shared -name '*.js' -delete",
     "build:scripts": "npm run clean:scripts && npx tsc -p scripts",
     "build:data": "npm run build:scripts && node scripts/build-data/index.js",
     "build:src": "npm run build:scripts && DLBBM_MODE=production node scripts/build-src/index.js",

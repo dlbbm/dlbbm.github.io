@@ -5,7 +5,7 @@
  * into elements rather than into a string.
  */
 
-import type { Place } from '../../../types/index.js'
+import type { Place } from '../../../shared/types/index.js'
 
 /** `null` when the place knows nothing, so the element can be skipped. */
 export function formatPlace (place: Place): string | null {

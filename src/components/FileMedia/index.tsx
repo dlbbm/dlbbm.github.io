@@ -1,5 +1,5 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import type { FileSource } from '../../../types/index.js'
+import type { FileSource } from '../../../shared/types/index.js'
 
 const bem = clss('file-media')
 

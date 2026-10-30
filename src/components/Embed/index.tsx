@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import type { MediaService } from '../../../types/index.js'
+import type { MediaService } from '../../../shared/types/index.js'
 import { SpotifyEmbed } from './SpotifyEmbed/index.js'
 import { VimeoEmbed } from './VimeoEmbed/index.js'
 import { YoutubeEmbed } from './YoutubeEmbed/index.js'

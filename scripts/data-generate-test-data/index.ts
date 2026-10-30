@@ -22,7 +22,7 @@ import type {
   Recording,
   RecordingKind,
   Song
-} from '../../types/index.js'
+} from '../../shared/types/index.js'
 import { toTimestamp } from '../_date/index.js'
 import { createId, write } from '../_db/index.js'
 

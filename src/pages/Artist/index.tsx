@@ -1,5 +1,5 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import type { Slug } from '../../../types/index.js'
+import type { Slug } from '../../../shared/types/index.js'
 
 const bem = clss('page-artist')
 

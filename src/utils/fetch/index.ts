@@ -7,7 +7,7 @@ import type {
   BuiltPost,
   BuiltPostIndexEntry,
   BuiltPostPage
-} from '../../../types/built.js'
+} from '../../../shared/types/built.js'
 
 async function readJson<T> (url: string): Promise<T> {
   const response = await fetch(url)

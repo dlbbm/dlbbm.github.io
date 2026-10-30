@@ -1,6 +1,5 @@
 node_modules/
 dist/
 scripts/**/*.js
-types/**/*.js
-routes/**/*.js
+shared/**/*.js
 .DS_Store

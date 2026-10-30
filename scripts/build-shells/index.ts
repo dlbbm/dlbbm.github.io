@@ -15,7 +15,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import type { BuiltManifest, BuiltRoute } from '../../types/built.js'
+import type { BuiltManifest, BuiltRoute } from '../../shared/types/built.js'
 import { CWD, DIST, DIST_DATA } from '../_config/index.js'
 import { readJson } from '../_db/index.js'
 

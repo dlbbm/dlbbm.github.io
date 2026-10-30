@@ -11,12 +11,12 @@ how it maps onto schema.org and where it deliberately diverges.
 
 - **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
-- **`types/`** — the shapes `data/` holds (`index.ts`) and the shapes the build emits for
-  the front (`built.ts`).
+- **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the
+  reason they never import from each other: `types/` holds the shapes `data/` holds
+  (`index.ts`) and the ones the build emits for the front (`built.ts`), `routes/` the URL
+  patterns, so the app and the shell generator cannot disagree about what a URL looks like.
 - **`scripts/`** — one directory per command, named after it: `npm run post:create` is
   `scripts/post-create`. Compiled in place, next to its sources.
-- **`routes/`** — the URL patterns, imported by the app and by the shell generator, so the
-  two cannot disagree about what a URL looks like.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
   the page `build:shells` fills in once per URL, and `components/`, `layouts/`, `pages/`
   and `utils/` are what it is made of. Nothing generated lives here.

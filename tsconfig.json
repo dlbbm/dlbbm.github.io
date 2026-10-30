@@ -10,6 +10,6 @@
     "moduleResolution": "NodeNext",
     "noEmit": true
   },
-  "include": ["scripts/**/*", "types/**/*", "routes/**/*"],
+  "include": ["scripts/**/*", "shared/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,6 +1,6 @@
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { routePatterns } from '../../../routes/index.js'
+import { routePatterns } from '../../../shared/routes/index.js'
 
 const bem = clss('logo')
 

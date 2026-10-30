@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import { Redirect, Route, Switch } from 'wouter-preact'
-import { routePatterns, routeUrl } from '../routes/index.js'
+import { routePatterns, routeUrl } from '../shared/routes/index.js'
 import { MainLayout } from './layouts/MainLayout/index.js'
 import { About } from './pages/About/index.js'
 import { Artist } from './pages/Artist/index.js'

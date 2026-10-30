@@ -6,7 +6,7 @@
  * and the build emitting it cannot disagree about what a string means.
  */
 
-import type { PartialDate, Timestamp } from '../../types/index.js'
+import type { PartialDate, Timestamp } from '../../shared/types/index.js'
 
 // Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
 // one of them is parsed into a number anyway.

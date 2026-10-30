@@ -13,7 +13,7 @@
 import process from 'node:process'
 import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import type { Post, Recording } from '../../types/index.js'
+import type { Post, Recording } from '../../shared/types/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
 import { append, readDb, write, type Db } from '../_db/index.js'
 import { describePost } from '../_describe/index.js'

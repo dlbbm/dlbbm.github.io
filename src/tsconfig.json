@@ -8,5 +8,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
   },
-  "include": ["**/*", "../routes/**/*", "../types/**/*"]
+  "include": ["**/*", "../shared/**/*"]
 }

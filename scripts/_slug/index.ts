@@ -6,7 +6,7 @@
  * afterwards without the URL moving. Nothing here recomputes an existing one.
  */
 
-import type { Slug, SlugKind } from '../../types/index.js'
+import type { Slug, SlugKind } from '../../shared/types/index.js'
 
 /**
  * A name as it reads in a URL.

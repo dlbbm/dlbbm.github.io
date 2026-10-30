@@ -25,7 +25,7 @@ import { cp, mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import { routeUrl, type RouteKind } from '../../routes/index.js'
+import { routeUrl, type RouteKind } from '../../shared/routes/index.js'
 import type {
   BuiltAbout,
   BuiltArtist,
@@ -36,8 +36,8 @@ import type {
   BuiltPostIndexEntry,
   BuiltPostPage,
   BuiltRoute
-} from '../../types/built.js'
-import type { Artist, Post, Recording, Song } from '../../types/index.js'
+} from '../../shared/types/built.js'
+import type { Artist, Post, Recording, Song } from '../../shared/types/index.js'
 import { ABOUT_FILE, DATA_FILES, DIST_DATA, PAGE_SIZE } from '../_config/index.js'
 import { toTimestamp } from '../_date/index.js'
 import { readDb, readJson, type Db } from '../_db/index.js'

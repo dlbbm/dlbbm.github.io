@@ -5,7 +5,7 @@
  * `list` command showing the same posts should not disagree about how one reads.
  */
 
-import type { Artist, Post, Recording, Slug, Song } from '../../types/index.js'
+import type { Artist, Post, Recording, Slug, Song } from '../../shared/types/index.js'
 import { formatPartialDate } from '../_date/index.js'
 import type { Db } from '../_db/index.js'
 
