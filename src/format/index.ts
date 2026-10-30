@@ -1,22 +1,25 @@
 /**
  * Turning stored values into something a page can show.
- *
- * `scripts/_date` does the same for the terminal; the two are kept apart because the
- * browser must not import a command's module to read a date.
  */
 
+import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
 import type { PartialDate } from '../../types/index.js'
 
-function pad (value: number, width = 2): string {
-  return `${value}`.padStart(width, '0')
-}
-
-/** `null` when the date knows nothing, so the element can be skipped rather than empty. */
+/**
+ * A date, rendered as precisely as it is known and no more.
+ *
+ * `formatDate` wants a `Date`, which is the one thing a partial date is not: the missing
+ * parts are filled in to build one, then left out of the template, so nothing invented
+ * reaches the page. `null` when the date knows nothing at all, so a caller can skip the
+ * element rather than print an empty one.
+ */
 export function formatPartialDate (date: PartialDate): string | null {
-  const parts = [
-    date.year === null ? null : pad(date.year, 4),
-    date.month === null ? null : pad(date.month),
-    date.day === null ? null : pad(date.day)
-  ].filter((part): part is string => part !== null)
-  return parts.length === 0 ? null : parts.join('-')
+  const tokens = [
+    date.year === null ? null : '{{YYYY}}',
+    date.month === null ? null : '{{MM}}',
+    date.day === null ? null : '{{DD}}'
+  ].filter((token): token is string => token !== null)
+  if (tokens.length === 0) return null
+  const filled = new Date(date.year ?? 2000, (date.month ?? 1) - 1, date.day ?? 1)
+  return formatDate(filled, tokens.join('-'))
 }
