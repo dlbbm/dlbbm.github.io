@@ -1,14 +1,104 @@
+import type { ComponentChildren } from 'preact'
+import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import type { BuiltPost } from '../../../types/built.js'
+import type { BuiltArtist, BuiltPost } from '../../../types/built.js'
+import type { FileSource, MediaSource, Place, Source } from '../../../types/index.js'
+import { formatPartialDate } from '../../format/index.js'
+import { Embed } from '../Embed/index.js'
+import { FileMedia } from '../FileMedia/index.js'
 
 const bem = clss('post')
+
+type PlayableSource = MediaSource | FileSource
+
+// An identity source is a claim that this is the same thing as that one. Nothing to hear,
+// so it belongs with the metadata and never in the media block.
+function isPlayable (source: Source): source is PlayableSource {
+  return source.nature !== 'identity'
+}
+
+function sourceLink (source: Source): { href: string, label: string } {
+  if (source.nature === 'file') return { href: `/${source.path}`, label: source.path }
+  return { href: source.url, label: source.service }
+}
+
+function formatPlace (place: Place): string | null {
+  const parts = [place.venue, place.city, place.country].filter((part): part is string => part !== null)
+  return parts.length === 0 ? null : parts.join(', ')
+}
+
+function Media ({ source, title }: { source: PlayableSource, title: string }) {
+  if (source.nature === 'file') return <FileMedia kind={source.kind} path={source.path} title={title} />
+  return <Embed platform={source.service} url={source.url} title={title} />
+}
+
+function ArtistList ({ artists }: { artists: BuiltArtist[] }) {
+  return <ul class={bem('artists')}>
+    {artists.map(artist => <li class={bem('artist')} key={artist.id}>
+      <Link href={artist.url} className={bem('artist-link')}>{artist.name}</Link>
+    </li>)}
+  </ul>
+}
+
+function MetaRow ({ label, children }: { label: string, children: ComponentChildren }) {
+  return <>
+    <dt class={bem('label')}>{label}</dt>
+    <dd class={bem('value')}>{children}</dd>
+  </>
+}
 
 export type PostProps = {
   post: BuiltPost
 }
 
 export function Post ({ post }: PostProps) {
+  const { recording } = post
+  const [played, ...alternates] = recording.sources.filter(isPlayable)
+  const others = [...alternates, ...recording.sources.filter(source => source.nature === 'identity')]
+  const performedOn = recording.performedOn === null ? null : formatPartialDate(recording.performedOn)
+  const performedAt = recording.performedAt === null ? null : formatPlace(recording.performedAt)
+
   return <article class={bem()}>
-    <h2 class={bem('title')}>{post.title}</h2>
+    <div class={bem('media')}>
+      {played === undefined
+        ? <a class={bem('missing')} href={post.url}>no playable source</a>
+        : <Media source={played} title={post.title} />}
+    </div>
+    <div class={bem('meta')}>
+      <h2 class={bem('title')}>
+        <Link href={post.url} className={bem('permalink')}>{post.title}</Link>
+      </h2>
+      <dl class={bem('fields')}>
+        <MetaRow label="artist"><ArtistList artists={post.credits} /></MetaRow>
+        {post.featuring.length === 0
+          ? null
+          : <MetaRow label="featuring"><ArtistList artists={post.featuring} /></MetaRow>}
+        {post.remixedBy.length === 0
+          ? null
+          : <MetaRow label="remixed by"><ArtistList artists={post.remixedBy} /></MetaRow>}
+        <MetaRow label="song">{post.song.title}</MetaRow>
+        {post.isCover
+          ? <MetaRow label="originally by"><ArtistList artists={post.originalArtists} /></MetaRow>
+          : null}
+        {recording.kind === null ? null : <MetaRow label="kind">{recording.kind}</MetaRow>}
+        {performedOn === null ? null : <MetaRow label="performed on">{performedOn}</MetaRow>}
+        {performedAt === null ? null : <MetaRow label="performed at">{performedAt}</MetaRow>}
+        <MetaRow label="published on">
+          <time class={bem('published')} dateTime={post.publishedOn}>{post.publishedOn}</time>
+        </MetaRow>
+        {others.length === 0
+          ? null
+          : <MetaRow label="sources">
+            <ul class={bem('sources')}>
+              {others.map(source => {
+                const link = sourceLink(source)
+                return <li class={bem('source')} key={link.href}>
+                  <a class={bem('source-link')} href={link.href}>{link.label}</a>
+                </li>
+              })}
+            </ul>
+          </MetaRow>}
+      </dl>
+    </div>
   </article>
 }
