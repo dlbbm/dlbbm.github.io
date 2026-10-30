@@ -3,7 +3,8 @@
  *
  * Nothing here is stored: `build:data` derives all of it from `data/`, resolving every id
  * on the way out so that one page of the blog is one fetch and the browser never joins two
- * files. Posts that are hidden or still in the future never reach these shapes at all.
+ * files. A hidden post never reaches these shapes; a scheduled one does, and the front is
+ * what withholds it.
  */
 
 import type { RouteKind } from '../routes/index.js'
@@ -33,6 +34,9 @@ export type BuiltArtist = {
  *
  * @property title - `Artist — Song`, which is both the headline and what a shell's
  * `<title>` says.
+ * @property publishedOn - When the post goes out, and the one field the front must read
+ * before displaying anything: a moment still ahead of now is a scheduled post, which is
+ * shipped but not shown. Comparing the strings is enough, they are ordered as they read.
  * @property isCover - Whether the credits differ from the work's original artists. Derived
  * here so the front never has to reason about it.
  */

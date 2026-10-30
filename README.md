@@ -49,10 +49,13 @@ The site is a Preact app that fetches JSON. The build does every join, so the br
 never resolves an id: `build:data` reads `data/` and writes `dist/data/` as pages of ten
 posts, one file per post, one per artist, and the indexes the registers need.
 
-Two things are dropped at that point rather than filtered in the browser, because a record
-sitting in a public file is published whatever the page does with it: a post marked
-`hidden`, and a post whose `publishedOn` is still in the future. Which means a scheduled
-post appears at the next deploy, not at the moment it names.
+A post marked `hidden` is dropped at that point: it is a standing decision, so nothing
+ships. A scheduled post — one whose `publishedOn` is still ahead — does ship, and the front
+is what withholds it, which is the only way it can appear at the minute it names instead of
+at the next deploy. So every page must compare `publishedOn` with now before displaying a
+post. The trade is that a scheduled post's JSON can be read before its date; the pages are
+cut with it included, so the boundaries never move and a page holding one shows nine posts
+until it holds ten.
 
 `build:shells` then writes one HTML file per URL, each carrying its own `<title>` and
 OpenGraph tags, so a link pasted into a conversation says what it is. They all load the

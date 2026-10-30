@@ -4,10 +4,14 @@
  * Reads `data/`, writes `dist/data/`, and never the other way around: a missing slug is an
  * error telling you to run `data:generate-slugs`, not something invented here.
  *
- * Two kinds of post never make it out — one marked `hidden`, and one whose `publishedOn`
- * is still ahead of now. A record sitting in a public file is published whatever the page
- * does with it, so the filtering happens here rather than in the browser. Which also means
- * a scheduled post appears at the next build, not at the minute it names.
+ * A post marked `hidden` never makes it out: it is a standing decision, so there is no
+ * reason to ship it and nothing that would ever reveal it.
+ *
+ * A scheduled one does make it out, and the front is what withholds it — that is the only
+ * way it can appear at the minute it names rather than at the next build. The cost is that
+ * its JSON is readable before its date, which for this blog is a fair trade. Pages are cut
+ * here, scheduled posts included, so the boundaries never move: a page holding one shows
+ * nine posts until it holds ten.
  */
 
 import { existsSync } from 'node:fs'
@@ -56,8 +60,8 @@ if (unslugged.length > 0) {
 }
 
 const now = toTimestamp(new Date())
-const visible = db.posts
-  .filter(post => !post.hidden && post.publishedOn <= now)
+const shipped = db.posts
+  .filter(post => !post.hidden)
   .sort((one, other) => other.publishedOn.localeCompare(one.publishedOn))
 
 function builtArtist (id: string): BuiltArtist | null {
@@ -100,7 +104,7 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
 }
 
 const posts: BuiltPost[] = []
-for (const post of visible) {
+for (const post of shipped) {
   const recording = db.recordings.find(candidate => candidate.id === post.recordingId)
   if (recording === undefined) {
     console.log(styles.error(`Post ${post.id} points at recording ${post.recordingId}, which is not in the data.`))
@@ -209,10 +213,12 @@ if (existsSync(files)) {
   await cp(files, path.join(DIST_DATA, 'files'), { recursive: true })
 }
 
-const held = db.posts.length - posts.length
+const hidden = db.posts.length - posts.length
+const scheduled = posts.filter(post => post.publishedOn > now).length
 console.log(styles.light(`> ${posts.length} posts over ${pageCount} page(s) of ${PAGE_SIZE}`))
 console.log(styles.light(`> ${artistEntries.length} artists with a page, ${routes.length} urls`))
-if (held > 0) { console.log(styles.warning(`${held} post(s) held back as hidden or still ahead of now`)) }
+if (hidden > 0) { console.log(styles.warning(`${hidden} hidden post(s) left out`)) }
+if (scheduled > 0) { console.log(styles.warning(`${scheduled} scheduled post(s) shipped, for the front to withhold until their date`)) }
 console.log('')
 console.log(styles.success('Data built.'))
 console.log('')
