@@ -261,11 +261,14 @@ export type FileSource = {
  * @property publishedOn - `datePublished`. Complete to the minute, and the one date in
  * these types that is never partial: a moment ahead of now is how a post is scheduled, so
  * the front has to be able to compare it with now.
+ * @property hidden - Kept out of the blog without being deleted. Nothing in schema.org
+ * says this, since it is a fact about this site rather than about the writing.
  * @property recordingId - What this post is about. Exactly one: the old blog posted one
  * track at a time and there is no reason to loosen that.
  */
 export type Post = {
   id: PostId
   publishedOn: Timestamp
+  hidden: boolean
   recordingId: RecordingId
 }

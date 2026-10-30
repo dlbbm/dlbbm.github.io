@@ -8,7 +8,7 @@
 
 import { createHash, randomBytes } from 'node:crypto'
 import { existsSync } from 'node:fs'
-import { appendFile, copyFile, mkdir, readFile } from 'node:fs/promises'
+import { appendFile, copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { Artist, Post, Recording, Song } from '../../types/index.js'
 import { DATA, DATA_FILES, FILES, FILES_SHARD_DEPTH } from '../_config/index.js'
@@ -68,10 +68,25 @@ export async function readDb (): Promise<Db> {
   return { artists, songs, recordings, posts }
 }
 
+function toLines (records: object[]): string {
+  let lines = ''
+  for (const record of records) { lines += `${JSON.stringify(record)}\n` }
+  return lines
+}
+
 export async function append<K extends DbCollection> (collection: K, records: Db[K]): Promise<void> {
   if (records.length === 0) return
   await mkdir(DATA, { recursive: true })
-  let lines = ''
-  for (const record of records) { lines += `${JSON.stringify(record)}\n` }
-  await appendFile(DATA_FILES[collection], lines, { encoding: 'utf-8' })
+  await appendFile(DATA_FILES[collection], toLines(records), { encoding: 'utf-8' })
+}
+
+/**
+ * Rewrites a collection's file whole.
+ *
+ * The one way out of append-only, and it is the caller's job to pass every record the file
+ * should end up holding — editing a post and deleting one both come down to this.
+ */
+export async function write<K extends DbCollection> (collection: K, records: Db[K]): Promise<void> {
+  await mkdir(DATA, { recursive: true })
+  await writeFile(DATA_FILES[collection], toLines(records), { encoding: 'utf-8' })
 }
