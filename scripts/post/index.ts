@@ -27,13 +27,6 @@ const TRAILING_PARENTHETICAL = /\s*\(([^()]*)\)\s*$/
 const PARTIAL_DATE = /^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$/
 const CREDIT_SEPARATOR = ';'
 
-const kindLabels: Record<RecordingKind, string> = {
-  live: 'a live take',
-  demo: 'a demo',
-  'alternate-take': 'an alternate take',
-  remix: 'a remix'
-}
-
 const MEDIA_HOSTS: Array<{
   hostname: RegExp
   service: MediaService
@@ -305,11 +298,11 @@ const song = await resolveSong(songTitle, mainArtist, songPool, recordingPool, a
 const preselectedKind = recordingKinds.find(kind => kind === titleNote?.toLowerCase()) ?? null
 
 const recordingKind = await select<RecordingKind | null>({
-  message: 'Anything to say about this version?',
+  message: 'Recording kind',
   default: preselectedKind,
   choices: [
-    { name: 'Nothing in particular', value: null },
-    ...recordingKinds.map(kind => ({ name: kindLabels[kind], value: kind as RecordingKind | null }))
+    { name: 'null', value: null },
+    ...recordingKinds.map(kind => ({ name: kind, value: kind as RecordingKind | null }))
   ]
 })
 
@@ -413,7 +406,7 @@ const featuring = featuringArtists.length === 0
 console.log(styles.info('\nPost'))
 console.log(styles.important(`${credits}${featuring} — ${song.title}`))
 console.log(styles.light(`published on ${formatPartialDate(publishedOn)}`))
-if (recordingKind !== null) console.log(styles.light(`${kindLabels[recordingKind]}${recordingTitle === null ? '' : ` · ${recordingTitle}`}`))
+if (recordingKind !== null) console.log(styles.light(`${recordingKind}${recordingTitle === null ? '' : ` · ${recordingTitle}`}`))
 if (performedOn !== null) console.log(styles.light(`played ${formatPartialDate(performedOn)}`))
 if (performedAt !== null) {
   const place = [performedAt.venue, performedAt.city, performedAt.country]
