@@ -9,12 +9,11 @@
 import { randomBytes } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { appendFile, mkdir, readFile } from 'node:fs/promises'
-import type { Artist, Person, Post, Recording, Song } from '../../types.js'
+import type { Artist, Post, Recording, Song } from '../../types.js'
 import { DATA, DATA_FILES } from '../_config/index.js'
 
 export type Db = {
   artists: Artist[]
-  persons: Person[]
   songs: Song[]
   recordings: Recording[]
   posts: Post[]
@@ -41,14 +40,13 @@ async function readCollection<T> (filePath: string): Promise<T[]> {
 }
 
 export async function readDb (): Promise<Db> {
-  const [artists, persons, songs, recordings, posts] = await Promise.all([
+  const [artists, songs, recordings, posts] = await Promise.all([
     readCollection<Artist>(DATA_FILES.artists),
-    readCollection<Person>(DATA_FILES.persons),
     readCollection<Song>(DATA_FILES.songs),
     readCollection<Recording>(DATA_FILES.recordings),
     readCollection<Post>(DATA_FILES.posts)
   ])
-  return { artists, persons, songs, recordings, posts }
+  return { artists, songs, recordings, posts }
 }
 
 export async function append<K extends DbCollection> (collection: K, records: Db[K]): Promise<void> {

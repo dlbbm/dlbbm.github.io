@@ -143,7 +143,6 @@ async function resolveArtist (name: string, pool: Artist[], created: Artist[]): 
     id: createId(),
     name,
     nameAliases: [],
-    memberships: [],
     sources: []
   }
   pool.push(artist)
@@ -210,8 +209,6 @@ async function resolveSong (
     id: createId(),
     title,
     titleAliases: [],
-    composedByIds: [],
-    wroteLyricsIds: [],
     firstRecordingId: null,
     sources: []
   }

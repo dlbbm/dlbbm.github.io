@@ -12,7 +12,6 @@
 export type SongId = string
 export type RecordingId = string
 export type ArtistId = string
-export type PersonId = string
 export type PostId = string
 
 /**
@@ -71,14 +70,14 @@ export type RecordingKind = typeof recordingKinds[number]
 /**
  * A song as a work: the thing that stays the same across every version of it.
  *
- * `MusicComposition`. A title and the people who wrote it, and nothing about how it
- * sounded on a given day — that belongs to a {@link Recording}. There is no *original
- * version* flag: the work is the identity, and every recording hangs off it as a peer.
+ * `MusicComposition`. A title, and nothing about how it sounded on a given day — that
+ * belongs to a {@link Recording}. There is no *original version* flag: the work is the
+ * identity, and every recording hangs off it as a peer. No `composer` and no `lyricist`
+ * either, although schema.org offers both: this blog credits the name a record came out
+ * under and never the humans behind it.
  *
  * @property title - The work's title, in the form the blog uses it.
  * @property titleAliases - Other titles it goes by, translations included.
- * @property composedByIds - `composer`.
- * @property wroteLyricsIds - `lyricist`.
  * @property firstRecordingId - The earliest known recording, which is what lets a later
  * one be *called* a cover without a cover concept existing. The one concession to
  * privileging a version, and droppable the day recording dates are complete enough to
@@ -90,8 +89,6 @@ export type Song = {
   id: SongId
   title: string
   titleAliases: string[]
-  composedByIds: PersonId[]
-  wroteLyricsIds: PersonId[]
   firstRecordingId: RecordingId | null
   sources: IdentitySource[]
 }
@@ -141,50 +138,13 @@ export type Recording = {
 /**
  * A name music is released under — a solo act, a band, a one-off collaboration.
  *
- * `MusicGroup`. Closer to a brand than to a human: it is the credit line, which is why a
- * band that renamed mid-career is two `Artist` records sharing the same
- * {@link Membership} people. schema.org offers no former-name property, only
- * `alternateName`, so the tie between the two names is this shared membership and
- * nothing else.
- *
- * @property memberships - Who is behind the name, and when.
+ * `MusicGroup`. Closer to a brand than to a human, and the humans are not modelled at
+ * all: this is the credit line and nothing behind it. A band that renamed mid-career is
+ * one record carrying the earlier name in `nameAliases`, or two unrelated records — which
+ * is as far as a music blog needs to go.
  */
 export type Artist = {
   id: ArtistId
-  name: string
-  nameAliases: string[]
-  memberships: Membership[]
-  sources: IdentitySource[]
-}
-
-/**
- * One person's time inside one {@link Artist}.
- *
- * `member` qualified by a `Role` — the dates are what make a name change legible, since
- * the same people leaving one `Artist` and appearing in another is the only evidence the
- * two are the same act.
- *
- * @property roles - Free text for now: `vocals`, `bass`. A controlled vocabulary is a
- * later problem and a bad early one.
- * @property isPrincipal - Whether this is what the person is known for in this act.
- */
-export type Membership = {
-  personId: PersonId
-  roles: string[]
-  isPrincipal: boolean
-  from: PartialDate | null
-  to: PartialDate | null
-}
-
-/**
- * A human being, as distinct from any name they record under.
- *
- * `Person`. Deliberately thin: it exists so that two {@link Artist} records can be known
- * to be the same people, and so a composer can be credited without inventing an act for
- * them.
- */
-export type Person = {
-  id: PersonId
   name: string
   nameAliases: string[]
   sources: IdentitySource[]

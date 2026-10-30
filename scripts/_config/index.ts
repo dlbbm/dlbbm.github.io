@@ -6,7 +6,6 @@ export const DATA = path.join(CWD, 'data')
 
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
-  persons: path.join(DATA, 'persons.ndjson'),
   songs: path.join(DATA, 'songs.ndjson'),
   recordings: path.join(DATA, 'recordings.ndjson'),
   posts: path.join(DATA, 'posts.ndjson')
