@@ -51,19 +51,20 @@ const MEDIA_HOSTS: Record<MediaService, {
   youtube: {
     hostnames: [/(^|\.)youtube\.com$/, /(^|\.)youtube-nocookie\.com$/, /^youtu\.be$/],
     kind: 'video',
-    forms: 'youtube.com/watch?v=ID · youtu.be/ID · youtube.com/{shorts,embed,live,v}/ID'
+    forms: 'https://www.youtube.com/watch?v=ID · https://youtu.be/ID'
+      + ' · https://www.youtube.com/{shorts,embed,live,v}/ID'
   },
   spotify: {
     hostnames: [/(^|\.)spotify\.com$/],
     kind: 'audio',
-    forms: 'open.spotify.com/{track,album,episode}/ID'
+    forms: 'https://open.spotify.com/{track,album,episode}/ID'
   },
-  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video', forms: 'vimeo.com/… · no embedUrl' },
-  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio', forms: 'soundcloud.com/… · no embedUrl' },
-  grooveshark: { hostnames: [/(^|\.)grooveshark\.com$/], kind: 'audio', forms: 'grooveshark.com/… · no embedUrl' },
-  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio', forms: 'bandcamp.com/… · no embedUrl' },
-  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'mixcloud.com/… · no embedUrl' },
-  soundowl: { hostnames: [/(^|\.)soundowl\.com$/], kind: 'audio', forms: 'soundowl.com/… · no embedUrl' }
+  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video', forms: 'https://vimeo.com/… · no embedUrl' },
+  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio', forms: 'https://soundcloud.com/… · no embedUrl' },
+  grooveshark: { hostnames: [/(^|\.)grooveshark\.com$/], kind: 'audio', forms: 'https://grooveshark.com/… · no embedUrl' },
+  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio', forms: 'https://<artist>.bandcamp.com/… · no embedUrl' },
+  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'https://www.mixcloud.com/… · no embedUrl' },
+  soundowl: { hostnames: [/(^|\.)soundowl\.com$/], kind: 'audio', forms: 'https://soundowl.com/… · no embedUrl' }
 }
 
 const FILE_KINDS: Record<string, FileSource['kind']> = {
