@@ -18,8 +18,10 @@ how it maps onto schema.org and where it deliberately diverges.
 - **`scripts/`** — one directory per command, named after it: `npm run post:create` is
   `scripts/post-create`. Compiled in place, next to its sources.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
-  the page `build:shells` fills in once per URL, and `components/`, `layouts/`, `pages/`
-  and `utils/` are what it is made of. Nothing generated lives here.
+  the page `build:shells` fills in once per URL, and `basics/`, `components/`, `layouts/`,
+  `pages/` and `utils/` are what it is made of. Nothing generated lives here.
+  **`basics/`** holds the components bound for `mf-tools`: none of them knows anything of
+  this blog, which is checkable — a basic imports nothing from `shared/`.
 - **`dist/`** — everything the site is made of, written by the build and served as is, in
   development as well as in production. Never committed.
 
