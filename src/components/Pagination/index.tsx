@@ -21,7 +21,6 @@ export function Pagination ({ page, pageCount }: PaginationProps) {
     {previous === null
       ? <span class={bem('button', 'inert')}>prev</span>
       : <Link href={previous} className={bem('button')}>prev</Link>}
-    <span class={bem('state')}>{page} / {pageCount}</span>
     {next === null
       ? <span class={bem('button', 'inert')}>next</span>
       : <Link href={next} className={bem('button')}>next</Link>}
