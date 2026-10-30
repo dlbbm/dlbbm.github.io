@@ -27,6 +27,14 @@ const options: BuildOptions = {
   chunkNames: 'chunks/[name].[hash]',
   jsx: 'automatic',
   jsxImportSource: 'preact',
+  // `@design-edito/tools` components are written against React and run under Preact, as
+  // they do in the library's own demo. Same four entries, so they resolve the same way.
+  alias: {
+    react: 'preact/compat',
+    'react-dom/test-utils': 'preact/test-utils',
+    'react-dom': 'preact/compat',
+    'react/jsx-runtime': 'preact/jsx-runtime'
+  },
   minify: PROD,
   sourcemap: !PROD,
   metafile: true,
