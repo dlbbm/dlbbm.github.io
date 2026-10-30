@@ -8,11 +8,9 @@
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "declaration": true,
-    "outDir": "build",
-    "rootDir": ".",
+    "noEmit": true,
     "jsx": "react-jsx"
   },
   "include": ["**/*"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "dist"]
 }
