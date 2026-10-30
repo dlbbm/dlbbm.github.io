@@ -39,21 +39,31 @@ const CREDIT_SEPARATOR = ';'
 // since `RecordingKind` accepts any string and would swallow a marker.
 const OTHER_KIND = Symbol('other kind')
 
+// `forms` is echoed back once the host is picked, and says what the prompt will accept.
+// Only YouTube has an embed form derived from it, which is also the only one whose URL is
+// refused when no id can be read out of it — the rest are stored as given, with a null
+// `embedUrl`, until the front needs more than a link.
 const MEDIA_HOSTS: Record<MediaService, {
   hostnames: RegExp[]
   kind: MediaSource['kind']
+  forms: string
 }> = {
   youtube: {
     hostnames: [/(^|\.)youtube\.com$/, /(^|\.)youtube-nocookie\.com$/, /^youtu\.be$/],
-    kind: 'video'
+    kind: 'video',
+    forms: 'youtube.com/watch?v=ID · youtu.be/ID · youtube.com/{shorts,embed,live,v}/ID'
   },
-  spotify: { hostnames: [/(^|\.)spotify\.com$/], kind: 'audio' },
-  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video' },
-  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio' },
-  grooveshark: { hostnames: [/(^|\.)grooveshark\.com$/], kind: 'audio' },
-  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio' },
-  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio' },
-  soundowl: { hostnames: [/(^|\.)soundowl\.com$/], kind: 'audio' }
+  spotify: {
+    hostnames: [/(^|\.)spotify\.com$/],
+    kind: 'audio',
+    forms: 'open.spotify.com/{track,album,episode}/ID'
+  },
+  vimeo: { hostnames: [/(^|\.)vimeo\.com$/], kind: 'video', forms: 'vimeo.com/… · no embedUrl' },
+  soundcloud: { hostnames: [/(^|\.)soundcloud\.com$/], kind: 'audio', forms: 'soundcloud.com/… · no embedUrl' },
+  grooveshark: { hostnames: [/(^|\.)grooveshark\.com$/], kind: 'audio', forms: 'grooveshark.com/… · no embedUrl' },
+  bandcamp: { hostnames: [/(^|\.)bandcamp\.com$/], kind: 'audio', forms: 'bandcamp.com/… · no embedUrl' },
+  mixcloud: { hostnames: [/(^|\.)mixcloud\.com$/], kind: 'audio', forms: 'mixcloud.com/… · no embedUrl' },
+  soundowl: { hostnames: [/(^|\.)soundowl\.com$/], kind: 'audio', forms: 'soundowl.com/… · no embedUrl' }
 }
 
 const FILE_KINDS: Record<string, FileSource['kind']> = {
@@ -124,12 +134,20 @@ function parseTimestamp (raw: string): Timestamp | null {
     + `${sign}${pad(Math.floor(Math.abs(offset) / 60))}:${pad(Math.abs(offset) % 60)}`
 }
 
+function youtubeVideoId (url: URL): string | null {
+  if (url.hostname === 'youtu.be') {
+    const fromPath = url.pathname.slice(1).split('/')[0] ?? ''
+    return fromPath === '' ? null : fromPath
+  }
+  const fromQuery = url.searchParams.get('v')
+  if (fromQuery !== null && fromQuery !== '') return fromQuery
+  return /^\/(?:shorts|embed|live|v)\/([^/]+)/.exec(url.pathname)?.[1] ?? null
+}
+
 function toEmbedUrl (service: MediaService, url: URL): string | null {
   if (service === 'youtube') {
-    const videoId = url.hostname === 'youtu.be'
-      ? url.pathname.slice(1)
-      : url.searchParams.get('v')
-    if (videoId === null || videoId === '') return null
+    const videoId = youtubeVideoId(url)
+    if (videoId === null) return null
     return `https://www.youtube.com/embed/${videoId}`
   }
   if (service === 'spotify') {
@@ -146,12 +164,14 @@ function toMediaSource (service: MediaService, raw: string): MediaSource | null 
   catch { return null }
   const host = MEDIA_HOSTS[service]
   if (!host.hostnames.some(hostname => hostname.test(url.hostname))) return null
+  const embedUrl = toEmbedUrl(service, url)
+  if (service === 'youtube' && embedUrl === null) return null
   return {
     nature: 'media',
     service,
     kind: host.kind,
     url: url.toString(),
-    embedUrl: toEmbedUrl(service, url)
+    embedUrl
   }
 }
 
@@ -390,6 +410,7 @@ let source: MediaSource | FileSource | null = null
 // repository for a run that ends up answering no.
 let fileToStore: string | null = null
 if (sourceNature === 'file') {
+  console.log(styles.light(`> ${Object.keys(FILE_KINDS).join(' ')}`))
   const answer = await input({
     message: 'File path',
     validate: value => {
@@ -407,6 +428,7 @@ if (sourceNature === 'file') {
   // The stored path is known once the file is copied, which only happens on confirmation.
   source = { nature: 'file', kind, path: '' }
 } else if (sourceNature !== null) {
+  console.log(styles.light(`> ${MEDIA_HOSTS[sourceNature].forms}`))
   source = toMediaSource(sourceNature, await input({
     message: 'Source URL',
     validate: value => toMediaSource(sourceNature, value) !== null
