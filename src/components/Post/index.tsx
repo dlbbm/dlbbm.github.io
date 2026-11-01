@@ -1,10 +1,10 @@
 import type { ComponentChildren } from 'preact'
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { Embed } from '@mxfb/tools/components/Embed/index.js'
 import type { BuiltArtist, BuiltPost } from '../../../shared/types/built.js'
 import type { FileSource, MediaSource, Source } from '../../../shared/types/index.js'
 import { formatPlace } from '../../utils/format/index.js'
-import { Embed } from '../Embed/index.js'
 import { FileMedia } from '../FileMedia/index.js'
 import { PartialDate } from '../PartialDate/index.js'
 
@@ -27,7 +27,7 @@ function Media ({ source, title }: { source: PlayableSource, title: string }) {
   // A stored path is relative to the repository root — `data/files/…` — and `build:data`
   // copies that tree into `dist` as it stands.
   if (source.nature === 'file') return <FileMedia src={`/${source.path}`} kind={source.kind} title={title} />
-  return <Embed platform={source.service} url={source.url} title={title} />
+  return <Embed url={source.url} title={title} />
 }
 
 function ArtistList ({ artists }: { artists: BuiltArtist[] }) {

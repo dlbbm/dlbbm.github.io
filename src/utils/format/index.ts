@@ -1,7 +1,7 @@
 /**
  * Turning stored values into something a page can show.
  *
- * A date is not here: rendering one is `basics/Date`, which cuts a template into elements
+ * A date is not here: rendering one is `@mxfb/tools`' `Date`, which cuts a template into elements
  * rather than into a string.
  */
 

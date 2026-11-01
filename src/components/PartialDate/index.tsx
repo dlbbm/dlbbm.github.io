@@ -1,7 +1,7 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
+import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import type { PartialDate as PartialDateValue } from '../../../shared/types/index.js'
-import { DateComponent } from '../../basics/Date/index.js'
 
 const bem = clss('partial-date')
 
