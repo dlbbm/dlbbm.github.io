@@ -15,8 +15,8 @@
   text-underline-offset: var(--underline-offset);
 }
 
-.pagination__button:hover,
-.pagination__button:focus-visible { text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color); }
+.pagination__button:not(.pagination__button--inert):hover,
+.pagination__button:not(.pagination__button--inert):focus-visible { text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color); }
 
 /* There is no page that way, so the word stays — it says where the stream ends — and
    nothing about it answers a pointer. */
