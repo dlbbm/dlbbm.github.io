@@ -4,7 +4,7 @@
   min-height: 100dvh;
 }
 
-.main-layout__rule { background-color: var(--text-color); }
+.main-layout__rule { background-color: var(--mark-green); }
 
 .main-layout__body {
   display: flex;
