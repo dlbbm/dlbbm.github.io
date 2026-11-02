@@ -17,8 +17,13 @@
   line-height: var(--lh-6);
   text-decoration: none;
   text-underline-offset: var(--underline-offset);
+  opacity: var(--muted-opacity);
   cursor: pointer;
 }
+
+.main-nav__link:hover,
+.main-nav__link:focus-visible,
+.main-nav__link--current { opacity: 1; }
 
 .main-nav__link:hover,
 .main-nav__link:focus-visible,

@@ -1,6 +1,8 @@
 .pagination {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  max-width: var(--media-max-width);
   gap: var(--gap-4);
   font-family: var(--ff-mono);
   font-size: var(--fs-3);

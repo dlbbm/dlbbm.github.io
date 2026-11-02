@@ -9,12 +9,18 @@
   /* Only for an embed whose platform has no aspect ratio of its own to give. */
   --embed-height: 400px;
 
-  --bg-color: white;
-  --text-color: black;
-  --accent-color: black;
-  --border-color: black;
-  --underline-color: var(--text-color);
-  --shadow-color: rgb(0 0 0 / .1);
+  /* Instrument-panel green, carried by all three: a near-white that is tinted rather
+     than white, a near-black of the same hue, and the lit phosphor between them. */
+  --bg-color: #e9f0ea;
+  --text-color: #12201c;
+  --accent-color: #0b7d68;
+  --border-color: var(--text-color);
+  --underline-color: var(--accent-color);
+  --shadow-color: rgb(18 32 28 / .1);
+
+  /* What "secondary" means here. An opacity and not a fourth color: it holds whatever
+     the theme says, in light or in dark, and costs the palette nothing. */
+  --muted-opacity: .6;
 }
 
 *,
