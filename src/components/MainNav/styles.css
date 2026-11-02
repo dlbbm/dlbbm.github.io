@@ -16,7 +16,10 @@
   font-size: var(--fs-6);
   line-height: var(--lh-6);
   text-decoration: none;
+  text-underline-offset: var(--underline-offset);
   cursor: pointer;
 }
 
+.main-nav__link:hover,
+.main-nav__link:focus-visible,
 .main-nav__link--current { text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color); }

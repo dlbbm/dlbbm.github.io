@@ -29,9 +29,12 @@
 
 .post__artist {
   color: inherit;
-  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color);
+  text-decoration: none;
   text-underline-offset: var(--underline-offset);
 }
+
+.post__artist:hover,
+.post__artist:focus-visible { text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color); }
 
 .post__details {
   margin: 0;
