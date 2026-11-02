@@ -1,12 +1,16 @@
+/* `baseline` and not `center`: the word has to sit on the same line as the nav. The mark
+   opts out, and a flex container takes its baseline from its first baseline-aligned item,
+   so the word is what defines it. */
 .logo {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--gap-2);
   color: var(--text-color);
   text-decoration: none;
 }
 
 .logo__mark {
+  align-self: center;
   width: auto;
   height: 1.1em;
   font-size: var(--fs-6);
