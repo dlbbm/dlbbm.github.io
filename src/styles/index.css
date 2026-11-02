@@ -1,0 +1,31 @@
+@import '@design-edito/tools/styles/index.css';
+@import './fonts.css';
+
+:root {
+  --ff-display: 'Avenir Next', sans-serif;
+  --ff-text: 'Playwrite US Modern', cursive;
+  --ff-mono: 'Input Mono Narrow', ui-monospace, monospace;
+
+  /* Labels and captions sit at sizes the running face cannot hold, so this site points
+     `ui` at the display face rather than at `text` as the chain would. */
+  --ff-ui: var(--ff-display);
+  --ff-accent: var(--ff-display);
+
+  --bg-color: white;
+  --text-color: black;
+  --accent-color: black;
+  --border-color: black;
+  --underline-color: var(--text-color);
+  --shadow-color: rgb(0 0 0 / .1);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--ff-text);
+}

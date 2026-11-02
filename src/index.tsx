@@ -9,6 +9,7 @@ import { Home } from './pages/Home/index.js'
 import { NotFound } from './pages/NotFound/index.js'
 import { Post } from './pages/Post/index.js'
 import { Posts } from './pages/Posts/index.js'
+import './styles/index.css'
 
 function App () {
   return <MainLayout>

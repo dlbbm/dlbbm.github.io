@@ -27,6 +27,13 @@ const options: BuildOptions = {
   chunkNames: 'chunks/[name].[hash]',
   jsx: 'automatic',
   jsxImportSource: 'preact',
+  loader: {
+    '.woff2': 'file',
+    '.woff': 'file',
+    '.otf': 'file',
+    '.ttf': 'file'
+  },
+  assetNames: 'fonts/[name].[hash]',
   // `@design-edito/tools` components are written against React and run under Preact, as
   // they do in the library's own demo. Same four entries, so they resolve the same way.
   alias: {
