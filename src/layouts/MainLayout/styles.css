@@ -1,0 +1,22 @@
+.main-layout {
+  display: grid;
+  grid-template-columns: var(--border-width-m) minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+.main-layout__rule { background-color: var(--text-color); }
+
+.main-layout__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-6);
+  min-width: 0;
+  padding: var(--gap-3);
+}
+
+.main-layout__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--gap-4);
+}

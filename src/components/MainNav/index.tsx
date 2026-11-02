@@ -2,6 +2,7 @@ import { Link, useLocation } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { routePatterns } from '../../../shared/routes/index.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
+import './styles.css'
 
 const bem = clss('main-nav')
 

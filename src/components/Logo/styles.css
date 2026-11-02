@@ -1,0 +1,26 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-2);
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.logo__mark {
+  width: auto;
+  height: 1.1em;
+  font-size: var(--fs-6);
+}
+
+.logo__mark .bg { fill: transparent; }
+.logo__mark .fill-1 { fill: var(--text-color); }
+.logo__mark .fill-2 { fill: var(--text-color); fill-opacity: .7; }
+.logo__mark .fill-3 { fill: var(--text-color); fill-opacity: .4; }
+
+.logo__word {
+  font-family: var(--ff-display);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-900);
+  line-height: var(--lh-6);
+  letter-spacing: -.02em;
+}
