@@ -4,6 +4,24 @@
   gap: var(--gap-2);
 }
 
+.post__media { max-width: var(--media-max-width); }
+
+.post__media .mxfb-embed { width: 100%; }
+
+.post__media .mxfb-embed__player {
+  display: block;
+  width: 100%;
+  border: none;
+}
+
+/* A video platform states an aspect ratio, so the height follows the width and a frame
+   that failed fills the same box as one that worked. Spotify's widget is a fixed chrome
+   with no ratio to follow, so it is the one that takes a height. */
+.post__media .mxfb-embed--youtube .mxfb-embed__player,
+.post__media .mxfb-embed--vimeo .mxfb-embed__player { aspect-ratio: 16 / 9; }
+
+.post__media .mxfb-embed--spotify .mxfb-embed__player { height: var(--embed-height); }
+
 .post__date,
 .post__details {
   font-family: var(--ff-mono);
