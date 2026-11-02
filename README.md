@@ -82,6 +82,11 @@ in this repository that pushes.
   anything yet. The first real decision is what a post looks like.
 - **`/posts` and `/artists`** are routes with nothing behind them, waiting for a visual
   idea of what a register is.
+- **One design system across several sites.** The token layer, the theme in five colors
+  and the five font slots are meant to carry over to the other small sites to come, where
+  only the colors and the fonts change. Whether that becomes shared code — a package, or
+  `basics/` lifted into `mf-tools` — or just the same conventions rewritten each time is
+  open, and deciding it before two interfaces exist would be guessing.
 - **A scheduled post coming of age while the tab is open.** `posts.json` gives the trigger
   for free: the nearest `publishedOn` ahead of now. Schedule one timer at a time, capped at
   around ten minutes and re-armed on each fire, and re-check on `visibilitychange` — a
