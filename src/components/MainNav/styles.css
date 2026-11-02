@@ -13,8 +13,8 @@
   background: none;
   color: var(--text-color);
   font-family: inherit;
-  font-size: var(--fs-4);
-  line-height: var(--lh-4);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
   text-decoration: none;
   cursor: pointer;
 }

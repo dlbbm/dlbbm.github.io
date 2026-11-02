@@ -1,6 +1,7 @@
 import { Fragment } from 'preact'
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import { Embed } from '@mxfb/tools/components/Embed/index.js'
 import type { BuiltArtist, BuiltPost } from '../../../shared/types/built.js'
 import type { FileSource, MediaSource, Source } from '../../../shared/types/index.js'
@@ -63,7 +64,10 @@ export function Post ({ post }: PostProps) {
   const details = [occasion, performedOn].filter(part => part !== '' && part !== null).join(' — ')
 
   return <article class={bem()}>
-    <time class={bem('date')} dateTime={post.publishedOn}>{post.publishedOn}</time>
+    <DateComponent
+      date={new Date(post.publishedOn)}
+      format="{{ddd}}, {{MMM}} {{D}}{{th}}, {{YYYY}}"
+      className={bem('date')} />
     <div class={bem('media')}>
       {played === undefined
         ? <a class={bem('missing')} href={post.url}>no playable source</a>

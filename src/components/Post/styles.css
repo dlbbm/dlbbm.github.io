@@ -7,8 +7,8 @@
 .post__date,
 .post__details {
   font-family: var(--ff-mono);
-  font-size: var(--fs-1);
-  line-height: var(--lh-1);
+  font-size: var(--fs-3);
+  line-height: var(--lh-3);
 }
 
 .post__meta {
@@ -20,9 +20,9 @@
 .post__title {
   margin: 0;
   font-family: var(--ff-text);
-  font-size: var(--fs-4);
+  font-size: var(--fs-6);
   font-weight: var(--fw-400);
-  line-height: var(--lh-4);
+  line-height: var(--lh-6);
 }
 
 .post__song { color: inherit; text-decoration: none; }

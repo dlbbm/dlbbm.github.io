@@ -75,8 +75,8 @@
   align-content: end;
   column-gap: var(--gap-2);
   font-family: var(--ff-mono);
-  font-size: var(--fs-1);
-  line-height: var(--lh-1);
+  font-size: var(--fs-3);
+  line-height: var(--lh-3);
 }
 
 .file-media .lm-video__current-time { grid-area: current; }

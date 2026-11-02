@@ -13,7 +13,7 @@
   align-self: center;
   width: auto;
   height: 1.1em;
-  font-size: var(--fs-6);
+  font-size: var(--fs-8);
 }
 
 .logo__mark .bg { fill: transparent; }
@@ -23,8 +23,8 @@
 
 .logo__word {
   font-family: var(--ff-display);
-  font-size: var(--fs-6);
+  font-size: var(--fs-8);
   font-weight: var(--fw-900);
-  line-height: var(--lh-6);
+  line-height: var(--lh-8);
   letter-spacing: -.02em;
 }
