@@ -1,0 +1,108 @@
+.file-media {
+  position: relative;
+  display: grid;
+}
+
+.file-media--audio { aspect-ratio: 1; }
+
+/* Stands in for the cover image the data does not carry yet, and reads as a ground
+   rather than a color because a theme only ever hands this layer text and background. */
+.file-media__ground {
+  grid-area: 1 / 1;
+  background-color: var(--text-color);
+  opacity: .15;
+}
+
+.file-media__player {
+  position: relative;
+  display: grid;
+  grid-area: 1 / 1;
+  min-height: 0;
+  margin: 0;
+}
+
+.file-media .lm-video__video {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.file-media--audio .lm-video__video { visibility: hidden; }
+
+.file-media .lm-video__loud-btn,
+.file-media .lm-video__mute-btn,
+.file-media .lm-video__volume-range,
+.file-media .lm-video__volume-percent,
+.file-media .lm-video__playback-rate-range,
+.file-media .lm-video__playback-rate,
+.file-media .lm-video__fullscreen-btn,
+.file-media .lm-video__subtitles-btn { display: none; }
+
+.file-media .lm-video__video-controls {
+  display: grid;
+  grid-area: 1 / 1;
+  place-items: center;
+}
+
+.file-media .lm-video__play-btn,
+.file-media .lm-video__pause-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.file-media .lm-video--play-on .lm-video__play-btn,
+.file-media .lm-video--play-off .lm-video__pause-btn { display: none; }
+
+.file-media__glyph {
+  display: block;
+  width: auto;
+  height: var(--gap-5);
+}
+
+.file-media__glyph .bg { fill: transparent; }
+.file-media__glyph .fill-1 { fill: var(--text-color); }
+
+.file-media .lm-video__time-controls {
+  display: grid;
+  grid-area: 1 / 1;
+  grid-template-areas:
+    'current total'
+    'timeline timeline';
+  grid-template-columns: 1fr auto;
+  align-content: end;
+  column-gap: var(--gap-2);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-1);
+  line-height: var(--lh-1);
+}
+
+.file-media .lm-video__current-time { grid-area: current; }
+.file-media .lm-video__total-time { grid-area: total; text-align: right; }
+
+.file-media .lm-video__timeline {
+  position: relative;
+  grid-area: timeline;
+  height: var(--border-width-m);
+  cursor: pointer;
+}
+
+/* The track is a layer of its own rather than a faded element: an opacity on the
+   timeline would fade the played part with it. */
+.file-media .lm-video__timeline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--text-color);
+  opacity: .2;
+}
+
+.file-media .lm-video__timeline::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--lm-video-current-time-ratio, 0) * 100%);
+  background-color: var(--text-color);
+}

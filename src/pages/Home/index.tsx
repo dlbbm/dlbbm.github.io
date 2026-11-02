@@ -3,6 +3,7 @@ import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { Pagination } from '../../components/Pagination/index.js'
 import { Post } from '../../components/Post/index.js'
 import { fetchPostPage, type PostPage } from '../../utils/fetch/index.js'
+import './styles.css'
 
 const bem = clss('page-home')
 
