@@ -11,10 +11,25 @@ variables and the five `--ff-*` slots are declared in a single stylesheet, loade
 the root, and no component redefines them. A component that needs a different ground
 stands in a sub-scope — `.inverted`, `.accented` — rather than naming a color.
 
-So **no component spells out a color, a font family or a pixel size**: it takes a class
-from the token layer (`.size-N`, `.gap-N`, `.border`, `.bg`, `.text`) or a variable from
-the theme. A literal in a component is the one thing that cannot be re-themed, and
-re-theming is the whole point of this layer.
+## Style lives in CSS, never in the markup
+
+**The token layer's utility classes stay out of the JSX.** A component's markup carries
+its own BEM classes, the ones `clss` builds, and nothing else; the styling sits in a
+`styles.css` next to it, imported by the component. `.size-6 .fw-900` beside `logo__word`
+would be two systems describing one element, and the one in the markup is the one a
+stylesheet cannot override.
+
+Nothing is lost by it: `--fs-N`, `--lh-N` and `--gap-N` are variables, so CSS says
+everything the classes say. The one thing `.size-N` does on top is set `--fs-current` and
+`--lh-current-px` — restate those by hand in the rare place that needs the rhythm unit.
+
+So **no component spells out a color, a font family or a pixel size**, in its markup or
+in its stylesheet: it reads a variable. A literal is the one thing that cannot be
+re-themed, and re-theming is the whole point of this layer.
+
+**Vertical rhythm is `gap` on the container**, never a margin on the child. The parent
+owns the spacing, margins never collapse, and there is no first-or-last exception to
+write.
 
 ## `basics/` knows nothing
 
