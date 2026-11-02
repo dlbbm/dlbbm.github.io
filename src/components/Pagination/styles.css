@@ -21,6 +21,6 @@
 /* There is no page that way, so the word stays — it says where the stream ends — and
    nothing about it answers a pointer. */
 .pagination__button--inert {
-  opacity: .3;
+  opacity: var(--muted-opacity);
   text-decoration: none;
 }
