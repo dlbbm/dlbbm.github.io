@@ -9,18 +9,26 @@
   /* Only for an embed whose platform has no aspect ratio of its own to give. */
   --embed-height: 400px;
 
-  /* Instrument-panel green, carried by all three: a near-white that is tinted rather
-     than white, a near-black of the same hue, and the lit phosphor between them. */
-  --bg-color: #e9f0ea;
+  /* A panel that is lit rather than a white page with a tint: the ground carries the
+     screen green, the text is a near-black of the same hue, and the accent is the green
+     gone deep, since nothing brighter holds against a ground this saturated. */
+  --bg-color: #8cbfa8;
   --text-color: #12201c;
-  --accent-color: #0b7d68;
+  --accent-color: #0a3f33;
   --border-color: var(--text-color);
   --underline-color: var(--accent-color);
   --shadow-color: rgb(18 32 28 / .1);
 
   /* What "secondary" means here. An opacity and not a fourth color: it holds whatever
-     the theme says, in light or in dark, and costs the palette nothing. */
-  --muted-opacity: .6;
+     the theme says, in light or in dark, and costs the palette nothing. The darker the
+     ground, the less room it has — .72 is where the nav still clears 4.5:1 on this one. */
+  --muted-opacity: .72;
+
+  /* The mark is the one thing that does not take the ambience: three colors of its own,
+     left to right, so it reads against the panel instead of sitting in it. */
+  --logo-fill-1: #0a6a58;
+  --logo-fill-2: #12224f;
+  --logo-fill-3: #ff5e00;
 }
 
 *,
