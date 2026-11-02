@@ -1,15 +1,9 @@
 @import '@design-edito/tools/styles/index.css';
-@import './fonts.css';
 
 :root {
-  --ff-display: 'Avenir Next', sans-serif;
+  --ff-display: 'Montserrat', sans-serif;
   --ff-text: 'Playwrite US Modern', cursive;
-  --ff-mono: 'Input Mono Narrow', ui-monospace, monospace;
-
-  /* Labels and captions sit at sizes the running face cannot hold, so this site points
-     `ui` at the display face rather than at `text` as the chain would. */
-  --ff-ui: var(--ff-display);
-  --ff-accent: var(--ff-display);
+  --ff-mono: 'Roboto Mono', ui-monospace, monospace;
 
   --bg-color: white;
   --text-color: black;
