@@ -1,6 +1,6 @@
 .main-layout {
   display: grid;
-  grid-template-columns: var(--border-width-m) minmax(0, 1fr);
+  grid-template-columns: var(--border-width-l) minmax(0, 1fr);
   min-height: 100dvh;
 }
 
