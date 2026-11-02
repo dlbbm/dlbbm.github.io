@@ -82,8 +82,17 @@ function builtArtists (ids: string[]): BuiltArtist[] {
     .filter((artist): artist is BuiltArtist => artist !== null)
 }
 
+// `Song — Artist, Artist, ft. Artist`, the same line the front composes out of links: the
+// stream is read by what is playing before it is read by who made it.
+function postTitle (song: Song, credits: BuiltArtist[], featuring: BuiltArtist[]): string {
+  const credited = credits.map(artist => artist.name).join(', ')
+  const guests = featuring.map(artist => artist.name).join(', ')
+  return `${song.title} — ${credited}${guests === '' ? '' : `, ft. ${guests}`}`
+}
+
 function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
   const credits = builtArtists(recording.byArtistIds)
+  const featuring = builtArtists(recording.featuringArtistIds)
   const originalArtists = builtArtists(song.originalArtistIds)
   const credited = credits.map(artist => artist.id).join(',')
   const original = originalArtists.map(artist => artist.id).join(',')
@@ -91,10 +100,10 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     id: post.id,
     url: routeUrl('post', { id: post.id }),
     publishedOn: post.publishedOn,
-    title: `${credits.map(artist => artist.name).join(', ')} — ${song.title}`,
+    title: postTitle(song, credits, featuring),
     song: { id: song.id, title: song.title },
     credits,
-    featuring: builtArtists(recording.featuringArtistIds),
+    featuring,
     remixedBy: builtArtists(recording.remixedByArtistIds),
     originalArtists,
     isCover: original !== '' && original !== credited,
