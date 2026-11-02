@@ -20,9 +20,8 @@
   --shadow-color: rgb(18 32 28 / .1);
 
   /* What "secondary" means here. An opacity and not a fourth color: it holds whatever
-     the theme says, in light or in dark, and costs the palette nothing. The darker the
-     ground, the less room it has — .72 is where the nav still clears 4.5:1 on this one. */
-  --muted-opacity: .72;
+     the theme says, in light or in dark, and costs the palette nothing. */
+  --muted-opacity: .82;
 
   /* The mark is the one thing that does not take the ambience: three colors of its own,
      left to right, so it reads against the panel instead of sitting in it. */
