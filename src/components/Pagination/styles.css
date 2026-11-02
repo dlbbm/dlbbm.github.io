@@ -13,6 +13,7 @@
   color: var(--text-color);
   text-decoration: none;
   text-underline-offset: var(--underline-offset);
+  cursor: pointer;
 }
 
 .pagination__button:not(.pagination__button--inert):hover,
