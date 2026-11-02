@@ -23,10 +23,15 @@ The rule `README.md` states — a basic imports nothing from `shared/` and nothi
 reads the token layer and the `--ff-*` and `--*-color` variables it is given, which is
 what makes it liftable into `mf-tools` unchanged.
 
-## dlbbm is one section of a larger site
+## dlbbm is the pilot, and one section of a larger site
 
 Treat the interface as if this blog were the `dlbbm` section of something much wider,
 each section deployed on its own as a standalone site at its own URL. Nothing in the code
 says so today, and nothing should be built for it now; it is why the colors and the fonts
 are the only things meant to vary, and why a layout decision that could only ever work
 for a music blog is worth a second look.
+
+Pilot, too: the small sites to come share this whole interface layer and vary only their
+colors and their fonts. So a decision taken here is taken for them, which is the reason
+to write a component so it would survive being handed another theme, and the reason a
+piece that proves itself here is a candidate for `mf-tools` rather than a local fixture.
