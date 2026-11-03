@@ -1,17 +1,14 @@
+/* A grid and not a multi-column box: `columns` fills top to bottom, and this list is
+   read across before it wraps. The count follows the room there is, a column never
+   narrowing below the longest name — three when it fits, one when nothing else does. */
 .page-artists__list {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--register-column), 100%), 1fr));
   gap: var(--gap-3) var(--gap-4);
-  max-width: var(--media-max-width);
+  max-width: var(--register-max-width);
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-/* Three once there is room for three. A grid and not a multi-column box: `columns` fills
-   top to bottom, and this list is read across before it wraps. */
-@media (min-width: 768px) {
-  .page-artists__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 .page-artists__link {
