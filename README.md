@@ -124,6 +124,40 @@ in this repository that pushes.
 [lcgft]: https://id.loc.gov/authorities/genreForms.html
 [discogs]: https://support.discogs.com/hc/articles/360005055213-Database-Guidelines-9-Genres-Styles
 [mbgenres]: https://musicbrainz.org/genres
+
+- **Qualifying a sound, beyond genre.** The axes under consideration, to be added to the
+  data over the coming months: **era**, which wants splitting in two — a decade is rigid
+  and derivable from a date, while `summer of love` or `madchester` is a scene, a named
+  vocabulary tied to a place and a moment, and Rate Your Music reached the same split with
+  its separate `scenes & movements` tree; **geography**, where MusicBrainz' `area` is the
+  shape to copy, a place entity with a hierarchy rather than a string, and half of it is
+  already here since `Place` carries venue, city and country for `performedAt`; **lyrical
+  themes**, the one axis with no vocabulary worth borrowing, where anything written would
+  be invented; **mood**, where [AllMusic][allmusic] keeps curated Moods and Themes lists
+  and Rate Your Music calls them descriptors; and **bipolar axes**, five levels from
+  `very X` through neutral to `very Y`.
+  That last one has deep prior art. The five-step bipolar scale is Osgood's **semantic
+  differential**, 1957. The two axes that matter are **[Russell's circumplex][circumplex]**
+  — valence and arousal, which is `joyeux / triste` and `énergique / léthargique` exactly —
+  and the literature is consistent that arousal is rated reliably, valence less so, and
+  anything more abstract worse: a [2010 comparison][gems] of valence-arousal against basic
+  emotions and the Geneva Emotional Music Scale found the two-dimensional model the most
+  consistent of the three. **[Pandora's Music Genome Project][genome]** is the maximal
+  version of the same idea — 400 to 450 attributes per track, half-integer steps on a
+  0 to 5 scale, trained musicians at 20 to 30 minutes a song and a tenth of the catalogue
+  double-rated for control — which is both the proof it works and the warning: that is
+  thirty salaried analysts, against one person and 401 posts here. **Two known traps.**
+  Raters avoid the extremes, so five levels behave like three. And the circumplex collapses
+  its positive-valence, low-arousal corner, putting tenderness and nostalgia in one cell —
+  which for this blog is the interesting corner, not an edge case. **The leaning:** keep
+  the factual axes separate from the judged ones, start with two axes rather than five, and
+  treat a single rater's scores as a point of view rather than as data — the research puts
+  10 to 20 raters at the threshold of a stable estimate.
+
+[allmusic]: https://www.allmusic.com/moods
+[circumplex]: https://en.wikipedia.org/wiki/Emotion_classification#Circumplex_model
+[gems]: https://en.wikipedia.org/wiki/Music_and_emotion
+[genome]: https://en.wikipedia.org/wiki/Music_Genome_Project
 - **Consolidating the import.** The 401 archived posts are in, and
   [`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) lists the 170 that need a hand. In order of how
   much they cost: **127 posts have nothing to play** — the embed was already gone when the
