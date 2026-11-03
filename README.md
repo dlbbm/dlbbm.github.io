@@ -90,6 +90,12 @@ in this repository that pushes.
   only the colors and the fonts change. Whether that becomes shared code — a package, or
   `basics/` lifted into `mf-tools` — or just the same conventions rewritten each time is
   open, and deciding it before two interfaces exist would be guessing.
+- **A tour of the helpers, to see what climbs.** `scripts/_date`, `_slug`, `_describe`,
+  `_db`, `_ask`, and `src/utils/` on the front side: a pass over all of them asking which
+  belongs where. `lm-tools` is the ultra-generic bank, `mf-tools` what it would make no
+  sense for Le Monde to own, and the rest stays here. A piece earns the climb by having
+  proven itself a step below, so this is a pass to make once the import is consolidated
+  and the shapes have stopped moving — not before.
 - **A scheduled post coming of age while the tab is open.** `posts.json` gives the trigger
   for free: the nearest `publishedOn` ahead of now. Schedule one timer at a time, capped at
   around ten minutes and re-armed on each fire, and re-check on `visibilitychange` — a
