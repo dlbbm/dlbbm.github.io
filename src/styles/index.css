@@ -37,9 +37,9 @@
   --night-bg: #12201c;
   --night-text: #bfd9cb;
   --night-shadow: rgb(0 0 0 / .4);
-  /* The ground of the night, lifted far enough off itself to be seen: the rule and the
-     two discs read as a band rather than as nothing. */
-  --night-mark-green: #2a4f43;
+  /* Screen green and not a pale grey: lit enough to read against the night ground, far
+     enough from white to stay the same family as the day. */
+  --night-mark-green: #35876c;
 
   color-scheme: light;
 }
