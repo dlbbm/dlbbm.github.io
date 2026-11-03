@@ -15,7 +15,7 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2012-12-16` **J.J. Cale** — Since You Said Goodbye · [archive](https://delabienbonnemusique.tumblr.com/post/38078542255/jj-cale-since-you-said-goodbye)
 - `2012-12-16` **Pink Floyd** — Lucifer Sam · [archive](https://delabienbonnemusique.tumblr.com/post/38078805957/pink-floyd-lucifer-sam)
 - `2012-12-16` **The Cure** — A Forest · [archive](https://delabienbonnemusique.tumblr.com/post/38078959446/the-cure-a-forest)
-- `2012-12-16` **Serge Gainsbourg** — Comme un Boomerang Comme un Boomerang — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/38079085146/serge-gainsbourg-comme-un-boomerang)
+- `2012-12-16` **Serge Gainsbourg** — Comme un Boomerang — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/38079085146/serge-gainsbourg-comme-un-boomerang)
 - `2012-12-16` **Tijuana Panthers** — Angie · [archive](https://delabienbonnemusique.tumblr.com/post/38080530452/tijuana-panthers-angie)
 - `2012-12-18` **Pachanga Boys** — Time · [archive](https://delabienbonnemusique.tumblr.com/post/38217654070/pachanga-boys-time)
 - `2012-12-19` **Chromatics** — Into the Black · [archive](https://delabienbonnemusique.tumblr.com/post/38298459881/chromatics-into-the-black-neil-young-cover)
@@ -39,10 +39,10 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2013-03-14` **Mr. Fox** — Party Track · [archive](https://delabienbonnemusique.tumblr.com/post/45365135891/mr-fox-party-track)
 - `2013-03-16` **Reputante** — Lock Me Up · [archive](https://delabienbonnemusique.tumblr.com/post/45456417564/reputante-lock-me-up)
 - `2013-04-03` **The Painted Ship** — Frustration · [archive](https://delabienbonnemusique.tumblr.com/post/46970602593/the-painted-ship-frustration)
-- `2013-04-05` **Pink Floyd** — EchoesStanley Kubrick — 2001: A Space Odyssey · [archive](https://delabienbonnemusique.tumblr.com/post/47200819938/pink-floyd-echoes-stanley-kubrick-2001-a)
+- `2013-04-05` **Pink Floyd** — Echoes · [archive](https://delabienbonnemusique.tumblr.com/post/47200819938/pink-floyd-echoes-stanley-kubrick-2001-a)
 - `2013-04-05` **The Velvet Underground** — Oh! Sweet Nuthin’ · [archive](https://delabienbonnemusique.tumblr.com/post/47200990265/the-velvet-underground-oh-sweet-nuthin)
 - `2013-04-19` **Daft Punk** — Rock n’ Roll · [archive](https://delabienbonnemusique.tumblr.com/post/48348933265/daft-punk-rock-n-roll)
-- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E (Justice cover)http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
+- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
 - `2013-04-25` **Sixto Rodriguez** — Crucify Your Mind · [archive](https://delabienbonnemusique.tumblr.com/post/48850039438/sixto-rodriguez-crucify-your-mind)
 - `2013-04-26` **Nu** — MAN O TO · [archive](https://delabienbonnemusique.tumblr.com/post/48920668607/nu-man-o-to)
 - `2013-06-13` **James Brown & B.B. King (ft. Mickael Jackson)** — Live at the Roxy, Los Angeles, 1983 · [archive](https://delabienbonnemusique.tumblr.com/post/52873110131/james-brown-bb-king-ft-mickael-jackson)
@@ -52,8 +52,8 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2013-06-28` **Noir Désir** — Le Grand Incendie · [archive](https://delabienbonnemusique.tumblr.com/post/54097301009/noir-d%C3%A9sir-le-grand-incendie)
 - `2013-07-22` **Susan Christie** — Rainy Day · [archive](https://delabienbonnemusique.tumblr.com/post/56148179546/susan-christie-rainy-day)
 - `2013-07-26` **Streets of Rage** — Dilapidated Town · [archive](https://delabienbonnemusique.tumblr.com/post/56468918713/streets-of-rage-dilapidated-town-game-ost)
-- `2013-08-10` **Kellylee Evans** — Lose Yourself Lose Yourself — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/57893859177/lose-yourself-by-kellylee-evans-on-grooveshark)
-- `2013-09-03` **Robin Trower** — I Believe to my Soul I Believe to My Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
+- `2013-08-10` **Kellylee Evans** — Lose Yourself — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/57893859177/lose-yourself-by-kellylee-evans-on-grooveshark)
+- `2013-09-03` **Robin Trower** — I Believe to my Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
 - `2013-09-09` **Leonard Cohen** — Master Song · [archive](https://delabienbonnemusique.tumblr.com/post/60737631610/leonard-cohen-master-song)
 - `2013-09-17` **Laurie Anderson** — O Superman · [archive](https://delabienbonnemusique.tumblr.com/post/61490319763/laurie-anderson-o-superman)
 - `2013-09-24` **Yasmine Hamdan** — Ya Nass · [archive](https://delabienbonnemusique.tumblr.com/post/62104133298/yasmine-hamdan-ya-nass)
@@ -68,7 +68,7 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2013-12-15` **The Seatbelts** — Gotta Knock a Little Harder · [archive](https://delabienbonnemusique.tumblr.com/post/70102926546/the-seatbelts-gotta-knock-a-little-harder)
 - `2014-01-06` **Elliott Smith** — Needle in the Hay · [archive](https://delabienbonnemusique.tumblr.com/post/72447559536/elliott-smith-needle-in-the-hay)
 - `2014-03-01` **Adriano Celentano** — Prisencolinensinainciusol · [archive](https://delabienbonnemusique.tumblr.com/post/78206917406/adriano-celentano-prisencolinensinainciusol)
-- `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014Alt link : https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/ — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
+- `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014 — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
 - `2014-03-17` **Dillinger** — Cocaine in my Brain · [archive](https://delabienbonnemusique.tumblr.com/post/79856933444/dillinger-cocaine-in-my-brain)
 - `2014-04-03` **Limousine** — Yodh Song · [archive](https://delabienbonnemusique.tumblr.com/post/81583458755/limousine-yodh-song)
 - `2014-04-03` **Twilight Hotel** — Ham Radio Blues · [archive](https://delabienbonnemusique.tumblr.com/post/81583522503/twilight-hotel-ham-radio-blues)
@@ -82,13 +82,13 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2014-09-15` **Dualryan** — Oceans · [archive](https://delabienbonnemusique.tumblr.com/post/97563869675/dualryan-oceans-the-yawhg-soundtrack)
 - `2014-09-17` **Michele Pertusi** — O sole mio · [archive](https://delabienbonnemusique.tumblr.com/post/97719696130/michele-pertusi-o-sole-mio)
 - `2014-10-10` **Jorge Ben** — Comanche · [archive](https://delabienbonnemusique.tumblr.com/post/99639851079/jorge-ben-comanche)
-- `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential MixTracklist : https://www.youtube.com/watch?v=wnpVWvCDINU — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
+- `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential Mix — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
 - `2014-10-11` **Serge Richard** — Jaques Chirac | Je serai le président de tous les français · [archive](https://delabienbonnemusique.tumblr.com/post/99714885091/serge-richard-jaques-chirac-je-serai-le)
 - `2014-10-12` **Charlie Winston** — Unlike Me · [archive](https://delabienbonnemusique.tumblr.com/post/99831777041/charlie-winston-unlike-me)
 - `2014-10-13` **Alt-J** — Lovely Day · [archive](https://delabienbonnemusique.tumblr.com/post/99914949537/alt-j-lovely-day-bill-withers-cover)
 - `2014-10-14` **Jacques Brel** — Marieke · [archive](https://delabienbonnemusique.tumblr.com/post/99981208565/jacques-brel-marieke)
 - `2014-11-07` **Mafia K'1 Fry** — Pour Ceux · [archive](https://delabienbonnemusique.tumblr.com/post/102000195445/mafia-k1-fry-pour-ceux)
-- `2014-11-19` **— Mmaj by The Octopus Project on GroovesharkThe Octopus Project** — Mmaj — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
+- `2014-11-19` **—** — — — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
 - `2014-11-21` **The Spits** — Die Die Die · [archive](https://delabienbonnemusique.tumblr.com/post/103196422430/the-spits-die-die-die-live)
 - `2015-01-13` **Rob** — Make it Fast, Make it Slow · [archive](https://delabienbonnemusique.tumblr.com/post/107930341975/rob-make-it-fast-make-it-slow)
 - `2015-01-26` **Caribou** — Back Home · [archive](https://delabienbonnemusique.tumblr.com/post/109211718345/caribou-back-home)
@@ -105,7 +105,7 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2015-12-04` **John Maus** — My Whole World is Coming Apart · [archive](https://delabienbonnemusique.tumblr.com/post/134536358291/john-maus-my-whole-world-is-coming-apart)
 - `2015-12-07` **Bass Drum of Death** — Velvet Itch · [archive](https://delabienbonnemusique.tumblr.com/post/134735586947/bass-drum-of-death-velvet-itch)
 - `2016-01-06` **Kevin Ayers** — The Lady Rachel · [archive](https://delabienbonnemusique.tumblr.com/post/136738569340/kevin-ayers-the-lady-rachel-live-at-john-peel)
-- `2016-01-08` **Rival Consoles** — Odyssey / Sonne · [archive](https://delabienbonnemusique.tumblr.com/post/136874859580/rival-consoles-odyssey-sonne-bonus-track)
+- `2016-01-08` **Rival Consoles** — Odyssey / Sonne (Bonus track version, Album, 2015 · [archive](https://delabienbonnemusique.tumblr.com/post/136874859580/rival-consoles-odyssey-sonne-bonus-track)
 - `2016-09-16` **Rita Pavone** — Viva la pappa col pomodorro · [archive](https://delabienbonnemusique.tumblr.com/post/150490207116/rita-pavone-viva-la-pappa-col-pomodorro)
 - `2016-09-23` **The Soft Boys** — You’ll Have To Go Sideways · [archive](https://delabienbonnemusique.tumblr.com/post/150816107286/the-soft-boys-youll-have-to-go-sideways)
 - `2016-10-07` **Marijata** — I Walk Alone · [archive](https://delabienbonnemusique.tumblr.com/post/151449215543/marijata-i-walk-alone)
@@ -135,20 +135,11 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2018-02-03` **Katerine** — Je vous emmerde · [archive](https://delabienbonnemusique.tumblr.com/post/170451127600/katerine-je-vous-emmerde)
 - `2018-02-06` **Salvatore Adamo** — Tombe la neige · [archive](https://delabienbonnemusique.tumblr.com/post/170586407310/salvatore-adamo-tombe-la-neige)
 
-## tracklist-title — 5 posts
-
-A whole album. The tracklist written into the title was dropped and the recording is a `full album`; what is left is the album's own name, which wants checking.
-
-- `2013-07-22` **Brian Eno** — Another Green World · [archive](https://delabienbonnemusique.tumblr.com/post/56145494623/brian-eno-another-green-world-album-1975)
-- `2013-10-04` **Karen Dalton** — In My Own Time · [archive](https://delabienbonnemusique.tumblr.com/post/63033512381/karen-dalton-in-my-own-time-album-1971)
-- `2014-08-22` **eden ahbez** — Eden’s Island · [archive](https://delabienbonnemusique.tumblr.com/post/95450304235/eden-ahbez-edens-island-album-1960-0000)
-- `2015-10-27` **Mild High Club** — Timeline · [archive](https://delabienbonnemusique.tumblr.com/post/132018465190/mild-high-club-timeline-album-2015-000)
-- `2016-01-08` **Rival Consoles** — Odyssey / Sonne · [archive](https://delabienbonnemusique.tumblr.com/post/136874859580/rival-consoles-odyssey-sonne-bonus-track)
-
-## unsplit-title — 1 post
+## unsplit-title — 2 posts
 
 No dash in the title, so the whole line became the artist and the song both. Needs splitting by hand.
 
+- `2014-11-19` **—** — — — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
 - `2018-02-03` **** —  · [archive](https://delabienbonnemusique.tumblr.com/post/170451108250)
 
 ## ambiguous-credit — 17 posts
@@ -177,15 +168,15 @@ The credit holds an ampersand or a comma. It was kept as one artist, because no 
 
 A URL was found in the body, on a host that is dead or is not an embed. Kept here rather than stored.
 
-- `2012-12-16` **Serge Gainsbourg** — Comme un Boomerang Comme un Boomerang — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/38079085146/serge-gainsbourg-comme-un-boomerang)
-- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E (Justice cover)http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
-- `2013-08-10` **Kellylee Evans** — Lose Yourself Lose Yourself — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/57893859177/lose-yourself-by-kellylee-evans-on-grooveshark)
-- `2013-09-03` **Robin Trower** — I Believe to my Soul I Believe to My Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
-- `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014Alt link : https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/ — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
-- `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential MixTracklist : https://www.youtube.com/watch?v=wnpVWvCDINU — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
-- `2014-11-19` **— Mmaj by The Octopus Project on GroovesharkThe Octopus Project** — Mmaj — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
+- `2012-12-16` **Serge Gainsbourg** — Comme un Boomerang — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/38079085146/serge-gainsbourg-comme-un-boomerang)
+- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
+- `2013-08-10` **Kellylee Evans** — Lose Yourself — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/57893859177/lose-yourself-by-kellylee-evans-on-grooveshark)
+- `2013-09-03` **Robin Trower** — I Believe to my Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
+- `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014 — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
+- `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential Mix — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
+- `2014-11-19` **—** — — — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
 
-## read-qualifier — 47 posts
+## read-qualifier — 52 posts
 
 A parenthesis at the end of the title was read as a kind, a place or a date. Worth checking it said that.
 
@@ -199,10 +190,13 @@ A parenthesis at the end of the title was read as a kind, a place or a date. Wor
 - `2013-01-25` **Cocoon** — American Boy · [archive](https://delabienbonnemusique.tumblr.com/post/41431570689/cocoon-american-boy-estelle-cover)
 - `2013-02-01` **Jan Turkenburg** — In My Spaceship · [archive](https://delabienbonnemusique.tumblr.com/post/42014755127/jan-turkenburg-in-my-spaceship-pilooski-remix)
 - `2013-02-04` **Slow Club** — Never Look Back · [archive](https://delabienbonnemusique.tumblr.com/post/42280449102/slow-club-never-look-back-acoustic)
+- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
+- `2013-07-22` **Brian Eno** — Another Green World · [archive](https://delabienbonnemusique.tumblr.com/post/56145494623/brian-eno-another-green-world-album-1975)
 - `2013-07-23` **J.J. Cale** — Cocaine · [archive](https://delabienbonnemusique.tumblr.com/post/56237103940/jj-cale-cocaine-live)
 - `2013-07-26` **Streets of Rage** — Dilapidated Town · [archive](https://delabienbonnemusique.tumblr.com/post/56468918713/streets-of-rage-dilapidated-town-game-ost)
 - `2013-07-29` **Crosby, Stills & Nash** — Cathedral · [archive](https://delabienbonnemusique.tumblr.com/post/56786040694/crosby-stills-nash-cathedral-live-at-the)
 - `2013-10-01` **Olivier Libaux (ft. Ambrosia Parlsey)** — The Blood is Love · [archive](https://delabienbonnemusique.tumblr.com/post/62808969972/olivier-libaux-ft-ambrosia-parlsey-the-blood)
+- `2013-10-04` **Karen Dalton** — In My Own Time · [archive](https://delabienbonnemusique.tumblr.com/post/63033512381/karen-dalton-in-my-own-time-album-1971)
 - `2013-10-31` **Lou Reed** — Sweet Jane · [archive](https://delabienbonnemusique.tumblr.com/post/65601000654/lou-reed-sweet-jane-live-at-st-anns)
 - `2013-11-03` **Sarah Vaughan** — Blackbird · [archive](https://delabienbonnemusique.tumblr.com/post/65934138952/sarah-vaughan-blackbird-the-beatles-cover)
 - `2013-11-07` **Barry De Vorzon** — Theme from “The Warriors” · [archive](https://delabienbonnemusique.tumblr.com/post/66271710801/barry-de-vorzon-theme-from-the-warriors-the)
@@ -214,6 +208,7 @@ A parenthesis at the end of the title was read as a kind, a place or a date. Wor
 - `2014-05-06` **Klaus Nomi** — Cold Song · [archive](https://delabienbonnemusique.tumblr.com/post/84913404365/klaus-nomi-cold-song-live)
 - `2014-05-07` **Seu Jorge** — Life on Mars? · [archive](https://delabienbonnemusique.tumblr.com/post/85006780405/seu-jorge-life-on-mars)
 - `2014-06-10` **Emilíana Torrini** — Animal Games · [archive](https://delabienbonnemusique.tumblr.com/post/88381335580/emil%C3%ADana-torrini-animal-games-live-at-wfuv-new)
+- `2014-08-22` **eden ahbez** — Eden’s Island · [archive](https://delabienbonnemusique.tumblr.com/post/95450304235/eden-ahbez-edens-island-album-1960-0000)
 - `2014-09-10` **Mister Modo & Ugly Mac Beer** — Invasion · [archive](https://delabienbonnemusique.tumblr.com/post/97125630820/mister-modo-ugly-mac-beer-invasion-judgement)
 - `2014-09-15` **Dualryan** — Oceans · [archive](https://delabienbonnemusique.tumblr.com/post/97563869675/dualryan-oceans-the-yawhg-soundtrack)
 - `2014-09-17` **Darkside** — Planet Caravan · [archive](https://delabienbonnemusique.tumblr.com/post/97720034430/darkside-planet-caravan-black-sabbath-cover)
@@ -223,6 +218,7 @@ A parenthesis at the end of the title was read as a kind, a place or a date. Wor
 - `2015-04-20` **Radiohead** — Reckoner · [archive](https://delabienbonnemusique.tumblr.com/post/116899409210/radiohead-reckoner-live-from-the-basement-at)
 - `2015-05-06` **The Cure** — Another Journey by Train · [archive](https://delabienbonnemusique.tumblr.com/post/118278282905/the-cure-another-journey-by-train-group-home)
 - `2015-07-21` **Lee Moses** — Bad Girl · [archive](https://delabienbonnemusique.tumblr.com/post/124677206923/lee-moses-bad-girl-parts-i-ii)
+- `2015-10-27` **Mild High Club** — Timeline · [archive](https://delabienbonnemusique.tumblr.com/post/132018465190/mild-high-club-timeline-album-2015-000)
 - `2015-11-04` **Nick Cave & The Bad Seeds** — Higgs Boson Blues · [archive](https://delabienbonnemusique.tumblr.com/post/132536876835/nick-cave-the-bad-seeds-higgs-boson-blues)
 - `2016-01-06` **Kevin Ayers** — The Lady Rachel · [archive](https://delabienbonnemusique.tumblr.com/post/136738569340/kevin-ayers-the-lady-rachel-live-at-john-peel)
 - `2016-01-19` **M-H-D** — Afro Trap · [archive](https://delabienbonnemusique.tumblr.com/post/137627634045/m-h-d-afro-trap-part-3)
