@@ -8,10 +8,12 @@
   --media-max-width: 680px;
   /* A reading measure, narrower than the media: prose is read, not looked at. */
   --prose-max-width: 480px;
-  /* A register is not prose: it may spread, but not to the edge of the screen. */
-  --register-max-width: 1120px;
+  /* A register is not prose: it may spread, but not to the edge of the screen. Wide
+     enough to hold three columns and their two gutters — below that, three never fit and
+     the grid quietly settles for two. */
+  --register-max-width: 1200px;
   /* Wide enough that the longest name on the blog still sits on one line. */
-  --register-column: 22rem;
+  --register-column: 21rem;
   /* Only for an embed whose platform has no aspect ratio of its own to give. */
   --embed-height: 400px;
 
