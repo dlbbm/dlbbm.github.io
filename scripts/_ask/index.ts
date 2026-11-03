@@ -49,6 +49,9 @@ export const CREDIT_SEPARATOR = ';'
 // since `RecordingKind` accepts any string and would swallow a marker.
 const OTHER_KIND = Symbol('other kind')
 
+// Same, for the work that goes by a name other than the one this take carries.
+const OTHER_WORK = Symbol('another work')
+
 // `forms` is echoed back once the host is picked, and says what the prompt will accept.
 // YouTube is the one host whose URL is refused when no video id can be read out of it; the
 // rest are stored as given. Nothing derives an embed URL here — the component rendering a
@@ -188,8 +191,10 @@ function describeSongCredits (song: Song, recordings: Recording[], artists: Arti
 /**
  * The work this recording is a version of.
  *
- * Every work of that title is listed, whoever recorded it — a match under the same artist
- * is no safer a guess than any other, it just comes first in the list.
+ * The title handed in is what the take is called, so the works listed are the ones going by
+ * that name, whoever recorded them — a match under the same artist is no safer a guess than
+ * any other, it just comes first. `another work` is the cover released under a name that is
+ * not the work's: it asks for the work's own title and looks that up instead.
  */
 async function resolveSong (
   title: string,
@@ -209,30 +214,47 @@ async function resolveSong (
   const listed = [...candidates].sort((one, other) =>
     Number(byMainArtist(other)) - Number(byMainArtist(one)))
 
-  if (listed.length > 0) {
-    const chosen = await select<Song | null>({
-      // `recordingOf` is the schema.org property this is filling — which work the take is
-      // of — and saying so is clearer than `Song` over a list of works sharing a title.
-      message: 'Recording of',
-      choices: [
-        // Who recorded it goes in the name and not only in the description: two works can
-        // share a title — an original and the work an import made for its cover — and a
-        // description is only shown for the row the cursor is on.
-        ...listed.map(song => {
-          const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
-          const aliases = song.titleAliases.length === 0
-            ? ''
-            : ` · also ${song.titleAliases.join(', ')}`
-          return {
-            name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
-            description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
-            value: song as Song | null
-          }
-        }),
-        { name: 'new song', value: null }
-      ]
-    })
-    if (chosen !== null) return chosen
+  const chosen = await select<Song | null | typeof OTHER_WORK>({
+    // `recordingOf` is the schema.org property this is filling — which work the take is
+    // of — and saying so is clearer than `Song` over a list of works sharing a title.
+    message: 'Recording of',
+    choices: [
+      // Who recorded it goes in the name and not only in the description: two works can
+      // share a title — an original and the work an import made for its cover — and a
+      // description is only shown for the row the cursor is on.
+      ...listed.map(song => {
+        const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
+        const aliases = song.titleAliases.length === 0
+          ? ''
+          : ` · also ${song.titleAliases.join(', ')}`
+        return {
+          name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
+          description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
+          value: song as Song | null | typeof OTHER_WORK
+        }
+      }),
+      { name: 'new song', value: null },
+      { name: 'another work', value: OTHER_WORK }
+    ]
+  })
+
+  if (chosen === OTHER_WORK) {
+    const asked = (await input({
+      message: 'Work title',
+      validate: value => value.trim() !== '' || 'A title is needed.'
+    })).trim()
+    return await resolveSong(asked, mainArtist, songPool, recordingPool, artistPool, created)
+  }
+
+  if (chosen !== null) {
+    // A work whose title is not what this take is called is the ordinary shape of a cover,
+    // and it is also what a mis-titled work looks like. Nothing here can tell them apart,
+    // so the work's title is handed back instead of assumed right, and Enter keeps it.
+    if (chosen.title.toLowerCase() !== needle) {
+      const retitled = (await input({ message: 'Work title', default: chosen.title })).trim()
+      if (retitled !== '') { chosen.title = retitled }
+    }
+    return chosen
   }
 
   const song: Song = {
@@ -299,9 +321,11 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     ? undefined
     : songPool.find(song => song.id === editing.recording.songId)
 
-  const songTitle = (await input({
-    message: 'Song title',
-    default: editedSong?.title,
+  // What this take is called, which is what the post displays. For a cover released under
+  // another name it is that name, and which work it is a recording of is settled below.
+  const askedTitle = (await input({
+    message: 'Title',
+    default: editing?.recording.title ?? editedSong?.title,
     validate: value => value.trim() !== '' || 'A title is needed.'
   })).trim()
 
@@ -329,20 +353,13 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     false
   )
 
-  const song = await resolveSong(songTitle, mainArtist, songPool, recordingPool, artistPool, createdSongs)
+  const song = await resolveSong(askedTitle, mainArtist, songPool, recordingPool, artistPool, createdSongs)
 
-  // What this take was released as, when that is not the work's title. Empty is the usual
-  // answer, and so is the work's title typed back: both mean the same thing and are stored
-  // as nothing, the way an alias equal to the title is dropped below.
-  const rawRecordingTitle = await input({
-    message: 'Recording title',
-    default: editing?.recording.title ?? undefined
-  })
-  const typedRecordingTitle = rawRecordingTitle.trim()
-  const recordingTitle = typedRecordingTitle === ''
-    || typedRecordingTitle.toLowerCase() === song.title.toLowerCase()
+  // The take's title is stored only when it is not the work's — `Into the Black` against
+  // Neil Young's `Hey Hey, My My (Into the Black)`. Equal to it, there is nothing to say.
+  const recordingTitle = askedTitle.toLowerCase() === song.title.toLowerCase()
     ? null
-    : typedRecordingTitle
+    : askedTitle
 
   const initialKind = editing?.recording.kind ?? null
   const pickedKind = await select<RecordingKind | null | typeof OTHER_KIND>({
