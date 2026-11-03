@@ -88,13 +88,20 @@ export type Place = {
  * albums, not takes — so this list is not a standard being followed. It is the vocabulary
  * the old blog used, in the order it used it: a value earns its place here by appearing in
  * enough posts to be worth a keystroke.
+ *
+ * **Every member says what the occasion was, never how it sounds.** `acoustic` and
+ * `extended` describe an arrangement and belong in the free text, or the list stops being
+ * comparable with itself. `session` is the one member the archive did not earn — a filmed
+ * performance away from a stage, which keeps turning up and which `live` overclaims, since
+ * `performedAt` then expects a venue there never was.
  */
 export const recordingKinds = [
   'live',
   'remix',
   'demo',
   'alternate take',
-  'full album'
+  'full album',
+  'session'
 ] as const
 
 /**
