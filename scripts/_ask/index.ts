@@ -188,75 +188,24 @@ function describeSongCredits (song: Song, recordings: Recording[], artists: Arti
   return names.length === 0 ? 'no recording yet' : names.join(', ')
 }
 
-/**
- * The work this recording is a version of.
- *
- * The title handed in is what the take is called, so the works listed are the ones going by
- * that name, whoever recorded them — a match under the same artist is no safer a guess than
- * any other, it just comes first. `another work` is the cover released under a name that is
- * not the work's: it asks for the work's own title and looks that up instead.
- */
-async function resolveSong (
+/** Every work going by that name, the ones this artist already recorded coming first. */
+function matchingSongs (
   title: string,
   mainArtist: Artist,
   songPool: Song[],
-  recordingPool: Recording[],
-  artistPool: Artist[],
-  created: Song[]
-): Promise<Song> {
+  recordingPool: Recording[]
+): Song[] {
   const needle = title.toLowerCase()
   const candidates = songPool.filter(song => song.title.toLowerCase() === needle
     || song.titleAliases.some(alias => alias.toLowerCase() === needle))
-
   const byMainArtist = (song: Song): boolean => recordingPool.some(recording =>
     recording.songId === song.id
     && recording.byArtistIds.includes(mainArtist.id))
-  const listed = [...candidates].sort((one, other) =>
+  return [...candidates].sort((one, other) =>
     Number(byMainArtist(other)) - Number(byMainArtist(one)))
+}
 
-  const chosen = await select<Song | null | typeof OTHER_WORK>({
-    // `recordingOf` is the schema.org property this is filling — which work the take is
-    // of — and saying so is clearer than `Song` over a list of works sharing a title.
-    message: 'Recording of',
-    choices: [
-      // Who recorded it goes in the name and not only in the description: two works can
-      // share a title — an original and the work an import made for its cover — and a
-      // description is only shown for the row the cursor is on.
-      ...listed.map(song => {
-        const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
-        const aliases = song.titleAliases.length === 0
-          ? ''
-          : ` · also ${song.titleAliases.join(', ')}`
-        return {
-          name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
-          description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
-          value: song as Song | null | typeof OTHER_WORK
-        }
-      }),
-      { name: 'new song', value: null },
-      { name: 'another work', value: OTHER_WORK }
-    ]
-  })
-
-  if (chosen === OTHER_WORK) {
-    const asked = (await input({
-      message: 'Work title',
-      validate: value => value.trim() !== '' || 'A title is needed.'
-    })).trim()
-    return await resolveSong(asked, mainArtist, songPool, recordingPool, artistPool, created)
-  }
-
-  if (chosen !== null) {
-    // A work whose title is not what this take is called is the ordinary shape of a cover,
-    // and it is also what a mis-titled work looks like. Nothing here can tell them apart,
-    // so the work's title is handed back instead of assumed right, and Enter keeps it.
-    if (chosen.title.toLowerCase() !== needle) {
-      const retitled = (await input({ message: 'Work title', default: chosen.title })).trim()
-      if (retitled !== '') { chosen.title = retitled }
-    }
-    return chosen
-  }
-
+function mintSong (title: string, songPool: Song[], created: Song[]): Song {
   const song: Song = {
     id: createId(),
     title,
@@ -266,7 +215,69 @@ async function resolveSong (
   }
   songPool.push(song)
   created.push(song)
+  console.log(styles.light(`> ${song.title}, new`))
   return song
+}
+
+/**
+ * The work this recording is a version of.
+ *
+ * The title handed in is what the take is called, so the works listed are the ones going by
+ * that name, whoever recorded them — a match under the same artist is no safer a guess than
+ * any other, it just comes first. `another work` is the cover released under a name that is
+ * not the work's: it asks for the work's own title and settles there, without listing a
+ * second time unless that title is itself ambiguous.
+ */
+async function resolveSong (
+  title: string,
+  mainArtist: Artist,
+  songPool: Song[],
+  recordingPool: Recording[],
+  artistPool: Artist[],
+  created: Song[]
+): Promise<Song> {
+  // Who recorded it goes in the name and not only in the description: two works can share a
+  // title — an original and the work an import made for its cover — and a description is
+  // only shown for the row the cursor is on.
+  const choiceFor = (song: Song) => {
+    const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
+    const aliases = song.titleAliases.length === 0
+      ? ''
+      : ` · also ${song.titleAliases.join(', ')}`
+    return {
+      name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
+      description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
+      value: song
+    }
+  }
+
+  const listed = matchingSongs(title, mainArtist, songPool, recordingPool)
+  const chosen = await select<Song | null | typeof OTHER_WORK>({
+    // `recordingOf` is the schema.org property this is filling — which work the take is of
+    // — and saying so is clearer than `Song` over a list of works sharing a title.
+    message: 'Recording of',
+    choices: [
+      ...listed.map(song => ({ ...choiceFor(song), value: song as Song | null | typeof OTHER_WORK })),
+      { name: 'new song', value: null },
+      { name: 'another work', value: OTHER_WORK }
+    ]
+  })
+  if (chosen !== OTHER_WORK) return chosen ?? mintSong(title, songPool, created)
+
+  const asked = (await input({
+    message: 'Work title',
+    validate: value => value.trim() !== '' || 'A title is needed.'
+  })).trim()
+  const others = matchingSongs(asked, mainArtist, songPool, recordingPool)
+  const only = others[0]
+  // One work of that name, or none, is an answer and not a question. Listing again here is
+  // what made the command ask `Recording of` twice for something already named.
+  if (others.length === 0) return mintSong(asked, songPool, created)
+  if (others.length === 1 && only !== undefined) {
+    console.log(styles.light(`> ${only.title}, already known`))
+    return only
+  }
+  return await select<Song>({ message: 'Recording of', choices: others.map(choiceFor) })
 }
 
 async function askPlace (initial: Place | null): Promise<Place | null> {
