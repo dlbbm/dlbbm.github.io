@@ -110,6 +110,22 @@ in this repository that pushes.
   title, which one post for one recording has no room for; **47 trailing parentheses**
   were read as a kind, a place or a date and want checking; and **one title has no dash**
   at all.
+- **A cover image on a stored file.** `FileSource` carries a `kind` and a `path` and
+  nothing else, so a local mp3 has no picture and `FileMedia` shows a flat ground where a
+  sleeve should be. Wants a field on the type, a question in `post:create` — the file
+  already goes through `storeFile`, so a second one costs nothing — and the front reading
+  it as the player's `poster`.
+- **The file player has never met a file.** Everything in the database is a YouTube or
+  Vimeo embed, so the `Video` wrapper, its play button, its 4px timeline and its two
+  clocks have only ever been reasoned about. Wants one post with an mp3 and no external
+  source, end to end: `post:create`, `build:data`, the stream, the post page.
+- **More hosts, once a dead source is being replaced.** `mediaServices` names six and
+  `Embed` renders three of them. The two worth adding for this archive are
+  **archive.org**, where a lot of what Tumblr lost actually lives, and **dailymotion**,
+  which a French blog of 2012 would have used. Apple Music, Deezer and Tidal embed only
+  a thirty-second preview unless the reader is signed in, which is worse than a link.
+  Adding a name to the enum is not enough on its own: without a player in `Embed`, a
+  source falls back to a bare link.
 - **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
