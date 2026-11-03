@@ -4,6 +4,7 @@ import type { PostId } from '../../../shared/types/index.js'
 import type { BuiltPost } from '../../../shared/types/built.js'
 import { Post as PostArticle } from '../../components/Post/index.js'
 import { fetchPost } from '../../utils/fetch/index.js'
+import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
 const bem = clss('page-post')
@@ -17,6 +18,7 @@ export type PostProps = {
 // is none — a post that is missing looks exactly like one that has not arrived yet.
 export function Post ({ id }: PostProps) {
   const [loaded, setLoaded] = useState<{ post: BuiltPost | null } | null>(null)
+  useDocumentTitle(loaded === null ? undefined : loaded.post?.title ?? null)
 
   useEffect(() => {
     let current = true

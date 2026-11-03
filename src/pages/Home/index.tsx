@@ -3,6 +3,7 @@ import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { Pagination } from '../../components/Pagination/index.js'
 import { Post } from '../../components/Post/index.js'
 import { fetchPostPage, type PostPage } from '../../utils/fetch/index.js'
+import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
 const bem = clss('page-home')
@@ -13,6 +14,7 @@ export type HomeProps = {
 
 export function Home ({ page }: HomeProps) {
   const [loaded, setLoaded] = useState<PostPage | null>(null)
+  useDocumentTitle(page === 1 ? null : `Page ${page}`)
 
   useEffect(() => {
     let current = true

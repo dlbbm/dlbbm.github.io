@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'preact/hooks'
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltArtistIndexEntry } from '../../../shared/types/built.js'
 import { fetchArtists } from '../../utils/fetch/index.js'
+import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
 const bem = clss('page-artists')
 
 export function Artists () {
   const [artists, setArtists] = useState<BuiltArtistIndexEntry[] | null>(null)
+  useDocumentTitle(pageNames.artists)
 
   useEffect(() => {
     let current = true

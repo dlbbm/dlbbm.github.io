@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'preact/hooks'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltAbout } from '../../../shared/types/built.js'
 import { fetchAbout } from '../../utils/fetch/index.js'
+import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
 const bem = clss('page-about')
 
 export function About () {
   const [about, setAbout] = useState<BuiltAbout | null>(null)
+  useDocumentTitle(pageNames.about)
 
   useEffect(() => {
     let current = true

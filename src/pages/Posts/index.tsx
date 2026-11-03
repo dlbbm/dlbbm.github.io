@@ -2,8 +2,10 @@ import { useEffect, useState } from 'preact/hooks'
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { DateComponent } from '@mxfb/tools/components/Date/index.js'
+import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltPostIndexEntry } from '../../../shared/types/built.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
+import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
 const bem = clss('page-posts')
@@ -17,6 +19,7 @@ function qualifier (entry: BuiltPostIndexEntry): string | null {
 
 export function Posts () {
   const [posts, setPosts] = useState<BuiltPostIndexEntry[] | null>(null)
+  useDocumentTitle(pageNames.posts)
 
   useEffect(() => {
     let current = true

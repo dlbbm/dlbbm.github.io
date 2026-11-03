@@ -2,6 +2,7 @@ import { useEffect, useState } from 'preact/hooks'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { Post } from '../../components/Post/index.js'
 import { fetchArtistPage, type ArtistPage } from '../../utils/fetch/index.js'
+import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
 const bem = clss('page-artist')
@@ -12,6 +13,7 @@ export type ArtistProps = {
 
 export function Artist ({ slug }: ArtistProps) {
   const [loaded, setLoaded] = useState<{ page: ArtistPage | null } | null>(null)
+  useDocumentTitle(loaded === null ? undefined : loaded.page?.artist.name ?? null)
 
   useEffect(() => {
     let current = true
