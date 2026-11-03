@@ -31,8 +31,8 @@ export function Pagination ({ page, pageCount, onPage = true }: PaginationProps)
   const forward = onPage && page < pageCount
   return <nav class={bem()}>
     <Step label="first" href={back || !onPage ? pageUrl(1) : null} />
-    <Step label="prev" href={back ? pageUrl(page - 1) : null} />
-    <Step label="next" href={forward ? pageUrl(page + 1) : null} />
+    <Step label="‹ prev" href={back ? pageUrl(page - 1) : null} />
+    <Step label="next ›" href={forward ? pageUrl(page + 1) : null} />
     <Step label="last" href={forward || !onPage ? pageUrl(pageCount) : null} />
   </nav>
 }

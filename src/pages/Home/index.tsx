@@ -27,6 +27,9 @@ export function Home ({ page }: HomeProps) {
     <Pagination page={loaded.page} pageCount={loaded.pageCount} onPage={false} />
   </div>
   return <div class={bem()}>
+    {loaded.page === 1
+      ? null
+      : <Pagination page={loaded.page} pageCount={loaded.pageCount} />}
     <ol class={bem('posts')}>
       {loaded.posts.map(post => <li class={bem('post')} key={post.id}>
         <Post post={post} />

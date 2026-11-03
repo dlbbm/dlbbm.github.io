@@ -21,7 +21,7 @@
 
   /* What "secondary" means here. An opacity and not a fourth color: it holds whatever
      the theme says, in light or in dark, and costs the palette nothing. */
-  --muted-opacity: .82;
+  --muted-opacity: .74;
 
   /* The mark does not take the ambience, but it stays in its family: the two discs are
      one green, the lens the warm note they share. Named for the mark and not for the
