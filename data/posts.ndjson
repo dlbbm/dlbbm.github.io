@@ -109,7 +109,7 @@
 {"id":"560a63f73a4f9139","publishedOn":"2013-06-13T14:43:00+02:00","hidden":false,"recordingId":"0c4060d3006b16e5","body":null}
 {"id":"e936f3ff2e10f560","publishedOn":"2013-06-13T14:45:00+02:00","hidden":false,"recordingId":"91a3965d7697e79f","body":null}
 {"id":"1028ecf0f4c032d1","publishedOn":"2013-06-13T14:49:00+02:00","hidden":false,"recordingId":"378a112cbc70f724","body":null}
-{"id":"4702536528adefc9","publishedOn":"2013-06-13T17:54:00+02:00","hidden":false,"recordingId":"151b8203e65d4cdb","body":null}
+{"id":"4702536528adefc9","publishedOn":"2013-06-13T17:54:00+02:00","hidden":false,"recordingId":"151b8203e65d4cdb","body":"Post initially was Live at the Roxy, Los Angeles, 1983, but source disappeared ¯\\_(ツ)_/¯"}
 {"id":"ccf4463a9852810f","publishedOn":"2013-06-14T16:49:00+02:00","hidden":false,"recordingId":"0bae23061c1fe53e","body":null}
 {"id":"cb9827adcf3d7c92","publishedOn":"2013-06-15T11:22:00+02:00","hidden":false,"recordingId":"56da93191d32a932","body":null}
 {"id":"2148979306071b30","publishedOn":"2013-06-17T01:06:00+02:00","hidden":false,"recordingId":"2b37941f846ba358","body":null}
@@ -117,7 +117,7 @@
 {"id":"77ae4f5382e58940","publishedOn":"2013-06-17T18:49:00+02:00","hidden":false,"recordingId":"a9ec128ece1f2cbe","body":null}
 {"id":"908f432e9d7696d4","publishedOn":"2013-06-20T15:07:00+02:00","hidden":false,"recordingId":"fac4c328b80aef43","body":null}
 {"id":"86ece2fac4715888","publishedOn":"2013-06-26T10:47:00+02:00","hidden":false,"recordingId":"a0c63552ed2be265","body":null}
-{"id":"5ca54f1aaae8d165","publishedOn":"2013-06-28T15:32:00+02:00","hidden":false,"recordingId":"acc43af34a8aa357","body":null}
+{"id":"5ca54f1aaae8d165","publishedOn":"2013-06-28T15:32:00+02:00","hidden":true,"recordingId":"acc43af34a8aa357","body":null}
 {"id":"447e3592cf6e643c","publishedOn":"2013-06-29T12:13:00+02:00","hidden":false,"recordingId":"402316c69d487491","body":null}
 {"id":"fccf00fd97453786","publishedOn":"2013-06-29T12:14:00+02:00","hidden":false,"recordingId":"870eb112848bc3d3","body":null}
 {"id":"d6c6617de87b0429","publishedOn":"2013-06-30T23:25:00+02:00","hidden":false,"recordingId":"65ac42ca275c0ae1","body":null}
