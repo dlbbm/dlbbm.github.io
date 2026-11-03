@@ -1,233 +1,187 @@
 # Import review
 
-Written by `npm run data:import`. 170 of 401 posts need a look,
-grouped by what the import could not read. A post appears under every flag it carries.
+Written by `npm run data:import`. 159 of 401 posts need a look.
 
-## no-source — 127 posts
+**Fill the `source` column** with a URL that plays the track — the `find` link opens a
+YouTube search for it — and leave `note` for anything you want to say about the row.
+The `post` column is the id `npm run post:edit -- <id>` takes.
 
-Nothing to play. The embed was gone when the blog was crawled, so the post arrives as a title and a date.
+> **Running `data:import` again rewrites this file and replaces the database**, so
+> whatever is filled in here is lost along with every hand edit. Import once, then work
+> from here.
 
-- `2012-12-15` **Death In Vegas** — All That Glitters · [archive](https://delabienbonnemusique.tumblr.com/post/37940721754/death-in-vegas-all-that-glitters)
-- `2012-12-15` **IS Tropical** — Lies · [archive](https://delabienbonnemusique.tumblr.com/post/37941087519/is-tropical-lies)
-- `2012-12-16` **Connan Mockassin** — Forever Dolphin Love · [archive](https://delabienbonnemusique.tumblr.com/post/38054393401/connan-mockassin-forever-dolphin-love-erol)
-- `2012-12-16` **F.J. Mc Mahon** — The Spirit of the Golden Juice · [archive](https://delabienbonnemusique.tumblr.com/post/38054580110/fj-mc-mahon-the-spirit-of-the-golden-juice)
-- `2012-12-16` **The Doors** — Cars Hiss By My Window · [archive](https://delabienbonnemusique.tumblr.com/post/38054646032/the-doors-cars-hiss-by-my-window)
-- `2012-12-16` **J.J. Cale** — Since You Said Goodbye · [archive](https://delabienbonnemusique.tumblr.com/post/38078542255/jj-cale-since-you-said-goodbye)
-- `2012-12-16` **Pink Floyd** — Lucifer Sam · [archive](https://delabienbonnemusique.tumblr.com/post/38078805957/pink-floyd-lucifer-sam)
-- `2012-12-16` **The Cure** — A Forest · [archive](https://delabienbonnemusique.tumblr.com/post/38078959446/the-cure-a-forest)
-- `2012-12-16` **Serge Gainsbourg** — Comme un Boomerang — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/38079085146/serge-gainsbourg-comme-un-boomerang)
-- `2012-12-16` **Tijuana Panthers** — Angie · [archive](https://delabienbonnemusique.tumblr.com/post/38080530452/tijuana-panthers-angie)
-- `2012-12-18` **Pachanga Boys** — Time · [archive](https://delabienbonnemusique.tumblr.com/post/38217654070/pachanga-boys-time)
-- `2012-12-19` **Chromatics** — Into the Black · [archive](https://delabienbonnemusique.tumblr.com/post/38298459881/chromatics-into-the-black-neil-young-cover)
-- `2012-12-19` **Beach House** — Irene · [archive](https://delabienbonnemusique.tumblr.com/post/38298574779/beach-house-irene)
-- `2012-12-29` **Santo & Johnny** — Venus · [archive](https://delabienbonnemusique.tumblr.com/post/39124014043/santo-johnny-venus)
-- `2012-12-31` **Pearl Jam** — Do The Evolution · [archive](https://delabienbonnemusique.tumblr.com/post/39321171013/pearl-jam-do-the-evolution)
-- `2013-01-01` **Os Mutantes** — A Minha Menina · [archive](https://delabienbonnemusique.tumblr.com/post/39411272066/os-mutantes-a-minha-menina)
-- `2013-01-02` **Miles Davis** — Ascenseur pour l'Échafaud · [archive](https://delabienbonnemusique.tumblr.com/post/39469483893/miles-davis-ascenseur-pour-l%C3%A9chafaud)
-- `2013-01-06` **Gil Scott-Heron** — The Revolution Will Not Be Televised · [archive](https://delabienbonnemusique.tumblr.com/post/39786325527/gil-scott-heron-the-revolution-will-not-be)
-- `2013-01-08` **Grandmaster Flash** — The Message · [archive](https://delabienbonnemusique.tumblr.com/post/40042408527/grandmaster-flash-the-message-live)
-- `2013-01-11` **Joy Division** — Digital · [archive](https://delabienbonnemusique.tumblr.com/post/40207093572/joy-division-digital)
-- `2013-01-12` **Dye** — Fantasy · [archive](https://delabienbonnemusique.tumblr.com/post/40350495920/dye-fantasy)
-- `2013-01-14` **Julee Cruise** — The World Spins · [archive](https://delabienbonnemusique.tumblr.com/post/40512787125/julee-cruise-the-world-spins)
-- `2013-01-20` **Alaska In Winter** — Berlin · [archive](https://delabienbonnemusique.tumblr.com/post/40977954180/alaska-in-winter-berlin)
-- `2013-01-24` **Klangkarussell** — Sonnentanz · [archive](https://delabienbonnemusique.tumblr.com/post/41352770332/klangkarussell-sonnentanz)
-- `2013-01-25` **Outkast** — Hey Ya · [archive](https://delabienbonnemusique.tumblr.com/post/41431002473/outkast-hey-ya)
-- `2013-01-25` **Scrubs** — Hey Ya · [archive](https://delabienbonnemusique.tumblr.com/post/41431176949/scrubs-hey-ya-outkast-cover)
-- `2013-01-29` **Franz Liszt** — Hungarian Rhapsody N°2 · [archive](https://delabienbonnemusique.tumblr.com/post/41799226854/franz-liszt-hungarian-rhapsody-n-2)
-- `2013-02-12` **Air** — Empty House · [archive](https://delabienbonnemusique.tumblr.com/post/42927922559/air-empty-house)
-- `2013-03-13` **Black Sabbath** — Planet Caravan · [archive](https://delabienbonnemusique.tumblr.com/post/45267840900/black-sabbath-planet-caravan)
-- `2013-03-14` **Mr. Fox** — Party Track · [archive](https://delabienbonnemusique.tumblr.com/post/45365135891/mr-fox-party-track)
-- `2013-03-16` **Reputante** — Lock Me Up · [archive](https://delabienbonnemusique.tumblr.com/post/45456417564/reputante-lock-me-up)
-- `2013-04-03` **The Painted Ship** — Frustration · [archive](https://delabienbonnemusique.tumblr.com/post/46970602593/the-painted-ship-frustration)
-- `2013-04-05` **Pink Floyd** — Echoes · [archive](https://delabienbonnemusique.tumblr.com/post/47200819938/pink-floyd-echoes-stanley-kubrick-2001-a)
-- `2013-04-05` **The Velvet Underground** — Oh! Sweet Nuthin’ · [archive](https://delabienbonnemusique.tumblr.com/post/47200990265/the-velvet-underground-oh-sweet-nuthin)
-- `2013-04-19` **Daft Punk** — Rock n’ Roll · [archive](https://delabienbonnemusique.tumblr.com/post/48348933265/daft-punk-rock-n-roll)
-- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
-- `2013-04-25` **Sixto Rodriguez** — Crucify Your Mind · [archive](https://delabienbonnemusique.tumblr.com/post/48850039438/sixto-rodriguez-crucify-your-mind)
-- `2013-04-26` **Nu** — MAN O TO · [archive](https://delabienbonnemusique.tumblr.com/post/48920668607/nu-man-o-to)
-- `2013-06-13` **James Brown & B.B. King (ft. Mickael Jackson)** — Live at the Roxy, Los Angeles, 1983 · [archive](https://delabienbonnemusique.tumblr.com/post/52873110131/james-brown-bb-king-ft-mickael-jackson)
-- `2013-06-14` **M.O.O.N** — Paris · [archive](https://delabienbonnemusique.tumblr.com/post/52948611715/moon-paris)
-- `2013-06-17` **Al Green** — Let’s Stay Together · [archive](https://delabienbonnemusique.tumblr.com/post/53148526558/al-green-lets-stay-together)
-- `2013-06-17` **Road Rash II Music** — Main Theme · [archive](https://delabienbonnemusique.tumblr.com/post/53151486005/road-rash-ii-music-main-theme)
-- `2013-06-28` **Noir Désir** — Le Grand Incendie · [archive](https://delabienbonnemusique.tumblr.com/post/54097301009/noir-d%C3%A9sir-le-grand-incendie)
-- `2013-07-22` **Susan Christie** — Rainy Day · [archive](https://delabienbonnemusique.tumblr.com/post/56148179546/susan-christie-rainy-day)
-- `2013-07-26` **Streets of Rage** — Dilapidated Town · [archive](https://delabienbonnemusique.tumblr.com/post/56468918713/streets-of-rage-dilapidated-town-game-ost)
-- `2013-08-10` **Kellylee Evans** — Lose Yourself — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/57893859177/lose-yourself-by-kellylee-evans-on-grooveshark)
-- `2013-09-03` **Robin Trower** — I Believe to my Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
-- `2013-09-09` **Leonard Cohen** — Master Song · [archive](https://delabienbonnemusique.tumblr.com/post/60737631610/leonard-cohen-master-song)
-- `2013-09-17` **Laurie Anderson** — O Superman · [archive](https://delabienbonnemusique.tumblr.com/post/61490319763/laurie-anderson-o-superman)
-- `2013-09-24` **Yasmine Hamdan** — Ya Nass · [archive](https://delabienbonnemusique.tumblr.com/post/62104133298/yasmine-hamdan-ya-nass)
-- `2013-09-26` **Dominik Eulberg** — Der Tanz Der Gluehwuermchen · [archive](https://delabienbonnemusique.tumblr.com/post/62319152609/dominik-eulberg-der-tanz-der-gluehwuermchen)
-- `2013-10-04` **Karen Dalton** — In My Own Time · [archive](https://delabienbonnemusique.tumblr.com/post/63033512381/karen-dalton-in-my-own-time-album-1971)
-- `2013-10-14` **Nils Frahm** — Says · [archive](https://delabienbonnemusique.tumblr.com/post/64014749850/nils-frahm-says)
-- `2013-10-15` **The Tallest Man on Earth** — The Gardener · [archive](https://delabienbonnemusique.tumblr.com/post/64115943133/the-tallest-man-on-earth-the-gardener)
-- `2013-10-28` **Vincent Delerm** — Deauville sans Trintignant · [archive](https://delabienbonnemusique.tumblr.com/post/65339362438/vincent-delerm-deauville-sans-trintignant)
-- `2013-11-03` **Sarah Vaughan** — Blackbird · [archive](https://delabienbonnemusique.tumblr.com/post/65934138952/sarah-vaughan-blackbird-the-beatles-cover)
-- `2013-11-08` **Philip Glass** — Koyaanisqatsi · [archive](https://delabienbonnemusique.tumblr.com/post/66360268502/philip-glass-koyaanisqatsi-koyaanisqatsi-ost)
-- `2013-12-09` **Mike Bloomfield, Al Kooper & Stephen Stills** — Stop · [archive](https://delabienbonnemusique.tumblr.com/post/69498323134/mike-bloomfield-al-kooper-stephen-stills-stop)
-- `2013-12-15` **The Seatbelts** — Gotta Knock a Little Harder · [archive](https://delabienbonnemusique.tumblr.com/post/70102926546/the-seatbelts-gotta-knock-a-little-harder)
-- `2014-01-06` **Elliott Smith** — Needle in the Hay · [archive](https://delabienbonnemusique.tumblr.com/post/72447559536/elliott-smith-needle-in-the-hay)
-- `2014-03-01` **Adriano Celentano** — Prisencolinensinainciusol · [archive](https://delabienbonnemusique.tumblr.com/post/78206917406/adriano-celentano-prisencolinensinainciusol)
-- `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014 — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
-- `2014-03-17` **Dillinger** — Cocaine in my Brain · [archive](https://delabienbonnemusique.tumblr.com/post/79856933444/dillinger-cocaine-in-my-brain)
-- `2014-04-03` **Limousine** — Yodh Song · [archive](https://delabienbonnemusique.tumblr.com/post/81583458755/limousine-yodh-song)
-- `2014-04-03` **Twilight Hotel** — Ham Radio Blues · [archive](https://delabienbonnemusique.tumblr.com/post/81583522503/twilight-hotel-ham-radio-blues)
-- `2014-04-15` **Kiasmos** — Looped · [archive](https://delabienbonnemusique.tumblr.com/post/82789386372/kiasmos-looped)
-- `2014-04-17` **Tom Waits** — Invitation to the Blues · [archive](https://delabienbonnemusique.tumblr.com/post/83028195022/tom-waits-invitation-to-the-blues)
-- `2014-04-18` **Cymande** — Dove · [archive](https://delabienbonnemusique.tumblr.com/post/83084192152/cymande-dove)
-- `2014-05-26` **Weval** — Detian · [archive](https://delabienbonnemusique.tumblr.com/post/86922469925/weval-detian)
-- `2014-08-04` **The Flaming Lips & Miley Cyrus** — Lucy in the Sky with Diamonds · [archive](https://delabienbonnemusique.tumblr.com/post/93780478755/the-flaming-lips-miley-cyrus-lucy-in-the-sky)
-- `2014-08-10` **Kaaris** — Bouchon de Liège · [archive](https://delabienbonnemusique.tumblr.com/post/94340366100/kaaris-bouchon-de-li%C3%A8ge)
-- `2014-08-22` **eden ahbez** — Eden’s Island · [archive](https://delabienbonnemusique.tumblr.com/post/95450304235/eden-ahbez-edens-island-album-1960-0000)
-- `2014-09-15` **Dualryan** — Oceans · [archive](https://delabienbonnemusique.tumblr.com/post/97563869675/dualryan-oceans-the-yawhg-soundtrack)
-- `2014-09-17` **Michele Pertusi** — O sole mio · [archive](https://delabienbonnemusique.tumblr.com/post/97719696130/michele-pertusi-o-sole-mio)
-- `2014-10-10` **Jorge Ben** — Comanche · [archive](https://delabienbonnemusique.tumblr.com/post/99639851079/jorge-ben-comanche)
-- `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential Mix — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
-- `2014-10-11` **Serge Richard** — Jaques Chirac | Je serai le président de tous les français · [archive](https://delabienbonnemusique.tumblr.com/post/99714885091/serge-richard-jaques-chirac-je-serai-le)
-- `2014-10-12` **Charlie Winston** — Unlike Me · [archive](https://delabienbonnemusique.tumblr.com/post/99831777041/charlie-winston-unlike-me)
-- `2014-10-13` **Alt-J** — Lovely Day · [archive](https://delabienbonnemusique.tumblr.com/post/99914949537/alt-j-lovely-day-bill-withers-cover)
-- `2014-10-14` **Jacques Brel** — Marieke · [archive](https://delabienbonnemusique.tumblr.com/post/99981208565/jacques-brel-marieke)
-- `2014-11-07` **Mafia K'1 Fry** — Pour Ceux · [archive](https://delabienbonnemusique.tumblr.com/post/102000195445/mafia-k1-fry-pour-ceux)
-- `2014-11-19` **The Octopus Project** — Mmaj — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
-- `2014-11-21` **The Spits** — Die Die Die · [archive](https://delabienbonnemusique.tumblr.com/post/103196422430/the-spits-die-die-die-live)
-- `2015-01-13` **Rob** — Make it Fast, Make it Slow · [archive](https://delabienbonnemusique.tumblr.com/post/107930341975/rob-make-it-fast-make-it-slow)
-- `2015-01-26` **Caribou** — Back Home · [archive](https://delabienbonnemusique.tumblr.com/post/109211718345/caribou-back-home)
-- `2015-01-28` **Dona Dumitru Siminica** — De Trei Ani Nu Dau Pe-acasa · [archive](https://delabienbonnemusique.tumblr.com/post/109382293740/dona-dumitru-siminica-de-trei-ani-nu-dau)
-- `2015-02-09` **Talking Heads** — Stop Making Sense Live · [archive](https://delabienbonnemusique.tumblr.com/post/110541698610/talking-heads-stop-making-sense-live-at-the)
-- `2015-02-16` **Giorgio Murderer** — Primitive World · [archive](https://delabienbonnemusique.tumblr.com/post/111214724875/giorgio-murderer-primitive-world)
-- `2015-02-16` **Nat King Cole** — Tres Palabras · [archive](https://delabienbonnemusique.tumblr.com/post/111214693715/nat-king-cole-tres-palabras)
-- `2015-03-19` **Nick Drake** — Saturday Sun · [archive](https://delabienbonnemusique.tumblr.com/post/114040623425/nick-drake-saturday-sun)
-- `2015-03-23` **Parquet Courts** — These Boots are Made for Walkin’ · [archive](https://delabienbonnemusique.tumblr.com/post/114406977210/parquet-courts-these-boots-are-made-for-walkin)
-- `2015-05-06` **The Cure** — Another Journey by Train · [archive](https://delabienbonnemusique.tumblr.com/post/118278282905/the-cure-another-journey-by-train-group-home)
-- `2015-07-12` **Serge Gainsbourg** — La Noyée · [archive](https://delabienbonnemusique.tumblr.com/post/123904744384/serge-gainsbourg-la-noy%C3%A9e)
-- `2015-08-28` **Jorge Ben** — Bebete Vãobora · [archive](https://delabienbonnemusique.tumblr.com/post/127795292195/jorge-ben-bebete-v%C3%A3obora)
-- `2015-10-27` **Mild High Club** — Timeline · [archive](https://delabienbonnemusique.tumblr.com/post/132018465190/mild-high-club-timeline-album-2015-000)
-- `2015-12-04` **John Maus** — My Whole World is Coming Apart · [archive](https://delabienbonnemusique.tumblr.com/post/134536358291/john-maus-my-whole-world-is-coming-apart)
-- `2015-12-07` **Bass Drum of Death** — Velvet Itch · [archive](https://delabienbonnemusique.tumblr.com/post/134735586947/bass-drum-of-death-velvet-itch)
-- `2016-01-06` **Kevin Ayers** — The Lady Rachel · [archive](https://delabienbonnemusique.tumblr.com/post/136738569340/kevin-ayers-the-lady-rachel-live-at-john-peel)
-- `2016-01-08` **Rival Consoles** — Odyssey / Sonne (Bonus track version, Album, 2015 · [archive](https://delabienbonnemusique.tumblr.com/post/136874859580/rival-consoles-odyssey-sonne-bonus-track)
-- `2016-09-16` **Rita Pavone** — Viva la pappa col pomodorro · [archive](https://delabienbonnemusique.tumblr.com/post/150490207116/rita-pavone-viva-la-pappa-col-pomodorro)
-- `2016-09-23` **The Soft Boys** — You’ll Have To Go Sideways · [archive](https://delabienbonnemusique.tumblr.com/post/150816107286/the-soft-boys-youll-have-to-go-sideways)
-- `2016-10-07` **Marijata** — I Walk Alone · [archive](https://delabienbonnemusique.tumblr.com/post/151449215543/marijata-i-walk-alone)
-- `2016-10-21` **Jeremy Steig** — Howlin’ For Judy · [archive](https://delabienbonnemusique.tumblr.com/post/152092343646/jeremy-steig-howlin-for-judy)
-- `2016-11-25` **The Normal** — Warm Leatherette · [archive](https://delabienbonnemusique.tumblr.com/post/153642003724/the-normal-warm-leatherette)
-- `2016-11-25` **Fat White Family** — Touch The Leather · [archive](https://delabienbonnemusique.tumblr.com/post/153642016145/fat-white-family-touch-the-leather)
-- `2017-04-18` **The Jim Carroll Band** — People Who Died · [archive](https://delabienbonnemusique.tumblr.com/post/159718585255/the-jim-carroll-band-people-who-died)
-- `2017-04-19` **Daniel Johnston** — Catie · [archive](https://delabienbonnemusique.tumblr.com/post/159755562438/daniel-johnston-catie)
-- `2017-04-22` **Velvet Underground** — Cool It Down · [archive](https://delabienbonnemusique.tumblr.com/post/159864619895/velvet-underground-cool-it-down)
-- `2017-04-23` **Average Rap Band** — El Sol Reprise · [archive](https://delabienbonnemusique.tumblr.com/post/159901987275/average-rap-band-el-sol-reprise)
-- `2017-04-27` **Louise Bourgeois** — Otte · [archive](https://delabienbonnemusique.tumblr.com/post/160051304956/louise-bourgeois-otte)
-- `2017-04-28` **Reykjavíkurdætur** — Hæpið · [archive](https://delabienbonnemusique.tumblr.com/post/160086619792/reykjav%C3%ADkurd%C3%A6tur-h%C3%A6pi%C3%B0)
-- `2017-04-30` **Odetta** — Gallows Pole · [archive](https://delabienbonnemusique.tumblr.com/post/160154931702/odetta-gallows-pole)
-- `2017-05-04` **The Melodians** — The Rivers of Babylon · [archive](https://delabienbonnemusique.tumblr.com/post/160302204694/the-melodians-the-rivers-of-babylon)
-- `2017-05-08` **The Beatles** — Something · [archive](https://delabienbonnemusique.tumblr.com/post/160444863548/the-beatles-something)
-- `2017-05-11` **Christine Laume** — Rouge rouge · [archive](https://delabienbonnemusique.tumblr.com/post/160552168032/christine-laume-rouge-rouge)
-- `2017-05-12` **Brigitte Fontaine, The Art Ensemble of Chicago & Areski Belkacem** — Comme à la radio · [archive](https://delabienbonnemusique.tumblr.com/post/160587541557/brigitte-fontaine-the-art-ensemble-of-chicago)
-- `2017-05-17` **Janice McClain** — Giving My Love · [archive](https://delabienbonnemusique.tumblr.com/post/160769886343/janice-mcclain-giving-my-love-chevals-remix)
-- `2017-05-21` **Cymande** — Brothers On The Slide · [archive](https://delabienbonnemusique.tumblr.com/post/160911315638/cymande-brothers-on-the-slide)
-- `2017-05-22` **J.J. Cale** — Bringin’ it Back · [archive](https://delabienbonnemusique.tumblr.com/post/160949970892/jj-cale-bringin-it-back-live-at-ebbets)
-- `2017-05-28` **Vanishing Twins** — Eggs · [archive](https://delabienbonnemusique.tumblr.com/post/161166073110/vanishing-twins-eggs)
-- `2017-06-08` **Tiny Tim** — Tip Toe Thru’ The Tulips With Me · [archive](https://delabienbonnemusique.tumblr.com/post/161585611920/tiny-tim-tip-toe-thru-the-tulips-with-me)
-- `2017-06-11` **Charanjit Singh** — Raga Madhuvanti · [archive](https://delabienbonnemusique.tumblr.com/post/161697944217/charanjit-singh-raga-madhuvanti)
-- `2017-06-15` **Ghost Culture** — Answer · [archive](https://delabienbonnemusique.tumblr.com/post/161855741456/ghost-culture-answer)
-- `2018-02-03` **Taxi Girl** — Cherchez le garçon · [archive](https://delabienbonnemusique.tumblr.com/post/170450783455/taxi-girl-cherchez-le-gar%C3%A7on)
-- `2018-02-03` **Jacques Dutronc** — Le dragueur des supermarchés · [archive](https://delabienbonnemusique.tumblr.com/post/170451128895/jacques-dutronc-le-dragueur-des-supermarch%C3%A9s)
-- `2018-02-03` **Katerine** — Je vous emmerde · [archive](https://delabienbonnemusique.tumblr.com/post/170451127600/katerine-je-vous-emmerde)
-- `2018-02-06` **Salvatore Adamo** — Tombe la neige · [archive](https://delabienbonnemusique.tumblr.com/post/170586407310/salvatore-adamo-tombe-la-neige)
+## What the flags mean
 
-## unsplit-title — 1 post
+- **`no-source`** — 106 · Nothing to play. The embed was gone when the blog was crawled, so the post arrives as a title and a date.
+- **`widget-url`** — 7 · The source is a player widget rather than a page, because that is what the archive held. It plays; it just does not read as a URL a human would share.
+- **`unsplit-title`** — 1 · No dash in the title, so the whole line became the artist and the song both. Needs splitting by hand.
+- **`ambiguous-credit`** — 17 · The credit holds an ampersand or a comma. It was kept as one artist, because no rule tells `Polo & Pan` from `Murcof & Vanessa Wagner`.
+- **`dead-source-in-body`** — 5 · A URL was found in the body, on a host that is dead or is not an embed. Kept here rather than stored.
+- **`read-qualifier`** — 52 · A parenthesis at the end of the title was read as a kind, a place or a date. Worth checking it said that.
 
-No dash in the title, so the whole line became the artist and the song both. Needs splitting by hand.
+## The posts
 
-- `2018-02-03` **** —  · [archive](https://delabienbonnemusique.tumblr.com/post/170451108250)
+| post | date | artist | song | flags | find | source | note |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `cb8981d62fe50014` | 2012-12-15 | Death In Vegas | All That Glitters | `no-source` | [find](https://www.youtube.com/results?search_query=Death%20In%20Vegas%20All%20That%20Glitters) |  |  |
+| `d0e028372c2dbe3f` | 2012-12-15 | IS Tropical | Lies | `no-source` | [find](https://www.youtube.com/results?search_query=IS%20Tropical%20Lies) |  |  |
+| `afaac3e3981abf20` | 2012-12-16 | Connan Mockassin | Forever Dolphin Love | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Connan%20Mockassin%20Forever%20Dolphin%20Love) |  |  |
+| `24202b69e2377cfd` | 2012-12-16 | F.J. Mc Mahon | The Spirit of the Golden Juice | `no-source` | [find](https://www.youtube.com/results?search_query=F.J.%20Mc%20Mahon%20The%20Spirit%20of%20the%20Golden%20Juice) |  |  |
+| `43fea30aabc59b73` | 2012-12-16 | The Doors | Cars Hiss By My Window | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Doors%20Cars%20Hiss%20By%20My%20Window) |  |  |
+| `47e9106f863f0eb6` | 2012-12-16 | Brigitte | Ma Benz | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Brigitte%20Ma%20Benz) |  |  |
+| `224a400d2043f096` | 2012-12-16 | Nicone & Sascha Braemer (ft. Narra) | Caje | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Nicone%20%26%20Sascha%20Braemer%20(ft.%20Narra)%20Caje) |  |  |
+| `628467957f04f31b` | 2012-12-16 | J.J. Cale | Since You Said Goodbye | `no-source` | [find](https://www.youtube.com/results?search_query=J.J.%20Cale%20Since%20You%20Said%20Goodbye) |  |  |
+| `9911d0d5f421cae1` | 2012-12-16 | Pink Floyd | Lucifer Sam | `no-source` | [find](https://www.youtube.com/results?search_query=Pink%20Floyd%20Lucifer%20Sam) |  |  |
+| `b665fbcf097ceb92` | 2012-12-16 | Serge Gainsbourg | Comme un Boomerang | `no-source` `dead-source-in-body` | [find](https://www.youtube.com/results?search_query=Serge%20Gainsbourg%20Comme%20un%20Boomerang) |  | `http://grooveshark.com/songWidget.swf` |
+| `d8bf696f4163e632` | 2012-12-16 | Rone | La Dame Blanche | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Rone%20La%20Dame%20Blanche) |  |  |
+| `402fa4115e2fefd1` | 2012-12-16 | Tijuana Panthers | Angie | `no-source` | [find](https://www.youtube.com/results?search_query=Tijuana%20Panthers%20Angie) |  |  |
+| `06a724b49fd7dc2e` | 2012-12-18 | Pachanga Boys | Time | `no-source` | [find](https://www.youtube.com/results?search_query=Pachanga%20Boys%20Time) |  |  |
+| `4c452591530a4646` | 2012-12-19 | Chromatics | Into the Black | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Chromatics%20Into%20the%20Black) |  |  |
+| `d05be17966b8f7f9` | 2012-12-29 | Santo & Johnny | Venus | `ambiguous-credit` `no-source` | [find](https://www.youtube.com/results?search_query=Santo%20%26%20Johnny%20Venus) |  |  |
+| `e48a4afde395efc0` | 2012-12-31 | Pearl Jam | Do The Evolution | `no-source` | [find](https://www.youtube.com/results?search_query=Pearl%20Jam%20Do%20The%20Evolution) |  |  |
+| `197f9a974507c0f4` | 2013-01-01 | Os Mutantes | A Minha Menina | `no-source` | [find](https://www.youtube.com/results?search_query=Os%20Mutantes%20A%20Minha%20Menina) |  |  |
+| `fdf37ce707a0a743` | 2013-01-02 | Miles Davis | Ascenseur pour l'Échafaud | `no-source` | [find](https://www.youtube.com/results?search_query=Miles%20Davis%20Ascenseur%20pour%20l'%C3%89chafaud) |  |  |
+| `eee83bcd2885dafc` | 2013-01-04 | Pusha T ft. Tyler, The Creator | Trouble On My Mind | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Pusha%20T%20ft.%20Tyler%2C%20The%20Creator%20Trouble%20On%20My%20Mind) |  |  |
+| `4a6f939e6b1aa56d` | 2013-01-06 | Gil Scott-Heron | The Revolution Will Not Be Televised | `no-source` | [find](https://www.youtube.com/results?search_query=Gil%20Scott-Heron%20The%20Revolution%20Will%20Not%20Be%20Televised) |  |  |
+| `29c7f578bc5fe0c1` | 2013-01-08 | Grandmaster Flash | The Message | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Grandmaster%20Flash%20The%20Message) |  |  |
+| `3af8df9dcf16cc21` | 2013-01-11 | Joy Division | Digital | `no-source` | [find](https://www.youtube.com/results?search_query=Joy%20Division%20Digital) |  |  |
+| `5a86b5611540c426` | 2013-01-11 | Niki & the Dove | Mother Protect | `read-qualifier` `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Niki%20%26%20the%20Dove%20Mother%20Protect) |  |  |
+| `1209c605d33b0950` | 2013-01-12 | Dye | Fantasy | `no-source` | [find](https://www.youtube.com/results?search_query=Dye%20Fantasy) |  |  |
+| `8dd3f0f254de22fb` | 2013-01-14 | Julee Cruise | The World Spins | `no-source` | [find](https://www.youtube.com/results?search_query=Julee%20Cruise%20The%20World%20Spins) |  |  |
+| `a828fdee9d1b91cf` | 2013-01-20 | Alaska In Winter | Berlin | `no-source` | [find](https://www.youtube.com/results?search_query=Alaska%20In%20Winter%20Berlin) |  |  |
+| `90b2c1dcbf16ae59` | 2013-01-24 | Klangkarussell | Sonnentanz | `no-source` | [find](https://www.youtube.com/results?search_query=Klangkarussell%20Sonnentanz) |  |  |
+| `0d27a10020d72559` | 2013-01-25 | Outkast | Hey Ya | `no-source` | [find](https://www.youtube.com/results?search_query=Outkast%20Hey%20Ya) |  |  |
+| `fb39445edfe2d6cb` | 2013-01-25 | Scrubs | Hey Ya | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Scrubs%20Hey%20Ya) |  |  |
+| `1c8031c1109b7d12` | 2013-01-25 | Cocoon | American Boy | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Cocoon%20American%20Boy) |  |  |
+| `9fd873c170165e07` | 2013-01-25 | Amadou & Mariam | Sabali | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Amadou%20%26%20Mariam%20Sabali) |  |  |
+| `7f308bf6d8ff6d83` | 2013-01-29 | Franz Liszt | Hungarian Rhapsody N°2 | `no-source` | [find](https://www.youtube.com/results?search_query=Franz%20Liszt%20Hungarian%20Rhapsody%20N%C2%B02) |  |  |
+| `8ade5337bf31ea06` | 2013-01-30 | Frank Sinatra & Nancy Sinatra | Something Stupid | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Frank%20Sinatra%20%26%20Nancy%20Sinatra%20Something%20Stupid) |  |  |
+| `f004f4ada18f26d1` | 2013-02-01 | Jan Turkenburg | In My Spaceship | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Jan%20Turkenburg%20In%20My%20Spaceship) |  |  |
+| `b203aad850e025f7` | 2013-02-04 | Slow Club | Never Look Back | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Slow%20Club%20Never%20Look%20Back) |  |  |
+| `cdbfc0d60b4be975` | 2013-02-05 | Macklemore & Ryan Lewis ft. Wanz | Thrift Shop | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Macklemore%20%26%20Ryan%20Lewis%20ft.%20Wanz%20Thrift%20Shop) |  |  |
+| `5537ff4210fde031` | 2013-02-12 | Air | Empty House | `no-source` | [find](https://www.youtube.com/results?search_query=Air%20Empty%20House) |  |  |
+| `ebd08419067e54a3` | 2013-03-13 | Black Sabbath | Planet Caravan | `no-source` | [find](https://www.youtube.com/results?search_query=Black%20Sabbath%20Planet%20Caravan) |  |  |
+| `a2f7c9f22a8c8847` | 2013-03-14 | Mr. Fox | Party Track | `no-source` | [find](https://www.youtube.com/results?search_query=Mr.%20Fox%20Party%20Track) |  |  |
+| `2f45ca8b95e9548c` | 2013-03-16 | Reputante | Lock Me Up | `no-source` | [find](https://www.youtube.com/results?search_query=Reputante%20Lock%20Me%20Up) |  |  |
+| `7fbed46e8ae27b14` | 2013-04-03 | The Painted Ship | Frustration | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Painted%20Ship%20Frustration) |  |  |
+| `b56c5e95f9d79308` | 2013-04-05 | Pink Floyd | Echoes | `no-source` | [find](https://www.youtube.com/results?search_query=Pink%20Floyd%20Echoes) |  |  |
+| `2d500e2894895911` | 2013-04-05 | The Velvet Underground | Oh! Sweet Nuthin’ | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Velvet%20Underground%20Oh!%20Sweet%20Nuthin%E2%80%99) |  |  |
+| `dc2e5481971683ef` | 2013-04-19 | Daft Punk | Rock n’ Roll | `no-source` | [find](https://www.youtube.com/results?search_query=Daft%20Punk%20Rock%20n%E2%80%99%20Roll) |  |  |
+| `26c18da9ee8edaf7` | 2013-04-21 | Maxence Cyrin | D.A.N.C.E | `read-qualifier` `no-source` `dead-source-in-body` | [find](https://www.youtube.com/results?search_query=Maxence%20Cyrin%20D.A.N.C.E) |  | `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` |
+| `44b14f1cd6c9dd0f` | 2013-04-25 | Sixto Rodriguez | Crucify Your Mind | `no-source` | [find](https://www.youtube.com/results?search_query=Sixto%20Rodriguez%20Crucify%20Your%20Mind) |  |  |
+| `20c4a8bd1dd6e1d7` | 2013-04-26 | Nu | MAN O TO | `no-source` | [find](https://www.youtube.com/results?search_query=Nu%20MAN%20O%20TO) |  |  |
+| `f642c43e88300137` | 2013-06-13 | James Brown & B.B. King (ft. Mickael Jackson) | Live at the Roxy, Los Angeles, 1983 | `ambiguous-credit` `no-source` | [find](https://www.youtube.com/results?search_query=James%20Brown%20%26%20B.B.%20King%20(ft.%20Mickael%20Jackson)%20Live%20at%20the%20Roxy%2C%20Los%20Angeles%2C%201983) |  |  |
+| `de84cd9e1f7985d8` | 2013-06-14 | M.O.O.N | Paris | `widget-url` | [find](https://www.youtube.com/results?search_query=M.O.O.N%20Paris) |  |  |
+| `3324178f7141d9eb` | 2013-06-17 | Al Green | Let’s Stay Together | `no-source` | [find](https://www.youtube.com/results?search_query=Al%20Green%20Let%E2%80%99s%20Stay%20Together) |  |  |
+| `ad6c3c3673e29de2` | 2013-06-17 | Road Rash II Music | Main Theme | `no-source` | [find](https://www.youtube.com/results?search_query=Road%20Rash%20II%20Music%20Main%20Theme) |  |  |
+| `66a00a89f88abe78` | 2013-06-28 | Noir Désir | Le Grand Incendie | `no-source` | [find](https://www.youtube.com/results?search_query=Noir%20D%C3%A9sir%20Le%20Grand%20Incendie) |  |  |
+| `eefb999d8454c8c4` | 2013-07-22 | Brian Eno | Another Green World | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Brian%20Eno%20Another%20Green%20World) |  |  |
+| `90c030d721fc5114` | 2013-07-22 | Susan Christie | Rainy Day | `no-source` | [find](https://www.youtube.com/results?search_query=Susan%20Christie%20Rainy%20Day) |  |  |
+| `a5246eabb234ae56` | 2013-07-23 | J.J. Cale | Cocaine | `read-qualifier` | [find](https://www.youtube.com/results?search_query=J.J.%20Cale%20Cocaine) |  |  |
+| `d8cce87b92be99ac` | 2013-07-26 | Streets of Rage | Dilapidated Town | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Streets%20of%20Rage%20Dilapidated%20Town) |  |  |
+| `227d289db0460d0f` | 2013-07-29 | Crosby, Stills & Nash | Cathedral | `read-qualifier` `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Crosby%2C%20Stills%20%26%20Nash%20Cathedral) |  |  |
+| `a967e4d351fb85fd` | 2013-08-10 | Kellylee Evans | Lose Yourself | `no-source` `dead-source-in-body` | [find](https://www.youtube.com/results?search_query=Kellylee%20Evans%20Lose%20Yourself) |  | `http://grooveshark.com/songWidget.swf` |
+| `d3ba35760c9bb17e` | 2013-09-03 | Robin Trower | I Believe to my Soul | `no-source` `dead-source-in-body` | [find](https://www.youtube.com/results?search_query=Robin%20Trower%20I%20Believe%20to%20my%20Soul) |  | `http://grooveshark.com/songWidget.swf` |
+| `dfe4c3c7404c0608` | 2013-09-09 | Leonard Cohen | Master Song | `no-source` | [find](https://www.youtube.com/results?search_query=Leonard%20Cohen%20Master%20Song) |  |  |
+| `e6168064e21812c8` | 2013-09-17 | Laurie Anderson | O Superman | `no-source` | [find](https://www.youtube.com/results?search_query=Laurie%20Anderson%20O%20Superman) |  |  |
+| `a798efd57750c649` | 2013-09-24 | Yasmine Hamdan | Ya Nass | `no-source` | [find](https://www.youtube.com/results?search_query=Yasmine%20Hamdan%20Ya%20Nass) |  |  |
+| `5a57cbd91a14c509` | 2013-09-26 | Dominik Eulberg | Der Tanz Der Gluehwuermchen | `no-source` | [find](https://www.youtube.com/results?search_query=Dominik%20Eulberg%20Der%20Tanz%20Der%20Gluehwuermchen) |  |  |
+| `8ef434ade041040a` | 2013-10-01 | Olivier Libaux (ft. Ambrosia Parlsey) | The Blood is Love | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Olivier%20Libaux%20(ft.%20Ambrosia%20Parlsey)%20The%20Blood%20is%20Love) |  |  |
+| `1c2d4414fb388a96` | 2013-10-04 | Karen Dalton | In My Own Time | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Karen%20Dalton%20In%20My%20Own%20Time) |  |  |
+| `2271cb872de36244` | 2013-10-14 | Nils Frahm | Says | `widget-url` | [find](https://www.youtube.com/results?search_query=Nils%20Frahm%20Says) |  |  |
+| `19f8402093766767` | 2013-10-15 | The Tallest Man on Earth | The Gardener | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Tallest%20Man%20on%20Earth%20The%20Gardener) |  |  |
+| `484ef6ebb4028a49` | 2013-10-28 | Vincent Delerm | Deauville sans Trintignant | `no-source` | [find](https://www.youtube.com/results?search_query=Vincent%20Delerm%20Deauville%20sans%20Trintignant) |  |  |
+| `248fd3b3d993657e` | 2013-10-31 | Lou Reed | Sweet Jane | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Lou%20Reed%20Sweet%20Jane) |  |  |
+| `e3d7f38f4099f01a` | 2013-11-03 | Sarah Vaughan | Blackbird | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Sarah%20Vaughan%20Blackbird) |  |  |
+| `ecad310a611d790d` | 2013-11-07 | Barry De Vorzon | Theme from “The Warriors” | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Barry%20De%20Vorzon%20Theme%20from%20%E2%80%9CThe%20Warriors%E2%80%9D) |  |  |
+| `bd0cd4908ab2ff8f` | 2013-11-08 | Philip Glass | Koyaanisqatsi | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Philip%20Glass%20Koyaanisqatsi) |  |  |
+| `0634175a383bc4dd` | 2013-12-09 | Mike Bloomfield, Al Kooper & Stephen Stills | Stop | `ambiguous-credit` `no-source` | [find](https://www.youtube.com/results?search_query=Mike%20Bloomfield%2C%20Al%20Kooper%20%26%20Stephen%20Stills%20Stop) |  |  |
+| `7f1186d5c139457c` | 2013-12-15 | The Seatbelts | Gotta Knock a Little Harder | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Seatbelts%20Gotta%20Knock%20a%20Little%20Harder) |  |  |
+| `dbad11a8ac80220c` | 2014-01-06 | Elliott Smith | Needle in the Hay | `no-source` | [find](https://www.youtube.com/results?search_query=Elliott%20Smith%20Needle%20in%20the%20Hay) |  |  |
+| `cd50c6aad7aada5f` | 2014-01-27 | Oy | Doondari | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Oy%20Doondari) |  |  |
+| `c5860927b4393673` | 2014-03-01 | Adriano Celentano | Prisencolinensinainciusol | `no-source` | [find](https://www.youtube.com/results?search_query=Adriano%20Celentano%20Prisencolinensinainciusol) |  |  |
+| `6a81de51cede82f7` | 2014-03-01 | Azealia Banks | 212 | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Azealia%20Banks%20212) |  |  |
+| `ea07a0c0a7f83655` | 2014-03-03 | David August | Live at the Blue Parrot Club, Mexico, 2014 | `widget-url` | [find](https://www.youtube.com/results?search_query=David%20August%20Live%20at%20the%20Blue%20Parrot%20Club%2C%20Mexico%2C%202014) |  |  |
+| `4b6b6918ca093019` | 2014-03-17 | Dillinger | Cocaine in my Brain | `no-source` | [find](https://www.youtube.com/results?search_query=Dillinger%20Cocaine%20in%20my%20Brain) |  |  |
+| `1a94f4e274e7c927` | 2014-03-17 | The Velvet Underground | Oh Gin | `read-qualifier` | [find](https://www.youtube.com/results?search_query=The%20Velvet%20Underground%20Oh%20Gin) |  |  |
+| `f9b733b78f0eb3c0` | 2014-03-17 | Bill Withers | Grandma’s Hands | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Bill%20Withers%20Grandma%E2%80%99s%20Hands) |  |  |
+| `71efffe33e265af2` | 2014-04-15 | Kiasmos | Looped | `no-source` | [find](https://www.youtube.com/results?search_query=Kiasmos%20Looped) |  |  |
+| `9fa78cba00d4507f` | 2014-04-17 | Tom Waits | Invitation to the Blues | `no-source` | [find](https://www.youtube.com/results?search_query=Tom%20Waits%20Invitation%20to%20the%20Blues) |  |  |
+| `48f12833d0fbbffe` | 2014-04-18 | Cymande | Dove | `no-source` | [find](https://www.youtube.com/results?search_query=Cymande%20Dove) |  |  |
+| `fd15e6b48c9ea6a7` | 2014-05-06 | Klaus Nomi | Cold Song | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Klaus%20Nomi%20Cold%20Song) |  |  |
+| `88b61bcdc0123636` | 2014-05-07 | Seu Jorge | Life on Mars? | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Seu%20Jorge%20Life%20on%20Mars%3F) |  |  |
+| `34af7df2b90c25be` | 2014-05-26 | Weval | Detian | `no-source` | [find](https://www.youtube.com/results?search_query=Weval%20Detian) |  |  |
+| `61305158b79218ba` | 2014-06-10 | Emilíana Torrini | Animal Games | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Emil%C3%ADana%20Torrini%20Animal%20Games) |  |  |
+| `1c5daaae1377d897` | 2014-08-04 | The Flaming Lips & Miley Cyrus | Lucy in the Sky with Diamonds | `ambiguous-credit` `no-source` | [find](https://www.youtube.com/results?search_query=The%20Flaming%20Lips%20%26%20Miley%20Cyrus%20Lucy%20in%20the%20Sky%20with%20Diamonds) |  |  |
+| `19065f5f55315165` | 2014-08-10 | Kaaris | Bouchon de Liège | `no-source` | [find](https://www.youtube.com/results?search_query=Kaaris%20Bouchon%20de%20Li%C3%A8ge) |  |  |
+| `463696eea77b9de7` | 2014-08-22 | eden ahbez | Eden’s Island | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=eden%20ahbez%20Eden%E2%80%99s%20Island) |  |  |
+| `fd3dbfc36fa331b4` | 2014-09-10 | Mister Modo & Ugly Mac Beer | Invasion | `read-qualifier` `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Mister%20Modo%20%26%20Ugly%20Mac%20Beer%20Invasion) |  |  |
+| `2429e95c1376c737` | 2014-09-15 | Dualryan | Oceans | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Dualryan%20Oceans) |  |  |
+| `0fe0c23f34c6018d` | 2014-09-17 | Darkside | Planet Caravan | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Darkside%20Planet%20Caravan) |  |  |
+| `255ac0c885f17ffe` | 2014-10-10 | Jorge Ben | Comanche | `no-source` | [find](https://www.youtube.com/results?search_query=Jorge%20Ben%20Comanche) |  |  |
+| `ec20e28df8984015` | 2014-10-10 | CSP06 ∆ Nicolas Jaar | Essential Mix | `widget-url` | [find](https://www.youtube.com/results?search_query=CSP06%20%E2%88%86%20Nicolas%20Jaar%20Essential%20Mix) |  |  |
+| `e1cfbe7d23cd8834` | 2014-10-11 | Serge Richard | Jaques Chirac \| Je serai le président de tous les français | `no-source` | [find](https://www.youtube.com/results?search_query=Serge%20Richard%20Jaques%20Chirac%20%7C%20Je%20serai%20le%20pr%C3%A9sident%20de%20tous%20les%20fran%C3%A7ais) |  |  |
+| `45c4f9f89434055d` | 2014-10-11 | Claudine Longet | Jealous Guy / Don’t Let Me Down | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Claudine%20Longet%20Jealous%20Guy%20%2F%20Don%E2%80%99t%20Let%20Me%20Down) |  |  |
+| `47f8fba035658ef6` | 2014-10-12 | Charlie Winston | Unlike Me | `no-source` | [find](https://www.youtube.com/results?search_query=Charlie%20Winston%20Unlike%20Me) |  |  |
+| `44156c4b61f3b115` | 2014-10-13 | Alt-J | Lovely Day | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Alt-J%20Lovely%20Day) |  |  |
+| `8a52df22fcd8919a` | 2014-10-14 | Jacques Brel | Marieke | `no-source` | [find](https://www.youtube.com/results?search_query=Jacques%20Brel%20Marieke) |  |  |
+| `d4f0dcf8681e5f53` | 2014-11-07 | Mafia K'1 Fry | Pour Ceux | `no-source` | [find](https://www.youtube.com/results?search_query=Mafia%20K'1%20Fry%20Pour%20Ceux) |  |  |
+| `616adcc611e82330` | 2014-11-19 | The Octopus Project | Mmaj | `no-source` `dead-source-in-body` | [find](https://www.youtube.com/results?search_query=The%20Octopus%20Project%20Mmaj) |  | `http://grooveshark.com/songWidget.swf` |
+| `bbec8b932ec787bd` | 2014-11-21 | The Spits | Die Die Die | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Spits%20Die%20Die%20Die) |  |  |
+| `7165854c8588692d` | 2015-01-13 | Rob | Make it Fast, Make it Slow | `no-source` | [find](https://www.youtube.com/results?search_query=Rob%20Make%20it%20Fast%2C%20Make%20it%20Slow) |  |  |
+| `161ae6e8018fc487` | 2015-01-26 | Caribou | Back Home | `no-source` | [find](https://www.youtube.com/results?search_query=Caribou%20Back%20Home) |  |  |
+| `a1cb20afc627e401` | 2015-01-28 | Dona Dumitru Siminica | De Trei Ani Nu Dau Pe-acasa | `no-source` | [find](https://www.youtube.com/results?search_query=Dona%20Dumitru%20Siminica%20De%20Trei%20Ani%20Nu%20Dau%20Pe-acasa) |  |  |
+| `30334db5b1968d48` | 2015-02-09 | Talking Heads | Stop Making Sense Live | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Talking%20Heads%20Stop%20Making%20Sense%20Live) |  |  |
+| `acc06d4ed35b74d1` | 2015-02-16 | Giorgio Murderer | Primitive World | `no-source` | [find](https://www.youtube.com/results?search_query=Giorgio%20Murderer%20Primitive%20World) |  |  |
+| `3798371be8c66838` | 2015-02-16 | Nat King Cole | Tres Palabras | `no-source` | [find](https://www.youtube.com/results?search_query=Nat%20King%20Cole%20Tres%20Palabras) |  |  |
+| `8aeff2a7014f809a` | 2015-03-19 | Nick Drake | Saturday Sun | `no-source` | [find](https://www.youtube.com/results?search_query=Nick%20Drake%20Saturday%20Sun) |  |  |
+| `41ac8b18fce6aa50` | 2015-03-23 | Parquet Courts | These Boots are Made for Walkin’ | `no-source` | [find](https://www.youtube.com/results?search_query=Parquet%20Courts%20These%20Boots%20are%20Made%20for%20Walkin%E2%80%99) |  |  |
+| `58051a847b25713c` | 2015-04-20 | Radiohead | Reckoner | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Radiohead%20Reckoner) |  |  |
+| `17b024185a69baed` | 2015-05-06 | The Cure | Another Journey by Train | `read-qualifier` | [find](https://www.youtube.com/results?search_query=The%20Cure%20Another%20Journey%20by%20Train) |  |  |
+| `f0f34b4275a8872d` | 2015-07-12 | Serge Gainsbourg | La Noyée | `no-source` | [find](https://www.youtube.com/results?search_query=Serge%20Gainsbourg%20La%20Noy%C3%A9e) |  |  |
+| `5835e09b271ff5a1` | 2015-07-21 | Lee Moses | Bad Girl | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Lee%20Moses%20Bad%20Girl) |  |  |
+| `3a059083c2d488a8` | 2015-08-28 | Jorge Ben | Bebete Vãobora | `no-source` | [find](https://www.youtube.com/results?search_query=Jorge%20Ben%20Bebete%20V%C3%A3obora) |  |  |
+| `8b3ea9385ff1baec` | 2015-10-27 | Mild High Club | Timeline | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Mild%20High%20Club%20Timeline) |  |  |
+| `c5a15690a6b42126` | 2015-11-04 | Nick Cave & The Bad Seeds | Higgs Boson Blues | `read-qualifier` `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Nick%20Cave%20%26%20The%20Bad%20Seeds%20Higgs%20Boson%20Blues) |  |  |
+| `ffd9feacb8d2aa81` | 2015-12-04 | John Maus | My Whole World is Coming Apart | `no-source` | [find](https://www.youtube.com/results?search_query=John%20Maus%20My%20Whole%20World%20is%20Coming%20Apart) |  |  |
+| `340509f29a6c7580` | 2015-12-07 | Bass Drum of Death | Velvet Itch | `no-source` | [find](https://www.youtube.com/results?search_query=Bass%20Drum%20of%20Death%20Velvet%20Itch) |  |  |
+| `fb97dbc6fbf4400c` | 2016-01-06 | Kevin Ayers | The Lady Rachel | `read-qualifier` `no-source` | [find](https://www.youtube.com/results?search_query=Kevin%20Ayers%20The%20Lady%20Rachel) |  |  |
+| `afc627d429bccafa` | 2016-01-08 | Rival Consoles | Odyssey / Sonne (Bonus track version, Album, 2015 | `no-source` | [find](https://www.youtube.com/results?search_query=Rival%20Consoles%20Odyssey%20%2F%20Sonne%20(Bonus%20track%20version%2C%20Album%2C%202015) |  |  |
+| `c1932973ae2b3238` | 2016-01-19 | M-H-D | Afro Trap | `read-qualifier` | [find](https://www.youtube.com/results?search_query=M-H-D%20Afro%20Trap) |  |  |
+| `66a6cdbdb78bdae7` | 2016-09-02 | Elis Regina & Tom Jobim | Aguas de Março | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Elis%20Regina%20%26%20Tom%20Jobim%20Aguas%20de%20Mar%C3%A7o) |  |  |
+| `b44e645270b4862e` | 2016-09-03 | Tacocat | Crimson Wave | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Tacocat%20Crimson%20Wave) |  |  |
+| `0638685bbd7a4f5a` | 2016-09-09 | Nina Simone | Ain’t Got No - I Got Life | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Nina%20Simone%20Ain%E2%80%99t%20Got%20No%20-%20I%20Got%20Life) |  |  |
+| `7591cd31a69ef14a` | 2016-09-16 | Rita Pavone | Viva la pappa col pomodorro | `no-source` | [find](https://www.youtube.com/results?search_query=Rita%20Pavone%20Viva%20la%20pappa%20col%20pomodorro) |  |  |
+| `2b419dffac7910a7` | 2016-09-23 | The Soft Boys | You’ll Have To Go Sideways | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Soft%20Boys%20You%E2%80%99ll%20Have%20To%20Go%20Sideways) |  |  |
+| `539aa2869c6f2561` | 2016-09-30 | Mary Clark | Take Me I’m Yours | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Mary%20Clark%20Take%20Me%20I%E2%80%99m%20Yours) |  |  |
+| `b44aeec787305a95` | 2016-10-07 | Marijata | I Walk Alone | `no-source` | [find](https://www.youtube.com/results?search_query=Marijata%20I%20Walk%20Alone) |  |  |
+| `5a4d42fb31553ba7` | 2016-10-21 | Jeremy Steig | Howlin’ For Judy | `no-source` | [find](https://www.youtube.com/results?search_query=Jeremy%20Steig%20Howlin%E2%80%99%20For%20Judy) |  |  |
+| `78e3302f93612c1b` | 2016-11-25 | The Normal | Warm Leatherette | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Normal%20Warm%20Leatherette) |  |  |
+| `681bc3ecdf9acd45` | 2016-11-25 | Fat White Family | Touch The Leather | `no-source` | [find](https://www.youtube.com/results?search_query=Fat%20White%20Family%20Touch%20The%20Leather) |  |  |
+| `9cf07f0e54137541` | 2017-04-18 | The Jim Carroll Band | People Who Died | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Jim%20Carroll%20Band%20People%20Who%20Died) |  |  |
+| `59dd93f5cb6fd40a` | 2017-04-22 | Velvet Underground | Cool It Down | `no-source` | [find](https://www.youtube.com/results?search_query=Velvet%20Underground%20Cool%20It%20Down) |  |  |
+| `8597cf515fdb3b31` | 2017-04-23 | Average Rap Band | El Sol Reprise | `widget-url` | [find](https://www.youtube.com/results?search_query=Average%20Rap%20Band%20El%20Sol%20Reprise) |  |  |
+| `7b05551aa4105db7` | 2017-04-27 | Louise Bourgeois | Otte | `no-source` | [find](https://www.youtube.com/results?search_query=Louise%20Bourgeois%20Otte) |  |  |
+| `bb35939e1cff6c86` | 2017-04-28 | Reykjavíkurdætur | Hæpið | `no-source` | [find](https://www.youtube.com/results?search_query=Reykjav%C3%ADkurd%C3%A6tur%20H%C3%A6pi%C3%B0) |  |  |
+| `eebec0351ab8dc93` | 2017-04-30 | Odetta | Gallows Pole | `no-source` | [find](https://www.youtube.com/results?search_query=Odetta%20Gallows%20Pole) |  |  |
+| `d5aba41b76792172` | 2017-05-02 | Giuseppe Verdi | Va, Pensiero | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Giuseppe%20Verdi%20Va%2C%20Pensiero) |  |  |
+| `bcda9bbf2aded14d` | 2017-05-04 | The Melodians | The Rivers of Babylon | `no-source` | [find](https://www.youtube.com/results?search_query=The%20Melodians%20The%20Rivers%20of%20Babylon) |  |  |
+| `9a6aea224f74de49` | 2017-05-11 | Christine Laume | Rouge rouge | `no-source` | [find](https://www.youtube.com/results?search_query=Christine%20Laume%20Rouge%20rouge) |  |  |
+| `592eb1acc609ca37` | 2017-05-12 | Brigitte Fontaine, The Art Ensemble of Chicago & Areski Belkacem | Comme à la radio | `ambiguous-credit` `no-source` | [find](https://www.youtube.com/results?search_query=Brigitte%20Fontaine%2C%20The%20Art%20Ensemble%20of%20Chicago%20%26%20Areski%20Belkacem%20Comme%20%C3%A0%20la%20radio) |  |  |
+| `6bde764382dad226` | 2017-05-17 | Janice McClain | Giving My Love | `read-qualifier` `widget-url` | [find](https://www.youtube.com/results?search_query=Janice%20McClain%20Giving%20My%20Love) |  |  |
+| `c3fcd5189ed9b5ca` | 2017-05-21 | Cymande | Brothers On The Slide | `no-source` | [find](https://www.youtube.com/results?search_query=Cymande%20Brothers%20On%20The%20Slide) |  |  |
+| `c104772916e651f5` | 2017-05-22 | J.J. Cale | Bringin’ it Back | `read-qualifier` | [find](https://www.youtube.com/results?search_query=J.J.%20Cale%20Bringin%E2%80%99%20it%20Back) |  |  |
+| `a7d2b9130536f2b3` | 2017-05-28 | Vanishing Twins | Eggs | `widget-url` | [find](https://www.youtube.com/results?search_query=Vanishing%20Twins%20Eggs) |  |  |
+| `fa249f8d4e69a3d0` | 2017-05-31 | Tom Waits | Please wake me up | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Tom%20Waits%20Please%20wake%20me%20up) |  |  |
+| `64382d097e9e5216` | 2017-06-03 | Richard O’Brien | Science Fiction / Double Feature | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Richard%20O%E2%80%99Brien%20Science%20Fiction%20%2F%20Double%20Feature) |  |  |
+| `f4977126fc2741f8` | 2017-06-06 | Courtney Barnett | Pedestrian at Best | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Courtney%20Barnett%20Pedestrian%20at%20Best) |  |  |
+| `f375524326c1d17b` | 2017-06-11 | Charanjit Singh | Raga Madhuvanti | `no-source` | [find](https://www.youtube.com/results?search_query=Charanjit%20Singh%20Raga%20Madhuvanti) |  |  |
+| `4643629862047c54` | 2017-06-12 | Ancient Methods | DJ Set | `read-qualifier` | [find](https://www.youtube.com/results?search_query=Ancient%20Methods%20DJ%20Set) |  |  |
+| `9eca7f8a27cbecb0` | 2018-02-03 | Taxi Girl | Cherchez le garçon | `no-source` | [find](https://www.youtube.com/results?search_query=Taxi%20Girl%20Cherchez%20le%20gar%C3%A7on) |  |  |
+| `e121d1ff7e329dae` | 2018-02-03 | Polo & Pan | Dragon Pom Z | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Polo%20%26%20Pan%20Dragon%20Pom%20Z) |  |  |
+| `cf367bd00952b902` | 2018-02-03 |  |  | `unsplit-title` | [find](https://www.youtube.com/results?search_query=%20) |  |  |
+| `29a198ad0abcff76` | 2018-02-03 | Katerine | Je vous emmerde | `no-source` | [find](https://www.youtube.com/results?search_query=Katerine%20Je%20vous%20emmerde) |  |  |
+| `0a0dd8cb9fea8f04` | 2019-01-31 | Murcof & Vanessa Wagner | Gnossienne No. 3 | `ambiguous-credit` | [find](https://www.youtube.com/results?search_query=Murcof%20%26%20Vanessa%20Wagner%20Gnossienne%20No.%203) |  |  |
 
-## ambiguous-credit — 17 posts
-
-The credit holds an ampersand or a comma. It was kept as one artist, because no rule tells `Polo & Pan` from `Murcof & Vanessa Wagner`.
-
-- `2012-12-16` **Nicone & Sascha Braemer (ft. Narra)** — Caje · [archive](https://delabienbonnemusique.tumblr.com/post/38078475875/nicone-sascha-braemer-ft-narra-caje)
-- `2012-12-29` **Santo & Johnny** — Venus · [archive](https://delabienbonnemusique.tumblr.com/post/39124014043/santo-johnny-venus)
-- `2013-01-04` **Pusha T ft. Tyler, The Creator** — Trouble On My Mind · [archive](https://delabienbonnemusique.tumblr.com/post/39654532582/pusha-t-ft-tyler-the-creator-trouble-on-my)
-- `2013-01-11` **Niki & the Dove** — Mother Protect · [archive](https://delabienbonnemusique.tumblr.com/post/40209925982/niki-the-dove-mother-protect-goldroom-remix)
-- `2013-01-25` **Amadou & Mariam** — Sabali · [archive](https://delabienbonnemusique.tumblr.com/post/41431800546/amadou-mariam-sabali)
-- `2013-01-30` **Frank Sinatra & Nancy Sinatra** — Something Stupid · [archive](https://delabienbonnemusique.tumblr.com/post/41863297225/frank-sinatra-nancy-sinatra-something-stupid)
-- `2013-02-05` **Macklemore & Ryan Lewis ft. Wanz** — Thrift Shop · [archive](https://delabienbonnemusique.tumblr.com/post/42356455145/macklemore-ryan-lewis-ft-wanz-thrift-shop)
-- `2013-06-13` **James Brown & B.B. King (ft. Mickael Jackson)** — Live at the Roxy, Los Angeles, 1983 · [archive](https://delabienbonnemusique.tumblr.com/post/52873110131/james-brown-bb-king-ft-mickael-jackson)
-- `2013-07-29` **Crosby, Stills & Nash** — Cathedral · [archive](https://delabienbonnemusique.tumblr.com/post/56786040694/crosby-stills-nash-cathedral-live-at-the)
-- `2013-12-09` **Mike Bloomfield, Al Kooper & Stephen Stills** — Stop · [archive](https://delabienbonnemusique.tumblr.com/post/69498323134/mike-bloomfield-al-kooper-stephen-stills-stop)
-- `2014-08-04` **The Flaming Lips & Miley Cyrus** — Lucy in the Sky with Diamonds · [archive](https://delabienbonnemusique.tumblr.com/post/93780478755/the-flaming-lips-miley-cyrus-lucy-in-the-sky)
-- `2014-09-10` **Mister Modo & Ugly Mac Beer** — Invasion · [archive](https://delabienbonnemusique.tumblr.com/post/97125630820/mister-modo-ugly-mac-beer-invasion-judgement)
-- `2015-11-04` **Nick Cave & The Bad Seeds** — Higgs Boson Blues · [archive](https://delabienbonnemusique.tumblr.com/post/132536876835/nick-cave-the-bad-seeds-higgs-boson-blues)
-- `2016-09-02` **Elis Regina & Tom Jobim** — Aguas de Março · [archive](https://delabienbonnemusique.tumblr.com/post/149834789010/elis-regina-tom-jobim-aguas-de-mar%C3%A7o)
-- `2017-05-12` **Brigitte Fontaine, The Art Ensemble of Chicago & Areski Belkacem** — Comme à la radio · [archive](https://delabienbonnemusique.tumblr.com/post/160587541557/brigitte-fontaine-the-art-ensemble-of-chicago)
-- `2018-02-03` **Polo & Pan** — Dragon Pom Z · [archive](https://delabienbonnemusique.tumblr.com/post/170451121975/polo-pan-dragon-pom-z)
-- `2019-01-31` **Murcof & Vanessa Wagner** — Gnossienne No. 3 · [archive](https://delabienbonnemusique.tumblr.com/post/182451761040/murcof-vanessa-wagner-gnossienne-no-3)
-
-## dead-source-in-body — 7 posts
-
-A URL was found in the body, on a host that is dead or is not an embed. Kept here rather than stored.
-
-- `2012-12-16` **Serge Gainsbourg** — Comme un Boomerang — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/38079085146/serge-gainsbourg-comme-un-boomerang)
-- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
-- `2013-08-10` **Kellylee Evans** — Lose Yourself — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/57893859177/lose-yourself-by-kellylee-evans-on-grooveshark)
-- `2013-09-03` **Robin Trower** — I Believe to my Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
-- `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014 — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
-- `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential Mix — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
-- `2014-11-19` **The Octopus Project** — Mmaj — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
-
-## read-qualifier — 52 posts
-
-A parenthesis at the end of the title was read as a kind, a place or a date. Worth checking it said that.
-
-- `2012-12-16` **Connan Mockassin** — Forever Dolphin Love · [archive](https://delabienbonnemusique.tumblr.com/post/38054393401/connan-mockassin-forever-dolphin-love-erol)
-- `2012-12-16` **Brigitte** — Ma Benz · [archive](https://delabienbonnemusique.tumblr.com/post/38078048435/brigitte-ma-benz-supr%C3%AAme-ntm-cover)
-- `2012-12-16` **Rone** — La Dame Blanche · [archive](https://delabienbonnemusique.tumblr.com/post/38079518704/rone-la-dame-blanche-extended)
-- `2012-12-19` **Chromatics** — Into the Black · [archive](https://delabienbonnemusique.tumblr.com/post/38298459881/chromatics-into-the-black-neil-young-cover)
-- `2013-01-08` **Grandmaster Flash** — The Message · [archive](https://delabienbonnemusique.tumblr.com/post/40042408527/grandmaster-flash-the-message-live)
-- `2013-01-11` **Niki & the Dove** — Mother Protect · [archive](https://delabienbonnemusique.tumblr.com/post/40209925982/niki-the-dove-mother-protect-goldroom-remix)
-- `2013-01-25` **Scrubs** — Hey Ya · [archive](https://delabienbonnemusique.tumblr.com/post/41431176949/scrubs-hey-ya-outkast-cover)
-- `2013-01-25` **Cocoon** — American Boy · [archive](https://delabienbonnemusique.tumblr.com/post/41431570689/cocoon-american-boy-estelle-cover)
-- `2013-02-01` **Jan Turkenburg** — In My Spaceship · [archive](https://delabienbonnemusique.tumblr.com/post/42014755127/jan-turkenburg-in-my-spaceship-pilooski-remix)
-- `2013-02-04` **Slow Club** — Never Look Back · [archive](https://delabienbonnemusique.tumblr.com/post/42280449102/slow-club-never-look-back-acoustic)
-- `2013-04-21` **Maxence Cyrin** — D.A.N.C.E — `http://soundowl.com/track/675/maxence-cyrin-dance-justice-cover` · [archive](https://delabienbonnemusique.tumblr.com/post/48559733168/maxence-cyrin-dance-justice-cover)
-- `2013-07-22` **Brian Eno** — Another Green World · [archive](https://delabienbonnemusique.tumblr.com/post/56145494623/brian-eno-another-green-world-album-1975)
-- `2013-07-23` **J.J. Cale** — Cocaine · [archive](https://delabienbonnemusique.tumblr.com/post/56237103940/jj-cale-cocaine-live)
-- `2013-07-26` **Streets of Rage** — Dilapidated Town · [archive](https://delabienbonnemusique.tumblr.com/post/56468918713/streets-of-rage-dilapidated-town-game-ost)
-- `2013-07-29` **Crosby, Stills & Nash** — Cathedral · [archive](https://delabienbonnemusique.tumblr.com/post/56786040694/crosby-stills-nash-cathedral-live-at-the)
-- `2013-10-01` **Olivier Libaux (ft. Ambrosia Parlsey)** — The Blood is Love · [archive](https://delabienbonnemusique.tumblr.com/post/62808969972/olivier-libaux-ft-ambrosia-parlsey-the-blood)
-- `2013-10-04` **Karen Dalton** — In My Own Time · [archive](https://delabienbonnemusique.tumblr.com/post/63033512381/karen-dalton-in-my-own-time-album-1971)
-- `2013-10-31` **Lou Reed** — Sweet Jane · [archive](https://delabienbonnemusique.tumblr.com/post/65601000654/lou-reed-sweet-jane-live-at-st-anns)
-- `2013-11-03` **Sarah Vaughan** — Blackbird · [archive](https://delabienbonnemusique.tumblr.com/post/65934138952/sarah-vaughan-blackbird-the-beatles-cover)
-- `2013-11-07` **Barry De Vorzon** — Theme from “The Warriors” · [archive](https://delabienbonnemusique.tumblr.com/post/66271710801/barry-de-vorzon-theme-from-the-warriors-the)
-- `2013-11-08` **Philip Glass** — Koyaanisqatsi · [archive](https://delabienbonnemusique.tumblr.com/post/66360268502/philip-glass-koyaanisqatsi-koyaanisqatsi-ost)
-- `2014-01-27` **Oy** — Doondari · [archive](https://delabienbonnemusique.tumblr.com/post/74763655928/oy-tooth-live-at-zurich)
-- `2014-03-01` **Azealia Banks** — 212 · [archive](https://delabienbonnemusique.tumblr.com/post/78207070899/azealia-banks-212-ft-lazy-jay)
-- `2014-03-17` **The Velvet Underground** — Oh Gin · [archive](https://delabienbonnemusique.tumblr.com/post/79857041468/the-velvet-underground-oh-gin-demo)
-- `2014-03-17` **Bill Withers** — Grandma’s Hands · [archive](https://delabienbonnemusique.tumblr.com/post/79857290358/bill-withers-grandmas-hands)
-- `2014-05-06` **Klaus Nomi** — Cold Song · [archive](https://delabienbonnemusique.tumblr.com/post/84913404365/klaus-nomi-cold-song-live)
-- `2014-05-07` **Seu Jorge** — Life on Mars? · [archive](https://delabienbonnemusique.tumblr.com/post/85006780405/seu-jorge-life-on-mars)
-- `2014-06-10` **Emilíana Torrini** — Animal Games · [archive](https://delabienbonnemusique.tumblr.com/post/88381335580/emil%C3%ADana-torrini-animal-games-live-at-wfuv-new)
-- `2014-08-22` **eden ahbez** — Eden’s Island · [archive](https://delabienbonnemusique.tumblr.com/post/95450304235/eden-ahbez-edens-island-album-1960-0000)
-- `2014-09-10` **Mister Modo & Ugly Mac Beer** — Invasion · [archive](https://delabienbonnemusique.tumblr.com/post/97125630820/mister-modo-ugly-mac-beer-invasion-judgement)
-- `2014-09-15` **Dualryan** — Oceans · [archive](https://delabienbonnemusique.tumblr.com/post/97563869675/dualryan-oceans-the-yawhg-soundtrack)
-- `2014-09-17` **Darkside** — Planet Caravan · [archive](https://delabienbonnemusique.tumblr.com/post/97720034430/darkside-planet-caravan-black-sabbath-cover)
-- `2014-10-11` **Claudine Longet** — Jealous Guy / Don’t Let Me Down · [archive](https://delabienbonnemusique.tumblr.com/post/99742726087/claudine-longet-jealous-guy-dont-let-me-down)
-- `2014-10-13` **Alt-J** — Lovely Day · [archive](https://delabienbonnemusique.tumblr.com/post/99914949537/alt-j-lovely-day-bill-withers-cover)
-- `2015-02-09` **Talking Heads** — Stop Making Sense Live · [archive](https://delabienbonnemusique.tumblr.com/post/110541698610/talking-heads-stop-making-sense-live-at-the)
-- `2015-04-20` **Radiohead** — Reckoner · [archive](https://delabienbonnemusique.tumblr.com/post/116899409210/radiohead-reckoner-live-from-the-basement-at)
-- `2015-05-06` **The Cure** — Another Journey by Train · [archive](https://delabienbonnemusique.tumblr.com/post/118278282905/the-cure-another-journey-by-train-group-home)
-- `2015-07-21` **Lee Moses** — Bad Girl · [archive](https://delabienbonnemusique.tumblr.com/post/124677206923/lee-moses-bad-girl-parts-i-ii)
-- `2015-10-27` **Mild High Club** — Timeline · [archive](https://delabienbonnemusique.tumblr.com/post/132018465190/mild-high-club-timeline-album-2015-000)
-- `2015-11-04` **Nick Cave & The Bad Seeds** — Higgs Boson Blues · [archive](https://delabienbonnemusique.tumblr.com/post/132536876835/nick-cave-the-bad-seeds-higgs-boson-blues)
-- `2016-01-06` **Kevin Ayers** — The Lady Rachel · [archive](https://delabienbonnemusique.tumblr.com/post/136738569340/kevin-ayers-the-lady-rachel-live-at-john-peel)
-- `2016-01-19` **M-H-D** — Afro Trap · [archive](https://delabienbonnemusique.tumblr.com/post/137627634045/m-h-d-afro-trap-part-3)
-- `2016-09-03` **Tacocat** — Crimson Wave · [archive](https://delabienbonnemusique.tumblr.com/post/149876139586/tacocat-crimson-wave-live-on-kexp-seattle-19)
-- `2016-09-09` **Nina Simone** — Ain’t Got No - I Got Life · [archive](https://delabienbonnemusique.tumblr.com/post/150165076527/nina-simone-aint-got-no-i-got-life-live)
-- `2016-09-30` **Mary Clark** — Take Me I’m Yours · [archive](https://delabienbonnemusique.tumblr.com/post/151143698476/mary-clark-take-me-im-yours-club-12-mix)
-- `2017-05-02` **Giuseppe Verdi** — Va, Pensiero · [archive](https://delabienbonnemusique.tumblr.com/post/160230765324/giuseppe-verdi-va-pensiero-nabucco)
-- `2017-05-17` **Janice McClain** — Giving My Love · [archive](https://delabienbonnemusique.tumblr.com/post/160769886343/janice-mcclain-giving-my-love-chevals-remix)
-- `2017-05-22` **J.J. Cale** — Bringin’ it Back · [archive](https://delabienbonnemusique.tumblr.com/post/160949970892/jj-cale-bringin-it-back-live-at-ebbets)
-- `2017-05-31` **Tom Waits** — Please wake me up · [archive](https://delabienbonnemusique.tumblr.com/post/161280763667/tom-waits-please-wake-me-up-demo)
-- `2017-06-03` **Richard O’Brien** — Science Fiction / Double Feature · [archive](https://delabienbonnemusique.tumblr.com/post/161391399624/richard-obrien-science-fiction-double-feature)
-- `2017-06-06` **Courtney Barnett** — Pedestrian at Best · [archive](https://delabienbonnemusique.tumblr.com/post/161508585874/courtney-barnett-pedestrian-at-best-live-at-the)
-- `2017-06-12` **Ancient Methods** — DJ Set · [archive](https://delabienbonnemusique.tumblr.com/post/161737883741/ancient-methods-dj-set-live-at-boiler-room)
+Every row traces back to Tumblr through its post id: the recording it names carries the
+permalink as an identity source.
