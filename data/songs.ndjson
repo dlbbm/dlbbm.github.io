@@ -125,7 +125,7 @@
 {"id":"a40fd4be4320b22d","title":"Another Green World","titleAliases":[],"originalArtistIds":["f2b57e4b47c1ea59"],"sources":[]}
 {"id":"d87c6ca4349d8172","title":"Rainy Day","titleAliases":[],"originalArtistIds":["d87581ac06bf9ad2"],"sources":[]}
 {"id":"31cd11f0e24e86e9","title":"Cocaine","titleAliases":[],"originalArtistIds":["15580e9a456077cd"],"sources":[]}
-{"id":"e68b9f7404ae332d","title":"Dilapidated Town","titleAliases":[],"originalArtistIds":["4cf55130def95227"],"sources":[]}
+{"id":"e68b9f7404ae332d","title":"Dilapidated Town","titleAliases":[],"originalArtistIds":["50c384ec27579d22","12fededa4b71d632"],"sources":[]}
 {"id":"81f307217eb38e12","title":"Cathedral","titleAliases":[],"originalArtistIds":["6b36c62c78c793b7"],"sources":[]}
 {"id":"9c36633d71e83255","title":"Water Sample","titleAliases":[],"originalArtistIds":["c014ae9bd816af04"],"sources":[]}
 {"id":"60f15ba7a2fe6770","title":"Lose Yourself","titleAliases":[],"originalArtistIds":["61fbcb64bf7b163d"],"sources":[]}
@@ -135,14 +135,14 @@
 {"id":"90cdee86d6fa8ca3","title":"O Superman","titleAliases":[],"originalArtistIds":["5180086dedc84bfd"],"sources":[]}
 {"id":"af1ab3baec7f95c1","title":"Ya Nass","titleAliases":[],"originalArtistIds":["5f5dd1562c88c3ed"],"sources":[]}
 {"id":"e08827050f3e387e","title":"Der Tanz Der Gluehwuermchen","titleAliases":[],"originalArtistIds":["e98d340d0922567a"],"sources":[]}
-{"id":"cf38678f2479d058","title":"The Blood is Love","titleAliases":[],"originalArtistIds":["cd55170fc2928fd0"],"sources":[]}
+{"id":"cf38678f2479d058","title":"The Blood is Love","titleAliases":[],"originalArtistIds":["5de09cf397d84ed6"],"sources":[]}
 {"id":"4391076a88547caa","title":"I’m the Man, That Will Find You","titleAliases":[],"originalArtistIds":["ad0b6a503b99a530"],"sources":[]}
 {"id":"1bcc0678be0f78ba","title":"In My Own Time","titleAliases":[],"originalArtistIds":["28d7cca82df897ee"],"sources":[]}
 {"id":"fb60d1b048447f29","title":"Says","titleAliases":[],"originalArtistIds":["2fcedbaf31977945"],"sources":[]}
 {"id":"0617b7b26852daef","title":"The Gardener","titleAliases":[],"originalArtistIds":["59d2ccde662cab24"],"sources":[]}
 {"id":"0ad3e38f52de172e","title":"Deauville sans Trintignant","titleAliases":[],"originalArtistIds":["2b805995b7596dc2"],"sources":[]}
 {"id":"ea30998bd22d035d","title":"La chanson du loubard","titleAliases":[],"originalArtistIds":["343801f918fb9f9f"],"sources":[]}
-{"id":"04e292079ccd92e3","title":"Sweet Jane","titleAliases":[],"originalArtistIds":["942657377c239993"],"sources":[]}
+{"id":"04e292079ccd92e3","title":"Sweet Jane","titleAliases":[],"originalArtistIds":["29b80eb17fca5947"],"sources":[]}
 {"id":"b5e9fc614e0344ed","title":"Keep the Streets Empty for Me","titleAliases":[],"originalArtistIds":["330319a4077b0ed3"],"sources":[]}
 {"id":"b15a09acce331c06","title":"Cripple Crow","titleAliases":[],"originalArtistIds":["765c9d45852eab3b"],"sources":[]}
 {"id":"455931d8a3b53ff1","title":"Goodnight Ladies","titleAliases":[],"originalArtistIds":["942657377c239993"],"sources":[]}
@@ -401,3 +401,10 @@
 {"id":"4439500e1d5d25e4","title":"Gnossienne No. 3","titleAliases":[],"originalArtistIds":["acd5fe3cf332f865"],"sources":[]}
 {"id":"116895493c378555","title":"the cries of a dying god","titleAliases":[],"originalArtistIds":["b97c1f38f54e9ae3"],"sources":[]}
 {"id":"4f80483d3c1ed277","title":"Générique (Ascenseur pour l'Échafaud)","titleAliases":[],"originalArtistIds":["b912df73f3d17917"],"sources":[]}
+{"id":"7444122072ff38bc","title":"D.A.N.C.E","titleAliases":[],"originalArtistIds":["77371c885ae737ed"],"sources":[]}
+{"id":"e363211c0bc70c11","title":"Live at the Beverly Theater","titleAliases":[],"originalArtistIds":["e7e05c2f5fde8624","68f4bc3cfd692e7c"],"sources":[]}
+{"id":"deb8370f1faf279f","title":"Road Rash II – Title","titleAliases":[],"originalArtistIds":["6f7c74fbdc8d9421","108672f51cf8cc9f"],"sources":[]}
+{"id":"7efd8108ddaa73bd","title":"Another Green World (Album, 1975)","titleAliases":[],"originalArtistIds":["f2b57e4b47c1ea59"],"sources":[]}
+{"id":"6ee3dfe427c019a2","title":"Lose Yourself","titleAliases":[],"originalArtistIds":["0235d305a4bf3613"],"sources":[]}
+{"id":"2777753edaa0fb03","title":"I Believe to my Soul","titleAliases":[],"originalArtistIds":["92fb9a07024dd437"],"sources":[]}
+{"id":"a7adb32ec1c008be","title":"In My Own Time (Album, 1971)","titleAliases":[],"originalArtistIds":["28d7cca82df897ee"],"sources":[]}
