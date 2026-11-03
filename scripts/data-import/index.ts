@@ -60,6 +60,7 @@ type Reviewed = {
   publishedOn: Timestamp
   artist: string
   song: string
+  kind: string
   note: string | null
 }
 
@@ -453,7 +454,10 @@ for (const archive of posts) {
     publishedOn,
     artist: artistName,
     song: songTitle,
-    note
+    kind: recording.kind ?? '',
+    // No column holds a place or a date, so the one the title gave up is written where it
+    // can at least be seen.
+    note: note ?? placeAndDate(recording)
   })
 }
 
@@ -463,6 +467,17 @@ await write('songs', songs)
 await write('recordings', recordings)
 await write('posts', [])
 await append('posts', written)
+
+/** The place and the date a title gave up, as one line, for a column that is not there. */
+function placeAndDate (recording: Recording): string | null {
+  const where = recording.performedAt
+  const when = recording.performedOn
+  const bits = [
+    where === null ? null : [where.venue, where.city, where.country].filter(part => part !== null).join(', '),
+    when === null ? null : [when.year, when.month, when.day].filter(part => part !== null).join('-')
+  ].filter((bit): bit is string => bit !== null && bit !== '')
+  return bits.length === 0 ? null : bits.join(' \u00b7 ')
+}
 
 const REASONS: Record<Flag, string> = {
   'widget-url': 'The source is a player widget rather than a page, because that is what the archive held. It plays; it just does not read as a URL a human would share.',
@@ -503,9 +518,16 @@ review += '  artists where the import stored one. A name prefixed `ft.` is a gue
 review += '  credit: `Nicone; Sascha Braemer; ft. Narra`. A name already in the database is reused;\n'
 review += '  a new one is created with its own URL.\n'
 review += '- **`song`** — the work\'s title, if the import mangled it.\n'
+review += '- **`kind`** — what the parenthesis at the end of the title was read as. Most of the\n'
+review += '  `read-qualifier` rows are wrong here, because a cover and a remix both landed in it\n'
+review += '  as free text. Three forms are understood: a plain kind (`live`, `demo`, `remix`,\n'
+review += '  `alternate-take`, `full album`, or anything else), `cover: Neil Young` for a cover —\n'
+review += '  which sets the song\'s original artist — and `remix: Goldroom` for a remix, which\n'
+review += '  credits the remixer. Empty it to say the parenthesis meant nothing.\n'
 review += '- **`source`** — a URL that plays the track. The `find` link opens a YouTube search for\n'
 review += '  that artist and song.\n'
-review += '- **`note`** — yours. Nothing reads it.\n\n'
+review += '- **`note`** — yours. Prefilled where the import read a place or a date out of the\n'
+review += '  title, since no column holds those; overwrite it freely. Nothing reads it back.\n\n'
 review += 'A cell left as the import wrote it changes nothing. The `post` column is the id\n'
 review += '`npm run post:edit -- <id>` takes, for anything this table has no column for.\n\n'
 review += '> **Running `data:import` again rewrites this file and replaces the database**, so\n'
@@ -518,14 +540,15 @@ for (const flag of ORDER) {
   review += `- **\`${flag}\`** — ${concerned.length} · ${REASONS[flag]}\n`
 }
 review += '\n## The posts\n\n'
-review += '| flags | artist | song | source | find | note | date | post |\n'
-review += '| --- | --- | --- | --- | --- | --- | --- | --- |\n'
+review += '| flags | artist | song | kind | source | find | note | date | post |\n'
+review += '| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n'
 const ordered = [...flagged, ...reviewed.filter(one => one.flags.length === 0)]
 for (const one of ordered) {
   const cells = [
     one.flags.map(flag => `\`${flag}\``).join(' '),
     escaped(one.artist),
     escaped(one.song),
+    escaped(one.kind),
     '',
     `[find](${searchUrl(one)})`,
     one.note === null ? '' : `\`${escaped(one.note)}\``,
