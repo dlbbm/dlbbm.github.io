@@ -29,6 +29,9 @@
   margin-right: var(--gap-2);
   font-family: var(--ff-mono);
   font-size: var(--fs-3);
+  /* In CSS and not in the template: what `formatDate` returns stays the month's own
+     spelling, and only the page shows it lowercase. */
+  text-transform: lowercase;
   opacity: var(--muted-opacity);
 }
 

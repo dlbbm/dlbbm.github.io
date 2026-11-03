@@ -33,7 +33,7 @@ export function Posts () {
           <Link href={entry.url} className={bem('link')}>
             <DateComponent
               date={new Date(entry.publishedOn)}
-              format="{{YY}} {{MMM}} {{D}}"
+              format="{{YY}} {{MMM}} {{D}}{{th}}"
               className={bem('date')} />
             {entry.title}
             {said === null ? null : <span class={bem('qualifier')}>{` ${said}`}</span>}
