@@ -21,8 +21,8 @@
      rather than a page that is white, text in a screen green turned barely toward
      yellow, and the accent on the mark's red — the one color on this page that belongs
      to no theme. */
-  --bg-color: #090d0c;
-  --text-color: #cfdbc2;
+  --bg-color: #060908;
+  --text-color: #d7dcc1;
   --accent-color: var(--mark-warm);
   --border-color: var(--text-color);
   --underline-color: var(--accent-color);
@@ -43,9 +43,9 @@
   /* Daylight, and the one the mapping below uses: the panel turned over, its two colors
      swapped and nothing else invented. The warm note is in neither set — the lens keeps
      its red either way. */
-  --lit-bg: #cfdbc2;
-  --lit-text: #090d0c;
-  --lit-shadow: rgb(9 13 12 / .1);
+  --lit-bg: #d7dcc1;
+  --lit-text: #060908;
+  --lit-shadow: rgb(6 9 8 / .1);
   --lit-mark-green: #0f2a22;
 
   /* Daylight as it was drawn before the inversion was tried, kept on the shelf. */
