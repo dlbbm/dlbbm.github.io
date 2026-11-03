@@ -34,10 +34,12 @@
 
   /* The same panel read from the dark side, held apart so the two mappings below never
      drift. The warm note is not here: the lens keeps its red in either theme. */
-  --night-bg: #15231d;
+  --night-bg: #12201c;
   --night-text: #bfd9cb;
   --night-shadow: rgb(0 0 0 / .4);
-  --night-mark-green: #cfe4d7;
+  /* The ground of the night, lifted far enough off itself to be seen: the rule and the
+     two discs read as a band rather than as nothing. */
+  --night-mark-green: #2a4f43;
 
   color-scheme: light;
 }
