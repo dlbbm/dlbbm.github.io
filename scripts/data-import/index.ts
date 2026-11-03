@@ -292,12 +292,17 @@ function songId (title: string, byArtist: ArtistId): string {
 
 for (const archive of posts) {
   const flags: Flag[] = []
+  // The first line that reads as `Artist — Song`, and not simply the first: a handful of
+  // posts open with a stray dash or with a widget's caption, and the line that names the
+  // music can be the second or the third. Everything else becomes the body, in order.
   const lines = readLines(archive.contentHtml ?? '')
-  const title = (lines[0] ?? archive.title ?? '')
+  const named = lines.findIndex(line => DASH.test(line))
+  const titleAt = named === -1 ? 0 : named
+  const title = (lines[titleAt] ?? archive.title ?? '')
     .replace(/\s+/gv, ' ')
     .replace(WIDGET_CAPTION, '')
     .trim()
-  const rest = lines.slice(1)
+  const rest = lines.filter((_, index) => index !== titleAt)
   const body = rest.length === 0 ? null : rest.join('\n')
   const publishedOn = parisTimestamp(archive.publishedOn ?? '')
 
@@ -321,12 +326,20 @@ for (const archive of posts) {
   const embed = (archive.media ?? [])
     .map(one => readMedia(one.url))
     .find(one => one !== null)
+  // The post it came from, kept as a claim that this is that: it is what makes a record
+  // traceable back to the archive, and the only way to check that nothing was dropped.
+  const origin: Source = {
+    nature: 'identity',
+    service: 'tumblr',
+    url: archive.url,
+    externalId: archive.id
+  }
   const sources: Source[] = embed === undefined || embed === null
-    ? []
-    : [{ nature: 'media', service: embed.service, kind: 'video', url: embed.url }]
+    ? [origin]
+    : [{ nature: 'media', service: embed.service, kind: 'video', url: embed.url }, origin]
 
   let note: string | null = null
-  if (sources.length === 0) {
+  if (embed === undefined || embed === null) {
     flags.push('no-source')
     const found = [...((archive.contentHtml ?? '').matchAll(URL_IN_BODY))].map(match => match[0])
     const salvage = found.find(url => !DEAD_HOSTS.some(host => url.includes(host)))
@@ -416,7 +429,22 @@ for (const flag of ORDER) {
 await writeFile(path.join(CWD, 'IMPORT-REVIEW.md'), review, { encoding: 'utf-8' })
 
 console.log(styles.light(`> ${artists.length} artists, ${songs.length} songs, ${recordings.length} recordings`))
-console.log(styles.light(`> ${written.length} posts, ${written.filter((_, index) => recordings[index]?.sources.length === 0).length} of them with nothing to play`))
+const unplayable = recordings.filter(one => !one.sources.some(source => source.nature !== 'identity'))
+console.log(styles.light(`> ${written.length} posts, ${unplayable.length} of them with nothing to play`))
+
+// Every archived post has to come out the other side. Counting is not enough — two
+// records could carry the same origin — so the check is on the set of permalinks.
+const origins = new Set(recordings.flatMap(one => one.sources
+  .filter(source => source.nature === 'identity')
+  .map(source => source.url)))
+const missing = posts.filter(one => !origins.has(one.url))
+if (missing.length > 0 || origins.size !== posts.length) {
+  console.log('')
+  console.log(styles.error(`${missing.length} archived posts did not make it, and ${posts.length - origins.size} origins collided.`))
+  for (const one of missing.slice(0, 10)) console.log(styles.light(`> ${one.url}`))
+  process.exit(1)
+}
+console.log(styles.light(`> ${origins.size} of ${posts.length} archived permalinks accounted for`))
 console.log('')
 console.log(styles.info('Review'))
 console.log(styles.light(`> IMPORT-REVIEW.md · ${reviewed.length} posts to consolidate by hand`))
