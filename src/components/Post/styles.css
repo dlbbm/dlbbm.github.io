@@ -84,5 +84,6 @@
    breaks are the whole point of it, so they are kept rather than collapsed. */
 .post__body {
   margin: 0;
+  max-width: var(--media-max-width);
   white-space: pre-line;
 }
