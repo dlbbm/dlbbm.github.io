@@ -61,6 +61,11 @@ function show (post: Post, recording: Recording, db: Db, flags: string[]): void 
   console.log(field('featuring', names(recording.featuringArtistIds)))
   console.log(field('remixed by', names(recording.remixedByArtistIds)))
   console.log(field('originally', song === undefined ? null : names(song.originalArtistIds)))
+  console.log(field('built on', song === undefined || song.derivedFromSongIds.length === 0
+    ? null
+    : song.derivedFromSongIds
+      .map(id => db.songs.find(candidate => candidate.id === id)?.title ?? id)
+      .join(', ')))
   console.log(field('kind', recording.kind))
   console.log(field('performed', when === null
     ? null

@@ -43,6 +43,8 @@ export type BuiltArtist = {
  * shipped but not shown. Comparing the strings is enough, they are ordered as they read.
  * @property isCover - Whether the credits differ from the work's original artists. Derived
  * here so the front never has to reason about it.
+ * @property derivedFrom - The works this one is built on, resolved. Empty for almost every
+ * post; two or more is a medley, which `isMedley` says without the front counting.
  * @property song - The work, under its own title. What the post announces is the take's
  * title when it has one, which `title` already carries and `recording.title` holds raw.
  */
@@ -58,6 +60,8 @@ export type BuiltPost = {
   remixedBy: BuiltArtist[]
   originalArtists: BuiltArtist[]
   isCover: boolean
+  derivedFrom: { id: SongId, title: string }[]
+  isMedley: boolean
   recording: {
     id: RecordingId
     title: string | null

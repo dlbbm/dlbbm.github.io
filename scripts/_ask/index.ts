@@ -29,6 +29,7 @@ import type {
   RecordingKind,
   Slug,
   Song,
+  SongId,
   Timestamp
 } from '../../shared/types/index.js'
 import { CWD } from '../_config/index.js'
@@ -211,12 +212,28 @@ function matchingSongs (
     Number(byMainArtist(other)) - Number(byMainArtist(one)))
 }
 
+// Who recorded it goes in the name and not only in the description: two works can share a
+// title — an original and the work an import made for its cover — and a description is only
+// shown for the row the cursor is on.
+function songChoice (song: Song, recordingPool: Recording[], artistPool: Artist[]) {
+  const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
+  const aliases = song.titleAliases.length === 0
+    ? ''
+    : ` · also ${song.titleAliases.join(', ')}`
+  return {
+    name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
+    description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
+    value: song
+  }
+}
+
 function mintSong (title: string, songPool: Song[], created: Song[]): Song {
   const song: Song = {
     id: createId(),
     title,
     titleAliases: [],
     originalArtistIds: [],
+    derivedFromSongIds: [],
     sources: []
   }
   songPool.push(song)
@@ -242,20 +259,7 @@ async function resolveSong (
   artistPool: Artist[],
   created: Song[]
 ): Promise<Song> {
-  // Who recorded it goes in the name and not only in the description: two works can share a
-  // title — an original and the work an import made for its cover — and a description is
-  // only shown for the row the cursor is on.
-  const choiceFor = (song: Song) => {
-    const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
-    const aliases = song.titleAliases.length === 0
-      ? ''
-      : ` · also ${song.titleAliases.join(', ')}`
-    return {
-      name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
-      description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
-      value: song
-    }
-  }
+  const choiceFor = (song: Song) => songChoice(song, recordingPool, artistPool)
 
   const listed = matchingSongs(title, mainArtist, songPool, recordingPool)
   hint('which work it is a version of')
@@ -286,6 +290,45 @@ async function resolveSong (
     return only
   }
   return await select<Song>({ message: 'Recording of', choices: others.map(choiceFor) })
+}
+
+/**
+ * One of the works a song is built on, by name.
+ *
+ * Settles without a list when the name matches one work or none, the way `another work`
+ * does. A work minted here is asked whose it is on the spot: nothing else ever will, and a
+ * component with no original artists leaves the medley's own credits unanswerable.
+ */
+async function resolveWork (
+  name: string,
+  built: Song,
+  mainArtist: Artist,
+  songPool: Song[],
+  recordingPool: Recording[],
+  artistPool: Artist[],
+  createdSongs: Song[],
+  createdArtists: Artist[]
+): Promise<Song> {
+  const others = matchingSongs(name, mainArtist, songPool, recordingPool)
+    .filter(candidate => candidate.id !== built.id)
+  const only = others[0]
+  if (others.length > 1) {
+    return await select<Song>({
+      message: 'Derived from',
+      choices: others.map(song => songChoice(song, recordingPool, artistPool))
+    })
+  }
+  if (only !== undefined) {
+    console.log(styles.light(`> ${only.title}, already known`))
+    return only
+  }
+  const minted = mintSong(name, songPool, createdSongs)
+  console.log('')
+  console.log(styles.title(minted.title))
+  hint(`whose song it is (split on ${CREDIT_SEPARATOR})`)
+  const originals = await askCredits('Original artist', [], artistPool, createdArtists, false)
+  minted.originalArtistIds = originals.map(artist => artist.id)
+  return minted
 }
 
 async function askPlace (initial: Place | null): Promise<Place | null> {
@@ -440,6 +483,27 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     false
   )
   song.originalArtistIds = originalArtists.map(artist => artist.id)
+
+  // The works this one is built on: a medley, a potpourri, anything borrowing whole pieces.
+  // Asked of every work the way `Original artist` is, and empty for almost all of them. A
+  // cover is not this — a cover is a take of the same work by someone else.
+  hint(`the works this one is built on (split on ${CREDIT_SEPARATOR})`)
+  const rawDerivedFrom = await input({
+    message: 'Derived from',
+    default: song.derivedFromSongIds.length === 0
+      ? undefined
+      : song.derivedFromSongIds
+        .map(id => songPool.find(candidate => candidate.id === id)?.title)
+        .filter((title): title is string => title !== undefined)
+        .join(`${CREDIT_SEPARATOR} `)
+  })
+  const derivedFrom: SongId[] = []
+  for (const name of splitCredits(rawDerivedFrom)) {
+    const source = await resolveWork(
+      name, song, mainArtist, songPool, recordingPool, artistPool, createdSongs, createdArtists)
+    if (!derivedFrom.includes(source.id)) derivedFrom.push(source.id)
+  }
+  song.derivedFromSongIds = derivedFrom
 
   // The other names the work goes by, which `resolveSong` matches on as readily as the
   // title: it is how `Into the Black` and `Hey Hey, My My (Into the Black)` stay one song

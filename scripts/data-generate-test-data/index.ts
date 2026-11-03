@@ -178,6 +178,7 @@ for (const [index, spec] of SPECS.entries()) {
       title: spec.title,
       titleAliases: [],
       originalArtistIds: spec.original === undefined ? credited : spec.original.map(artistId),
+      derivedFromSongIds: [],
       sources: []
     }
     songsByWork.set(spec.work, song)

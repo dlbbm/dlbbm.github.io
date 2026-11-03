@@ -92,10 +92,28 @@ function postTitle (title: string, credits: BuiltArtist[], featuring: BuiltArtis
   return `${title} — ${credited}${guests === '' ? '' : `, ft. ${guests}`}`
 }
 
+// The artists a work belongs to: the ones it claims, and when it claims none, those of the
+// works it is built on — a medley is covered from whoever wrote the pieces. Walked rather
+// than read, since a work built on works can itself be one; the seen set is what keeps a
+// cycle in the data from hanging the build.
+function originalArtistIdsOf (song: Song, seen: Set<string> = new Set()): string[] {
+  if (seen.has(song.id)) return []
+  seen.add(song.id)
+  if (song.originalArtistIds.length > 0) return song.originalArtistIds
+  return song.derivedFromSongIds.flatMap(id => {
+    const source = db.songs.find(candidate => candidate.id === id)
+    return source === undefined ? [] : originalArtistIdsOf(source, seen)
+  })
+}
+
 function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
   const credits = builtArtists(recording.byArtistIds)
   const featuring = builtArtists(recording.featuringArtistIds)
-  const originalArtists = builtArtists(song.originalArtistIds)
+  const originalArtists = builtArtists([...new Set(originalArtistIdsOf(song))])
+  const derivedFrom = song.derivedFromSongIds
+    .map(id => db.songs.find(candidate => candidate.id === id))
+    .filter((work): work is Song => work !== undefined)
+    .map(work => ({ id: work.id, title: work.title }))
   const credited = credits.map(artist => artist.id).join(',')
   const original = originalArtists.map(artist => artist.id).join(',')
   return {
@@ -110,6 +128,8 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     remixedBy: builtArtists(recording.remixedByArtistIds),
     originalArtists,
     isCover: original !== '' && original !== credited,
+    derivedFrom,
+    isMedley: derivedFrom.length > 1,
     recording: {
       id: recording.id,
       title: recording.title,
@@ -164,6 +184,7 @@ function describePost (post: BuiltPost): string {
   return [
     post.recording.kind,
     post.isCover ? `${post.originalArtists.map(artist => artist.name).join(', ')} cover` : null,
+    post.isMedley ? `medley of ${post.derivedFrom.map(work => work.title).join(', ')}` : null,
     `posted on ${post.publishedOn.slice(0, 10)}`
   ].filter((part): part is string => part !== null && part !== undefined).join(' · ')
 }

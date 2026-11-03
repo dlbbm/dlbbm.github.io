@@ -131,6 +131,10 @@ export type RecordingKind = typeof recordingKinds[number] | string
  * nobody claimed. The third named divergence — schema.org says this by pointing
  * `recordedAs` at the original `MusicRecording`, which would mean minting a recording for
  * a version the blog never posted.
+ * @property derivedFromSongIds - The works this one is built on, when it is built on any:
+ * two or more is a medley, one is an arrangement or a work that borrows another whole.
+ * `includedComposition` in schema.org. A cover is **not** this — a cover is a recording of
+ * the same work by someone else, and nothing new is written. Empty for almost every song.
  * @property sources - Identity assertions about the work itself, such as a MusicBrainz
  * work URI. Never an embed: a work is not playable.
  */
@@ -139,6 +143,7 @@ export type Song = {
   title: string
   titleAliases: string[]
   originalArtistIds: ArtistId[]
+  derivedFromSongIds: SongId[]
   sources: IdentitySource[]
 }
 

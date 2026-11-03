@@ -352,7 +352,7 @@ function songId (title: string, byArtist: ArtistId): string {
   const known = songsByKey.get(key)
   if (known !== undefined) return known
   const id = createId()
-  songs.push({ id, title, titleAliases: [], originalArtistIds: [byArtist], sources: [] })
+  songs.push({ id, title, titleAliases: [], originalArtistIds: [byArtist], derivedFromSongIds: [], sources: [] })
   songsByKey.set(key, id)
   return id
 }
