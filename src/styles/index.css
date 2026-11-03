@@ -6,6 +6,8 @@
   --ff-mono: 'Roboto Mono', ui-monospace, monospace;
 
   --media-max-width: 680px;
+  /* A reading measure, narrower than the media: prose is read, not looked at. */
+  --prose-max-width: 480px;
   /* Only for an embed whose platform has no aspect ratio of its own to give. */
   --embed-height: 400px;
 

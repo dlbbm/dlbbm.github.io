@@ -3,6 +3,7 @@
  */
 
 import type {
+  BuiltAbout,
   BuiltManifest,
   BuiltPost,
   BuiltPostIndexEntry,
@@ -25,6 +26,12 @@ export async function fetchPublishedPosts (): Promise<BuiltPostIndexEntry[]> {
   const entries = await readJson<BuiltPostIndexEntry[]>('/data/posts.json')
   const now = Date.now()
   return entries.filter(entry => Date.parse(entry.publishedOn) <= now)
+}
+
+/** What the blog says about itself, which the manifest carries with everything else. */
+export async function fetchAbout (): Promise<BuiltAbout> {
+  const manifest = await readJson<BuiltManifest>('/data/manifest.json')
+  return manifest.about
 }
 
 export type PostPage = {
