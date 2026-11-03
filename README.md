@@ -9,9 +9,11 @@ how it maps onto schema.org and where it deliberately diverges.
 
 ## Layout
 
-- **`IMPORT-REVIEW.md`** — what `data:import` could not read, grouped by what is wrong
-  with it. Written whole on every run, so it is a report and never a record: a post fixed
-  by hand disappears from it the next time the archive is read.
+- **`IMPORT-REVIEW.md`** — every imported post, the flagged ones first, with what the
+  import could not read. Written whole on every run, so it is a report and never a record.
+  It is also the worklist `data:review` walks: that command takes the order and the flags
+  from here and everything else from the database, so only the id closing a row and the
+  flags opening it are ever parsed.
 - **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
 - **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the
@@ -42,6 +44,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
+| `npm run data:review` | Walks the imported posts one by one, editing the ones that need it. Takes `-- <flag>` |
 | `npm run data:generate-test-data` | Replaces the database with fifty test posts |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
