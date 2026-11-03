@@ -1,61 +1,371 @@
-{"id":"ed7baf33bb75959d","name":"Pink Floyd","nameAliases":[],"sources":[]}
-{"id":"ef343b74dc59ecc0","name":"Télépopmusik","nameAliases":[],"sources":[]}
-{"id":"42569b032b75882d","name":"Angela McCluskey","nameAliases":[],"sources":[]}
-{"id":"e8f35d8481627bf8","name":"Nine Inch Nails","nameAliases":[],"sources":[]}
-{"id":"990b4421031ad486","name":"Johnny Cash","nameAliases":[],"sources":[]}
-{"id":"7d712c01d8b7d848","name":"Leonard Cohen","nameAliases":[],"sources":[]}
-{"id":"b488a376b8d6e7de","name":"Jeff Buckley","nameAliases":[],"sources":[]}
-{"id":"5b18a30bd835e369","name":"David Bowie","nameAliases":[],"sources":[]}
-{"id":"b40caeee7be328e7","name":"Seu Jorge","nameAliases":[],"sources":[]}
-{"id":"c8e341f76333638e","name":"Bill Withers","nameAliases":[],"sources":[]}
-{"id":"8da48eaa285eb494","name":"Alt-J","nameAliases":[],"sources":[]}
-{"id":"2780a0bf1e6f8dc7","name":"Neil Young","nameAliases":[],"sources":[]}
-{"id":"fa8224aa25591c7d","name":"Chromatics","nameAliases":[],"sources":[]}
-{"id":"ebef0bf1aa24ea64","name":"Suprême NTM","nameAliases":[],"sources":[]}
-{"id":"89d1d084b30ad02c","name":"Brigitte","nameAliases":[],"sources":[]}
-{"id":"73f03c0af79774ab","name":"Estelle","nameAliases":[],"sources":[]}
-{"id":"97d7b479e358f031","name":"Kanye West","nameAliases":[],"sources":[]}
-{"id":"a722ce4407e14ee9","name":"Cocoon","nameAliases":[],"sources":[]}
-{"id":"224b61a961fc06bb","name":"Gnarls Barkley","nameAliases":[],"sources":[]}
-{"id":"4e2401dbf5cd8edf","name":"Patsy Cline","nameAliases":[],"sources":[]}
-{"id":"575692ea4258aa16","name":"Radiohead","nameAliases":[],"sources":[]}
-{"id":"ce4d3ad234d0c549","name":"J.J. Cale","nameAliases":[],"sources":[]}
-{"id":"1358bc3587daaae5","name":"Eric Clapton","nameAliases":[],"sources":[]}
-{"id":"89741d63759ea70b","name":"Janice McClain","nameAliases":[],"sources":[]}
-{"id":"ecf45669b3d5ab98","name":"Chevals","nameAliases":[],"sources":[]}
-{"id":"e0c0c3cc23329ccf","name":"Jan Turkenburg","nameAliases":[],"sources":[]}
-{"id":"7e13517509653976","name":"Pilooski","nameAliases":[],"sources":[]}
-{"id":"a9950f02f29e23da","name":"Connan Mockasin","nameAliases":[],"sources":[]}
-{"id":"b8673ee72f964485","name":"Erol Alkan","nameAliases":[],"sources":[]}
-{"id":"4a74ed01bc9a5407","name":"Niki & the Dove","nameAliases":[],"sources":[]}
-{"id":"bb0479fdaf804339","name":"Goldroom","nameAliases":[],"sources":[]}
-{"id":"3c0c88fc274cf4c3","name":"Mister Modo","nameAliases":[],"sources":[]}
-{"id":"a29e9b9e64d4625d","name":"Ugly Mac Beer","nameAliases":[],"sources":[]}
-{"id":"b93c70605145d8b4","name":"Judgement Day","nameAliases":[],"sources":[]}
-{"id":"1817eab6d56f900e","name":"Mary Clark","nameAliases":[],"sources":[]}
-{"id":"5992172284d4cc55","name":"Richard O'Brien","nameAliases":[],"sources":[]}
-{"id":"cf589465955842aa","name":"Slow Club","nameAliases":[],"sources":[]}
-{"id":"55aefbbbbb918fb5","name":"Tom Waits","nameAliases":[],"sources":[]}
-{"id":"11dc36c438962a27","name":"The Velvet Underground","nameAliases":[],"sources":[]}
-{"id":"8f236fee94e4ae58","name":"The Cure","nameAliases":[],"sources":[]}
-{"id":"fd30cac570423651","name":"The Beach Boys","nameAliases":[],"sources":[]}
-{"id":"b1b3a1a1215120cf","name":"Azealia Banks","nameAliases":[],"sources":[]}
-{"id":"0c3b6a664a1be3c3","name":"Lazy Jay","nameAliases":[],"sources":[]}
-{"id":"e4dfc532b78d7e98","name":"Olivier Libaux","nameAliases":[],"sources":[]}
-{"id":"b0b4b7c1cbd4fbd9","name":"Queens of the Stone Age","nameAliases":[],"sources":[]}
-{"id":"5229c44489c3973d","name":"Ambrosia Parsley","nameAliases":[],"sources":[]}
-{"id":"7b8ee0dc1d9d14bd","name":"Oy","nameAliases":[],"sources":[]}
-{"id":"9ad73a7ce0fa7492","name":"Ancient Methods","nameAliases":[],"sources":[]}
-{"id":"f7ed26fbbfbfc810","name":"Darkside","nameAliases":[],"sources":[]}
-{"id":"598aa38fb3b1d808","name":"Black Sabbath","nameAliases":[],"sources":[]}
-{"id":"b87b9f5e50d221c6","name":"Courtney Barnett","nameAliases":[],"sources":[]}
-{"id":"25173f34566183ba","name":"Nick Cave & The Bad Seeds","nameAliases":[],"sources":[]}
-{"id":"a17a1baac166d839","name":"Grandmaster Flash","nameAliases":[],"sources":[]}
-{"id":"efe28640de77dc50","name":"Murcof","nameAliases":[],"sources":[]}
-{"id":"76a15729803582d3","name":"Vanessa Wagner","nameAliases":[],"sources":[]}
-{"id":"a340278fc6aefe4c","name":"Erik Satie","nameAliases":[],"sources":[]}
-{"id":"ff3c675c9e0b8245","name":"Philip Glass","nameAliases":[],"sources":[]}
-{"id":"2321b9e815212588","name":"Sarah Vaughan","nameAliases":[],"sources":[]}
-{"id":"ed0ddbbc8e7a160d","name":"The Beatles","nameAliases":[],"sources":[]}
-{"id":"30138fe190db3656","name":"Briggg","nameAliases":[],"sources":[]}
-{"id":"deb1d95e9486a562","name":"azeg","nameAliases":[],"sources":[]}
+{"id":"d5c0d899d7e72026","name":"J.J. Cale","nameAliases":[],"sources":[]}
+{"id":"a17c73972faacbfa","name":"The Knife","nameAliases":[],"sources":[]}
+{"id":"46da5478aaae0349","name":"Calexico","nameAliases":[],"sources":[]}
+{"id":"fbff1c9f54be1095","name":"Death In Vegas","nameAliases":[],"sources":[]}
+{"id":"d04cf28192f1bac8","name":"IS Tropical","nameAliases":[],"sources":[]}
+{"id":"ec3d27f80492058e","name":"Connan Mockassin","nameAliases":[],"sources":[]}
+{"id":"529b8189c3368970","name":"Fats Domino","nameAliases":[],"sources":[]}
+{"id":"0a7f77388a95cdb4","name":"Connan Mockasin","nameAliases":[],"sources":[]}
+{"id":"2aeaddf96a9a0c59","name":"Portishead","nameAliases":[],"sources":[]}
+{"id":"18297d172f9aac10","name":"F.J. Mc Mahon","nameAliases":[],"sources":[]}
+{"id":"ab6fe5aad7ac5b84","name":"The Flamin’ Groovies","nameAliases":[],"sources":[]}
+{"id":"c3d0f412184e6f6a","name":"The West Coast Pop Art Experimental Band","nameAliases":[],"sources":[]}
+{"id":"fa8fbe4a118bc0fd","name":"The Doors","nameAliases":[],"sources":[]}
+{"id":"7e1a7aa9230e0dee","name":"Austra","nameAliases":[],"sources":[]}
+{"id":"6bbc66ad03a64756","name":"Brigitte","nameAliases":[],"sources":[]}
+{"id":"e1c5222586e8e2d3","name":"Nicone & Sascha Braemer (ft. Narra)","nameAliases":[],"sources":[]}
+{"id":"2191e21262699df4","name":"Grimes","nameAliases":[],"sources":[]}
+{"id":"9384416ef10d1f9e","name":"King Tuff","nameAliases":[],"sources":[]}
+{"id":"518814cf330a8919","name":"New Order","nameAliases":[],"sources":[]}
+{"id":"0d1f1e9b40b19983","name":"Pink Floyd","nameAliases":[],"sources":[]}
+{"id":"b56213feaaad352e","name":"The Cure","nameAliases":[],"sources":[]}
+{"id":"4baac861db9688ac","name":"Serge Gainsbourg","nameAliases":[],"sources":[]}
+{"id":"6357962c4c85700e","name":"Planetary Assault Systems","nameAliases":[],"sources":[]}
+{"id":"529436e6561905cf","name":"Rone","nameAliases":[],"sources":[]}
+{"id":"8c6be5576ff0ad44","name":"Claude Debussy","nameAliases":[],"sources":[]}
+{"id":"9daeed9080a30121","name":"Nujabes","nameAliases":[],"sources":[]}
+{"id":"1fabecf5568291f9","name":"Creedence Clearwater Revival","nameAliases":[],"sources":[]}
+{"id":"443a9f1c12f10d6c","name":"La Femme","nameAliases":[],"sources":[]}
+{"id":"ebafabd3c6a0b817","name":"Tijuana Panthers","nameAliases":[],"sources":[]}
+{"id":"106625470bd6bbb3","name":"Simian Mobile Disco","nameAliases":[],"sources":[]}
+{"id":"2b4315133361a421","name":"Pachanga Boys","nameAliases":[],"sources":[]}
+{"id":"9f38c95991bfd4b9","name":"Acid Washed","nameAliases":[],"sources":[]}
+{"id":"f83b56ac6f833d91","name":"Chromatics","nameAliases":[],"sources":[]}
+{"id":"a40c1055613ba202","name":"Beach House","nameAliases":[],"sources":[]}
+{"id":"4e54bcf40dd57ef3","name":"Santo & Johnny","nameAliases":[],"sources":[]}
+{"id":"1f5d2ead5cf2255d","name":"Salem","nameAliases":[],"sources":[]}
+{"id":"2cf087a1459bba13","name":"Pearl Jam","nameAliases":[],"sources":[]}
+{"id":"006541b896599457","name":"Os Mutantes","nameAliases":[],"sources":[]}
+{"id":"d712755059eccd46","name":"Miles Davis","nameAliases":[],"sources":[]}
+{"id":"675ec5c6f725b2d3","name":"Chicken Shack","nameAliases":[],"sources":[]}
+{"id":"05eae8ad472ca7ba","name":"Galaxie 500","nameAliases":[],"sources":[]}
+{"id":"a4aad100f3bc5b98","name":"The Sixth Nation","nameAliases":[],"sources":[]}
+{"id":"d09c2973ca7ce57f","name":"Ernie Graham","nameAliases":[],"sources":[]}
+{"id":"9774d017ae551006","name":"Pusha T ft. Tyler, The Creator","nameAliases":[],"sources":[]}
+{"id":"39a7fca3fb7fe3a4","name":"Gil Scott-Heron","nameAliases":[],"sources":[]}
+{"id":"31c457d3440f9c97","name":"Stupeflip","nameAliases":[],"sources":[]}
+{"id":"8b00ec332dd10598","name":"Grandmaster Flash","nameAliases":[],"sources":[]}
+{"id":"d603dd180e06effe","name":"Todd Terje","nameAliases":[],"sources":[]}
+{"id":"5886642c5a184ad5","name":"Swiss","nameAliases":[],"sources":[]}
+{"id":"24c481d9a46e9ec2","name":"Joy Division","nameAliases":[],"sources":[]}
+{"id":"88f4f54919034add","name":"Niki & the Dove","nameAliases":[],"sources":[]}
+{"id":"f1320af94529b145","name":"No doubt","nameAliases":[],"sources":[]}
+{"id":"1dc18da32f58d7b0","name":"Planningtorock","nameAliases":[],"sources":[]}
+{"id":"d23ab9164dd947f1","name":"Lorn","nameAliases":[],"sources":[]}
+{"id":"9d8306b1c06a910a","name":"Dye","nameAliases":[],"sources":[]}
+{"id":"a95a51e15b07812e","name":"Julee Cruise","nameAliases":[],"sources":[]}
+{"id":"fbc7f055b2c866ab","name":"Alaska In Winter","nameAliases":[],"sources":[]}
+{"id":"fb5f09ea36407322","name":"Lou Reed","nameAliases":[],"sources":[]}
+{"id":"a942504db8332b64","name":"Mick Harvey","nameAliases":[],"sources":[]}
+{"id":"a1979d138224ffed","name":"Klangkarussell","nameAliases":[],"sources":[]}
+{"id":"c74987062be1d027","name":"Sebastien Tellier","nameAliases":[],"sources":[]}
+{"id":"0a080246fa5a24d3","name":"Arzachel","nameAliases":[],"sources":[]}
+{"id":"db1bb839a9e532e8","name":"Outkast","nameAliases":[],"sources":[]}
+{"id":"0974dbb9224b1de3","name":"Scrubs","nameAliases":[],"sources":[]}
+{"id":"dcaf20c6045cd489","name":"Estelle ft. Kanye West","nameAliases":[],"sources":[]}
+{"id":"c5a1c59bc1a6fb2f","name":"Cocoon","nameAliases":[],"sources":[]}
+{"id":"bc34b5be9eca6af3","name":"Amadou & Mariam","nameAliases":[],"sources":[]}
+{"id":"16166ad0dfff5047","name":"Amon Tobin","nameAliases":[],"sources":[]}
+{"id":"b058752b576fa12d","name":"Aphex Twin","nameAliases":[],"sources":[]}
+{"id":"2b6db8071c641b21","name":"Franz Liszt","nameAliases":[],"sources":[]}
+{"id":"33fffc5ab2d75d37","name":"Jurassic 5","nameAliases":[],"sources":[]}
+{"id":"fcce7982911da873","name":"Cypress Hill","nameAliases":[],"sources":[]}
+{"id":"dd58438963435d1a","name":"Frank Sinatra & Nancy Sinatra","nameAliases":[],"sources":[]}
+{"id":"d375ae2d426cf5ba","name":"Jan Turkenburg","nameAliases":[],"sources":[]}
+{"id":"f66734f97c149c69","name":"Slow Club","nameAliases":[],"sources":[]}
+{"id":"93974e9cfa662e3e","name":"Macklemore & Ryan Lewis ft. Wanz","nameAliases":[],"sources":[]}
+{"id":"af34b716e8651dc5","name":"Mazzy Star","nameAliases":[],"sources":[]}
+{"id":"5b354a92d733aa1b","name":"The Chemical Brothers","nameAliases":[],"sources":[]}
+{"id":"03a288903e931027","name":"Air","nameAliases":[],"sources":[]}
+{"id":"86d73285c21d77f3","name":"Link Wray","nameAliases":[],"sources":[]}
+{"id":"7be99bdbe0e5c7fa","name":"The Libertines","nameAliases":[],"sources":[]}
+{"id":"55623b10667bad2d","name":"The Stone Roses","nameAliases":[],"sources":[]}
+{"id":"74b7d6a6c6c544c3","name":"Cat Stevens","nameAliases":[],"sources":[]}
+{"id":"cdb02a853ed3c882","name":"Black Sabbath","nameAliases":[],"sources":[]}
+{"id":"35257ec3ed8561f5","name":"The Whitest Boy Alive","nameAliases":[],"sources":[]}
+{"id":"5ae413d3db636434","name":"Mr. Fox","nameAliases":[],"sources":[]}
+{"id":"d764feecc2a2de54","name":"Reputante","nameAliases":[],"sources":[]}
+{"id":"b13d56a6dcceb2c1","name":"The Painted Ship","nameAliases":[],"sources":[]}
+{"id":"4c192982f0beda47","name":"The Velvet Underground","nameAliases":[],"sources":[]}
+{"id":"f66461d0233a901b","name":"Daft Punk","nameAliases":[],"sources":[]}
+{"id":"09f8fc610b50eed6","name":"Maxence Cyrin","nameAliases":[],"sources":[]}
+{"id":"1dfe7e235a3129eb","name":"Sixto Rodriguez","nameAliases":[],"sources":[]}
+{"id":"19c5b7613936c691","name":"Nu","nameAliases":[],"sources":[]}
+{"id":"87115237747971d8","name":"The Notorious B.I.G.","nameAliases":[],"sources":[]}
+{"id":"5f3281a7e97f5a9d","name":"The Limiñanas","nameAliases":[],"sources":[]}
+{"id":"6b1c19b6afead8bb","name":"TOYS","nameAliases":[],"sources":[]}
+{"id":"6389fdf97248d4fb","name":"Canned Heat","nameAliases":[],"sources":[]}
+{"id":"5e3ef90e9270f8a4","name":"Waldeck","nameAliases":[],"sources":[]}
+{"id":"62bd55293a929ed7","name":"Goldfrapp","nameAliases":[],"sources":[]}
+{"id":"6450e202524a7507","name":"Tristesse Contemporaine","nameAliases":[],"sources":[]}
+{"id":"f45bfd4f9fc0dc01","name":"The Stranglers","nameAliases":[],"sources":[]}
+{"id":"27914bb67b56d8be","name":"Massive Attack","nameAliases":[],"sources":[]}
+{"id":"011d88754fbb2162","name":"Seize / Neuf","nameAliases":[],"sources":[]}
+{"id":"e467fa2629a9d6cf","name":"Brian Jonestown Massacre","nameAliases":[],"sources":[]}
+{"id":"af399a0a6703ddf7","name":"WhoMadeWho","nameAliases":[],"sources":[]}
+{"id":"169d3f2722843bff","name":"James Brown & B.B. King (ft. Mickael Jackson)","nameAliases":[],"sources":[]}
+{"id":"423b86f0418c3be9","name":"M.O.O.N","nameAliases":[],"sources":[]}
+{"id":"a3e741c69b334653","name":"Timber Timbre","nameAliases":[],"sources":[]}
+{"id":"f5b9a4d33d2fdef3","name":"Al Green","nameAliases":[],"sources":[]}
+{"id":"28667e3cf3019c24","name":"Road Rash II Music","nameAliases":[],"sources":[]}
+{"id":"e0b7fd0e031bc2a5","name":"Feathers","nameAliases":[],"sources":[]}
+{"id":"099d2fd4d9ab0f7a","name":"The Sheltones","nameAliases":[],"sources":[]}
+{"id":"0237ffb81fd6b92c","name":"Roxy Music","nameAliases":[],"sources":[]}
+{"id":"1911cd9d59c1cc70","name":"Noir Désir","nameAliases":[],"sources":[]}
+{"id":"195043935c35002f","name":"Mamie Van Doren","nameAliases":[],"sources":[]}
+{"id":"d5f62b7f17ef6101","name":"Jon Hopkins","nameAliases":[],"sources":[]}
+{"id":"45075e070e987246","name":"Manu Dibango","nameAliases":[],"sources":[]}
+{"id":"932b20fdfaa2c62f","name":"The Clean","nameAliases":[],"sources":[]}
+{"id":"c1d037671cad8764","name":"Brian Eno","nameAliases":[],"sources":[]}
+{"id":"0df5683cedc2a726","name":"Susan Christie","nameAliases":[],"sources":[]}
+{"id":"be57b071af8059d1","name":"Streets of Rage","nameAliases":[],"sources":[]}
+{"id":"0945a4370f8ce110","name":"Crosby, Stills & Nash","nameAliases":[],"sources":[]}
+{"id":"c3903464a544796d","name":"Tarwater","nameAliases":[],"sources":[]}
+{"id":"91c6918d683d6c3b","name":"Kellylee Evans","nameAliases":[],"sources":[]}
+{"id":"b4fd1a87a7fb35ac","name":"David Bowie","nameAliases":[],"sources":[]}
+{"id":"139910f16ba514aa","name":"Robin Trower","nameAliases":[],"sources":[]}
+{"id":"8bc3749e506220b7","name":"Leonard Cohen","nameAliases":[],"sources":[]}
+{"id":"647f9ac79745f519","name":"Laurie Anderson","nameAliases":[],"sources":[]}
+{"id":"f0a258da151b913b","name":"Yasmine Hamdan","nameAliases":[],"sources":[]}
+{"id":"fa92e3fb334cc8a9","name":"Dominik Eulberg","nameAliases":[],"sources":[]}
+{"id":"e402ddc169d15a06","name":"Olivier Libaux (ft. Ambrosia Parlsey)","nameAliases":[],"sources":[]}
+{"id":"3bf566094c383788","name":"Karen Dalton","nameAliases":[],"sources":[]}
+{"id":"b639d73e5044f9b2","name":"Nils Frahm","nameAliases":[],"sources":[]}
+{"id":"baa5bc302af31249","name":"The Tallest Man on Earth","nameAliases":[],"sources":[]}
+{"id":"32d8e97f73ccdfaf","name":"Vincent Delerm","nameAliases":[],"sources":[]}
+{"id":"ca3e4f93c08d7cc2","name":"Renaud","nameAliases":[],"sources":[]}
+{"id":"3f8029e080587939","name":"Fever Ray","nameAliases":[],"sources":[]}
+{"id":"1f9c421de4dd26f5","name":"Devendra Banhart","nameAliases":[],"sources":[]}
+{"id":"027ebbe92dc01d44","name":"Sarah Vaughan","nameAliases":[],"sources":[]}
+{"id":"a0dda92300cbf1a8","name":"Funkadelic","nameAliases":[],"sources":[]}
+{"id":"6b4751325acc58b6","name":"Barry De Vorzon","nameAliases":[],"sources":[]}
+{"id":"137a5c747c882f0b","name":"Philip Glass","nameAliases":[],"sources":[]}
+{"id":"986d6ce17ede621f","name":"Depth Affect","nameAliases":[],"sources":[]}
+{"id":"3f7de4e2eebef79f","name":"Gesaffelstein","nameAliases":[],"sources":[]}
+{"id":"088f4e43ac6bbfe5","name":"Mike Bloomfield, Al Kooper & Stephen Stills","nameAliases":[],"sources":[]}
+{"id":"d6630469560411fa","name":"The Seatbelts","nameAliases":[],"sources":[]}
+{"id":"0942a4c20108e47d","name":"J.J. Cale ft. Leon Russell","nameAliases":[],"sources":[]}
+{"id":"8fd893faadec0111","name":"Elliott Smith","nameAliases":[],"sources":[]}
+{"id":"d5bbc60ad287d876","name":"Oddjob","nameAliases":[],"sources":[]}
+{"id":"bb6ca61710a7e86f","name":"Charles Trenet","nameAliases":[],"sources":[]}
+{"id":"85c21ba2b14d0b6f","name":"Aretha Franklin","nameAliases":[],"sources":[]}
+{"id":"c285f64210ad3a6f","name":"Zero 7","nameAliases":[],"sources":[]}
+{"id":"8c32dcff2debb15f","name":"Oy","nameAliases":[],"sources":[]}
+{"id":"061f0b4637d3f120","name":"Bobbie Gentry","nameAliases":[],"sources":[]}
+{"id":"26bc352bd6aef688","name":"Adriano Celentano","nameAliases":[],"sources":[]}
+{"id":"6a524416c7e99f76","name":"Azealia Banks","nameAliases":[],"sources":[]}
+{"id":"08f329b89c9723a0","name":"In a Manner of Speaking","nameAliases":[],"sources":[]}
+{"id":"9f1aac88df100717","name":"David August","nameAliases":[],"sources":[]}
+{"id":"c9ef047fbd7e8fc9","name":"Dillinger","nameAliases":[],"sources":[]}
+{"id":"b3d35a60b67e89c0","name":"Bruce Springsteen","nameAliases":[],"sources":[]}
+{"id":"9fceb5d2b0e0d7fe","name":"Bill Withers","nameAliases":[],"sources":[]}
+{"id":"bd0f7e59ce8a24ae","name":"Jacuzzi Boys","nameAliases":[],"sources":[]}
+{"id":"bf90584db418883f","name":"Alela Diane","nameAliases":[],"sources":[]}
+{"id":"3865f34e47ad614d","name":"The Tornadoes","nameAliases":[],"sources":[]}
+{"id":"badbc693b5002844","name":"Barbara","nameAliases":[],"sources":[]}
+{"id":"826af44bf5dd158a","name":"Richard Hawley","nameAliases":[],"sources":[]}
+{"id":"e5d8d69f14424ba9","name":"Burning Hearts","nameAliases":[],"sources":[]}
+{"id":"9d25fc1b1b534165","name":"Mike Snow","nameAliases":[],"sources":[]}
+{"id":"7c8a64bc740d1bc6","name":"Limousine","nameAliases":[],"sources":[]}
+{"id":"67fba64eb72cd6cf","name":"Twilight Hotel","nameAliases":[],"sources":[]}
+{"id":"539dbbfeede42018","name":"Kiasmos","nameAliases":[],"sources":[]}
+{"id":"fae51db7e1250967","name":"Tom Waits","nameAliases":[],"sources":[]}
+{"id":"5f19cb817d61f207","name":"Cymande","nameAliases":[],"sources":[]}
+{"id":"245923d7745e5fe1","name":"Frank Sinatra","nameAliases":[],"sources":[]}
+{"id":"bc64f641083acdce","name":"Portugal. The Man","nameAliases":[],"sources":[]}
+{"id":"44183311338ed1e7","name":"Klaus Nomi","nameAliases":[],"sources":[]}
+{"id":"60ae7a8407cbfccd","name":"Seu Jorge","nameAliases":[],"sources":[]}
+{"id":"76c5e152b2b1700b","name":"Weval","nameAliases":[],"sources":[]}
+{"id":"5336698cd3114af0","name":"Sigur Rós","nameAliases":[],"sources":[]}
+{"id":"f0681f3ca4b39cec","name":"Jimi Tenor","nameAliases":[],"sources":[]}
+{"id":"cba463439934c603","name":"Emilíana Torrini","nameAliases":[],"sources":[]}
+{"id":"72584bc9524ebfd7","name":"Natural Child","nameAliases":[],"sources":[]}
+{"id":"e250985595f5e75d","name":"Jagwar Ma","nameAliases":[],"sources":[]}
+{"id":"5fc564e8e7d3428d","name":"Baxter Dury","nameAliases":[],"sources":[]}
+{"id":"fd76dd43277dc29f","name":"Patrick Watson","nameAliases":[],"sources":[]}
+{"id":"5c235f113b858408","name":"Belle and Sebastian","nameAliases":[],"sources":[]}
+{"id":"66fbc6342d59b5d0","name":"Duran Duran","nameAliases":[],"sources":[]}
+{"id":"b43430f097a98dfa","name":"Youth Lagoon","nameAliases":[],"sources":[]}
+{"id":"cceb611703ba4a7a","name":"Francis Bebey","nameAliases":[],"sources":[]}
+{"id":"34230017299a3f8f","name":"The Flaming Lips & Miley Cyrus","nameAliases":[],"sources":[]}
+{"id":"87ffbaa9e24b34e4","name":"Kaaris","nameAliases":[],"sources":[]}
+{"id":"a29deab2798bc845","name":"Feist","nameAliases":[],"sources":[]}
+{"id":"08af9d60fb838954","name":"Wau y Los Arrrghs !!!","nameAliases":[],"sources":[]}
+{"id":"f090f0ea8d8dd8a2","name":"eden ahbez","nameAliases":[],"sources":[]}
+{"id":"4bdb716b2cf29806","name":"Mister Modo & Ugly Mac Beer","nameAliases":[],"sources":[]}
+{"id":"e8f81de4bd41b816","name":"Yo La Tengo","nameAliases":[],"sources":[]}
+{"id":"57dd241e6f70c8c5","name":"Dualryan","nameAliases":[],"sources":[]}
+{"id":"296e986ab766b367","name":"Michele Pertusi","nameAliases":[],"sources":[]}
+{"id":"ca7cdb50ea586c48","name":"Darkside","nameAliases":[],"sources":[]}
+{"id":"4a636980754f71f5","name":"Jorge Ben","nameAliases":[],"sources":[]}
+{"id":"b6422440e096b5fd","name":"CSP06 ∆ Nicolas Jaar","nameAliases":[],"sources":[]}
+{"id":"d789d652e8f31f2f","name":"Serge Richard","nameAliases":[],"sources":[]}
+{"id":"5897babca33b290c","name":"Claudine Longet","nameAliases":[],"sources":[]}
+{"id":"4f2997670065b978","name":"Swans","nameAliases":[],"sources":[]}
+{"id":"4aaf3469774295ce","name":"Charlie Winston","nameAliases":[],"sources":[]}
+{"id":"d4099ddd1cc873fb","name":"Nat King Cole","nameAliases":[],"sources":[]}
+{"id":"37d6ef41cd885348","name":"Alt-J","nameAliases":[],"sources":[]}
+{"id":"1a63c1cf426864a3","name":"Jacques Brel","nameAliases":[],"sources":[]}
+{"id":"1e6a3af491efc2c4","name":"Mafia K'1 Fry","nameAliases":[],"sources":[]}
+{"id":"279a1ac8c69f178d","name":"Françoiz Breut","nameAliases":[],"sources":[]}
+{"id":"a1bd60bcc75b431b","name":"Kid Francescoli","nameAliases":[],"sources":[]}
+{"id":"713e1313cc183d62","name":"— Mmaj by The Octopus Project on GroovesharkThe Octopus Project","nameAliases":[],"sources":[]}
+{"id":"88deaa072c2fbbe1","name":"First computer to sing Daisy Bell","nameAliases":[],"sources":[]}
+{"id":"f186515bc8ef12b6","name":"The Spits","nameAliases":[],"sources":[]}
+{"id":"a9234cfb3b921c17","name":"Rob","nameAliases":[],"sources":[]}
+{"id":"0e4355836b8722d5","name":"The War on Drugs","nameAliases":[],"sources":[]}
+{"id":"6272d5f49702e586","name":"Jacques Greene (ft. Koreless)","nameAliases":[],"sources":[]}
+{"id":"5ba0819120aff131","name":"The Golliwogs","nameAliases":[],"sources":[]}
+{"id":"0f778843c9a95d73","name":"Caribou","nameAliases":[],"sources":[]}
+{"id":"3309e90926211233","name":"Frederik Mey","nameAliases":[],"sources":[]}
+{"id":"3519970da993a24e","name":"Dona Dumitru Siminica","nameAliases":[],"sources":[]}
+{"id":"903504f7f72f1517","name":"Collège","nameAliases":[],"sources":[]}
+{"id":"0473ecde94be469a","name":"Nicolas Jaar","nameAliases":[],"sources":[]}
+{"id":"b817fd1556ee7226","name":"Bobby McFerrin","nameAliases":[],"sources":[]}
+{"id":"89c6dac2c42d3b1e","name":"Daniel Avery","nameAliases":[],"sources":[]}
+{"id":"18f9367b683bbddc","name":"Flight Facilities","nameAliases":[],"sources":[]}
+{"id":"0477a8c44e4197d9","name":"Idioma","nameAliases":[],"sources":[]}
+{"id":"c326cc13e0670ef7","name":"Stereo Total","nameAliases":[],"sources":[]}
+{"id":"6684e18ddf03858e","name":"Tonetta","nameAliases":[],"sources":[]}
+{"id":"865df47f321fd936","name":"Talking Heads","nameAliases":[],"sources":[]}
+{"id":"0fb4f030ead85a2b","name":"Girls Names","nameAliases":[],"sources":[]}
+{"id":"21919241f71e4793","name":"Giorgio Murderer","nameAliases":[],"sources":[]}
+{"id":"82b3925bc1a97619","name":"Suicide","nameAliases":[],"sources":[]}
+{"id":"87bc76aae37555a1","name":"Brigitte Bardot","nameAliases":[],"sources":[]}
+{"id":"10c31cfc49ab30bc","name":"William Onyeabor","nameAliases":[],"sources":[]}
+{"id":"59aea7ddc43a14b5","name":"Nick Drake","nameAliases":[],"sources":[]}
+{"id":"c81090db8f563fc7","name":"Parquet Courts","nameAliases":[],"sources":[]}
+{"id":"c841f78d2a123ada","name":"clipping. (ft. Cocc Pistol Cree)","nameAliases":[],"sources":[]}
+{"id":"f70e305e6f94e3d0","name":"Joanna Newsom","nameAliases":[],"sources":[]}
+{"id":"f6b960b8cd788383","name":"Pisces","nameAliases":[],"sources":[]}
+{"id":"738964b57bc51473","name":"Radiohead","nameAliases":[],"sources":[]}
+{"id":"3aea62c0a0f48594","name":"Pierre Cavalli","nameAliases":[],"sources":[]}
+{"id":"d0c1d8c98f54c0da","name":"Mystère","nameAliases":[],"sources":[]}
+{"id":"7320e209ea340741","name":"Lee Moses","nameAliases":[],"sources":[]}
+{"id":"be504dda6f41a6f9","name":"Willis Earl Beal","nameAliases":[],"sources":[]}
+{"id":"8bff4ddd3b5cae79","name":"PNL","nameAliases":[],"sources":[]}
+{"id":"1a6e4a55a77e55c9","name":"Laurent Garnier","nameAliases":[],"sources":[]}
+{"id":"af37499347cbf909","name":"Mild High Club","nameAliases":[],"sources":[]}
+{"id":"4653d19680dcac77","name":"Nick Cave & The Bad Seeds","nameAliases":[],"sources":[]}
+{"id":"9b7e97498838dd1d","name":"Wampire","nameAliases":[],"sources":[]}
+{"id":"5259c4a96dfda3b4","name":"Brandt Brauer Frick","nameAliases":[],"sources":[]}
+{"id":"b340c4b51f41a2ff","name":"Petula Clark","nameAliases":[],"sources":[]}
+{"id":"3fc8f374c3d39347","name":"Galt MacDermot","nameAliases":[],"sources":[]}
+{"id":"5430bbec5f44dfa2","name":"Odetta","nameAliases":[],"sources":[]}
+{"id":"714fffa800eec024","name":"John Maus","nameAliases":[],"sources":[]}
+{"id":"e2552fb7a366c313","name":"Mykki Blanco","nameAliases":[],"sources":[]}
+{"id":"9effc60b77ca2473","name":"Bass Drum of Death","nameAliases":[],"sources":[]}
+{"id":"fe47934ff1ac9de4","name":"Kevin Ayers","nameAliases":[],"sources":[]}
+{"id":"6e6adf29385a5573","name":"Rival Consoles","nameAliases":[],"sources":[]}
+{"id":"b8e308c2c0b00720","name":"M-H-D","nameAliases":[],"sources":[]}
+{"id":"cfcb8c17986fe14c","name":"Weekend Cult","nameAliases":[],"sources":[]}
+{"id":"ffc87afd0123c5dc","name":"Marie Davidson","nameAliases":[],"sources":[]}
+{"id":"a837f87aaae95cc6","name":"Jackie Mittoo","nameAliases":[],"sources":[]}
+{"id":"611296f9a0f0deca","name":"Shuggie Otis","nameAliases":[],"sources":[]}
+{"id":"c5a677489c1c63f5","name":"Lena Platonos","nameAliases":[],"sources":[]}
+{"id":"f15a9b880ed6633b","name":"Elis Regina & Tom Jobim","nameAliases":[],"sources":[]}
+{"id":"896a0b205e4c6b3c","name":"Meatbodies","nameAliases":[],"sources":[]}
+{"id":"fbf73bf46ca1a971","name":"Mujeres","nameAliases":[],"sources":[]}
+{"id":"68fdd2f9c2d01b33","name":"FIDLAR","nameAliases":[],"sources":[]}
+{"id":"9ca6822670355a39","name":"Michael Rault","nameAliases":[],"sources":[]}
+{"id":"e0e03b9d6a97de29","name":"Tacocat","nameAliases":[],"sources":[]}
+{"id":"e2c3f7c46bb5da92","name":"Clarence Henry","nameAliases":[],"sources":[]}
+{"id":"73873ec580894b48","name":"Nina Simone","nameAliases":[],"sources":[]}
+{"id":"d6502a1e30f21e50","name":"Syl Johnson","nameAliases":[],"sources":[]}
+{"id":"3ebb4c5baede0e89","name":"Rita Pavone","nameAliases":[],"sources":[]}
+{"id":"4847fa4e0c24c901","name":"Boris Vian","nameAliases":[],"sources":[]}
+{"id":"8014eeb440dfa8ce","name":"Ihsan Al Munzer","nameAliases":[],"sources":[]}
+{"id":"e47409e199f817d5","name":"Mink DeVille","nameAliases":[],"sources":[]}
+{"id":"ff8942beee194627","name":"The Soft Boys","nameAliases":[],"sources":[]}
+{"id":"fa4097a7a421cb73","name":"Marty Robbins","nameAliases":[],"sources":[]}
+{"id":"6785041139e2fc83","name":"Chemise","nameAliases":[],"sources":[]}
+{"id":"8de7f1f22a09f4ab","name":"Mary Clark","nameAliases":[],"sources":[]}
+{"id":"cddd7fe98c87703e","name":"Marijata","nameAliases":[],"sources":[]}
+{"id":"2bbf9fa9db70123f","name":"Aurita Castillo y su Conjunto","nameAliases":[],"sources":[]}
+{"id":"fcad6d34d86d214b","name":"Balla et ses Balladins","nameAliases":[],"sources":[]}
+{"id":"f216ed8b4c6359bd","name":"Isaac Hayes","nameAliases":[],"sources":[]}
+{"id":"46d04555849b6463","name":"Johnny “Guitar” Watson","nameAliases":[],"sources":[]}
+{"id":"4ea4918ed64ecae9","name":"Jeremy Steig","nameAliases":[],"sources":[]}
+{"id":"12f6e88b44912894","name":"John Barry","nameAliases":[],"sources":[]}
+{"id":"eb55e7a3603ab1fc","name":"LOUISAHHH!!!","nameAliases":[],"sources":[]}
+{"id":"58fbfefbbe650504","name":"Jun Miyake","nameAliases":[],"sources":[]}
+{"id":"c684d6cf4bde3f75","name":"Shigeo Sekito","nameAliases":[],"sources":[]}
+{"id":"7ce9337141374522","name":"Yves Simon","nameAliases":[],"sources":[]}
+{"id":"6402dd43deb1a9c7","name":"Michel Polnareff","nameAliases":[],"sources":[]}
+{"id":"d9bec8ae10096b58","name":"Sherri Taylor","nameAliases":[],"sources":[]}
+{"id":"c3df8e1ddca07542","name":"Carl Hall","nameAliases":[],"sources":[]}
+{"id":"a416ce6cf67f3d01","name":"The Normal","nameAliases":[],"sources":[]}
+{"id":"dc9c3f46f63dfd0e","name":"Fat White Family","nameAliases":[],"sources":[]}
+{"id":"5ea67fd489089c61","name":"Kiddy Smile","nameAliases":[],"sources":[]}
+{"id":"80d7cd263de9aef6","name":"The Blaze","nameAliases":[],"sources":[]}
+{"id":"f7eaf1baa8c182e8","name":"The Jim Carroll Band","nameAliases":[],"sources":[]}
+{"id":"1e15f286daaa0cc1","name":"Daniel Johnston","nameAliases":[],"sources":[]}
+{"id":"a88fa1d3557c9c9a","name":"Brushy One String","nameAliases":[],"sources":[]}
+{"id":"6994cb833df1c911","name":"R.L. Burnside","nameAliases":[],"sources":[]}
+{"id":"914d0be36b16c245","name":"Velvet Underground","nameAliases":[],"sources":[]}
+{"id":"1c53f6cca6e5d577","name":"Average Rap Band","nameAliases":[],"sources":[]}
+{"id":"9a0697772d22da9f","name":"Letta Mbulu","nameAliases":[],"sources":[]}
+{"id":"a2afb81eddc1681f","name":"Le temps est bon","nameAliases":[],"sources":[]}
+{"id":"9aebe65737bc41af","name":"Sophie Daumier","nameAliases":[],"sources":[]}
+{"id":"d87d69939b56af7b","name":"Louise Bourgeois","nameAliases":[],"sources":[]}
+{"id":"4c75318f5f01ee42","name":"Reykjavíkurdætur","nameAliases":[],"sources":[]}
+{"id":"52ec93d1a1cb8547","name":"Billie Holliday","nameAliases":[],"sources":[]}
+{"id":"69150c3792a5ab13","name":"Marlene Dietrich","nameAliases":[],"sources":[]}
+{"id":"7819b0883282d682","name":"Giuseppe Verdi","nameAliases":[],"sources":[]}
+{"id":"88aa5a2975993b8c","name":"Yves Montand","nameAliases":[],"sources":[]}
+{"id":"af0c0bee8e9828e7","name":"Dominique Grange","nameAliases":[],"sources":[]}
+{"id":"83eb567456a7dcca","name":"Anna Marly","nameAliases":[],"sources":[]}
+{"id":"8c3f3a43e7fb6bc8","name":"The Melodians","nameAliases":[],"sources":[]}
+{"id":"24279a534aa6bf9f","name":"Linton Kwesi Johnson","nameAliases":[],"sources":[]}
+{"id":"41ebfef72f1ff01c","name":"Peter Tosh","nameAliases":[],"sources":[]}
+{"id":"d6dae67757c5bad8","name":"Keith Lynn with Byron Lee","nameAliases":[],"sources":[]}
+{"id":"176155e5b583d30c","name":"The Beatles","nameAliases":[],"sources":[]}
+{"id":"d7dc39d27e448340","name":"Finley Quaye","nameAliases":[],"sources":[]}
+{"id":"f01b800b0497b92a","name":"Nino Ferrer","nameAliases":[],"sources":[]}
+{"id":"a2512dc67937c06f","name":"Christine Laume","nameAliases":[],"sources":[]}
+{"id":"27ff92ecb3cfce14","name":"Brigitte Fontaine, The Art Ensemble of Chicago & Areski Belkacem","nameAliases":[],"sources":[]}
+{"id":"b781768441519e8f","name":"The Squires","nameAliases":[],"sources":[]}
+{"id":"b3ee05de2984c9d7","name":"Los Angeles Negros","nameAliases":[],"sources":[]}
+{"id":"645a6a8aa90f6a57","name":"Jefferson Airplane","nameAliases":[],"sources":[]}
+{"id":"7b4c6c62fdecc00d","name":"Gloria Ann Taylor","nameAliases":[],"sources":[]}
+{"id":"a10e0454f76746ba","name":"Janice McClain","nameAliases":[],"sources":[]}
+{"id":"65a847eca9dbf66c","name":"Roy Ayers","nameAliases":[],"sources":[]}
+{"id":"20bf3b9489471efe","name":"The Impressions","nameAliases":[],"sources":[]}
+{"id":"c6dff6208334f690","name":"Labi Siffre","nameAliases":[],"sources":[]}
+{"id":"a20dc17d6b2cfadb","name":"Waylon Jennings","nameAliases":[],"sources":[]}
+{"id":"413cefbef1610780","name":"Lee Hazlewood","nameAliases":[],"sources":[]}
+{"id":"13664049301f4399","name":"The Buddy Rich Big Band","nameAliases":[],"sources":[]}
+{"id":"a797e4ad73cd6873","name":"The Flamingos","nameAliases":[],"sources":[]}
+{"id":"37412d3373f2458f","name":"Donald Byrd","nameAliases":[],"sources":[]}
+{"id":"f0ae31d277ad4b24","name":"Vanishing Twins","nameAliases":[],"sources":[]}
+{"id":"f4659f75f541987f","name":"ScubaZ","nameAliases":[],"sources":[]}
+{"id":"1266f356ca987a1a","name":"Bertrand Belin","nameAliases":[],"sources":[]}
+{"id":"80c61578a401914b","name":"Mathieu Boogaerts","nameAliases":[],"sources":[]}
+{"id":"875ea0f0dad6c481","name":"Richard O’Brien","nameAliases":[],"sources":[]}
+{"id":"e5bcc6bc2900df69","name":"The Coneheads","nameAliases":[],"sources":[]}
+{"id":"10aca9cbaaf3cc75","name":"Metallica","nameAliases":[],"sources":[]}
+{"id":"9336bc12f444b5da","name":"Courtney Barnett","nameAliases":[],"sources":[]}
+{"id":"134e6de53c42140c","name":"RENDEZ VOUS","nameAliases":[],"sources":[]}
+{"id":"8318afda49b08162","name":"Tiny Tim","nameAliases":[],"sources":[]}
+{"id":"8af8417be1b69e03","name":"Frank Zappa","nameAliases":[],"sources":[]}
+{"id":"1997771aa892480b","name":"Björk","nameAliases":[],"sources":[]}
+{"id":"5e7e5a92e8e0d1dc","name":"Charanjit Singh","nameAliases":[],"sources":[]}
+{"id":"545d059e9ce7fba1","name":"Ancient Methods","nameAliases":[],"sources":[]}
+{"id":"ad088e7abc4828e0","name":"Joseph Capriati","nameAliases":[],"sources":[]}
+{"id":"aabb70400504da0c","name":"Paul Ritch","nameAliases":[],"sources":[]}
+{"id":"10b1f50f96a8b82f","name":"Ghost Culture","nameAliases":[],"sources":[]}
+{"id":"ae919fe7d98de691","name":"Taxi Girl","nameAliases":[],"sources":[]}
+{"id":"bdb197e1767fd777","name":"Polo & Pan","nameAliases":[],"sources":[]}
+{"id":"b74fcea09b00028e","name":"Asia Argento","nameAliases":[],"sources":[]}
+{"id":"b170adf1c9fb4ac5","name":"Unknown","nameAliases":[],"sources":[]}
+{"id":"29ade03b80d72088","name":"Vivien Savage","nameAliases":[],"sources":[]}
+{"id":"cc989ac8e153441b","name":"Patrick Coutin","nameAliases":[],"sources":[]}
+{"id":"9254637cb129c36f","name":"Jeanne Moreau","nameAliases":[],"sources":[]}
+{"id":"5fd221d15a54bfe0","name":"Jacques Dutronc","nameAliases":[],"sources":[]}
+{"id":"c826efee3b34a866","name":"Katerine","nameAliases":[],"sources":[]}
+{"id":"d32075a72768c562","name":"Feu! Chatterton","nameAliases":[],"sources":[]}
+{"id":"494d7015a98188f2","name":"Flavien Berger","nameAliases":[],"sources":[]}
+{"id":"892cb968a345386b","name":"Georges Brassens","nameAliases":[],"sources":[]}
+{"id":"af6c677089396815","name":"Salvatore Adamo","nameAliases":[],"sources":[]}
+{"id":"707f2d217149ae25","name":"Beck","nameAliases":[],"sources":[]}
+{"id":"cd450f48dfe844d7","name":"Murcof & Vanessa Wagner","nameAliases":[],"sources":[]}
