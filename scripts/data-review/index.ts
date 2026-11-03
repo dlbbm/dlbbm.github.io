@@ -19,7 +19,7 @@ import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Post, Recording } from '../../shared/types/index.js'
 import { askDraft, printDraft, storeDraftFile } from '../_ask/index.js'
 import { CWD } from '../_config/index.js'
-import { append, readDb, write, type Db } from '../_db/index.js'
+import { append, readDb, saveSong, write, type Db } from '../_db/index.js'
 import { findArtistById } from '../_describe/index.js'
 
 const REVIEW = path.join(CWD, 'IMPORT-REVIEW.md')
@@ -153,7 +153,7 @@ for (const [index, row] of rows.entries()) {
   await storeDraftFile(draft)
   await append('artists', draft.createdArtists)
   await append('slugs', draft.createdSlugs)
-  await append('songs', draft.createdSongs)
+  await saveSong(draft.song, draft.createdSongs, db.songs)
   await write('recordings', db.recordings.map(candidate =>
     candidate.id === draft.recording.id ? draft.recording : candidate))
   await write('posts', db.posts.map(candidate =>

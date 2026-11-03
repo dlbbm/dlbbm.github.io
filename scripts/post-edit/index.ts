@@ -15,7 +15,7 @@ import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Post, Recording } from '../../shared/types/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
-import { append, readDb, write, type Db } from '../_db/index.js'
+import { append, readDb, saveSong, write, type Db } from '../_db/index.js'
 import { describePost } from '../_describe/index.js'
 
 const db: Db = await readDb()
@@ -61,7 +61,7 @@ printDraft(draft)
 const changes = [
   draft.createdArtists.length === 0 ? null : `${draft.createdArtists.length} artist appended`,
   draft.createdSlugs.length === 0 ? null : `${draft.createdSlugs.length} slug appended`,
-  draft.createdSongs.length === 0 ? null : '1 song appended',
+  draft.createdSongs.length === 0 ? '1 song rewritten' : '1 song appended',
   '1 recording rewritten',
   '1 post rewritten'
 ].filter((part): part is string => part !== null)
@@ -81,7 +81,7 @@ await storeDraftFile(draft)
 // New entities first, so the rewritten lines never point at something not yet on disk.
 await append('artists', draft.createdArtists)
 await append('slugs', draft.createdSlugs)
-await append('songs', draft.createdSongs)
+await saveSong(draft.song, draft.createdSongs, db.songs)
 await write('recordings', db.recordings.map(candidate =>
   candidate.id === draft.recording.id ? draft.recording : candidate))
 await write('posts', db.posts.map(candidate =>
@@ -94,7 +94,7 @@ console.log(styles.success(`${db.posts.length} posts in the data`))
 printRecords({
   artists: draft.createdArtists,
   slugs: draft.createdSlugs,
-  songs: draft.createdSongs,
+  songs: draft.createdSongs.length === 0 ? [draft.song] : draft.createdSongs,
   recordings: [draft.recording],
   posts: [draft.post]
 })

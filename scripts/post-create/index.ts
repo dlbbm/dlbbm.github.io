@@ -9,7 +9,7 @@ import process from 'node:process'
 import { confirm } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
-import { append, readDb, type Db } from '../_db/index.js'
+import { append, readDb, saveSong, type Db } from '../_db/index.js'
 
 const db: Db = await readDb()
 
@@ -47,7 +47,7 @@ await storeDraftFile(draft)
 // unreferenced song or artist, never a post pointing at a recording that is not there.
 await append('artists', draft.createdArtists)
 await append('slugs', draft.createdSlugs)
-await append('songs', draft.createdSongs)
+await saveSong(draft.song, draft.createdSongs, db.songs)
 await append('recordings', [draft.recording])
 await append('posts', [draft.post])
 

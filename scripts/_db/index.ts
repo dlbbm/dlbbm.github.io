@@ -90,6 +90,19 @@ export async function append<K extends DbCollection> (collection: K, records: Db
 }
 
 /**
+ * Writes a draft's song: appended when it is new, its line replaced when it is not.
+ *
+ * A work's original artists can be corrected now, which means an existing song's line has
+ * to be rewritten — and the rewrite has to happen before the append, or it would be built
+ * from a collection that does not hold the new ones yet.
+ */
+export async function saveSong (song: Song, created: Song[], pool: Song[]): Promise<void> {
+  const isNew = created.some(candidate => candidate.id === song.id)
+  if (!isNew) await write('songs', pool.map(candidate => candidate.id === song.id ? song : candidate))
+  await append('songs', created)
+}
+
+/**
  * Rewrites a collection's file whole.
  *
  * The one way out of append-only, and it is the caller's job to pass every record the file
