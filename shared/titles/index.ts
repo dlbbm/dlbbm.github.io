@@ -7,7 +7,9 @@
  * would be one source of truth too, and a 118 KB fetch to set one line of text.
  */
 
-const SEPARATOR = ' · '
+// A pipe rather than a dash: a post's own title already holds one, between the song and
+// who played it.
+const SEPARATOR = ' | '
 
 /** The name of a page, trailed by the name of the site. `null` is the site itself. */
 export function pageTitle (name: string | null, siteTitle: string): string {
