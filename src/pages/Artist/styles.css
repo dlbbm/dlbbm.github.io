@@ -1,0 +1,30 @@
+.page-artist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-6);
+}
+
+.page-artist__name {
+  margin: 0;
+  font-family: var(--ff-text);
+  font-size: var(--fs-8);
+  font-weight: var(--fw-400);
+  line-height: var(--lh-8);
+}
+
+/* The same rhythm as the home stream: an artist's posts are read the way the feed is. */
+.page-artist__posts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-7);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-artist__message {
+  margin: 0;
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+}

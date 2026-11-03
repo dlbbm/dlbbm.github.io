@@ -4,7 +4,9 @@
 
 import type {
   BuiltAbout,
+  BuiltArtist,
   BuiltArtistIndexEntry,
+  BuiltArtistPage,
   BuiltManifest,
   BuiltPost,
   BuiltPostIndexEntry,
@@ -53,6 +55,31 @@ export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
   try {
     const { post } = await readJson<BuiltPostPage>(`/data/post/${id}.json`)
     return Date.parse(post.publishedOn) <= Date.now() ? post : null
+  } catch {
+    return null
+  }
+}
+
+export type ArtistPage = {
+  artist: BuiltArtist
+  posts: BuiltPost[]
+}
+
+/**
+ * One artist and everything they appear on, newest first.
+ *
+ * The index the build writes holds lean entries; the stream wants whole posts, so each
+ * one is fetched. No pagination and no slicing: an artist has a handful of posts here,
+ * never a stream's worth. Scheduled posts are dropped the way they are everywhere else.
+ */
+export async function fetchArtistPage (slug: string): Promise<ArtistPage | null> {
+  try {
+    const page = await readJson<BuiltArtistPage>(`/data/artist/${slug}.json`)
+    const now = Date.now()
+    const posts = await Promise.all(page.posts
+      .filter(entry => Date.parse(entry.publishedOn) <= now)
+      .map(async entry => (await readJson<BuiltPostPage>(`/data/post/${entry.id}.json`)).post))
+    return { artist: page.artist, posts }
   } catch {
     return null
   }

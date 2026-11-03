@@ -82,10 +82,6 @@ in this repository that pushes.
 
 # Roadmap
 
-- **`/artist/<slug>` is the one route with nothing behind it.** Home, `/post/<id>`,
-  `/posts`, `/artists` and `/about` all display something; the artist page is still an
-  empty div, and what it should show — every post they appear on, credited or featuring
-  or remixing — is already in `artist/<slug>.json`.
 - **One design system across several sites.** The token layer, the theme in five colors
   and the five font slots are meant to carry over to the other small sites to come, where
   only the colors and the fonts change. Whether that becomes shared code — a package, or
