@@ -14,7 +14,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { existsSync } from 'node:fs'
 import { readFile, writeFile } from 'node:fs/promises'
-import { confirm, select } from '@inquirer/prompts'
+import { confirm, input, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Post, Recording } from '../../shared/types/index.js'
 import { askDraft, printDraft, storeDraftFile } from '../_ask/index.js'
@@ -97,13 +97,26 @@ if (rows.length === 0) {
   process.exit(0)
 }
 
+/** Which post to open on, counted the way the walk prints it: 1 is the first. */
+async function askStart (count: number): Promise<number> {
+  const answer = await input({
+    message: `Start at (1-${count})`,
+    default: '1',
+    validate: value => {
+      const at = Number(value.trim())
+      return (Number.isInteger(at) && at >= 1 && at <= count) || `Expected a number between 1 and ${count}.`
+    }
+  })
+  return Number(answer.trim()) - 1
+}
+
 let start = 0
 if (existsSync(CURSOR)) {
   const stored = (await readFile(CURSOR, { encoding: 'utf-8' })).trim()
   const at = rows.findIndex(row => row.postId === stored)
   if (at > 0) {
     const resume = await confirm({ message: `Resume at ${at + 1} of ${rows.length}?`, default: true })
-    if (resume) start = at
+    start = resume ? at : await askStart(rows.length)
   }
 }
 
