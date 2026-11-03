@@ -369,10 +369,17 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // artists", which is what this prompt already offers. And it is not a question `kind`
   // can answer — a song first released on a live album is live and original both, so
   // nothing about how a take was captured says whose work it is.
+  // A work credited to itself follows the credits when they are rewritten: the stored claim
+  // names who used to be credited, so defaulting to it would ask for the same correction
+  // twice. A claim that already differed from the credits is someone's answer to this
+  // question, and stands.
   const claimed = namesOf(song.originalArtistIds, artistPool)
+  const claimWasTheCredits = editing !== null
+    && editing.recording.songId === song.id
+    && song.originalArtistIds.join(',') === editing.recording.byArtistIds.join(',')
   const originalArtists = await askCredits(
     `Original artist (separated by ${CREDIT_SEPARATOR})`,
-    claimed.length === 0 ? creditedArtists : claimed,
+    claimed.length === 0 || claimWasTheCredits ? creditedArtists : claimed,
     artistPool,
     createdArtists,
     false
