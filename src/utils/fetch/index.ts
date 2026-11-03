@@ -4,6 +4,7 @@
 
 import type {
   BuiltAbout,
+  BuiltArtistIndexEntry,
   BuiltManifest,
   BuiltPost,
   BuiltPostIndexEntry,
@@ -32,6 +33,11 @@ export async function fetchPublishedPosts (): Promise<BuiltPostIndexEntry[]> {
 export async function fetchAbout (): Promise<BuiltAbout> {
   const manifest = await readJson<BuiltManifest>('/data/manifest.json')
   return manifest.about
+}
+
+/** Every artist with a page of their own, alphabetical as `build:data` sorted them. */
+export async function fetchArtists (): Promise<BuiltArtistIndexEntry[]> {
+  return await readJson<BuiltArtistIndexEntry[]>('/data/artists.json')
 }
 
 export type PostPage = {

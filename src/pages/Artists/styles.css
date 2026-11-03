@@ -1,0 +1,31 @@
+.page-artists__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--gap-3) var(--gap-4);
+  max-width: var(--media-max-width);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Three once there is room for three. A grid and not a multi-column box: `columns` fills
+   top to bottom, and this list is read across before it wraps. */
+@media (min-width: 768px) {
+  .page-artists__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.page-artists__link {
+  color: inherit;
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
+  text-underline-offset: var(--underline-offset);
+  transition: color var(--hover-duration), text-decoration-color var(--hover-duration);
+}
+
+.page-artists__link:hover,
+.page-artists__link:focus-visible {
+  color: var(--accent-color);
+  text-decoration-color: var(--underline-color);
+}
