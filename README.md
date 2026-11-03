@@ -106,9 +106,9 @@ in this repository that pushes.
   blog was crawled, and seven of those carry a dead Grooveshark or Mixcloud URL in the
   body, kept in the report rather than stored; **17 credits hold an ampersand or a comma**
   and were written as a single artist, because no rule tells `Polo & Pan` from
-  `Murcof & Vanessa Wagner`; **5 posts are whole albums**, now stored as a
-  `full album` recording with the tracklist dropped — their names want checking, and the
-  tracklists are still in the archive if they ever matter; **47 trailing parentheses**
+  `Murcof & Vanessa Wagner`; **5 posts are whole albums**, stored as a `full album`
+  recording with the tracklist kept in the post's `body` — their names want checking;
+  **47 trailing parentheses**
   were read as a kind, a place or a date and want checking; and **one title has no dash**
   at all.
 - **A cover image on a stored file.** `FileSource` carries a `kind` and a `path` and
