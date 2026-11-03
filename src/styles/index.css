@@ -12,7 +12,7 @@
   /* The panel, and the only theme the site ships: a ground that is lit from behind
      rather than a page that is white, text in screen green, and the accent on the mark's
      red — the one color on this page that belongs to no theme. */
-  --bg-color: #12201c;
+  --bg-color: #0d1814;
   --text-color: #bfd9cb;
   --accent-color: var(--mark-warm);
   --border-color: var(--text-color);
@@ -28,7 +28,7 @@
 
   /* The mark keeps its own two colors whatever the ground: the discs are one green, the
      lens the warm note between them. */
-  --mark-green: #35876c;
+  --mark-green: #2b6f58;
   --mark-warm: #a9563a;
 
   /* Daylight, kept aside and no longer the default. Held apart so the mapping below is
