@@ -88,7 +88,7 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2014-10-13` **Alt-J** — Lovely Day · [archive](https://delabienbonnemusique.tumblr.com/post/99914949537/alt-j-lovely-day-bill-withers-cover)
 - `2014-10-14` **Jacques Brel** — Marieke · [archive](https://delabienbonnemusique.tumblr.com/post/99981208565/jacques-brel-marieke)
 - `2014-11-07` **Mafia K'1 Fry** — Pour Ceux · [archive](https://delabienbonnemusique.tumblr.com/post/102000195445/mafia-k1-fry-pour-ceux)
-- `2014-11-19` **—** — — — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
+- `2014-11-19` **The Octopus Project** — Mmaj — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
 - `2014-11-21` **The Spits** — Die Die Die · [archive](https://delabienbonnemusique.tumblr.com/post/103196422430/the-spits-die-die-die-live)
 - `2015-01-13` **Rob** — Make it Fast, Make it Slow · [archive](https://delabienbonnemusique.tumblr.com/post/107930341975/rob-make-it-fast-make-it-slow)
 - `2015-01-26` **Caribou** — Back Home · [archive](https://delabienbonnemusique.tumblr.com/post/109211718345/caribou-back-home)
@@ -135,11 +135,10 @@ Nothing to play. The embed was gone when the blog was crawled, so the post arriv
 - `2018-02-03` **Katerine** — Je vous emmerde · [archive](https://delabienbonnemusique.tumblr.com/post/170451127600/katerine-je-vous-emmerde)
 - `2018-02-06` **Salvatore Adamo** — Tombe la neige · [archive](https://delabienbonnemusique.tumblr.com/post/170586407310/salvatore-adamo-tombe-la-neige)
 
-## unsplit-title — 2 posts
+## unsplit-title — 1 post
 
 No dash in the title, so the whole line became the artist and the song both. Needs splitting by hand.
 
-- `2014-11-19` **—** — — — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
 - `2018-02-03` **** —  · [archive](https://delabienbonnemusique.tumblr.com/post/170451108250)
 
 ## ambiguous-credit — 17 posts
@@ -174,7 +173,7 @@ A URL was found in the body, on a host that is dead or is not an embed. Kept her
 - `2013-09-03` **Robin Trower** — I Believe to my Soul — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/60163783137/robin-trower-i-believe-to-my-soul)
 - `2014-03-03` **David August** — Live at the Blue Parrot Club, Mexico, 2014 — `https://www.mixcloud.com/mixfeed/david-august-live-diynamic-showcase-bpm-0114/` · [archive](https://delabienbonnemusique.tumblr.com/post/78445274454/david-august-live-at-the-blue-parrot-club)
 - `2014-10-10` **CSP06 ∆ Nicolas Jaar** — Essential Mix — `https://www.youtube.com/watch?v=wnpVWvCDINU` · [archive](https://delabienbonnemusique.tumblr.com/post/99658971219/csp06-nicolas-jaar-essential-mix-tracklist)
-- `2014-11-19` **—** — — — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
+- `2014-11-19` **The Octopus Project** — Mmaj — `http://grooveshark.com/songWidget.swf` · [archive](https://delabienbonnemusique.tumblr.com/post/103033289175)
 
 ## read-qualifier — 52 posts
 
