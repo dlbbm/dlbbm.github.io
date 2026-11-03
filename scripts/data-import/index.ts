@@ -444,17 +444,17 @@ for (const archive of posts) {
     body
   })
 
-  if (flags.length > 0) {
-    reviewed.push({
-      flags,
-      postId,
-      archiveUrl: archive.url,
-      publishedOn,
-      artist: artistName,
-      song: songTitle,
-      note
-    })
-  }
+  // Every post is listed, not only the ones that went wrong: the flagged rows are where
+  // the work is, and the rest are there to be checked against if anyone wants to.
+  reviewed.push({
+    flags,
+    postId,
+    archiveUrl: archive.url,
+    publishedOn,
+    artist: artistName,
+    song: songTitle,
+    note
+  })
 }
 
 await write('artists', artists)
@@ -489,7 +489,11 @@ const searchUrl = (one: Reviewed): string =>
   `https://www.youtube.com/results?search_query=${encodeURIComponent(`${one.artist} ${one.song}`)}`
 
 let review = '# Import review\n\n'
-review += `Written by \`npm run data:import\`. ${reviewed.length} of ${posts.length} posts need a look.\n\n`
+const flagged = reviewed.filter(one => one.flags.length > 0)
+review += `Written by \`npm run data:import\`. **All ${reviewed.length} posts are listed**, flagged ones\n`
+review += `first: the ${flagged.length} the import could not read cleanly, then the ${reviewed.length - flagged.length} it believes it got\n`
+review += 'right, with an empty `flags` cell. Checking those is optional; the flagged ones are\n'
+review += 'where the work is.\n\n'
 review += '**Four columns are yours to edit**, in place, row by row — `artist`, `song`, `source`\n'
 review += 'and `note`, which sit together on the left. `flags` opens each row with what the import\n'
 review += 'could not read, and `find`, `date` and `post` are there to help you answer.\n\n'
@@ -516,7 +520,8 @@ for (const flag of ORDER) {
 review += '\n## The posts\n\n'
 review += '| flags | artist | song | source | find | note | date | post |\n'
 review += '| --- | --- | --- | --- | --- | --- | --- | --- |\n'
-for (const one of reviewed) {
+const ordered = [...flagged, ...reviewed.filter(one => one.flags.length === 0)]
+for (const one of ordered) {
   const cells = [
     one.flags.map(flag => `\`${flag}\``).join(' '),
     escaped(one.artist),
@@ -553,7 +558,7 @@ if (missing.length > 0 || origins.size !== posts.length) {
 console.log(styles.light(`> ${origins.size} of ${posts.length} archived permalinks accounted for`))
 console.log('')
 console.log(styles.info('Review'))
-console.log(styles.light(`> IMPORT-REVIEW.md · ${reviewed.length} posts to consolidate by hand`))
+console.log(styles.light(`> IMPORT-REVIEW.md · ${reviewed.length} posts, ${reviewed.filter(one => one.flags.length > 0).length} of them flagged`))
 console.log('')
 console.log(styles.success('Archive imported.'))
 console.log('')
