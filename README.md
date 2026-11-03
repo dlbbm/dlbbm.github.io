@@ -125,34 +125,54 @@ in this repository that pushes.
 [discogs]: https://support.discogs.com/hc/articles/360005055213-Database-Guidelines-9-Genres-Styles
 [mbgenres]: https://musicbrainz.org/genres
 
-- **Qualifying a sound, beyond genre.** The axes under consideration, to be added to the
-  data over the coming months: **era**, which wants splitting in two — a decade is rigid
-  and derivable from a date, while `summer of love` or `madchester` is a scene, a named
-  vocabulary tied to a place and a moment, and Rate Your Music reached the same split with
-  its separate `scenes & movements` tree; **geography**, where MusicBrainz' `area` is the
-  shape to copy, a place entity with a hierarchy rather than a string, and half of it is
-  already here since `Place` carries venue, city and country for `performedAt`; **lyrical
-  themes**, the one axis with no vocabulary worth borrowing, where anything written would
-  be invented; **mood**, where [AllMusic][allmusic] keeps curated Moods and Themes lists
-  and Rate Your Music calls them descriptors; and **bipolar axes**, five levels from
-  `very X` through neutral to `very Y`.
-  That last one has deep prior art. The five-step bipolar scale is Osgood's **semantic
-  differential**, 1957. The two axes that matter are **[Russell's circumplex][circumplex]**
-  — valence and arousal, which is `joyeux / triste` and `énergique / léthargique` exactly —
-  and the literature is consistent that arousal is rated reliably, valence less so, and
-  anything more abstract worse: a [2010 comparison][gems] of valence-arousal against basic
-  emotions and the Geneva Emotional Music Scale found the two-dimensional model the most
-  consistent of the three. **[Pandora's Music Genome Project][genome]** is the maximal
-  version of the same idea — 400 to 450 attributes per track, half-integer steps on a
-  0 to 5 scale, trained musicians at 20 to 30 minutes a song and a tenth of the catalogue
-  double-rated for control — which is both the proof it works and the warning: that is
-  thirty salaried analysts, against one person and 401 posts here. **Two known traps.**
-  Raters avoid the extremes, so five levels behave like three. And the circumplex collapses
-  its positive-valence, low-arousal corner, putting tenderness and nostalgia in one cell —
-  which for this blog is the interesting corner, not an edge case. **The leaning:** keep
-  the factual axes separate from the judged ones, start with two axes rather than five, and
-  treat a single rater's scores as a point of view rather than as data — the research puts
-  10 to 20 raters at the threshold of a stable estimate.
+- **Qualifying a sound, beyond genre.** The axes to add to the data over the coming
+  months, and what is already known about each. Paused here rather than settled.
+
+  **The axes under consideration.** *Era*, which wants splitting in two. *Geography*.
+  *Lyrical themes*, relative to the words. *Mood*, very broad, whatever the sound gives
+  off. And *bipolar axes*, five levels from `very X` through neutral to `very Y`, X and Y
+  being opposites — `joyeux / triste`, `énergique / léthargique`.
+
+  **The bipolar axes are the most studied thing in the list.** The five-step form is
+  Osgood's semantic differential, 1957, and it is still the standard instrument. The two
+  axes named above are [Russell's circumplex][circumplex]: valence and arousal, the
+  dominant frame in music emotion research. The literature is consistent on which parts
+  work — arousal gets rated reliably, valence less so, anything more abstract worse. A
+  [2010 comparison][gems] of valence-arousal against basic emotions and the Geneva
+  Emotional Music Scale found the plain two-dimensional model the most consistent of the
+  three.
+
+  **[Pandora's Music Genome Project][genome] is the maximal version of the same idea,
+  already built.** 400 to 450 attributes per track, half-integer steps on a 0 to 5 scale,
+  trained musicians at 20 to 30 minutes a song, a tenth of the catalogue double-rated for
+  control. The proof it works and the warning in one: thirty salaried analysts, against
+  one person and 401 posts here.
+
+  **Two traps worth knowing before committing.** Raters avoid the extremes, so five levels
+  behave like three — the neutral middle is right, the outer steps get used rarely. And the
+  circumplex collapses its positive-valence, low-arousal corner, putting tenderness and
+  nostalgia in one cell. For this blog that is the interesting corner, not an edge case.
+
+  **Era wants splitting in two**, and Rate Your Music reached the same conclusion
+  independently with a separate `scenes & movements` tree. A decade is rigid and derivable
+  from a date; `summer of love` or `madchester` is a scene, a named vocabulary tied to a
+  place *and* a moment. One field cannot do both.
+
+  **Geography has a shape to copy, and half of it is already here.** MusicBrainz models
+  `area` as a place entity with a real hierarchy — Detroit inside Michigan inside the US —
+  which is what makes `Detroit techno` also answer a question about American music.
+  `Place` already carries venue, city and country for `performedAt`.
+
+  **Lyrical themes is the one with nothing to borrow.** [AllMusic][allmusic] has Themes,
+  but they are occasions — late night, road trip — not subjects. No controlled vocabulary
+  of lyrical subject matter is in general use, so that axis is where something would be
+  invented, and probably where a loose tag beats a scale.
+
+  **What to hold onto:** separate the factual axes from the judged ones. Region and decade
+  are verifiable and stable. Mood and theme are personal, they will drift over months of
+  rating, and the research puts 10 to 20 raters at the threshold of a stable estimate — so
+  one rater's numbers are a point of view, which for a personal blog is arguably the
+  valuable part, as long as the data does not pretend otherwise.
 
 [allmusic]: https://www.allmusic.com/moods
 [circumplex]: https://en.wikipedia.org/wiki/Emotion_classification#Circumplex_model
