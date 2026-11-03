@@ -212,11 +212,20 @@ async function resolveSong (
     const chosen = await select<Song | null>({
       message: 'Song',
       choices: [
-        ...listed.map(song => ({
-          name: song.title,
-          description: `recorded by ${describeSongCredits(song, recordingPool, artistPool)}`,
-          value: song as Song | null
-        })),
+        // Who recorded it goes in the name and not only in the description: two works can
+        // share a title — an original and the work an import made for its cover — and a
+        // description is only shown for the row the cursor is on.
+        ...listed.map(song => {
+          const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
+          const aliases = song.titleAliases.length === 0
+            ? ''
+            : ` · also ${song.titleAliases.join(', ')}`
+          return {
+            name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
+            description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
+            value: song as Song | null
+          }
+        }),
         { name: 'new song', value: null }
       ]
     })
