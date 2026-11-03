@@ -84,7 +84,7 @@ export function Post ({ post }: PostProps) {
     <div class={bem('meta')}>
       <div class={bem('heading')}>
         <h2 class={bem('title')}>
-          <span class={bem('song')}>{post.song.title}</span>
+          <span class={bem('song')}>{post.recording.title ?? post.song.title}</span>
           {' — '}
           <Credits credits={post.credits} featuring={post.featuring} />
         </h2>
