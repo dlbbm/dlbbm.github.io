@@ -210,7 +210,9 @@ async function resolveSong (
 
   if (listed.length > 0) {
     const chosen = await select<Song | null>({
-      message: 'Song',
+      // `recordingOf` is the schema.org property this is filling — which work the take is
+      // of — and saying so is clearer than `Song` over a list of works sharing a title.
+      message: 'Recording of',
       choices: [
         // Who recorded it goes in the name and not only in the description: two works can
         // share a title — an original and the work an import made for its cover — and a
@@ -481,7 +483,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // that wants several is a hand edit on the record afterwards, which is how this database
   // is corrected anyway.
   const rawBody = await input({
-    message: 'body',
+    message: 'Body',
     default: editing?.post.body ?? ''
   })
   const body = rawBody.trim() === '' ? null : rawBody.trim()
