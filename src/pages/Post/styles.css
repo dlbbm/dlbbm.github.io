@@ -1,0 +1,6 @@
+.page-post__message {
+  margin: 0;
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+}

@@ -10,6 +10,7 @@ import type {
   BuiltPostIndexEntry,
   BuiltPostPage
 } from '../../../shared/types/built.js'
+import type { PostId } from '../../../shared/types/index.js'
 
 async function readJson<T> (url: string): Promise<T> {
   const response = await fetch(url)
@@ -38,6 +39,23 @@ export async function fetchAbout (): Promise<BuiltAbout> {
 /** Every artist with a page of their own, alphabetical as `build:data` sorted them. */
 export async function fetchArtists (): Promise<BuiltArtistIndexEntry[]> {
   return await readJson<BuiltArtistIndexEntry[]>('/data/artists.json')
+}
+
+/**
+ * One post, or `null` when there is none to show.
+ *
+ * A scheduled post is `null` here as it is absent from the stream: it ships with the
+ * build and the front is what withholds it, so the test is the same one the index makes.
+ * A request that fails is `null` too — on a site served as files, a post that cannot be
+ * read is a post that is not there.
+ */
+export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
+  try {
+    const { post } = await readJson<BuiltPostPage>(`/data/post/${id}.json`)
+    return Date.parse(post.publishedOn) <= Date.now() ? post : null
+  } catch {
+    return null
+  }
 }
 
 export type PostPage = {
