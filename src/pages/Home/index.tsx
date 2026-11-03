@@ -22,6 +22,10 @@ export function Home ({ page }: HomeProps) {
   }, [page])
 
   if (loaded === null) return <div class={bem(null, 'loading')} />
+  if (!loaded.exists) return <div class={bem(null, 'missing')}>
+    <p class={bem('message')}>There is no such page.</p>
+    <Pagination page={loaded.page} pageCount={loaded.pageCount} />
+  </div>
   return <div class={bem()}>
     <ol class={bem('posts')}>
       {loaded.posts.map(post => <li class={bem('post')} key={post.id}>

@@ -15,15 +15,18 @@ function pageUrl (page: number): string {
   return page <= 1 ? routePatterns.home : routeUrl('page', { page })
 }
 
+function Step ({ label, href }: { label: string, href: string | null }) {
+  if (href === null) return <span class={bem('button', 'inert')}>{label}</span>
+  return <Link href={href} className={bem('button')}>{label}</Link>
+}
+
 export function Pagination ({ page, pageCount }: PaginationProps) {
-  const previous = page <= 1 ? null : pageUrl(page - 1)
-  const next = page >= pageCount ? null : pageUrl(page + 1)
+  const back = page > 1
+  const forward = page < pageCount
   return <nav class={bem()}>
-    {previous === null
-      ? <span class={bem('button', 'inert')}>prev</span>
-      : <Link href={previous} className={bem('button')}>prev</Link>}
-    {next === null
-      ? <span class={bem('button', 'inert')}>next</span>
-      : <Link href={next} className={bem('button')}>next</Link>}
+    <Step label="first" href={back ? pageUrl(1) : null} />
+    <Step label="prev" href={back ? pageUrl(page - 1) : null} />
+    <Step label="next" href={forward ? pageUrl(page + 1) : null} />
+    <Step label="last" href={forward ? pageUrl(pageCount) : null} />
   </nav>
 }
