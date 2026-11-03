@@ -353,26 +353,18 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // Whose song it is, asked of every work and not only of one entering the data: an
   // import credits the performer by default, so a cover cannot be corrected unless the
   // question comes back. The caller writes the song's line when it is not a new one.
-  const credited = creditedArtists.map(artist => artist.id).join(',')
-  const claimed = song.originalArtistIds.join(',')
-  // A live take, a remix, a demo or an alternate take is a version of something by
-  // definition, so the question is only worth asking of an unannotated recording.
-  const isOriginal = recordingKind === null
-    && await confirm({
-      message: 'Original recording?',
-      default: claimed === '' || claimed === credited
-    })
-  const originalArtists = isOriginal
-    ? creditedArtists
-    : await askCredits(
-      `Original artist (separated by ${CREDIT_SEPARATOR})`,
-      namesOf(song.originalArtistIds, artistPool).length === 0
-        ? creditedArtists
-        : namesOf(song.originalArtistIds, artistPool),
-      artistPool,
-      createdArtists,
-      false
-    )
+  // Asked once and not behind a yes/no: answering yes only ever meant "the credited
+  // artists", which is what this prompt already offers. And it is not a question `kind`
+  // can answer — a song first released on a live album is live and original both, so
+  // nothing about how a take was captured says whose work it is.
+  const claimed = namesOf(song.originalArtistIds, artistPool)
+  const originalArtists = await askCredits(
+    `Original artist (separated by ${CREDIT_SEPARATOR})`,
+    claimed.length === 0 ? creditedArtists : claimed,
+    artistPool,
+    createdArtists,
+    false
+  )
   song.originalArtistIds = originalArtists.map(artist => artist.id)
 
   // The other names the work goes by, which `resolveSong` matches on as readily as the
