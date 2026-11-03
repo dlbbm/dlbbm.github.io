@@ -23,13 +23,21 @@
 .post__media .mxfb-embed--spotify .mxfb-embed__player { height: var(--embed-height); }
 
 .post__date,
-.post__details {
+.post__cover,
+.post__details,
+.post__body {
   font-family: var(--ff-mono);
   font-size: var(--fs-3);
   line-height: var(--lh-3);
 }
 
 .post__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+}
+
+.post__heading {
   display: flex;
   flex-direction: column;
   gap: var(--gap-1);
@@ -63,11 +71,13 @@
   text-decoration-color: var(--underline-color);
 }
 
+.post__cover,
 .post__details {
   margin: 0;
   opacity: var(--muted-opacity);
 }
 
+.post__cover::first-letter,
 .post__details::first-letter { text-transform: uppercase; }
 
 /* What the post wrote beyond naming the song — a tracklist, a second link. Its line
@@ -75,7 +85,4 @@
 .post__body {
   margin: 0;
   white-space: pre-line;
-  font-family: var(--ff-text);
-  font-size: var(--fs-4);
-  line-height: var(--lh-4);
 }

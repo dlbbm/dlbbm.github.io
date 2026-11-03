@@ -32,7 +32,7 @@ function Credit ({ artist }: { artist: BuiltArtist }) {
 
 // `Song — Artist, Artist, ft. Artist`, the line `build:data` writes into `title`, except
 // that each name here is its own link. The two have to say the same thing.
-function Credits ({ credits, featuring }: { credits: BuiltArtist[], featuring: BuiltArtist[] }) {
+function Credits ({ credits, featuring = [] }: { credits: BuiltArtist[], featuring?: BuiltArtist[] }) {
   return <>
     {credits.map((artist, index) => <Fragment key={artist.id}>
       {index === 0 ? null : ', '}
@@ -82,12 +82,18 @@ export function Post ({ post }: PostProps) {
         : <Media source={played} title={post.title} />}
     </div>
     <div class={bem('meta')}>
-      <h2 class={bem('title')}>
-        <span class={bem('song')}>{post.song.title}</span>
-        {' — '}
-        <Credits credits={post.credits} featuring={post.featuring} />
-      </h2>
-      {details === '' ? null : <p class={bem('details')}>{details}</p>}
+      <div class={bem('heading')}>
+        <h2 class={bem('title')}>
+          <span class={bem('song')}>{post.song.title}</span>
+          {' — '}
+          <Credits credits={post.credits} featuring={post.featuring} />
+        </h2>
+        {!post.isCover ? null : <p class={bem('cover')}>
+          <Credits credits={post.originalArtists} />
+          {' cover'}
+        </p>}
+        {details === '' ? null : <p class={bem('details')}>{details}</p>}
+      </div>
       {post.body === null ? null : <p class={bem('body')}>{post.body}</p>}
     </div>
   </article>
