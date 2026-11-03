@@ -9,7 +9,7 @@ import process from 'node:process'
 import { confirm } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
-import { timestampAsString } from '../_date/index.js'
+import { timestampAsWords } from '../_date/index.js'
 import { append, readDb, saveSong, type Db } from '../_db/index.js'
 import { describePost } from '../_describe/index.js'
 
@@ -28,7 +28,7 @@ const pending = db.posts
 if (pending.length > 0) {
   console.log(styles.info('\nPending'))
   for (const post of pending) {
-    console.log(styles.light(`> ${timestampAsString(post.publishedOn)}  ${describePost(post, db).name}`))
+    console.log(styles.light(`> ${timestampAsWords(post.publishedOn)}  ${describePost(post, db).name}`))
   }
 }
 console.log('')

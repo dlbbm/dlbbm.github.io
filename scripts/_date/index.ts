@@ -6,6 +6,7 @@
  * and the build emitting it cannot disagree about what a string means.
  */
 
+import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/index.js'
 import { readDate } from '@design-edito/tools/agnostic/time/dates/read-date/index.js'
 import type { PartialDate, Timestamp } from '../../shared/types/index.js'
 
@@ -79,6 +80,25 @@ export function nowAsString (): string {
 /** `2019-01-31T18:39:00+01:00` back into the `2019-01-31 18:39` a prompt asks for. */
 export function timestampAsString (timestamp: Timestamp): string {
   return `${timestamp.slice(0, 10)} ${timestamp.slice(11, 16)}`
+}
+
+// Past this far, a weekday and a day of the month no longer place a date, so the year
+// comes along. In either direction: it is as true of the 2012 archive as of a post
+// scheduled months out.
+const WORDS_YEAR_AFTER_DAYS = 100
+
+/**
+ * `Tue, nov 3rd at 14h07` — a timestamp as one would say it, for the commands that show
+ * one rather than ask for one.
+ *
+ * The month is lowered and dropped into the template as a literal, since one call cannot
+ * case two tokens differently and the weekday keeps its capital.
+ */
+export function timestampAsWords (timestamp: Timestamp): string {
+  const date = new Date(timestamp)
+  const month = formatDate(date, '{{MMM}}').toLowerCase()
+  const far = Math.abs(date.getTime() - Date.now()) > WORDS_YEAR_AFTER_DAYS * 24 * 60 * 60 * 1000
+  return formatDate(date, `{{ddd}}, ${month} {{D}}{{th}}${far ? ' {{YYYY}}' : ''} at {{HH}}h{{mm}}`)
 }
 
 /**
