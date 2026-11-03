@@ -82,6 +82,7 @@ export function Post ({ post }: PostProps) {
         <Credits credits={post.credits} featuring={post.featuring} />
       </h2>
       {details === '' ? null : <p class={bem('details')}>{details}</p>}
+      {post.body === null ? null : <p class={bem('body')}>{post.body}</p>}
     </div>
   </article>
 }

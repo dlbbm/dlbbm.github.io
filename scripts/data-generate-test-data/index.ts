@@ -202,7 +202,8 @@ for (const [index, spec] of SPECS.entries()) {
     id: createId(),
     publishedOn: toTimestamp(when),
     hidden: spec.hidden ?? false,
-    recordingId: recording.id
+    recordingId: recording.id,
+    body: null
   })
 
   // The hour is set rather than nudged: a drift of a few minutes per post would walk the

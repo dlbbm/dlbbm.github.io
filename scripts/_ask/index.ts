@@ -448,6 +448,15 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     process.exit(1)
   }
 
+  // One line, because almost every post is only its title. A tracklist or anything else
+  // that wants several is a hand edit on the record afterwards, which is how this database
+  // is corrected anyway.
+  const rawBody = await input({
+    message: 'body',
+    default: editing?.post.body ?? ''
+  })
+  const body = rawBody.trim() === '' ? null : rawBody.trim()
+
   // Hiding a post is a thing one does to a post that exists, so the question is the one
   // the create flow does not ask.
   const hidden = editing === null
@@ -472,7 +481,8 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     id: editing?.post.id ?? createId(),
     publishedOn,
     hidden,
-    recordingId: recording.id
+    recordingId: recording.id,
+    body
   }
 
   // Every artist named for the first time gets its URL now, so nothing addressable ever

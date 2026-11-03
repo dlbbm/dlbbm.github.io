@@ -186,6 +186,31 @@ function readMedia (url: string): { service: MediaService, url: string } | null 
   return null
 }
 
+/**
+ * The post's own words, one line at a time.
+ *
+ * **The archive's `title` is not a heading.** It is this same body with its line breaks
+ * taken out, so a post of two lines arrives as `Pink Floyd — EchoesStanley Kubrick —
+ * 2001: A Space Odyssey`. The first line of the body is what the title should have been,
+ * and everything after it is what the post actually wrote down — a tracklist, a second
+ * link, a note.
+ */
+function readLines (markup: string): string[] {
+  return markup
+    .replace(/<br\s*\/?>/giv, '\n')
+    .replace(/<\/p>/giv, '\n')
+    .replace(/<[^>]*>/gv, '')
+    .replace(/&nbsp;/giv, ' ')
+    .replace(/&amp;/giv, '&')
+    .replace(/&lt;/giv, '<')
+    .replace(/&gt;/giv, '>')
+    .replace(/&quot;/giv, '"')
+    .replace(/&#39;/gv, '\'')
+    .split('\n')
+    .map(line => line.replace(/[ \t\u00a0\u2007\u202f]+/gv, ' ').trim())
+    .filter(line => line !== '')
+}
+
 const archivePath = process.argv[2]
 if (archivePath === undefined) {
   console.log('')
@@ -267,10 +292,13 @@ function songId (title: string, byArtist: ArtistId): string {
 
 for (const archive of posts) {
   const flags: Flag[] = []
-  const title = (archive.title ?? '')
+  const lines = readLines(archive.contentHtml ?? '')
+  const title = (lines[0] ?? archive.title ?? '')
     .replace(/\s+/gv, ' ')
     .replace(WIDGET_CAPTION, '')
     .trim()
+  const rest = lines.slice(1)
+  const body = rest.length === 0 ? null : rest.join('\n')
   const publishedOn = parisTimestamp(archive.publishedOn ?? '')
 
   const parenthetical = TRAILING_PARENTHETICAL.exec(title)
@@ -326,7 +354,13 @@ for (const archive of posts) {
     sources
   }
   recordings.push(recording)
-  written.push({ id: createId(), publishedOn, hidden: false, recordingId: recording.id })
+  written.push({
+    id: createId(),
+    publishedOn,
+    hidden: false,
+    recordingId: recording.id,
+    body
+  })
 
   if (flags.length > 0) {
     reviewed.push({

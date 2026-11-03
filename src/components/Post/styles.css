@@ -69,3 +69,13 @@
 }
 
 .post__details::first-letter { text-transform: uppercase; }
+
+/* What the post wrote beyond naming the song — a tracklist, a second link. Its line
+   breaks are the whole point of it, so they are kept rather than collapsed. */
+.post__body {
+  margin: 0;
+  white-space: pre-line;
+  font-family: var(--ff-text);
+  font-size: var(--fs-4);
+  line-height: var(--lh-4);
+}

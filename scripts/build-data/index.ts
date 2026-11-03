@@ -101,6 +101,7 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     url: routeUrl('post', { id: post.id }),
     publishedOn: post.publishedOn,
     title: postTitle(song, credits, featuring),
+    body: post.body,
     song: { id: song.id, title: song.title },
     credits,
     featuring,

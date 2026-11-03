@@ -287,10 +287,16 @@ export type FileSource = {
  * says this, since it is a fact about this site rather than about the writing.
  * @property recordingId - What this post is about. Exactly one: the old blog posted one
  * track at a time and there is no reason to loosen that.
+ * @property body - `articleBody`. Whatever the post says beyond naming the song — a
+ * tracklist, a second link, a line of context. Plain text, newlines kept, `null` when the
+ * post is only its title, which is what almost every post is. It belongs to the writing
+ * and not to the music: a tracklist stored here is what this post wrote down, not a
+ * property of the record.
  */
 export type Post = {
   id: PostId
   publishedOn: Timestamp
   hidden: boolean
   recordingId: RecordingId
+  body: string | null
 }

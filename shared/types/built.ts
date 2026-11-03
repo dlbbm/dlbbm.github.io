@@ -49,6 +49,7 @@ export type BuiltPost = {
   url: string
   publishedOn: Timestamp
   title: string
+  body: string | null
   song: { id: SongId, title: string }
   credits: BuiltArtist[]
   featuring: BuiltArtist[]
