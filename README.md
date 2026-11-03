@@ -221,6 +221,18 @@ in this repository that pushes.
   shared rather than repeated — then a release record between `Recording` and `Source`
   has paid for itself. Until then the field is free text, and a vocabulary gets extracted
   from it the way `recordingKinds` describes: a value earns its place by recurring.
+- **`song:edit`**, for a work on its own. `post:edit` reaches a work only through a post,
+  and since `Title` came to mean the take's name, nothing renames a work at all — which is
+  why `Into the Black` had to be repaired by hand. Asks the four questions a work owns: its
+  title, its other names, its original artists, and what it is built on.
+- **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
+  `arrangement`. Left out on purpose: the count carries the only distinction the front
+  makes today, and a work built on exactly one other work shows nothing rather than
+  claiming to be a medley. MusicBrainz puts that information on the relationship rather
+  than on either record, which is the shape to copy the day it is wanted.
+- **`data:list-duplicates`**, for the artists the import entered twice —
+  `The Velvet Underground` against `Velvet Underground`, `Connan Mockasin` against
+  `Connan Mockassin`. Each one splits an artist's page in two, and nothing notices.
 - **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
