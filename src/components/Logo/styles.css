@@ -5,6 +5,9 @@
   display: inline-flex;
   align-items: baseline;
   gap: var(--gap-2);
+  /* The ground travels with the lockup, for the same reason the nav items carry theirs:
+     the header is sticky and a video scrolls under it. */
+  background-color: var(--bg-color);
   color: var(--text-color);
   text-decoration: none;
 }
