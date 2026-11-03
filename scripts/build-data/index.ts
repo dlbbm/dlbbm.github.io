@@ -160,7 +160,7 @@ async function emit (relativePath: string, contents: unknown): Promise<void> {
 function describePost (post: BuiltPost): string {
   return [
     post.recording.kind,
-    post.isCover ? `cover of ${post.originalArtists.map(artist => artist.name).join(', ')}` : null,
+    post.isCover ? `${post.originalArtists.map(artist => artist.name).join(', ')} cover` : null,
     `posted on ${post.publishedOn.slice(0, 10)}`
   ].filter((part): part is string => part !== null && part !== undefined).join(' · ')
 }
@@ -187,8 +187,14 @@ for (const post of posts) {
   route('post', post.url, `${post.title} · ${about.title}`, describePost(post))
 }
 
-const appearsOn = (artist: BuiltArtist, post: BuiltPost): boolean =>
+const performsOn = (artist: BuiltArtist, post: BuiltPost): boolean =>
   [...post.credits, ...post.featuring, ...post.remixedBy].some(candidate => candidate.id === artist.id)
+
+// A cover belongs on the page of whoever the song is originally by: asked what of theirs
+// is here, the blog answers with the version someone else played too. Which is why some
+// artists have a page without ever being heard on it.
+const appearsOn = (artist: BuiltArtist, post: BuiltPost): boolean =>
+  performsOn(artist, post) || post.originalArtists.some(candidate => candidate.id === artist.id)
 
 const artistEntries: BuiltArtistIndexEntry[] = []
 for (const artist of db.artists) {
@@ -198,8 +204,16 @@ for (const artist of db.artists) {
   if (theirs.length === 0) continue
   const page: BuiltArtistPage = { artist: built, posts: theirs.map(indexEntry) }
   await emit(`artist/${built.slug}.json`, page)
-  artistEntries.push({ ...built, postCount: theirs.length })
-  route('artist', built.url, `${built.name} · ${about.title}`, `${theirs.length} post(s)`)
+  // What they are heard on, which is not what their page holds: a cover of theirs is on it
+  // and is not one of their posts.
+  const performed = theirs.filter(post => performsOn(built, post)).length
+  const covered = theirs.length - performed
+  artistEntries.push({ ...built, postCount: performed })
+  const counts = [
+    performed === 0 ? null : `${performed} post(s)`,
+    covered === 0 ? null : `${covered} cover(s) of their songs`
+  ].filter((part): part is string => part !== null).join(', ')
+  route('artist', built.url, `${built.name} · ${about.title}`, counts)
 }
 
 // The stream itself, in order and whole: this is what pagination is computed from.
