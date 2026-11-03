@@ -25,6 +25,7 @@
 .post__date,
 .post__cover,
 .post__medley,
+.post__remix,
 .post__details,
 .post__body {
   font-family: var(--ff-mono);
@@ -74,6 +75,7 @@
 
 .post__cover,
 .post__medley,
+.post__remix,
 .post__details {
   margin: 0;
   opacity: var(--muted-opacity);
@@ -81,6 +83,7 @@
 
 .post__cover::first-letter,
 .post__medley::first-letter,
+.post__remix::first-letter,
 .post__details::first-letter { text-transform: uppercase; }
 
 /* What the post wrote beyond naming the song — a tracklist, a second link. Its line

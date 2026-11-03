@@ -53,7 +53,9 @@ export function Post ({ post }: PostProps) {
   const { recording } = post
   const played = recording.sources.find(isPlayable)
   const performedAt = recording.performedAt === null ? null : formatPlace(recording.performedAt)
-  const occasion = [recording.kind, performedAt].filter(part => part !== null).join(' at ')
+  // `remix` drops out when the remixers are named above: the word is already there.
+  const kind = post.remixedBy.length > 0 && recording.kind === 'remix' ? null : recording.kind
+  const occasion = [kind, performedAt].filter(part => part !== null).join(' at ')
   // The date is shown as the data holds it until `formatDate` learns to write a partial
   // one out in full.
   const performedOn = recording.performedOn === null
@@ -93,6 +95,10 @@ export function Post ({ post }: PostProps) {
           {' cover'}
         </p>}
         {!post.isMedley ? null : <p class={bem('medley')}>(Medley)</p>}
+        {post.remixedBy.length === 0 ? null : <p class={bem('remix')}>
+          <Credits credits={post.remixedBy} />
+          {' remix'}
+        </p>}
         {details === '' ? null : <p class={bem('details')}>{details}</p>}
       </div>
       {post.body === null ? null : <p class={bem('body')}>{post.body}</p>}
