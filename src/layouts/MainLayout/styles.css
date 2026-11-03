@@ -16,9 +16,7 @@
   padding: 0 var(--gap-3) var(--gap-3);
 }
 
-/* It stays, and it reacts to whatever runs under it rather than hiding it behind a
-   ground of its own. `mix-blend-mode` opens a stacking context by itself, hence the
-   `z-index` to keep it over the stream. */
+/* It stays, over the stream rather than behind a ground of its own. */
 .main-layout__header {
   position: sticky;
   top: 0;
@@ -28,6 +26,4 @@
   align-items: baseline;
   gap: var(--gap-4);
   padding-block: var(--gap-3);
-  color: var(--blend-ink);
-  mix-blend-mode: difference;
 }

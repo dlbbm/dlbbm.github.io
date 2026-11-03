@@ -1,3 +1,9 @@
+/* The mark keeps its own colors; only the words react to what scrolls under them. */
+.main-nav {
+  color: var(--blend-ink);
+  mix-blend-mode: difference;
+}
+
 .main-nav__list {
   display: flex;
   flex-wrap: wrap;
