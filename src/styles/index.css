@@ -40,9 +40,15 @@
   --mark-green: #205243;
   --mark-warm: #a9563a;
 
-  /* Daylight, kept aside and no longer the default. Held apart so the mapping below is
-     the only place the two themes meet. The warm note is not here: the lens keeps its
-     red either way. */
+  /* Daylight, and the one the mapping below uses: the panel turned over, its two colors
+     swapped and nothing else invented. The warm note is in neither set — the lens keeps
+     its red either way. */
+  --lit-bg: #cfdbc2;
+  --lit-text: #090d0c;
+  --lit-shadow: rgb(9 13 12 / .1);
+  --lit-mark-green: #0f2a22;
+
+  /* Daylight as it was drawn before the inversion was tried, kept on the shelf. */
   --day-bg: #8cbfa8;
   --day-text: #12201c;
   --day-shadow: rgb(18 32 28 / .1);
@@ -57,10 +63,10 @@
    ground of its own. */
 :root[data-theme='light'],
 .inverted {
-  --bg-color: var(--day-bg);
-  --text-color: var(--day-text);
-  --shadow-color: var(--day-shadow);
-  --mark-green: var(--day-mark-green);
+  --bg-color: var(--lit-bg);
+  --text-color: var(--lit-text);
+  --shadow-color: var(--lit-shadow);
+  --mark-green: var(--lit-mark-green);
 
   color-scheme: light;
 }
