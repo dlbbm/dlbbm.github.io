@@ -11,14 +11,18 @@
 
 .pagination__button {
   color: var(--text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pagination__word {
   text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
   text-underline-offset: var(--underline-offset);
-  cursor: pointer;
   transition: text-decoration-color var(--hover-duration);
 }
 
-.pagination__button:not(.pagination__button--inert):hover,
-.pagination__button:not(.pagination__button--inert):focus-visible { text-decoration-color: var(--underline-color); }
+.pagination__button:not(.pagination__button--inert):hover .pagination__word,
+.pagination__button:not(.pagination__button--inert):focus-visible .pagination__word { text-decoration-color: var(--underline-color); }
 
 /* There is no page that way, so the word stays — it says where the stream ends — and
    nothing about it answers a pointer. */

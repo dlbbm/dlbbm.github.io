@@ -21,9 +21,22 @@ function pageUrl (page: number): string {
   return page <= 1 ? routePatterns.home : routeUrl('page', { page })
 }
 
-function Step ({ label, href }: { label: string, href: string | null }) {
-  if (href === null) return <span class={bem('button', 'inert')}>{label}</span>
-  return <Link href={href} className={bem('button')}>{label}</Link>
+type StepProps = {
+  label: string
+  href: string | null
+  chevron?: 'before' | 'after'
+}
+
+// The chevron sits outside the word, which is what the underline is drawn under: a line
+// running beneath an arrow reads as part of the arrow.
+function Step ({ label, href, chevron }: StepProps) {
+  const content = <>
+    {chevron === 'before' ? <span class={bem('chevron')}>{'‹ '}</span> : null}
+    <span class={bem('word')}>{label}</span>
+    {chevron === 'after' ? <span class={bem('chevron')}>{' ›'}</span> : null}
+  </>
+  if (href === null) return <span class={bem('button', 'inert')}>{content}</span>
+  return <Link href={href} className={bem('button')}>{content}</Link>
 }
 
 export function Pagination ({ page, pageCount, onPage = true }: PaginationProps) {
@@ -31,8 +44,8 @@ export function Pagination ({ page, pageCount, onPage = true }: PaginationProps)
   const forward = onPage && page < pageCount
   return <nav class={bem()}>
     <Step label="first" href={back || !onPage ? pageUrl(1) : null} />
-    <Step label="‹ prev" href={back ? pageUrl(page - 1) : null} />
-    <Step label="next ›" href={forward ? pageUrl(page + 1) : null} />
+    <Step label="prev" href={back ? pageUrl(page - 1) : null} chevron="before" />
+    <Step label="next" href={forward ? pageUrl(page + 1) : null} chevron="after" />
     <Step label="last" href={forward || !onPage ? pageUrl(pageCount) : null} />
   </nav>
 }
