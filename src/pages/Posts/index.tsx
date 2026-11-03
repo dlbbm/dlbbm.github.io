@@ -30,16 +30,14 @@ export function Posts () {
       {posts.map(entry => {
         const said = qualifier(entry)
         return <li class={bem('item')} key={entry.id}>
-          <Link href={entry.url} className={bem('link')}>
-            <DateComponent
-              date={new Date(entry.publishedOn)}
-              format="{{MMM}} {{D}}{{th}}, {{YYYY}}"
-              className={bem('date')} />
-            <span class={bem('name')}>
-              {entry.title}
-              {said === null ? null : <span class={bem('qualifier')}>{` ${said}`}</span>}
-            </span>
-          </Link>
+          <DateComponent
+            date={new Date(entry.publishedOn)}
+            format="{{MMM}} {{D}}{{th}}, {{YYYY}}"
+            className={bem('date')} />
+          <span class={bem('name')}>
+            <Link href={entry.url} className={bem('link')}>{entry.title}</Link>
+            {said === null ? null : <span class={bem('qualifier')}>{` ${said}`}</span>}
+          </span>
         </li>
       })}
     </ul>

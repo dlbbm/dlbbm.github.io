@@ -1,4 +1,6 @@
 .page-posts__list {
+  --posts-date-column: 8.5rem;
+
   display: flex;
   flex-direction: column;
   gap: var(--gap-3);
@@ -8,20 +10,26 @@
   list-style: none;
 }
 
-.page-posts__list { --posts-date-column: 8.5rem; }
-
 /* Two columns and not a run of inline text: the dates vary in width — a one-digit day,
    a four-letter ordinal — and the titles have to start at the same place all the same. A
    title too long for its column wraps under itself rather than under the date. */
-.page-posts__link {
+.page-posts__item {
   display: grid;
   grid-template-columns: var(--posts-date-column) minmax(0, 1fr);
   column-gap: var(--gap-2);
   align-items: baseline;
-  color: inherit;
+}
+
+.page-posts__name {
   font-family: var(--ff-text);
   font-size: var(--fs-6);
   line-height: var(--lh-6);
+}
+
+/* The title alone answers the pointer: the date situates the line and the qualifier
+   describes it, and neither is the thing being pointed at. */
+.page-posts__link {
+  color: inherit;
   text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
   text-underline-offset: var(--underline-offset);
   transition: color var(--hover-duration), text-decoration-color var(--hover-duration);
