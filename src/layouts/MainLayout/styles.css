@@ -11,12 +11,23 @@
   flex-direction: column;
   gap: var(--gap-6);
   min-width: 0;
-  padding: var(--gap-3);
+  /* No padding at the top: the header carries its own, so that it keeps its air once it
+     is stuck against the edge of the viewport. */
+  padding: 0 var(--gap-3) var(--gap-3);
 }
 
+/* It stays, and it reacts to whatever runs under it rather than hiding it behind a
+   ground of its own. `mix-blend-mode` opens a stacking context by itself, hence the
+   `z-index` to keep it over the stream. */
 .main-layout__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--gap-4);
+  padding-block: var(--gap-3);
+  color: var(--blend-ink);
+  mix-blend-mode: difference;
 }

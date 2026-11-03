@@ -11,7 +11,7 @@
   padding: 0;
   border: none;
   background: none;
-  color: var(--text-color);
+  color: inherit;
   font-family: inherit;
   font-size: var(--fs-6);
   line-height: var(--lh-6);
