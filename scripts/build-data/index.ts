@@ -92,28 +92,18 @@ function postTitle (title: string, credits: BuiltArtist[], featuring: BuiltArtis
   return `${title} — ${credited}${guests === '' ? '' : `, ft. ${guests}`}`
 }
 
-// The artists a work belongs to: the ones it claims, and when it claims none, those of the
-// works it is built on — a medley is covered from whoever wrote the pieces. Walked rather
-// than read, since a work built on works can itself be one; the seen set is what keeps a
-// cycle in the data from hanging the build.
-function originalArtistIdsOf (song: Song, seen: Set<string> = new Set()): string[] {
-  if (seen.has(song.id)) return []
-  seen.add(song.id)
-  if (song.originalArtistIds.length > 0) return song.originalArtistIds
-  return song.derivedFromSongIds.flatMap(id => {
-    const source = db.songs.find(candidate => candidate.id === id)
-    return source === undefined ? [] : originalArtistIdsOf(source, seen)
-  })
-}
-
 function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
   const credits = builtArtists(recording.byArtistIds)
   const featuring = builtArtists(recording.featuringArtistIds)
-  const originalArtists = builtArtists([...new Set(originalArtistIdsOf(song))])
+  const originalArtists = builtArtists(song.originalArtistIds)
   const derivedFrom = song.derivedFromSongIds
     .map(id => db.songs.find(candidate => candidate.id === id))
     .filter((work): work is Song => work !== undefined)
-    .map(work => ({ id: work.id, title: work.title }))
+    .map(work => ({
+      id: work.id,
+      title: work.title,
+      originalArtists: builtArtists(work.originalArtistIds)
+    }))
   const credited = credits.map(artist => artist.id).join(',')
   const original = originalArtists.map(artist => artist.id).join(',')
   return {
@@ -217,10 +207,15 @@ const performsOn = (artist: BuiltArtist, post: BuiltPost): boolean =>
   [...post.credits, ...post.featuring, ...post.remixedBy].some(candidate => candidate.id === artist.id)
 
 // A cover belongs on the page of whoever the song is originally by: asked what of theirs
-// is here, the blog answers with the version someone else played too. Which is why some
-// artists have a page without ever being heard on it.
+// is here, the blog answers with the version someone else played too, and a medley with the
+// pieces it runs through — a medley being its arranger's own work, the artists behind those
+// pieces are reachable only this way. Which is why some artists have a page without ever
+// being heard on it.
 const appearsOn = (artist: BuiltArtist, post: BuiltPost): boolean =>
-  performsOn(artist, post) || post.originalArtists.some(candidate => candidate.id === artist.id)
+  performsOn(artist, post)
+  || post.originalArtists.some(candidate => candidate.id === artist.id)
+  || post.derivedFrom.some(work =>
+    work.originalArtists.some(candidate => candidate.id === artist.id))
 
 const artistEntries: BuiltArtistIndexEntry[] = []
 for (const artist of db.artists) {
