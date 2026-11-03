@@ -9,6 +9,9 @@ how it maps onto schema.org and where it deliberately diverges.
 
 ## Layout
 
+- **`IMPORT-REVIEW.md`** — what `data:import` could not read, grouped by what is wrong
+  with it. Written whole on every run, so it is a report and never a record: a post fixed
+  by hand disappears from it the next time the archive is read.
 - **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
 - **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the
@@ -38,6 +41,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
+| `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
 | `npm run data:generate-test-data` | Replaces the database with fifty test posts |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
@@ -96,16 +100,23 @@ in this repository that pushes.
   clock is behind shows it late, which is nobody's problem.
 - **Genres.** A `genre` on `Song` — schema.org has the property — plus `/genres` and
   `/genre/<slug>`. Worth doing once the stream exists and the vocabulary is obvious.
-- **The archive.** 401 posts live in `maximefabas/_DATA/delabienbonnemusique.tumblr.com/`
-  and are not imported yet. The import wants the dash splitting and the trailing
-  parenthetical parsing that `post:create` dropped when it stopped reading title lines,
-  and it should reuse `scripts/_db` rather than grow its own writer.
+- **Consolidating the import.** The 401 archived posts are in, and
+  [`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) lists the 170 that need a hand. In order of how
+  much they cost: **127 posts have nothing to play** — the embed was already gone when the
+  blog was crawled, and seven of those carry a dead Grooveshark or Mixcloud URL in the
+  body, kept in the report rather than stored; **17 credits hold an ampersand or a comma**
+  and were written as a single artist, because no rule tells `Polo & Pan` from
+  `Murcof & Vanessa Wagner`; **5 posts are whole albums** with their tracklist in the
+  title, which one post for one recording has no room for; **47 trailing parentheses**
+  were read as a kind, a place or a date and want checking; and **one title has no dash**
+  at all.
 - **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
   an artist nothing points at any more.
-- **`data:generate-test-data` is temporary.** Delete it when the real posts outnumber what
-  it can teach.
+- **`data:generate-test-data` is temporary**, and the real posts now outnumber what it can
+  teach. It stays only until the import is consolidated, since it is the quickest way back
+  to a database that is not 401 records long.
 - **Media weight.** A local file lives twice, in `data/files` and in the published branch,
   and Pages caps a site at 1 GB. If local files become the norm rather than the exception,
   they will have to be served from somewhere else, with only the reference kept here.
