@@ -117,7 +117,8 @@ function toSource (service: Spec['source']): MediaSource {
       nature: 'media',
       service: 'spotify',
       kind: 'audio',
-      url: `https://open.spotify.com/track/${mediaId(22)}`
+      url: `https://open.spotify.com/track/${mediaId(22)}`,
+      name: null
     }
   }
   if (service === 'vimeo') {
@@ -125,14 +126,16 @@ function toSource (service: Spec['source']): MediaSource {
       nature: 'media',
       service: 'vimeo',
       kind: 'video',
-      url: `https://vimeo.com/${10_000_000 + Math.floor(Math.random() * 89_999_999)}`
+      url: `https://vimeo.com/${10_000_000 + Math.floor(Math.random() * 89_999_999)}`,
+      name: null
     }
   }
   return {
     nature: 'media',
     service: 'youtube',
     kind: 'video',
-    url: `https://www.youtube.com/watch?v=${mediaId(11)}`
+    url: `https://www.youtube.com/watch?v=${mediaId(11)}`,
+    name: null
   }
 }
 

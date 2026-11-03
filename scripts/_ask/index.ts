@@ -108,7 +108,8 @@ function toMediaSource (service: MediaService, raw: string): MediaSource | null 
     nature: 'media',
     service,
     kind: host.kind,
-    url: url.toString()
+    url: url.toString(),
+    name: null
   }
 }
 
@@ -446,7 +447,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
       process.exit(1)
     }
     // The stored path is known once the file is copied, which only happens on confirmation.
-    source = { nature: 'file', kind, path: '' }
+    source = { nature: 'file', kind, path: '', name: null }
   } else if (sourceNature !== null) {
     console.log(styles.light(`> ${MEDIA_HOSTS[sourceNature].forms}`))
     source = toMediaSource(sourceNature, await input({
@@ -455,6 +456,17 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
       validate: value => toMediaSource(sourceNature, value) !== null
         || `Expected a ${sourceNature} URL.`
     }))
+  }
+
+  // What this particular audio is, when it is not simply the recording. Stored as `name`,
+  // which is schema.org's property on a media object, and asked as the one question it
+  // ever answers.
+  if (source !== null) {
+    const rawEdition = await input({
+      message: 'Edition',
+      default: initialSource?.name ?? undefined
+    })
+    source.name = rawEdition.trim() === '' ? null : rawEdition.trim()
   }
 
   if (source !== null && source.nature === 'media') {

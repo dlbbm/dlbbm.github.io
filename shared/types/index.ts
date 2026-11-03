@@ -257,12 +257,24 @@ export type MediaService = typeof mediaServices[number]
  *
  * Only the canonical URL is stored: what an iframe needs is cut out of it by the
  * component that renders the host, which is the single place that knows that grammar.
+ *
+ * @property name - `name` on the media object, which is what schema.org gives a file or a
+ * stream to say what it is. Here it answers one question — **which edition of the
+ * recording this particular audio is**: `remaster 2015`, `original mono mix`,
+ * `radio edit`. Never the song's title, which the work already carries; the prompt asks
+ * for an `Edition` for that reason. `null` when it is simply the recording, the way
+ * {@link Recording.kind} is `null` when nobody said anything.
+ *
+ * It sits on the source and not on the recording because a remaster is the same take:
+ * two sources of one recording can be two editions, and nothing above them could hold
+ * that.
  */
 export type MediaSource = {
   nature: 'media'
   service: MediaService
   kind: 'audio' | 'video'
   url: string
+  name: string | null
 }
 
 /**
@@ -274,11 +286,14 @@ export type MediaSource = {
  *
  * @property path - Where the file sits relative to the repository root. Not a URL: the
  * front owns the public path, and a path written here would be wrong the day it changes.
+ * @property name - As on {@link MediaSource}: which edition of the recording this audio
+ * is, `null` when it is simply the recording.
  */
 export type FileSource = {
   nature: 'file'
   kind: 'audio' | 'video'
   path: string
+  name: string | null
 }
 
 /**

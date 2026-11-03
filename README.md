@@ -126,6 +126,16 @@ in this repository that pushes.
   a thirty-second preview unless the reader is signed in, which is worse than a link.
   Adding a name to the enum is not enough on its own: without a player in `Embed`, a
   source falls back to a bare link.
+- **A release layer, the day one is earned.** `Source.name` carries which edition a given
+  audio is — `remaster 2015`, `original mono mix` — because a remaster is the same take
+  and only the thing you point at differs. schema.org's own answer is `MusicRelease`,
+  told apart by `datePublished`, `catalogNumber`, `recordLabel` and `musicReleaseFormat`,
+  and it is deliberately not adopted: it hangs off `MusicAlbum`, which this blog does not
+  model, so taking it would mean inventing an entity for one label. **The trigger to
+  revisit** is the day the same edition is linked on two services and the fact should be
+  shared rather than repeated — then a release record between `Recording` and `Source`
+  has paid for itself. Until then the field is free text, and a vocabulary gets extracted
+  from it the way `recordingKinds` describes: a value earns its place by recurring.
 - **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:

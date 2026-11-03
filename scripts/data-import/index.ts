@@ -405,7 +405,7 @@ for (const archive of posts) {
   }
   const sources: Source[] = embed === null
     ? [origin]
-    : [{ nature: 'media', service: embed.service, kind: embed.kind, url: embed.url }, origin]
+    : [{ nature: 'media', service: embed.service, kind: embed.kind, url: embed.url, name: null }, origin]
 
   let note: string | null = null
   if (embed === null) {
