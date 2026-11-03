@@ -28,6 +28,47 @@
      logo, since the rule down the left edge carries the green too. */
   --mark-green: #0f2a22;
   --mark-warm: #a9563a;
+
+  /* The same panel read from the dark side, held apart so the two mappings below never
+     drift. The warm note is not here: the lens keeps its red in either theme. */
+  --night-bg: #15231d;
+  --night-text: #bfd9cb;
+  --night-accent: #4fd0ad;
+  --night-shadow: rgb(0 0 0 / .4);
+  --night-mark-green: #cfe4d7;
+
+  color-scheme: light;
+}
+
+/* Night, asked for: either by the reader's system, or forced with `data-theme`, or
+   dropped on any node in the tree with `.inverted` — a theme is these values and
+   nothing else, so all three are the same act. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg-color: var(--night-bg);
+    --text-color: var(--night-text);
+    --accent-color: var(--night-accent);
+    --shadow-color: var(--night-shadow);
+    --mark-green: var(--night-mark-green);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'],
+.inverted {
+  --bg-color: var(--night-bg);
+  --text-color: var(--night-text);
+  --accent-color: var(--night-accent);
+  --shadow-color: var(--night-shadow);
+  --mark-green: var(--night-mark-green);
+
+  color-scheme: dark;
+}
+
+.inverted {
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 *,
