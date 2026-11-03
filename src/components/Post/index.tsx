@@ -45,14 +45,6 @@ function Credits ({ credits, featuring = [] }: { credits: BuiltArtist[], featuri
   </>
 }
 
-// `A and B`, `A, B and C` — the works a medley runs through, in the order the data holds
-// them, which is the order they are played.
-function listTitles (works: BuiltPost['derivedFrom']): string {
-  const titles = works.map(work => work.title)
-  const last = titles.at(-1) ?? ''
-  return titles.length < 2 ? last : `${titles.slice(0, -1).join(', ')} and ${last}`
-}
-
 export type PostProps = {
   post: BuiltPost
 }
@@ -100,9 +92,7 @@ export function Post ({ post }: PostProps) {
           <Credits credits={post.originalArtists} />
           {' cover'}
         </p>}
-        {!post.isMedley ? null : <p class={bem('medley')}>
-          {`medley of ${listTitles(post.derivedFrom)}`}
-        </p>}
+        {!post.isMedley ? null : <p class={bem('medley')}>(Medley)</p>}
         {details === '' ? null : <p class={bem('details')}>{details}</p>}
       </div>
       {post.body === null ? null : <p class={bem('body')}>{post.body}</p>}

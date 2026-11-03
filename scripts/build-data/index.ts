@@ -127,7 +127,9 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     featuring,
     remixedBy: builtArtists(recording.remixedByArtistIds),
     originalArtists,
-    isCover: original !== '' && original !== credited,
+    // A work built on other works is not a cover of them, whatever the walked artists say:
+    // the two are different operations and only one of them can be true of a given work.
+    isCover: derivedFrom.length === 0 && original !== '' && original !== credited,
     derivedFrom,
     isMedley: derivedFrom.length > 1,
     recording: {
