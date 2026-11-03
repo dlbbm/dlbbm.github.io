@@ -7,6 +7,12 @@
   list-style: none;
 }
 
+/* The ground is carried by each item rather than by the row: the nav is sticky and a
+   video scrolls under it, so the names need something opaque behind them, and one block
+   across the whole width would be a band hanging over the page. On the item and not the
+   link, which is muted by an opacity its background would inherit. */
+.main-nav__item { background-color: var(--bg-color); }
+
 .main-nav__link {
   padding: 0;
   border: none;
