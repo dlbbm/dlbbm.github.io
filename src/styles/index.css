@@ -10,11 +10,11 @@
   --embed-height: 400px;
 
   /* A panel that is lit rather than a white page with a tint: the ground carries the
-     screen green, the text is a near-black of the same hue, and the accent is the green
-     gone deep, since nothing brighter holds against a ground this saturated. */
+     screen green and the text is a near-black of the same hue. The accent is the mark's
+     red, the one color on the page that belongs to no theme. */
   --bg-color: #8cbfa8;
   --text-color: #12201c;
-  --accent-color: #0a3f33;
+  --accent-color: var(--mark-warm);
   --border-color: var(--text-color);
   --underline-color: var(--accent-color);
   --shadow-color: rgb(18 32 28 / .1);
@@ -33,7 +33,6 @@
      drift. The warm note is not here: the lens keeps its red in either theme. */
   --night-bg: #15231d;
   --night-text: #bfd9cb;
-  --night-accent: #4fd0ad;
   --night-shadow: rgb(0 0 0 / .4);
   --night-mark-green: #cfe4d7;
 
@@ -47,7 +46,6 @@
   :root:not([data-theme='light']) {
     --bg-color: var(--night-bg);
     --text-color: var(--night-text);
-    --accent-color: var(--night-accent);
     --shadow-color: var(--night-shadow);
     --mark-green: var(--night-mark-green);
 
@@ -59,7 +57,6 @@
 .inverted {
   --bg-color: var(--night-bg);
   --text-color: var(--night-text);
-  --accent-color: var(--night-accent);
   --shadow-color: var(--night-shadow);
   --mark-green: var(--night-mark-green);
 

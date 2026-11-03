@@ -52,6 +52,9 @@
 }
 
 .post__artist:hover,
+.post__artist:focus-visible { color: var(--accent-color); }
+
+.post__artist:hover,
 .post__artist:focus-visible { text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color); }
 
 .post__details {
