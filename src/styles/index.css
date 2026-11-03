@@ -23,6 +23,9 @@
      the theme says, in light or in dark, and costs the palette nothing. */
   --muted-opacity: .74;
 
+  /* How long a color takes to answer a pointer, everywhere it answers one. */
+  --hover-duration: 200ms;
+
   /* The mark does not take the ambience, but it stays in its family: the two discs are
      one green, the lens the warm note they share. Named for the mark and not for the
      logo, since the rule down the left edge carries the green too. */

@@ -19,7 +19,11 @@
   text-underline-offset: var(--underline-offset);
   opacity: var(--muted-opacity);
   cursor: pointer;
+  transition: color var(--hover-duration), opacity var(--hover-duration);
 }
+
+.main-nav__link:hover,
+.main-nav__link:focus-visible { color: var(--accent-color); }
 
 .main-nav__link:hover,
 .main-nav__link:focus-visible,
