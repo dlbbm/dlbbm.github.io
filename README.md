@@ -97,8 +97,33 @@ in this repository that pushes.
   anyway. When it fires, prepend rather than re-slice: a page showing eleven posts until
   the reader navigates is gentler than a post vanishing under their eyes. A client whose
   clock is behind shows it late, which is nobody's problem.
-- **Genres.** A `genre` on `Song` — schema.org has the property — plus `/genres` and
-  `/genre/<slug>`. Worth doing once the stream exists and the vocabulary is obvious.
+- **Genres, styles and tags.** Three axes rather than two levels, and the leaning is
+  **genres and styles decoupled**: two independent lists on a record, no parent link
+  between them, the incoherences accepted rather than designed out. There is no official
+  authority — the nearest thing is the Library of Congress' [LCGFT][lcgft], published in
+  SKOS with a real `broader` relation, authoritative and maintained, and coarse about
+  popular music exactly where this blog is fine. What the three de facto references teach:
+  **[Discogs][discogs] is the two-level model and declines to nest it**, around fifteen
+  genres against a few hundred styles, carried as separate lists — which is why `Disco`
+  turns up under Electronic and under Funk / Soul alike. Its fifteen are Blues, Brass &
+  Military, Children's, Classical, Electronic, Folk, World, & Country, Funk / Soul, Hip
+  Hop, Jazz, Latin, Non-Music, Pop, Reggae, Rock and Stage & Screen, a list half format
+  and half genre, which is what only having fifteen costs. **[MusicBrainz][mbgenres] is
+  flat**, one alphabetical vocabulary of some 1800 terms from `2 tone` to `zydeco`, no
+  levels at all, grown out of community tags and curated by ticket — open data, and the
+  one list here importable wholesale. **Rate Your Music keeps the biggest tree and splits
+  it in three** — genres, descriptors for mood and texture, scenes & movements — which is
+  the strongest argument that a tag is a third axis and not a loose genre; its hierarchy
+  is also frozen, nothing removable without moderation, which is what a tree costs once
+  people depend on it. **Still open:** whether the term hangs off `Song` or `Recording` —
+  schema.org has `genre` on both, and a cover can belong to another genre than the work,
+  Sarah Vaughan's `Blackbird` against the Beatles' — and whether a genre is a closed
+  pick-list while a tag is free text, which is what keeps a standard typology from
+  drifting into `Electro`, `electronic` and `Électro`. Then `/genres` and `/genre/<slug>`.
+
+[lcgft]: https://id.loc.gov/authorities/genreForms.html
+[discogs]: https://support.discogs.com/hc/articles/360005055213-Database-Guidelines-9-Genres-Styles
+[mbgenres]: https://musicbrainz.org/genres
 - **Consolidating the import.** The 401 archived posts are in, and
   [`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) lists the 170 that need a hand. In order of how
   much they cost: **127 posts have nothing to play** — the embed was already gone when the
