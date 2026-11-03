@@ -82,10 +82,10 @@ in this repository that pushes.
 
 # Roadmap
 
-- **The app itself.** The router, the data split and the shells exist; no page displays
-  anything yet. The first real decision is what a post looks like.
-- **`/posts` and `/artists`** are routes with nothing behind them, waiting for a visual
-  idea of what a register is.
+- **`/artist/<slug>` is the one route with nothing behind it.** Home, `/post/<id>`,
+  `/posts`, `/artists` and `/about` all display something; the artist page is still an
+  empty div, and what it should show — every post they appear on, credited or featuring
+  or remixing — is already in `artist/<slug>.json`.
 - **One design system across several sites.** The token layer, the theme in five colors
   and the five font slots are meant to carry over to the other small sites to come, where
   only the colors and the fonts change. Whether that becomes shared code — a package, or
@@ -106,8 +106,9 @@ in this repository that pushes.
   blog was crawled, and seven of those carry a dead Grooveshark or Mixcloud URL in the
   body, kept in the report rather than stored; **17 credits hold an ampersand or a comma**
   and were written as a single artist, because no rule tells `Polo & Pan` from
-  `Murcof & Vanessa Wagner`; **5 posts are whole albums** with their tracklist in the
-  title, which one post for one recording has no room for; **47 trailing parentheses**
+  `Murcof & Vanessa Wagner`; **5 posts are whole albums**, now stored as a
+  `full album` recording with the tracklist dropped — their names want checking, and the
+  tracklists are still in the archive if they ever matter; **47 trailing parentheses**
   were read as a kind, a place or a date and want checking; and **one title has no dash**
   at all.
 - **A cover image on a stored file.** `FileSource` carries a `kind` and a `path` and
