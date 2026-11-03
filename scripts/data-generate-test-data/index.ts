@@ -90,7 +90,7 @@ const SPECS: Spec[] = [
   { credits: ['Tom Waits'], title: 'Please Wake Me Up', work: 'please-wake-me-up', kind: 'demo' },
   { credits: ['The Velvet Underground'], title: 'Oh Gin', work: 'oh-gin', kind: 'demo' },
   { credits: ['The Cure'], title: 'Another Journey by Train', work: 'another-journey-by-train', kind: 'demo', hidden: true },
-  { credits: ['The Beach Boys'], title: 'Good Vibrations', work: 'good-vibrations', kind: 'alternate-take' },
+  { credits: ['The Beach Boys'], title: 'Good Vibrations', work: 'good-vibrations', kind: 'alternate take' },
   { credits: ['Azealia Banks'], title: '212', work: '212', featuring: ['Lazy Jay'] },
   { credits: ['Olivier Libaux'], title: 'The Blood is Love', work: 'the-blood-is-love', original: ['Queens of the Stone Age'], featuring: ['Ambrosia Parsley'], source: 'vimeo' },
   { credits: ['Oy'], title: 'Doondari', work: 'doondari', original: [], kind: 'live', performedOn: date(2012, 10), performedAt: place('La Cigale', 'Paris', 'France') },
