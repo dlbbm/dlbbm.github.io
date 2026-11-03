@@ -16,7 +16,8 @@
   padding: 0 var(--gap-3) var(--gap-3);
 }
 
-/* It stays, over the stream rather than behind a ground of its own. */
+/* It stays, and it carries the ground with it: the stream has to pass behind it, not
+   through it. */
 .main-layout__header {
   position: sticky;
   top: 0;
@@ -26,4 +27,5 @@
   align-items: baseline;
   gap: var(--gap-4);
   padding-block: var(--gap-3);
+  background-color: var(--bg-color);
 }

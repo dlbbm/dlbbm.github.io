@@ -23,11 +23,6 @@
      the theme says, in light or in dark, and costs the palette nothing. */
   --muted-opacity: .74;
 
-  /* What the nav is written in while it blends. `difference` subtracts, so writing it in
-     the ground itself cancels at rest — black on the panel, the strongest the theme can
-     give — and anything darker passing under lifts it back toward the light. */
-  --blend-ink: var(--bg-color);
-
   /* The mark does not take the ambience, but it stays in its family: the two discs are
      one green, the lens the warm note they share. Named for the mark and not for the
      logo, since the rule down the left edge carries the green too. */
