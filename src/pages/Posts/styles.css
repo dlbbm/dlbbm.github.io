@@ -1,0 +1,28 @@
+.page-posts__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  max-width: var(--register-max-width);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-posts__link {
+  color: inherit;
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
+  text-underline-offset: var(--underline-offset);
+  transition: color var(--hover-duration), text-decoration-color var(--hover-duration);
+}
+
+.page-posts__link:hover,
+.page-posts__link:focus-visible {
+  color: var(--accent-color);
+  text-decoration-color: var(--underline-color);
+}
+
+/* Which version this is, not what it is: it qualifies the line rather than naming it. */
+.page-posts__qualifier { opacity: var(--muted-opacity); }
