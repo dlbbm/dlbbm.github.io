@@ -11,7 +11,7 @@
  * exists when pasted.
  */
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
@@ -20,6 +20,7 @@ import { CWD, DIST, DIST_DATA } from '../_config/index.js'
 import { readJson } from '../_db/index.js'
 
 const SHELL = path.join(CWD, 'src/index.html')
+const ICONS = path.join(CWD, 'src/icons')
 
 console.log('')
 console.log(styles.title('Building the shells...'))
@@ -91,7 +92,11 @@ await writeFile(
   { encoding: 'utf-8' }
 )
 
-console.log(styles.light(`> ${routes.length} shells, plus 404.html`))
+// The icons travel with the shells rather than with the bundle: nothing imports them,
+// and a browser asks for them at the root whether or not the app ever boots.
+await cp(ICONS, DIST, { recursive: true })
+
+console.log(styles.light(`> ${routes.length} shells, plus 404.html and the icons`))
 console.log('')
 console.log(styles.success('Shells built.'))
 console.log('')

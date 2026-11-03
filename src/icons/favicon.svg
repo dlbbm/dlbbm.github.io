@@ -1,0 +1,9 @@
+<!-- The mark as a file, which is the one place it carries its own color: a favicon is
+     never reached by a selector, so the four classes the page paints have nothing to
+     paint here. The lens is left unfilled rather than drawn. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <g fill="#000000" transform="translate(0 6)">
+    <path d="M16 2A10 10 0 1 0 16 18A10 10 0 0 1 16 2Z" />
+    <path d="M16 2A10 10 0 0 1 16 18A10 10 0 1 0 16 2Z" />
+  </g>
+</svg>
