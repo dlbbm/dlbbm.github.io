@@ -37,7 +37,7 @@ import {
   formatPartialDate,
   nowAsString,
   parsePartialDate,
-  parseTimestamp,
+  readTimestamp,
   timestampAsString
 } from '../_date/index.js'
 import { findArtistById } from '../_describe/index.js'
@@ -437,16 +437,19 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   }
 
   const rawPublishedOn = await input({
-    message: 'Published on (YYYY-MM-DD HH:MM)',
+    message: 'Published on (YYYY-MM-DD HH:MM, or said out loud)',
     default: editing === null ? nowAsString() : timestampAsString(editing.post.publishedOn),
-    validate: value => parseTimestamp(value) !== null || 'Expected a complete YYYY-MM-DD HH:MM.'
+    validate: value => readTimestamp(value) !== null
+      || 'Expected YYYY-MM-DD HH:MM, or something like `tomorrow at 9pm`.'
   })
 
-  const publishedOn = parseTimestamp(rawPublishedOn)
+  const publishedOn = readTimestamp(rawPublishedOn)
   if (publishedOn === null) {
     console.log(styles.error('Could not read that date.'))
     process.exit(1)
   }
+  // A spoken answer is a guess until the moment it names is shown back.
+  if (publishedOn !== rawPublishedOn.trim()) console.log(styles.light(`> ${publishedOn}`))
 
   // One line, because almost every post is only its title. A tracklist or anything else
   // that wants several is a hand edit on the record afterwards, which is how this database

@@ -6,6 +6,7 @@
  * and the build emitting it cannot disagree about what a string means.
  */
 
+import { readDate } from '@design-edito/tools/agnostic/time/dates/read-date/index.js'
 import type { PartialDate, Timestamp } from '../../shared/types/index.js'
 
 // Month and day are accepted unpadded — `1986-4-6` is the sixth of April — since every
@@ -78,4 +79,24 @@ export function nowAsString (): string {
 /** `2019-01-31T18:39:00+01:00` back into the `2019-01-31 18:39` a prompt asks for. */
 export function timestampAsString (timestamp: Timestamp): string {
   return `${timestamp.slice(0, 10)} ${timestamp.slice(11, 16)}`
+}
+
+/**
+ * The moment an answer names, written out or spoken.
+ *
+ * The exact form is read first and on its own terms, because `YYYY-MM-DD HH:MM` is what
+ * this database writes and what an edit hands back prefilled — it has to round-trip
+ * unchanged. Everything else goes to `readDate`, which takes `tomorrow at 9pm`,
+ * `next friday 18h` or `in 3 days, at midnight` and is how a post gets scheduled without
+ * counting days.
+ *
+ * Seconds are dropped either way: a post goes out on a minute.
+ */
+export function readTimestamp (raw: string): Timestamp | null {
+  const exact = parseTimestamp(raw)
+  if (exact !== null) return exact
+  const spoken = readDate(raw)
+  if (spoken === null || Number.isNaN(spoken.getTime())) return null
+  spoken.setSeconds(0, 0)
+  return toTimestamp(spoken)
 }
