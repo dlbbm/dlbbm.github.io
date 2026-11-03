@@ -26,6 +26,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import { routeUrl, type RouteKind } from '../../shared/routes/index.js'
+import { pageNames, pageTitle } from '../../shared/titles/index.js'
 import type {
   BuiltAbout,
   BuiltArtist,
@@ -192,7 +193,7 @@ for (let page = 1; page <= pageCount; page += 1) {
   route(
     page === 1 ? 'home' : 'page',
     page === 1 ? routeUrl('home') : routeUrl('page', { page }),
-    page === 1 ? about.title : `Page ${page} · ${about.title}`,
+    pageTitle(page === 1 ? null : `Page ${page}`, about.title),
     about.description
   )
 }
@@ -200,7 +201,7 @@ for (let page = 1; page <= pageCount; page += 1) {
 for (const post of posts) {
   const built: BuiltPostPage = { post }
   await emit(`post/${post.id}.json`, built)
-  route('post', post.url, `${post.title} · ${about.title}`, describePost(post))
+  route('post', post.url, pageTitle(post.title, about.title), describePost(post))
 }
 
 const performsOn = (artist: BuiltArtist, post: BuiltPost): boolean =>
@@ -234,19 +235,19 @@ for (const artist of db.artists) {
     performed === 0 ? null : `${performed} post(s)`,
     covered === 0 ? null : `${covered} cover(s) of their songs`
   ].filter((part): part is string => part !== null).join(', ')
-  route('artist', built.url, `${built.name} · ${about.title}`, counts)
+  route('artist', built.url, pageTitle(built.name, about.title), counts)
 }
 
 // The stream itself, in order and whole: this is what pagination is computed from.
 await emit('posts.json', posts.map(indexEntry))
-route('posts', routeUrl('posts'), `All posts · ${about.title}`, `${posts.length} posts`)
+route('posts', routeUrl('posts'), pageTitle(pageNames.posts, about.title), `${posts.length} posts`)
 
 artistEntries.sort((one, other) => one.name.localeCompare(other.name))
 await emit('artists.json', artistEntries)
-route('artists', routeUrl('artists'), `Artists · ${about.title}`, `${artistEntries.length} artists`)
+route('artists', routeUrl('artists'), pageTitle(pageNames.artists, about.title), `${artistEntries.length} artists`)
 
 await emit('about.json', about)
-route('about', routeUrl('about'), `About · ${about.title}`, about.description)
+route('about', routeUrl('about'), pageTitle(pageNames.about, about.title), about.description)
 
 const manifest: BuiltManifest = {
   about,
