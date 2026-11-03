@@ -61,7 +61,12 @@ export function Post ({ post }: PostProps) {
     : [recording.performedOn.year, recording.performedOn.month, recording.performedOn.day]
       .filter(part => part !== null)
       .join('-')
-  const details = [occasion, performedOn].filter(part => part !== '' && part !== null).join(' — ')
+  const occasionAndDate = [occasion, performedOn].filter(part => part !== '' && part !== null).join(' — ')
+  // The edition belongs to the source rather than to the take, so it joins on its own
+  // separator: what was played, then which audio of it this is.
+  const details = [occasionAndDate, played?.name ?? null]
+    .filter(part => part !== '' && part !== null && part !== undefined)
+    .join(' \u00b7 ')
 
   return <article class={bem()}>
     <Link href={post.url} className={bem('permalink')}>
