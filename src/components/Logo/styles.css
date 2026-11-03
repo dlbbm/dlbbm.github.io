@@ -23,6 +23,14 @@
 .logo__mark .fill-2 { fill: var(--mark-green); fill-opacity: .7; }
 .logo__mark .fill-3 { fill: var(--mark-warm); }
 
+/* The word alone — the mark is not text, and an underline under it reads as a bug. Only
+   the line takes the accent here; the word keeps the ink it had. */
+.logo:hover .logo__word,
+.logo:focus-visible .logo__word {
+  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color);
+  text-underline-offset: var(--underline-offset);
+}
+
 .logo__word {
   font-family: var(--ff-display);
   font-size: var(--fs-8);
