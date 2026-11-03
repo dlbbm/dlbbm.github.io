@@ -83,11 +83,13 @@ function builtArtists (ids: string[]): BuiltArtist[] {
 }
 
 // `Song — Artist, Artist, ft. Artist`, the same line the front composes out of links: the
-// stream is read by what is playing before it is read by who made it.
-function postTitle (song: Song, credits: BuiltArtist[], featuring: BuiltArtist[]): string {
+// stream is read by what is playing before it is read by who made it. The title is the
+// take's own when it has one, the work's otherwise — a cover released under another name
+// is announced under that name.
+function postTitle (title: string, credits: BuiltArtist[], featuring: BuiltArtist[]): string {
   const credited = credits.map(artist => artist.name).join(', ')
   const guests = featuring.map(artist => artist.name).join(', ')
-  return `${song.title} — ${credited}${guests === '' ? '' : `, ft. ${guests}`}`
+  return `${title} — ${credited}${guests === '' ? '' : `, ft. ${guests}`}`
 }
 
 function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
@@ -100,7 +102,7 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     id: post.id,
     url: routeUrl('post', { id: post.id }),
     publishedOn: post.publishedOn,
-    title: postTitle(song, credits, featuring),
+    title: postTitle(recording.title ?? song.title, credits, featuring),
     body: post.body,
     song: { id: song.id, title: song.title },
     credits,
@@ -110,6 +112,7 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     isCover: original !== '' && original !== credited,
     recording: {
       id: recording.id,
+      title: recording.title,
       kind: recording.kind,
       performedOn: recording.performedOn,
       performedAt: recording.performedAt,

@@ -300,7 +300,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     : songPool.find(song => song.id === editing.recording.songId)
 
   const songTitle = (await input({
-    message: 'Title',
+    message: 'Song title',
     default: editedSong?.title,
     validate: value => value.trim() !== '' || 'A title is needed.'
   })).trim()
@@ -330,6 +330,19 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   )
 
   const song = await resolveSong(songTitle, mainArtist, songPool, recordingPool, artistPool, createdSongs)
+
+  // What this take was released as, when that is not the work's title. Empty is the usual
+  // answer, and so is the work's title typed back: both mean the same thing and are stored
+  // as nothing, the way an alias equal to the title is dropped below.
+  const rawRecordingTitle = await input({
+    message: 'Recording title',
+    default: editing?.recording.title ?? undefined
+  })
+  const typedRecordingTitle = rawRecordingTitle.trim()
+  const recordingTitle = typedRecordingTitle === ''
+    || typedRecordingTitle.toLowerCase() === song.title.toLowerCase()
+    ? null
+    : typedRecordingTitle
 
   const initialKind = editing?.recording.kind ?? null
   const pickedKind = await select<RecordingKind | null | typeof OTHER_KIND>({
@@ -516,6 +529,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   const recording: Recording = {
     id: editing?.recording.id ?? createId(),
     songId: song.id,
+    title: recordingTitle,
     kind: recordingKind,
     byArtistIds: creditedArtists.map(artist => artist.id),
     featuringArtistIds: featuringArtists.map(artist => artist.id),
@@ -545,6 +559,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     : ` (ft. ${featuringArtists.map(artist => artist.name).join(', ')})`
   const details = [
     `published on ${publishedOn}`,
+    recordingTitle === null ? null : `a version of ${song.title}`,
     hidden ? 'hidden' : null,
     recordingKind,
     remixedByArtists.length === 0 ? null : `remixed by ${remixedByArtists.map(artist => artist.name).join(', ')}`,
@@ -566,7 +581,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     recording,
     post,
     fileToStore,
-    headline: `${creditedArtists.map(artist => artist.name).join(', ')}${featuring} — ${song.title}`,
+    headline: `${creditedArtists.map(artist => artist.name).join(', ')}${featuring} — ${recordingTitle ?? song.title}`,
     details
   }
 }

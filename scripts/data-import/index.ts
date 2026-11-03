@@ -425,6 +425,7 @@ for (const archive of posts) {
   const recording: Recording = {
     id: createId(),
     songId: song,
+    title: null,
     // Free text and not a member of the vocabulary: `full album` says how much of the
     // record this is, where every named kind says what the occasion was.
     kind: isAlbum ? 'full album' : qualifier?.kind ?? null,

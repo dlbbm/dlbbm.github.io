@@ -189,6 +189,7 @@ for (const [index, spec] of SPECS.entries()) {
   const recording: Recording = {
     id: createId(),
     songId: song.id,
+    title: null,
     kind: spec.kind ?? null,
     byArtistIds: credited,
     featuringArtistIds: (spec.featuring ?? []).map(artistId),

@@ -37,8 +37,9 @@ export function describeRecording (recording: Recording, db: Db): Described {
     ? ''
     : ` (ft. ${namesOf(recording.featuringArtistIds, db.artists)})`
   return {
-    name: `${namesOf(recording.byArtistIds, db.artists)}${featuring} — ${song?.title ?? 'unknown song'}`,
+    name: `${namesOf(recording.byArtistIds, db.artists)}${featuring} — ${recording.title ?? song?.title ?? 'unknown song'}`,
     description: [
+      recording.title === null ? null : `a version of ${song?.title ?? 'unknown song'}`,
       recording.kind,
       recording.remixedByArtistIds.length === 0
         ? null

@@ -56,6 +56,7 @@ function show (post: Post, recording: Recording, db: Db, flags: string[]): void 
   console.log(field('published', post.publishedOn))
   console.log(field('hidden', post.hidden ? 'true' : null))
   console.log(field('song', song?.title ?? recording.songId))
+  console.log(field('released as', recording.title))
   console.log(field('artists', names(recording.byArtistIds)))
   console.log(field('featuring', names(recording.featuringArtistIds)))
   console.log(field('remixed by', names(recording.remixedByArtistIds)))

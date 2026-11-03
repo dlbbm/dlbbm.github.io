@@ -123,7 +123,8 @@ export type RecordingKind = typeof recordingKinds[number] | string
  * the name a record came out under and never the humans behind it.
  *
  * @property title - The work's title, in the form the blog uses it.
- * @property titleAliases - Other titles it goes by, translations included.
+ * @property titleAliases - Other titles the work itself goes by, translations included.
+ * Not what a given take was released as — that is {@link Recording.title}.
  * @property originalArtistIds - Whose song it is, stated once when the work enters the
  * data. It is what makes a cover a cover: a recording credited to these artists is a
  * version of their own song, one credited to anyone else is a cover of it. Empty when
@@ -149,6 +150,11 @@ export type Song = {
  * {@link Song.originalArtistIds}, which is how `(Bill Withers cover)` is rendered without
  * leaving the vocabulary.
  *
+ * @property title - What this take was released as, `null` when that is the work's own
+ * title. `Into the Black` is a Chromatics recording of Neil Young's
+ * `Hey Hey, My My (Into the Black)`, and the renaming is the covering artist's decision,
+ * so it belongs to the take. schema.org offers only `alternateName` on either side and
+ * declines to choose; MusicBrainz splits work title from recording title the same way.
  * @property kind - `null` on the 341 posts of 400 that annotate nothing. There is no
  * `studio` member standing in for them: an unannotated take is a take nobody said anything
  * about, which is not the same claim.
@@ -173,6 +179,7 @@ export type Song = {
 export type Recording = {
   id: RecordingId
   songId: SongId
+  title: string | null
   kind: RecordingKind | null
   byArtistIds: ArtistId[]
   featuringArtistIds: ArtistId[]
