@@ -24,5 +24,13 @@
   text-decoration-color: var(--underline-color);
 }
 
+/* Fixed-width by the face it is set in, so the titles line up down the page without a
+   column to hold them. */
+.page-posts__date {
+  margin-right: var(--gap-2);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-3);
+}
+
 /* Which version this is, not what it is: it qualifies the line rather than naming it. */
 .page-posts__qualifier { opacity: var(--muted-opacity); }

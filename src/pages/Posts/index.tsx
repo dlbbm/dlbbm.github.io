@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import type { BuiltPostIndexEntry } from '../../../shared/types/built.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
 import './styles.css'
@@ -30,6 +31,10 @@ export function Posts () {
         const said = qualifier(entry)
         return <li class={bem('item')} key={entry.id}>
           <Link href={entry.url} className={bem('link')}>
+            <DateComponent
+              date={new Date(entry.publishedOn)}
+              format="{{YYYY}}-{{MM}}-{{DD}}"
+              className={bem('date')} />
             {entry.title}
             {said === null ? null : <span class={bem('qualifier')}>{` ${said}`}</span>}
           </Link>
