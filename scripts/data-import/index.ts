@@ -40,11 +40,13 @@ type ArchivePost = {
   title: string | null
   publishedOn: string | null
   contentHtml: string | null
+  rawHtml: string | null
   media: Array<{ kind: string, url: string }> | null
 }
 
 type Flag =
   | 'no-source'
+  | 'widget-url'
   | 'dead-source-in-body'
   | 'unsplit-title'
   | 'ambiguous-credit'
@@ -53,6 +55,7 @@ type Flag =
 
 type Reviewed = {
   flags: Flag[]
+  postId: string
   archiveUrl: string
   publishedOn: Timestamp
   artist: string
@@ -177,12 +180,75 @@ function readQualifier (text: string): Qualifier {
   }
 }
 
-/** The canonical URL of an embed, which is the only form this database stores. */
-function readMedia (url: string): { service: MediaService, url: string } | null {
-  const youtube = /youtube\.com\/embed\/([\w\-]+)/v.exec(url)
-  if (youtube !== null) return { service: 'youtube', url: `https://www.youtube.com/watch?v=${youtube[1]}` }
-  const vimeo = /player\.vimeo\.com\/video\/(\d+)/v.exec(url)
-  if (vimeo !== null) return { service: 'vimeo', url: `https://vimeo.com/${vimeo[1]}` }
+type Playable = { service: MediaService, kind: 'audio' | 'video', url: string }
+
+/**
+ * The players this blog ever embedded, and the canonical URL of each.
+ *
+ * **The crawler's `media` field only kept the iframes it recognised**, which were YouTube
+ * and Vimeo; the Spotify, SoundCloud, Bandcamp and Mixcloud players were left in the raw
+ * markup. So the markup is read too, and twenty-one posts that look sourceless are not.
+ *
+ * SoundCloud and Bandcamp keep a widget URL rather than a page: the widget is what the
+ * archive holds, resolving it to a human URL needs their API, and what matters here is
+ * that the track can be played at all. They are flagged for it.
+ */
+const PLAYERS: Array<{
+  service: MediaService
+  kind: 'audio' | 'video'
+  pattern: RegExp
+  canonical: (found: RegExpExecArray) => string
+}> = [
+  {
+    service: 'youtube',
+    kind: 'video',
+    pattern: /youtube\.com\/embed\/([\w\-]+)/v,
+    canonical: found => `https://www.youtube.com/watch?v=${found[1]}`
+  },
+  {
+    service: 'vimeo',
+    kind: 'video',
+    pattern: /player\.vimeo\.com\/video\/(\d+)/v,
+    canonical: found => `https://vimeo.com/${found[1]}`
+  },
+  {
+    service: 'spotify',
+    kind: 'audio',
+    pattern: /open\.spotify\.com\/embed\?uri=spotify(?::|%3A)(track|album|playlist)(?::|%3A)(\w+)/iv,
+    canonical: found => `https://open.spotify.com/${found[1]}/${found[2]}`
+  },
+  {
+    service: 'soundcloud',
+    kind: 'audio',
+    pattern: /api\.soundcloud\.com(?:\/|%2F)tracks(?:\/|%2F)(\d+)/iv,
+    canonical: found => `https://api.soundcloud.com/tracks/${found[1]}`
+  },
+  {
+    service: 'mixcloud',
+    kind: 'audio',
+    pattern: /mixcloud\.com(?:\/|%2F)([^&"'\s]+)/iv,
+    canonical: found => `https://www.mixcloud.com/${decodeURIComponent(found[1] ?? '').replace(/^\/+/v, '')}`
+  },
+  {
+    service: 'bandcamp',
+    kind: 'audio',
+    pattern: /(https?:\/\/[\w.\-]*bandcamp\.com\/EmbeddedPlayer\/[^"'\s]+)/iv,
+    canonical: found => found[1] ?? ''
+  }
+]
+
+const WIDGET_SERVICES: MediaService[] = ['soundcloud', 'bandcamp']
+
+/** The first player found in a blob of markup, in the order above. */
+function readPlayer (markup: string): Playable | null {
+  const text = markup.replace(/&amp;/giv, '&')
+  for (const player of PLAYERS) {
+    const found = player.pattern.exec(text)
+    if (found === null) continue
+    const url = player.canonical(found)
+    if (url === '') continue
+    return { service: player.service, kind: player.kind, url }
+  }
   return null
 }
 
@@ -323,9 +389,11 @@ for (const archive of posts) {
   if (isAlbum) flags.push('tracklist-title')
   const songTitle = isAlbum ? spelled.replace(TRACKLIST_TAIL, '').trim() : spelled
 
-  const embed = (archive.media ?? [])
-    .map(one => readMedia(one.url))
-    .find(one => one !== null)
+  // The declared media first, then the markup it was cut out of: everything the crawler
+  // did not recognise is still in there.
+  const embed = readPlayer((archive.media ?? []).map(one => one.url).join(' '))
+    ?? readPlayer(archive.rawHtml ?? '')
+  if (embed !== null && WIDGET_SERVICES.includes(embed.service)) flags.push('widget-url')
   // The post it came from, kept as a claim that this is that: it is what makes a record
   // traceable back to the archive, and the only way to check that nothing was dropped.
   const origin: Source = {
@@ -334,12 +402,12 @@ for (const archive of posts) {
     url: archive.url,
     externalId: archive.id
   }
-  const sources: Source[] = embed === undefined || embed === null
+  const sources: Source[] = embed === null
     ? [origin]
-    : [{ nature: 'media', service: embed.service, kind: 'video', url: embed.url }, origin]
+    : [{ nature: 'media', service: embed.service, kind: embed.kind, url: embed.url }, origin]
 
   let note: string | null = null
-  if (embed === undefined || embed === null) {
+  if (embed === null) {
     flags.push('no-source')
     const found = [...((archive.contentHtml ?? '').matchAll(URL_IN_BODY))].map(match => match[0])
     const salvage = found.find(url => !DEAD_HOSTS.some(host => url.includes(host)))
@@ -367,8 +435,9 @@ for (const archive of posts) {
     sources
   }
   recordings.push(recording)
+  const postId = createId()
   written.push({
-    id: createId(),
+    id: postId,
     publishedOn,
     hidden: false,
     recordingId: recording.id,
@@ -378,6 +447,7 @@ for (const archive of posts) {
   if (flags.length > 0) {
     reviewed.push({
       flags,
+      postId,
       archiveUrl: archive.url,
       publishedOn,
       artist: artistName,
@@ -395,6 +465,7 @@ await write('posts', [])
 await append('posts', written)
 
 const REASONS: Record<Flag, string> = {
+  'widget-url': 'The source is a player widget rather than a page, because that is what the archive held. It plays; it just does not read as a URL a human would share.',
   'no-source': 'Nothing to play. The embed was gone when the blog was crawled, so the post arrives as a title and a date.',
   'dead-source-in-body': 'A URL was found in the body, on a host that is dead or is not an embed. Kept here rather than stored.',
   'unsplit-title': 'No dash in the title, so the whole line became the artist and the song both. Needs splitting by hand.',
@@ -405,6 +476,7 @@ const REASONS: Record<Flag, string> = {
 
 const ORDER: Flag[] = [
   'no-source',
+  'widget-url',
   'tracklist-title',
   'unsplit-title',
   'ambiguous-credit',
@@ -412,20 +484,43 @@ const ORDER: Flag[] = [
   'read-qualifier'
 ]
 
+const escaped = (text: string): string => text.replace(/\|/gv, '\\|').trim()
+const searchUrl = (one: Reviewed): string =>
+  `https://www.youtube.com/results?search_query=${encodeURIComponent(`${one.artist} ${one.song}`)}`
+
 let review = '# Import review\n\n'
-review += `Written by \`npm run data:import\`. ${reviewed.length} of ${posts.length} posts need a look,\n`
-review += 'grouped by what the import could not read. A post appears under every flag it carries.\n'
+review += `Written by \`npm run data:import\`. ${reviewed.length} of ${posts.length} posts need a look.\n\n`
+review += '**Fill the `source` column** with a URL that plays the track — the `find` link opens a\n'
+review += 'YouTube search for it — and leave `note` for anything you want to say about the row.\n'
+review += 'The `post` column is the id `npm run post:edit -- <id>` takes.\n\n'
+review += '> **Running `data:import` again rewrites this file and replaces the database**, so\n'
+review += '> whatever is filled in here is lost along with every hand edit. Import once, then work\n'
+review += '> from here.\n\n'
+review += '## What the flags mean\n\n'
 for (const flag of ORDER) {
   const concerned = reviewed.filter(one => one.flags.includes(flag))
   if (concerned.length === 0) continue
-  const count = concerned.length === 1 ? '1 post' : `${concerned.length} posts`
-  review += `\n## ${flag} — ${count}\n\n${REASONS[flag]}\n\n`
-  for (const one of concerned) {
-    const day = one.publishedOn.slice(0, 10)
-    const said = one.note === null ? '' : ` — \`${one.note}\``
-    review += `- \`${day}\` **${one.artist}** — ${one.song}${said} · [archive](${one.archiveUrl})\n`
-  }
+  review += `- **\`${flag}\`** — ${concerned.length} · ${REASONS[flag]}\n`
 }
+review += '\n## The posts\n\n'
+review += '| post | date | artist | song | flags | find | source | note |\n'
+review += '| --- | --- | --- | --- | --- | --- | --- | --- |\n'
+for (const one of reviewed) {
+  const cells = [
+    `\`${one.postId}\``,
+    one.publishedOn.slice(0, 10),
+    escaped(one.artist),
+    escaped(one.song),
+    one.flags.map(flag => `\`${flag}\``).join(' '),
+    `[find](${searchUrl(one)})`,
+    '',
+    one.note === null ? '' : `\`${escaped(one.note)}\``
+  ]
+  review += `| ${cells.join(' | ')} |\n`
+}
+review += '\nEvery row traces back to Tumblr through its post id: the recording it names carries the\n'
+review += 'permalink as an identity source.\n'
+
 await writeFile(path.join(CWD, 'IMPORT-REVIEW.md'), review, { encoding: 'utf-8' })
 
 console.log(styles.light(`> ${artists.length} artists, ${songs.length} songs, ${recordings.length} recordings`))
