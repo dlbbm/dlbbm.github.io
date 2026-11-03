@@ -9,13 +9,28 @@ import process from 'node:process'
 import { confirm } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
+import { timestampAsString } from '../_date/index.js'
 import { append, readDb, saveSong, type Db } from '../_db/index.js'
+import { describePost } from '../_describe/index.js'
 
 const db: Db = await readDb()
 
 console.log('')
 console.log(styles.title('Writing a post...'))
 console.log(styles.light(`> ${db.posts.length} posts, ${db.songs.length} songs, ${db.artists.length} artists so far`))
+
+// What is already booked ahead, before the first question: a slot taken is the one thing
+// the prompts cannot show. Parsed rather than compared as strings, since a timestamp
+// carries an offset. A hidden post is left out — it is not going anywhere.
+const pending = db.posts
+  .filter(post => !post.hidden && Date.parse(post.publishedOn) > Date.now())
+  .sort((one, other) => one.publishedOn.localeCompare(other.publishedOn))
+if (pending.length > 0) {
+  console.log(styles.info('\nPending'))
+  for (const post of pending) {
+    console.log(styles.light(`> ${timestampAsString(post.publishedOn)}  ${describePost(post, db).name}`))
+  }
+}
 console.log('')
 
 const draft = await askDraft(db, null)
