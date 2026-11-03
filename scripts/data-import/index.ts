@@ -425,6 +425,8 @@ for (const archive of posts) {
   const recording: Recording = {
     id: createId(),
     songId: song,
+    // Free text and not a member of the vocabulary: `full album` says how much of the
+    // record this is, where every named kind says what the occasion was.
     kind: isAlbum ? 'full album' : qualifier?.kind ?? null,
     byArtistIds: [by],
     featuringArtistIds: [],
@@ -521,7 +523,7 @@ review += '- **`song`** — the work\'s title, if the import mangled it.\n'
 review += '- **`kind`** — what the parenthesis at the end of the title was read as. Most of the\n'
 review += '  `read-qualifier` rows are wrong here, because a cover and a remix both landed in it\n'
 review += '  as free text. Three forms are understood: a plain kind (`live`, `demo`, `remix`,\n'
-review += '  `alternate take`, `full album`, `session`, or anything else), `cover: Neil Young` for a cover —\n'
+review += '  `alternate take`, `session`, or anything else), `cover: Neil Young` for a cover —\n'
 review += '  which sets the song\'s original artist — and `remix: Goldroom` for a remix, which\n'
 review += '  credits the remixer. Empty it to say the parenthesis meant nothing.\n'
 review += '- **`source`** — a URL that plays the track. The `find` link opens a YouTube search for\n'

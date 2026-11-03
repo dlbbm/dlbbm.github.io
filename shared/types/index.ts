@@ -89,18 +89,18 @@ export type Place = {
  * the old blog used, in the order it used it: a value earns its place here by appearing in
  * enough posts to be worth a keystroke.
  *
- * **Every member says what the occasion was, never how it sounds.** `acoustic` and
- * `extended` describe an arrangement and belong in the free text, or the list stops being
- * comparable with itself. `session` is the one member the archive did not earn — a filmed
- * performance away from a stage, which keeps turning up and which `live` overclaims, since
- * `performedAt` then expects a venue there never was.
+ * **Every member says what the occasion was**, never how it sounds and never how much of
+ * it there is. `acoustic` and `extended` describe an arrangement, `full album` describes
+ * an extent — all three are free text, or the list stops being comparable with itself.
+ * `session` is the one member the archive did not earn: a filmed performance away from a
+ * stage, which keeps turning up and which `live` overclaims, since `performedAt` then
+ * expects a venue there never was.
  */
 export const recordingKinds = [
   'live',
   'remix',
   'demo',
   'alternate take',
-  'full album',
   'session'
 ] as const
 
