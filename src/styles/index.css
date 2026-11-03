@@ -18,10 +18,11 @@
   --embed-height: 400px;
 
   /* The panel, and the only theme the site ships: a ground that is lit from behind
-     rather than a page that is white, text in screen green, and the accent on the mark's
-     red — the one color on this page that belongs to no theme. */
-  --bg-color: #0d1814;
-  --text-color: #bfd9cb;
+     rather than a page that is white, text in a screen green turned barely toward
+     yellow, and the accent on the mark's red — the one color on this page that belongs
+     to no theme. */
+  --bg-color: #0b110f;
+  --text-color: #c8dbc2;
   --accent-color: var(--mark-warm);
   --border-color: var(--text-color);
   --underline-color: var(--accent-color);
