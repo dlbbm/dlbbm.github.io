@@ -64,10 +64,12 @@ export function Post ({ post }: PostProps) {
   const details = [occasion, performedOn].filter(part => part !== '' && part !== null).join(' — ')
 
   return <article class={bem()}>
-    <DateComponent
-      date={new Date(post.publishedOn)}
-      format="{{ddd}}, {{MMM}} {{D}}{{th}}, {{YYYY}}"
-      className={bem('date')} />
+    <Link href={post.url} className={bem('permalink')}>
+      <DateComponent
+        date={new Date(post.publishedOn)}
+        format="{{ddd}}, {{MMM}} {{D}}{{th}}, {{YYYY}}"
+        className={bem('date')} />
+    </Link>
     <div class={bem('media')}>
       {played === undefined
         ? <a class={bem('missing')} href={post.url}>no playable source</a>
@@ -75,7 +77,7 @@ export function Post ({ post }: PostProps) {
     </div>
     <div class={bem('meta')}>
       <h2 class={bem('title')}>
-        <Link href={post.url} className={bem('song')}>{post.song.title}</Link>
+        <span class={bem('song')}>{post.song.title}</span>
         {' — '}
         <Credits credits={post.credits} featuring={post.featuring} />
       </h2>

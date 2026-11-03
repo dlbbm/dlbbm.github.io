@@ -43,8 +43,11 @@
   line-height: var(--lh-6);
 }
 
-.post__song { color: inherit; text-decoration: none; }
+/* The date is the permalink, not the song: the title line is already a row of links to
+   the artists, and a second kind of link inside it would be read as one of them. */
+.post__permalink { align-self: flex-start; }
 
+.post__permalink,
 .post__artist {
   color: inherit;
   text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
@@ -52,11 +55,13 @@
   transition: color var(--hover-duration), text-decoration-color var(--hover-duration);
 }
 
+.post__permalink:hover,
+.post__permalink:focus-visible,
 .post__artist:hover,
-.post__artist:focus-visible { color: var(--accent-color); }
-
-.post__artist:hover,
-.post__artist:focus-visible { text-decoration-color: var(--underline-color); }
+.post__artist:focus-visible {
+  color: var(--accent-color);
+  text-decoration-color: var(--underline-color);
+}
 
 .post__details {
   margin: 0;
