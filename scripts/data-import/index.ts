@@ -490,8 +490,9 @@ const searchUrl = (one: Reviewed): string =>
 
 let review = '# Import review\n\n'
 review += `Written by \`npm run data:import\`. ${reviewed.length} of ${posts.length} posts need a look.\n\n`
-review += '**Four columns are yours to edit**, in place, row by row. `post`, `date`, `flags` and\n'
-review += '`find` are the import talking; the rest is you answering.\n\n'
+review += '**Four columns are yours to edit**, in place, row by row — `artist`, `song`, `source`\n'
+review += 'and `note`, which sit together on the left. `flags` opens each row with what the import\n'
+review += 'could not read, and `find`, `date` and `post` are there to help you answer.\n\n'
 review += '- **`artist`** — correct it if the import read it wrong, and **split a credit with\n'
 review += '  `;`**: `Brigitte Fontaine; The Art Ensemble of Chicago; Areski Belkacem` is three\n'
 review += '  artists where the import stored one. A name prefixed `ft.` is a guest rather than a\n'
@@ -513,18 +514,18 @@ for (const flag of ORDER) {
   review += `- **\`${flag}\`** — ${concerned.length} · ${REASONS[flag]}\n`
 }
 review += '\n## The posts\n\n'
-review += '| post | date | artist | song | flags | find | source | note |\n'
+review += '| flags | artist | song | source | find | note | date | post |\n'
 review += '| --- | --- | --- | --- | --- | --- | --- | --- |\n'
 for (const one of reviewed) {
   const cells = [
-    `\`${one.postId}\``,
-    one.publishedOn.slice(0, 10),
+    one.flags.map(flag => `\`${flag}\``).join(' '),
     escaped(one.artist),
     escaped(one.song),
-    one.flags.map(flag => `\`${flag}\``).join(' '),
-    `[find](${searchUrl(one)})`,
     '',
-    one.note === null ? '' : `\`${escaped(one.note)}\``
+    `[find](${searchUrl(one)})`,
+    one.note === null ? '' : `\`${escaped(one.note)}\``,
+    one.publishedOn.slice(0, 10),
+    `\`${one.postId}\``
   ]
   review += `| ${cells.join(' | ')} |\n`
 }
