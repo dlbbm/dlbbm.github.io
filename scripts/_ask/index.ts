@@ -347,7 +347,7 @@ async function askDerivedFrom (
   createdSongs: Song[],
   createdArtists: Artist[]
 ): Promise<void> {
-  hint(`the works this one is built on (split on ${CREDIT_SEPARATOR})`)
+  hint(`the works this one is built on (for medleys, song titles split on ${CREDIT_SEPARATOR})`)
   const raw = await input({
     message: 'Derived from',
     default: song.derivedFromSongIds.length === 0
