@@ -198,16 +198,17 @@ function describeSongCredits (song: Song, recordings: Recording[], artists: Arti
 /** Every work going by that name, the ones this artist already recorded coming first. */
 function matchingSongs (
   title: string,
-  mainArtist: Artist,
+  mainArtist: Artist | null,
   songPool: Song[],
   recordingPool: Recording[]
 ): Song[] {
   const needle = title.toLowerCase()
   const candidates = songPool.filter(song => song.title.toLowerCase() === needle
     || song.titleAliases.some(alias => alias.toLowerCase() === needle))
-  const byMainArtist = (song: Song): boolean => recordingPool.some(recording =>
-    recording.songId === song.id
-    && recording.byArtistIds.includes(mainArtist.id))
+  const byMainArtist = (song: Song): boolean => mainArtist !== null
+    && recordingPool.some(recording =>
+      recording.songId === song.id
+      && recording.byArtistIds.includes(mainArtist.id))
   return [...candidates].sort((one, other) =>
     Number(byMainArtist(other)) - Number(byMainArtist(one)))
 }
@@ -302,7 +303,7 @@ async function resolveSong (
 async function resolveWork (
   name: string,
   built: Song,
-  mainArtist: Artist,
+  mainArtist: Artist | null,
   songPool: Song[],
   recordingPool: Recording[],
   artistPool: Artist[],
@@ -329,6 +330,40 @@ async function resolveWork (
   const originals = await askCredits('Original artist', [], artistPool, createdArtists, false)
   minted.originalArtistIds = originals.map(artist => artist.id)
   return minted
+}
+
+/**
+ * What a work is built on, asked and written onto it.
+ *
+ * Asked of every work the way `Original artist` is, and empty for almost all of them. A
+ * cover is not this — a cover is a take of the same work by someone else.
+ */
+async function askDerivedFrom (
+  song: Song,
+  mainArtist: Artist | null,
+  songPool: Song[],
+  recordingPool: Recording[],
+  artistPool: Artist[],
+  createdSongs: Song[],
+  createdArtists: Artist[]
+): Promise<void> {
+  hint(`the works this one is built on (split on ${CREDIT_SEPARATOR})`)
+  const raw = await input({
+    message: 'Derived from',
+    default: song.derivedFromSongIds.length === 0
+      ? undefined
+      : song.derivedFromSongIds
+        .map(id => songPool.find(candidate => candidate.id === id)?.title)
+        .filter((title): title is string => title !== undefined)
+        .join(`${CREDIT_SEPARATOR} `)
+  })
+  const derivedFrom: SongId[] = []
+  for (const name of splitCredits(raw)) {
+    const source = await resolveWork(
+      name, song, mainArtist, songPool, recordingPool, artistPool, createdSongs, createdArtists)
+    if (!derivedFrom.includes(source.id)) derivedFrom.push(source.id)
+  }
+  song.derivedFromSongIds = derivedFrom
 }
 
 async function askPlace (initial: Place | null): Promise<Place | null> {
@@ -484,26 +519,8 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   )
   song.originalArtistIds = originalArtists.map(artist => artist.id)
 
-  // The works this one is built on: a medley, a potpourri, anything borrowing whole pieces.
-  // Asked of every work the way `Original artist` is, and empty for almost all of them. A
-  // cover is not this — a cover is a take of the same work by someone else.
-  hint(`the works this one is built on (split on ${CREDIT_SEPARATOR})`)
-  const rawDerivedFrom = await input({
-    message: 'Derived from',
-    default: song.derivedFromSongIds.length === 0
-      ? undefined
-      : song.derivedFromSongIds
-        .map(id => songPool.find(candidate => candidate.id === id)?.title)
-        .filter((title): title is string => title !== undefined)
-        .join(`${CREDIT_SEPARATOR} `)
-  })
-  const derivedFrom: SongId[] = []
-  for (const name of splitCredits(rawDerivedFrom)) {
-    const source = await resolveWork(
-      name, song, mainArtist, songPool, recordingPool, artistPool, createdSongs, createdArtists)
-    if (!derivedFrom.includes(source.id)) derivedFrom.push(source.id)
-  }
-  song.derivedFromSongIds = derivedFrom
+  await askDerivedFrom(
+    song, mainArtist, songPool, recordingPool, artistPool, createdSongs, createdArtists)
 
   // The other names the work goes by, which `resolveSong` matches on as readily as the
   // title: it is how `Into the Black` and `Hey Hey, My My (Into the Black)` stay one song
@@ -698,6 +715,86 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     headline: `${creditedArtists.map(artist => artist.name).join(', ')}${featuring} — ${recordingTitle ?? song.title}`,
     details
   }
+}
+
+/** A work and whatever answering for it brought into being. */
+export type SongDraft = {
+  createdArtists: Artist[]
+  createdSlugs: Slug[]
+  createdSongs: Song[]
+  song: Song
+  details: string[]
+}
+
+/**
+ * A work on its own, with no post around it.
+ *
+ * The four questions a work owns, asked where no recording answers for it. `post:edit`
+ * reaches a work only through a take, and since `Title` came to mean the take's name,
+ * nothing there renames one at all. Touches no recording and no post.
+ */
+export async function askSong (db: Db, song: Song): Promise<SongDraft> {
+  const createdArtists: Artist[] = []
+  const createdSongs: Song[] = []
+  const slugPool = [...db.slugs]
+  const artistPool = [...db.artists]
+  const songPool = [...db.songs]
+  const recordingPool = [...db.recordings]
+  const edited = songPool.find(candidate => candidate.id === song.id) ?? song
+
+  hint('the name this work goes by')
+  edited.title = (await input({
+    message: 'Title',
+    default: edited.title,
+    validate: value => value.trim() !== '' || 'A title is needed.'
+  })).trim()
+
+  hint(`other names for the work (split on ${CREDIT_SEPARATOR})`)
+  const rawAliases = await input({
+    message: 'Title aliases',
+    default: edited.titleAliases.length === 0
+      ? undefined
+      : edited.titleAliases.join(`${CREDIT_SEPARATOR} `)
+  })
+  edited.titleAliases = splitCredits(rawAliases)
+    .filter(alias => alias.toLowerCase() !== edited.title.toLowerCase())
+
+  hint(`whose song it is (split on ${CREDIT_SEPARATOR})`)
+  const originalArtists = await askCredits(
+    'Original artist',
+    namesOf(edited.originalArtistIds, artistPool),
+    artistPool,
+    createdArtists,
+    false
+  )
+  edited.originalArtistIds = originalArtists.map(artist => artist.id)
+
+  await askDerivedFrom(
+    edited, null, songPool, recordingPool, artistPool, createdSongs, createdArtists)
+
+  const createdSlugs = createdArtists.map(artist =>
+    mintSlug('artist', artist.id, artist.name, slugPool))
+
+  const details = [
+    edited.titleAliases.length === 0 ? null : `also ${edited.titleAliases.join(', ')}`,
+    originalArtists.length === 0
+      ? 'unclaimed'
+      : `originally ${originalArtists.map(artist => artist.name).join(', ')}`,
+    edited.derivedFromSongIds.length === 0
+      ? null
+      : `built on ${edited.derivedFromSongIds
+        .map(id => songPool.find(candidate => candidate.id === id)?.title ?? id)
+        .join(', ')}`
+  ].filter((line): line is string => line !== null)
+
+  return { createdArtists, createdSlugs, createdSongs, song: edited, details }
+}
+
+/** The recap `song:edit` prints before asking for confirmation. */
+export function printSong (draft: SongDraft): void {
+  console.log(styles.info('\nSong'))
+  console.log(styles.important(draft.song.title))
+  for (const line of draft.details) { console.log(styles.light(line)) }
 }
 
 /** The recap a command prints before asking for confirmation. */

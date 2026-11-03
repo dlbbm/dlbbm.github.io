@@ -41,6 +41,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run typecheck` | `check:scripts` and `check:src` |
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`) |
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
+| `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
