@@ -35,8 +35,10 @@ export function Posts () {
               date={new Date(entry.publishedOn)}
               format="{{MMM}} {{D}}{{th}}, {{YYYY}}"
               className={bem('date')} />
-            {entry.title}
-            {said === null ? null : <span class={bem('qualifier')}>{` ${said}`}</span>}
+            <span class={bem('name')}>
+              {entry.title}
+              {said === null ? null : <span class={bem('qualifier')}>{` ${said}`}</span>}
+            </span>
           </Link>
         </li>
       })}
