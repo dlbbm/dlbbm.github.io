@@ -52,6 +52,12 @@ const OTHER_KIND = Symbol('other kind')
 // Same, for the work that goes by a name other than the one this take carries.
 const OTHER_WORK = Symbol('another work')
 
+// What a field is, printed above the question. `input` takes no description of its own,
+// and a `select` only shows one for the row the cursor happens to be on.
+function hint (text: string): void {
+  console.log(styles.light(`> ${text}`))
+}
+
 // `forms` is echoed back once the host is picked, and says what the prompt will accept.
 // YouTube is the one host whose URL is refused when no video id can be read out of it; the
 // rest are stored as given. Nothing derives an embed URL here — the component rendering a
@@ -252,6 +258,7 @@ async function resolveSong (
   }
 
   const listed = matchingSongs(title, mainArtist, songPool, recordingPool)
+  hint('which work it is a version of')
   const chosen = await select<Song | null | typeof OTHER_WORK>({
     // `recordingOf` is the schema.org property this is filling — which work the take is of
     // — and saying so is clearer than `Song` over a list of works sharing a title.
@@ -264,6 +271,7 @@ async function resolveSong (
   })
   if (chosen !== OTHER_WORK) return chosen ?? mintSong(title, songPool, created)
 
+  hint("the work's own name")
   const asked = (await input({
     message: 'Work title',
     validate: value => value.trim() !== '' || 'A title is needed.'
@@ -281,6 +289,7 @@ async function resolveSong (
 }
 
 async function askPlace (initial: Place | null): Promise<Place | null> {
+  hint('where it was played')
   const venue = (await input({ message: 'Venue', default: initial?.venue ?? undefined })).trim()
   const city = (await input({ message: 'City', default: initial?.city ?? undefined })).trim()
   const country = (await input({ message: 'Country', default: initial?.country ?? undefined })).trim()
@@ -332,16 +341,16 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     ? undefined
     : songPool.find(song => song.id === editing.recording.songId)
 
-  // What this take is called, which is what the post displays. For a cover released under
-  // another name it is that name, and which work it is a recording of is settled below.
+  hint('the name this take goes by. Recording.title if it is a recording of a song that has another name, Song.title otherwise')
   const askedTitle = (await input({
     message: 'Title',
     default: editing?.recording.title ?? editedSong?.title,
     validate: value => value.trim() !== '' || 'A title is needed.'
   })).trim()
 
+  hint(`who it is credited to (split on ${CREDIT_SEPARATOR})`)
   const creditedArtists = await askCredits(
-    `Artist (separated by ${CREDIT_SEPARATOR})`,
+    'Artist',
     editing === null ? [] : namesOf(editing.recording.byArtistIds, artistPool),
     artistPool,
     createdArtists,
@@ -356,8 +365,9 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     process.exit(1)
   }
 
+  hint(`guests on this take (split on ${CREDIT_SEPARATOR})`)
   const featuringArtists = await askCredits(
-    `Featuring (separated by ${CREDIT_SEPARATOR})`,
+    'Featuring',
     editing === null ? [] : namesOf(editing.recording.featuringArtistIds, artistPool),
     artistPool,
     createdArtists,
@@ -373,6 +383,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     : askedTitle
 
   const initialKind = editing?.recording.kind ?? null
+  hint('live, remix, demo, session, etc.')
   const pickedKind = await select<RecordingKind | null | typeof OTHER_KIND>({
     message: 'Recording kind',
     default: initialKind === null
@@ -393,15 +404,17 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
       validate: value => value.trim() !== '' || 'A kind is needed.'
     })).trim()
 
-  const remixedByArtists = recordingKind !== 'remix'
-    ? []
-    : await askCredits(
-      `Remixed by (separated by ${CREDIT_SEPARATOR})`,
+  let remixedByArtists: Artist[] = []
+  if (recordingKind === 'remix') {
+    hint(`who reworked it (split on ${CREDIT_SEPARATOR})`)
+    remixedByArtists = await askCredits(
+      'Remixed by',
       editing === null ? [] : namesOf(editing.recording.remixedByArtistIds, artistPool),
       artistPool,
       createdArtists,
       false
     )
+  }
 
   // Whose song it is, asked of every work and not only of one entering the data: an
   // import credits the performer by default, so a cover cannot be corrected unless the
@@ -418,8 +431,9 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   const claimWasTheCredits = editing !== null
     && editing.recording.songId === song.id
     && song.originalArtistIds.join(',') === editing.recording.byArtistIds.join(',')
+  hint(`whose song it is (split on ${CREDIT_SEPARATOR})`)
   const originalArtists = await askCredits(
-    `Original artist (separated by ${CREDIT_SEPARATOR})`,
+    'Original artist',
     claimed.length === 0 || claimWasTheCredits ? creditedArtists : claimed,
     artistPool,
     createdArtists,
@@ -436,8 +450,9 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // A work that already carries aliases is asked anyway, or they could never be removed.
   const ownWork = song.originalArtistIds.join(',') === creditedArtists.map(artist => artist.id).join(',')
   if (!ownWork || song.titleAliases.length > 0) {
+    hint(`other names for the work (split on ${CREDIT_SEPARATOR})`)
     const rawAliases = await input({
-      message: `Title aliases (separated by ${CREDIT_SEPARATOR})`,
+      message: 'Title aliases',
       default: song.titleAliases.length === 0 ? undefined : song.titleAliases.join(`${CREDIT_SEPARATOR} `)
     })
     song.titleAliases = rawAliases
@@ -450,8 +465,9 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   let performedOn: PartialDate | null = null
   let performedAt: Place | null = null
   if (recordingKind === 'live') {
+    hint('date of the concert — YYYY, YYYY-MM or YYYY-MM-DD')
     const rawPerformedOn = await input({
-      message: 'Performed on (YYYY, YYYY-MM or YYYY-MM-DD)',
+      message: 'Performed on',
       default: editing?.recording.performedOn === undefined || editing.recording.performedOn === null
         ? undefined
         : formatPartialDate(editing.recording.performedOn),
@@ -463,6 +479,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
 
   const initialSource = editing?.recording.sources.find(candidate =>
     candidate.nature === 'media' || candidate.nature === 'file')
+  hint('where to hear it')
   const sourceNature = await select<MediaService | 'file' | null>({
     message: 'Source',
     default: initialSource === undefined
@@ -478,7 +495,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   let source: MediaSource | FileSource | null = null
   let fileToStore: string | null = null
   if (sourceNature === 'file') {
-    console.log(styles.light(`> ${Object.keys(FILE_KINDS).join(' ')}`))
+    hint(`a local audio or video file — ${Object.keys(FILE_KINDS).join(' ')}`)
     const answer = await input({
       message: 'File path',
       default: initialSource?.nature === 'file' ? initialSource.path : undefined,
@@ -497,7 +514,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     // The stored path is known once the file is copied, which only happens on confirmation.
     source = { nature: 'file', kind, path: '', name: null }
   } else if (sourceNature !== null) {
-    console.log(styles.light(`> ${MEDIA_HOSTS[sourceNature].forms}`))
+    hint(`the link to the audio — ${MEDIA_HOSTS[sourceNature].forms}`)
     source = toMediaSource(sourceNature, await input({
       message: 'Source URL',
       default: initialSource?.nature === 'media' ? initialSource.url : undefined,
@@ -510,6 +527,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // which is schema.org's property on a media object, and asked as the one question it
   // ever answers.
   if (source !== null) {
+    hint('which audio, if not just the take')
     const rawEdition = await input({
       message: 'Edition',
       default: initialSource?.name ?? undefined
@@ -524,8 +542,9 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     console.log(styles.light(`> ${source.kind} · to be copied into data/files`))
   }
 
+  hint('when it goes out — YYYY-MM-DD HH:MM, or said out loud')
   const rawPublishedOn = await input({
-    message: 'Published on (YYYY-MM-DD HH:MM, or said out loud)',
+    message: 'Published on',
     default: editing === null ? nowAsString() : timestampAsString(editing.post.publishedOn),
     validate: value => readTimestamp(value) !== null
       || 'Expected YYYY-MM-DD HH:MM, or something like `tomorrow at 9pm`.'
@@ -542,6 +561,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // One line, because almost every post is only its title. A tracklist or anything else
   // that wants several is a hand edit on the record afterwards, which is how this database
   // is corrected anyway.
+  hint('what the post says')
   const rawBody = await input({
     message: 'Body',
     default: editing?.post.body ?? ''
@@ -550,9 +570,11 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
 
   // Hiding a post is a thing one does to a post that exists, so the question is the one
   // the create flow does not ask.
-  const hidden = editing === null
-    ? false
-    : await confirm({ message: 'Hidden?', default: editing.post.hidden })
+  let hidden = false
+  if (editing !== null) {
+    hint('withheld from the build')
+    hidden = await confirm({ message: 'Hidden?', default: editing.post.hidden })
+  }
 
   const recording: Recording = {
     id: editing?.recording.id ?? createId(),
