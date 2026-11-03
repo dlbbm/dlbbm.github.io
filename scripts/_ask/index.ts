@@ -319,6 +319,18 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
 
   const song = await resolveSong(songTitle, mainArtist, songPool, recordingPool, artistPool, createdSongs)
 
+  // The other names the work goes by, which `resolveSong` matches on as readily as the
+  // title: it is how `Into the Black` and `Hey Hey, My My (Into the Black)` stay one song
+  // rather than becoming two the day the other one is posted.
+  const rawAliases = await input({
+    message: `Title aliases (separated by ${CREDIT_SEPARATOR})`,
+    default: song.titleAliases.length === 0 ? undefined : song.titleAliases.join(`${CREDIT_SEPARATOR} `)
+  })
+  song.titleAliases = rawAliases
+    .split(CREDIT_SEPARATOR)
+    .map(alias => alias.trim())
+    .filter(alias => alias !== '' && alias.toLowerCase() !== song.title.toLowerCase())
+
   const initialKind = editing?.recording.kind ?? null
   const pickedKind = await select<RecordingKind | null | typeof OTHER_KIND>({
     message: 'Recording kind',
