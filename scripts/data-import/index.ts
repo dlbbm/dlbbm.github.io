@@ -73,6 +73,8 @@ const DEAD_HOSTS = ['grooveshark.com']
 const WIDGET_CAPTION = /\s+by\s+[^]*?\s+on\s+Grooveshark\s*$/iv
 // A tracklist pasted into the title: a timecode, or an album year in parentheses.
 const TRACKLIST = /~\s*\d{1,2}:\d{2}|\(Album,\s*\d{4}/iv
+// Where the album's title stops and its contents begin.
+const TRACKLIST_TAIL = /\s*(?:~|\((?:Album|Bonus)\b)[^]*$/iv
 
 const MONTHS = [
   'january', 'february', 'march', 'april', 'may', 'june',
@@ -83,15 +85,8 @@ function pad (value: number): string {
   return `${value}`.padStart(2, '0')
 }
 
-/**
- * The instant, written as the Paris evening it was.
- *
- * The crawler kept UTC; the type wants the offset, because the hour a post went out is
- * what the blog is saying. The shift is measured rather than assumed, so 2011 summers and
- * 2019 winters each get their own.
- */
-function parisTimestamp (iso: string): Timestamp {
-  const at = new Date(iso)
+/** How far Paris was from UTC at a given instant, in minutes. */
+function parisOffsetMinutes (at: Date): number {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
     timeZone: PARIS,
     year: 'numeric',
@@ -103,10 +98,31 @@ function parisTimestamp (iso: string): Timestamp {
     hourCycle: 'h23'
   }).formatToParts(at).map(part => [part.type, part.value]))
   const local = `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}`
-  const shift = Math.round((Date.parse(`${local}Z`) - at.getTime()) / 60000)
-  const sign = shift < 0 ? '-' : '+'
-  const abs = Math.abs(shift)
-  return `${local}${sign}${pad(Math.floor(abs / 60))}:${pad(abs % 60)}`
+  return Math.round((Date.parse(`${local}Z`) - at.getTime()) / 60000)
+}
+
+/**
+ * The moment, written with the zone it was always in.
+ *
+ * **The crawler's `Z` is a lie, and the components are the truth.** Tumblr's theme prints
+ * a post's time in the blog's own timezone, and that printed hour is what was stored with
+ * a `Z` stuck on the end: across all 401 posts the stored value matches the `5:39 pm` the
+ * page showed, in July as in January. So nothing is shifted here — the wall clock is kept
+ * and the Paris offset for that date is attached, which is what makes summer `+02:00` and
+ * winter `+01:00` without moving the hour.
+ *
+ * The offset is read twice: once from the wall clock taken as UTC, then again from the
+ * instant that first answer implies, so a post near a DST change lands on the right side
+ * of it.
+ */
+function parisTimestamp (stored: string): Timestamp {
+  const wall = stored.replace(/(\.\d+)?Z$/v, '')
+  const naive = new Date(`${wall}Z`)
+  const first = parisOffsetMinutes(naive)
+  const offset = parisOffsetMinutes(new Date(naive.getTime() - first * 60000))
+  const sign = offset < 0 ? '-' : '+'
+  const abs = Math.abs(offset)
+  return `${wall}${sign}${pad(Math.floor(abs / 60))}:${pad(abs % 60)}`
 }
 
 /** `15 February 2015`, `February 2015`, `2015` — and nothing invented for what is absent. */
@@ -264,10 +280,15 @@ for (const archive of posts) {
 
   const split = DASH.exec(stripped)
   const artistName = split === null ? stripped : stripped.slice(0, split.index).trim()
-  const songTitle = split === null ? stripped : stripped.slice(split.index + split[0].length).trim()
+  const spelled = split === null ? stripped : stripped.slice(split.index + split[0].length).trim()
   if (split === null) flags.push('unsplit-title')
   if (/[&,]/v.test(artistName)) flags.push('ambiguous-credit')
-  if (TRACKLIST.test(songTitle)) flags.push('tracklist-title')
+
+  // A whole album: the work is the album, the tracklist written after it is dropped, and
+  // the recording says what it is. One post is one recording either way.
+  const isAlbum = TRACKLIST.test(spelled)
+  if (isAlbum) flags.push('tracklist-title')
+  const songTitle = isAlbum ? spelled.replace(TRACKLIST_TAIL, '').trim() : spelled
 
   const embed = (archive.media ?? [])
     .map(one => readMedia(one.url))
@@ -294,7 +315,7 @@ for (const archive of posts) {
   const recording: Recording = {
     id: createId(),
     songId: song,
-    kind: qualifier?.kind ?? null,
+    kind: isAlbum ? 'full album' : qualifier?.kind ?? null,
     byArtistIds: [by],
     featuringArtistIds: [],
     remixedByArtistIds: [],
@@ -331,7 +352,7 @@ const REASONS: Record<Flag, string> = {
   'dead-source-in-body': 'A URL was found in the body, on a host that is dead or is not an embed. Kept here rather than stored.',
   'unsplit-title': 'No dash in the title, so the whole line became the artist and the song both. Needs splitting by hand.',
   'ambiguous-credit': 'The credit holds an ampersand or a comma. It was kept as one artist, because no rule tells `Polo & Pan` from `Murcof & Vanessa Wagner`.',
-  'tracklist-title': 'A whole album, with its tracklist written into the title. One post, one recording is the shape this database has — these want deciding before they want parsing.',
+  'tracklist-title': 'A whole album. The tracklist written into the title was dropped and the recording is a `full album`; what is left is the album\'s own name, which wants checking.',
   'read-qualifier': 'A parenthesis at the end of the title was read as a kind, a place or a date. Worth checking it said that.'
 }
 

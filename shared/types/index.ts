@@ -93,7 +93,8 @@ export const recordingKinds = [
   'live',
   'remix',
   'demo',
-  'alternate-take'
+  'alternate-take',
+  'full album'
 ] as const
 
 /**
