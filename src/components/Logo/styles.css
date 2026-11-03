@@ -17,10 +17,10 @@
 }
 
 .logo__mark .bg { fill: transparent; }
-.logo__mark .fill-1 { fill: var(--mark-green); }
-/* The right disc is the left one stepped back, so the mark reads as one green and a
+/* The left disc is the right one stepped back, so the mark reads as one green and a
    lens rather than as three colors. */
-.logo__mark .fill-2 { fill: var(--mark-green); fill-opacity: .7; }
+.logo__mark .fill-1 { fill: var(--mark-green); fill-opacity: .7; }
+.logo__mark .fill-2 { fill: var(--mark-green); }
 .logo__mark .fill-3 { fill: var(--mark-warm); }
 
 /* The word alone — the mark is not text, and an underline under it reads as a bug. Only

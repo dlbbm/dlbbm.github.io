@@ -9,15 +9,15 @@
   /* Only for an embed whose platform has no aspect ratio of its own to give. */
   --embed-height: 400px;
 
-  /* A panel that is lit rather than a white page with a tint: the ground carries the
-     screen green and the text is a near-black of the same hue. The accent is the mark's
-     red, the one color on the page that belongs to no theme. */
-  --bg-color: #8cbfa8;
-  --text-color: #12201c;
+  /* The panel, and the only theme the site ships: a ground that is lit from behind
+     rather than a page that is white, text in screen green, and the accent on the mark's
+     red — the one color on this page that belongs to no theme. */
+  --bg-color: #12201c;
+  --text-color: #bfd9cb;
   --accent-color: var(--mark-warm);
   --border-color: var(--text-color);
   --underline-color: var(--accent-color);
-  --shadow-color: rgb(18 32 28 / .1);
+  --shadow-color: rgb(0 0 0 / .4);
 
   /* What "secondary" means here. An opacity and not a fourth color: it holds whatever
      the theme says, in light or in dark, and costs the palette nothing. */
@@ -26,46 +26,34 @@
   /* How long a color takes to answer a pointer, everywhere it answers one. */
   --hover-duration: 200ms;
 
-  /* The mark does not take the ambience, but it stays in its family: the two discs are
-     one green, the lens the warm note they share. Named for the mark and not for the
-     logo, since the rule down the left edge carries the green too. */
-  --mark-green: #0f2a22;
+  /* The mark keeps its own two colors whatever the ground: the discs are one green, the
+     lens the warm note between them. */
+  --mark-green: #35876c;
   --mark-warm: #a9563a;
 
-  /* The same panel read from the dark side, held apart so the two mappings below never
-     drift. The warm note is not here: the lens keeps its red in either theme. */
-  --night-bg: #12201c;
-  --night-text: #bfd9cb;
-  --night-shadow: rgb(0 0 0 / .4);
-  /* Screen green and not a pale grey: lit enough to read against the night ground, far
-     enough from white to stay the same family as the day. */
-  --night-mark-green: #35876c;
-
-  color-scheme: light;
-}
-
-/* Night, asked for: either by the reader's system, or forced with `data-theme`, or
-   dropped on any node in the tree with `.inverted` — a theme is these values and
-   nothing else, so all three are the same act. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg-color: var(--night-bg);
-    --text-color: var(--night-text);
-    --shadow-color: var(--night-shadow);
-    --mark-green: var(--night-mark-green);
-
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme='dark'],
-.inverted {
-  --bg-color: var(--night-bg);
-  --text-color: var(--night-text);
-  --shadow-color: var(--night-shadow);
-  --mark-green: var(--night-mark-green);
+  /* Daylight, kept aside and no longer the default. Held apart so the mapping below is
+     the only place the two themes meet. The warm note is not here: the lens keeps its
+     red either way. */
+  --day-bg: #8cbfa8;
+  --day-text: #12201c;
+  --day-shadow: rgb(18 32 28 / .1);
+  --day-mark-green: #0f2a22;
 
   color-scheme: dark;
+}
+
+/* Daylight, asked for: forced on the document with `data-theme`, or dropped on any node
+   in the tree with `.inverted` — a theme is these values and nothing else, so the two
+   are the same act. Nothing follows the reader's system any more; this site has a
+   ground of its own. */
+:root[data-theme='light'],
+.inverted {
+  --bg-color: var(--day-bg);
+  --text-color: var(--day-text);
+  --shadow-color: var(--day-shadow);
+  --mark-green: var(--day-mark-green);
+
+  color-scheme: light;
 }
 
 .inverted {
