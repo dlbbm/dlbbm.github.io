@@ -26,12 +26,12 @@
 /* The word alone — the mark is not text, and an underline under it reads as a bug. Only
    the line takes the accent here; the word keeps the ink it had. */
 .logo:hover .logo__word,
-.logo:focus-visible .logo__word {
-  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color);
-  text-underline-offset: var(--underline-offset);
-}
+.logo:focus-visible .logo__word { text-decoration-color: var(--underline-color); }
 
 .logo__word {
+  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
+  text-underline-offset: var(--underline-offset);
+  transition: text-decoration-color var(--hover-duration);
   font-family: var(--ff-display);
   font-size: var(--fs-8);
   font-weight: var(--fw-900);

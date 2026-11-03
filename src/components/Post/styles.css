@@ -47,16 +47,16 @@
 
 .post__artist {
   color: inherit;
-  text-decoration: none;
+  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
   text-underline-offset: var(--underline-offset);
-  transition: color var(--hover-duration);
+  transition: color var(--hover-duration), text-decoration-color var(--hover-duration);
 }
 
 .post__artist:hover,
 .post__artist:focus-visible { color: var(--accent-color); }
 
 .post__artist:hover,
-.post__artist:focus-visible { text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color); }
+.post__artist:focus-visible { text-decoration-color: var(--underline-color); }
 
 .post__details {
   margin: 0;
