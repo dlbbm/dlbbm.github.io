@@ -240,9 +240,25 @@ in this repository that pushes.
   makes today, and a work built on exactly one other work shows nothing rather than
   claiming to be a medley. MusicBrainz puts that information on the relationship rather
   than on either record, which is the shape to copy the day it is wanted.
+- **`post:edit` drops a recording's identity sources, and that is the first thing to
+  fix.** `scripts/_ask/index.ts:672` writes `sources: source === null ? [] : [source]`,
+  rebuilding the array from the one media source the funnel asked about — so every edit
+  silently deletes the tumblr entry that says which post the recording came from. One
+  review pass took 105 of them, 275 down to 170. The fix keeps what the funnel never
+  asked about: `[...editing.recording.sources.filter(candidate => candidate.nature ===
+  'identity'), source]`, or the same thing written out. Everything else below waits on
+  this, since an edit undoes any repair.
+- **Restoring the 105 tumblr identities**, matched by recording id against
+  `424fdb8:data/recordings.ndjson` — the last commit before the pass that dropped them.
+  A one-shot migration and not a cleaner: it runs once, and it is worth nothing until
+  the line above is fixed.
 - **`data:list-duplicates`**, for the artists the import entered twice —
   `The Velvet Underground` against `Velvet Underground`, `Connan Mockasin` against
   `Connan Mockassin`. Each one splits an artist's page in two, and nothing notices.
+  **Works too**: `Gallows Pole` and `Gallows Tree` are now two records of one ballad,
+  one of them carrying the article audit's own example. And listing is only half of it —
+  merging two works means repointing every recording's `songId`, then dropping the
+  orphan and its slug, which is a `data:merge <from> <into>` rather than a report.
 - **A sweep over the hand-written strings**, which nothing validates. Seven of the
   eighteen venues begin with an article — `The Beverly Theater`, `the Madison Square
   Garden` — and two of those are lowercase, which says the question was never settled:
