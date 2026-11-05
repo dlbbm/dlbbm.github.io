@@ -86,6 +86,18 @@ in this repository that pushes.
 
 # Roadmap
 
+- **`npm run data:move-identities`, and it has not run yet.** The one thing to do before
+  anything else. The code side is done: `Post` carries `sources: IdentitySource[]`, the
+  edit funnel keeps what it never asked about, and the import writes the permalink onto
+  the post. The 407 records on disk are untouched, so no post knows which tumblr entry it
+  came from and 239 of the 401 permalinks exist only in git — `post:edit` rebuilt a
+  recording's `sources` from the one answer it had, dropping the identity every time, over
+  four review passes. The command walks the history of `data/recordings.ndjson` newest
+  first, keeps the first identity it finds for each recording id, writes it onto the post
+  that names that recording and strips the recordings; it refuses if two posts share a
+  recording or a permalink, and it asks before writing. Afterwards 401 posts of the 407
+  carry their entry, the six written since the import carry none, and
+  `scripts/data-move-identities` is spent and goes, with its line in `package.json`.
 - **One design system across several sites.** The token layer, the theme in five colors
   and the five font slots are meant to carry over to the other small sites to come, where
   only the colors and the fonts change. Whether that becomes shared code — a package, or
@@ -222,15 +234,6 @@ in this repository that pushes.
   shared rather than repeated — then a release record between `Recording` and `Source`
   has paid for itself. Until then the field is free text, and a vocabulary gets extracted
   from it the way `recordingKinds` describes: a value earns its place by recurring.
-- **The tumblr identity belongs to the post, not to the recording.** 162 of the 407
-  recordings still carry one — `{ nature: 'identity', service: 'tumblr', url: '…/post/<id>/…' }`
-  — and what it identifies is the old post, which is the one record with no `sources`
-  field at all. The import had no reason to care: one post pointed at one recording, so
-  the two were interchangeable. They stop being the day the same recording is posted
-  twice, when both URLs pile onto one recording with nothing saying which post is which.
-  So `Post` gains `sources: IdentitySource[]` and the tumblr entries move across — a
-  migration over the three quarters of the file that have one, plus the import, plus
-  whatever reads a post's provenance.
 - **`song:edit`**, for a work on its own. `post:edit` reaches a work only through a post,
   and since `Title` came to mean the take's name, nothing renames a work at all — which is
   why `Into the Black` had to be repaired by hand. Asks the four questions a work owns: its
@@ -240,19 +243,6 @@ in this repository that pushes.
   makes today, and a work built on exactly one other work shows nothing rather than
   claiming to be a medley. MusicBrainz puts that information on the relationship rather
   than on either record, which is the shape to copy the day it is wanted.
-- **`post:edit` drops a recording's identity sources, and that is the first thing to
-  fix.** `scripts/_ask/index.ts:672` writes `sources: source === null ? [] : [source]`,
-  rebuilding the array from the one media source the funnel asked about — so every edit
-  silently deletes the tumblr entry that says which post the recording came from. One
-  review pass took 105 of them, and the next ones another 8: 275 down to 162. The fix
-  keeps what the funnel never asked about:
-  `[...editing.recording.sources.filter(candidate => candidate.nature === 'identity'),
-  source]`, or the same thing written out. Everything else below waits on this, since an
-  edit undoes any repair.
-- **Restoring the 113 tumblr identities**, matched by recording id against
-  `424fdb8:data/recordings.ndjson` — the last commit before the pass that dropped them.
-  A one-shot migration and not a cleaner: it runs once, and it is worth nothing until
-  the line above is fixed.
 - **`data:list-duplicates`**, for the artists the import entered twice —
   `The Velvet Underground` against `Velvet Underground`, `Connan Mockasin` against
   `Connan Mockassin`. Each one splits an artist's page in two, and nothing notices.
