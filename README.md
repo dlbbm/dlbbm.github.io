@@ -222,6 +222,15 @@ in this repository that pushes.
   shared rather than repeated — then a release record between `Recording` and `Source`
   has paid for itself. Until then the field is free text, and a vocabulary gets extracted
   from it the way `recordingKinds` describes: a value earns its place by recurring.
+- **The tumblr identity belongs to the post, not to the recording.** 231 of the 406
+  recordings carry one — `{ nature: 'identity', service: 'tumblr', url: '…/post/<id>/…' }`
+  — and what it identifies is the old post, which is the one record with no `sources`
+  field at all. The import had no reason to care: one post pointed at one recording, so
+  the two were interchangeable. They stop being the day the same recording is posted
+  twice, when both URLs pile onto one recording with nothing saying which post is which.
+  So `Post` gains `sources: IdentitySource[]` and the tumblr entries move across — a
+  migration over the three quarters of the file that have one, plus the import, plus
+  whatever reads a post's provenance.
 - **`song:edit`**, for a work on its own. `post:edit` reaches a work only through a post,
   and since `Title` came to mean the take's name, nothing renames a work at all — which is
   why `Into the Black` had to be repaired by hand. Asks the four questions a work owns: its
@@ -234,6 +243,20 @@ in this repository that pushes.
 - **`data:list-duplicates`**, for the artists the import entered twice —
   `The Velvet Underground` against `Velvet Underground`, `Connan Mockasin` against
   `Connan Mockassin`. Each one splits an artist's page in two, and nothing notices.
+- **A sweep over the hand-written strings**, which nothing validates. Seven of the
+  eighteen venues begin with an article — `The Beverly Theater`, `the Madison Square
+  Garden` — and two of those are lowercase, which says the question was never settled:
+  the article belongs to the sentence a venue is read in, not to its name. The other
+  pass is the phrasing of a broadcast: `Live for KCUV-FM` sits in a source `name` where
+  the bodies already say `Live on BBC Two`, and `on` is the form to keep. **And the
+  article in an artist's name**, which 37 of the 432 carry: `The Flamin’ Groovies` is
+  `Flamin’ Groovies` on the English side and takes the article in French, so the
+  convention is a decision to make once and apply to all 37, not a per-name judgement.
+  It is also what sorts them: `/artists` alphabetises on the raw name, so every one of
+  the 37 piles under T. Each pass is read one by one — a blind substitution would eat
+  `The End`, which is a club called that, and `The Beatles`, which keeps its article in
+  both languages. Related: the duplicates item below, where `The Velvet Underground` and
+  `Velvet Underground` are already two records.
 - **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
