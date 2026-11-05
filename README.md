@@ -273,6 +273,15 @@ in this repository that pushes.
   `The End`, which is a club called that, and `The Beatles`, which keeps its article in
   both languages. Related: the duplicates item below, where `The Velvet Underground` and
   `Velvet Underground` are already two records.
+- **A two-letter state after a US city** — `Austin, TX`. It is the form an American
+  dateline takes, and the one disambiguation a US reader expects, since nothing else
+  tells Portland from Portland. `Place` has no region field and is not gaining one for
+  it: the state rides in the city string, the way `Brooklyn, New York City` already puts
+  a borough there. Nine recordings name a US city, seven distinct strings, and `Austin`
+  is done in one of the two posts that say it. The boroughs are the case to settle —
+  whether `Brooklyn, New York City` ends up `Brooklyn, New York City, NY` or stops where
+  it is. Waits on the review pass, like the sweep above: a convention applied to a city
+  that is about to be reread twice is a city reread twice.
 - **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
