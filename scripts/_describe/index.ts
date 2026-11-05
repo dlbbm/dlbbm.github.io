@@ -5,8 +5,9 @@
  * `list` command showing the same posts should not disagree about how one reads.
  */
 
+import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Artist, Post, Recording, Slug, Song } from '../../shared/types/index.js'
-import { formatPartialDate } from '../_date/index.js'
+import { formatPartialDate, timestampAsWords } from '../_date/index.js'
 import type { Db } from '../_db/index.js'
 
 /** What a record reads as: a `name` that identifies it, and the detail under it. */
@@ -103,5 +104,23 @@ export function describeSlug (slug: Slug, db: Db): Described {
   return {
     name: `${slug.kind}/${slug.slug}`,
     description: target ?? 'points at nothing'
+  }
+}
+
+/**
+ * What is already booked ahead, soonest first — the one thing the prompts cannot show: a
+ * slot taken.
+ *
+ * Parsed rather than compared as strings, since a timestamp carries an offset. A hidden
+ * post is left out — it is not going anywhere.
+ */
+export function printPending (db: Db): void {
+  const pending = db.posts
+    .filter(post => !post.hidden && Date.parse(post.publishedOn) > Date.now())
+    .sort((one, other) => one.publishedOn.localeCompare(other.publishedOn))
+  if (pending.length === 0) return
+  console.log(styles.info('\nPending'))
+  for (const post of pending) {
+    console.log(styles.light(`> ${timestampAsWords(post.publishedOn)}  ${describePost(post, db).name}`))
   }
 }

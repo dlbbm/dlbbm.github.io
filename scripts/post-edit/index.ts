@@ -16,7 +16,7 @@ import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Post, Recording } from '../../shared/types/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
 import { append, readDb, saveSong, write, type Db } from '../_db/index.js'
-import { describePost } from '../_describe/index.js'
+import { describePost, printPending } from '../_describe/index.js'
 
 const db: Db = await readDb()
 
@@ -27,6 +27,10 @@ if (db.posts.length === 0) {
   console.log(styles.warning('No post to edit.'))
   process.exit(0)
 }
+
+// Which slots are taken, the way `post:create` opens: an edit is also where a scheduled
+// date gets moved.
+printPending(db)
 
 const [, , askedId] = process.argv
 
