@@ -20,6 +20,7 @@ import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type {
   Artist,
   ArtistId,
+  IdentitySource,
   MediaService,
   PartialDate,
   Place,
@@ -395,17 +396,17 @@ for (const archive of posts) {
   const embed = readPlayer((archive.media ?? []).map(one => one.url).join(' '))
     ?? readPlayer(archive.rawHtml ?? '')
   if (embed !== null && WIDGET_SERVICES.includes(embed.service)) flags.push('widget-url')
-  // The post it came from, kept as a claim that this is that: it is what makes a record
+  // The entry it came from, kept as a claim that this is that: it is what makes a post
   // traceable back to the archive, and the only way to check that nothing was dropped.
-  const origin: Source = {
+  const origin: IdentitySource = {
     nature: 'identity',
     service: 'tumblr',
     url: archive.url,
     externalId: archive.id
   }
   const sources: Source[] = embed === null
-    ? [origin]
-    : [{ nature: 'media', service: embed.service, kind: embed.kind, url: embed.url, name: null }, origin]
+    ? []
+    : [{ nature: 'media', service: embed.service, kind: embed.kind, url: embed.url, name: null }]
 
   let note: string | null = null
   if (embed === null) {
@@ -445,7 +446,8 @@ for (const archive of posts) {
     publishedOn,
     hidden: false,
     recordingId: recording.id,
-    body
+    body,
+    sources: [origin]
   })
 
   // Every post is listed, not only the ones that went wrong: the flagged rows are where
@@ -560,20 +562,18 @@ for (const one of ordered) {
   ]
   review += `| ${cells.join(' | ')} |\n`
 }
-review += '\nEvery row traces back to Tumblr through its post id: the recording it names carries the\n'
+review += '\nEvery row traces back to Tumblr through its post id: the post it names carries the\n'
 review += 'permalink as an identity source.\n'
 
 await writeFile(path.join(CWD, 'IMPORT-REVIEW.md'), review, { encoding: 'utf-8' })
 
 console.log(styles.light(`> ${artists.length} artists, ${songs.length} songs, ${recordings.length} recordings`))
-const unplayable = recordings.filter(one => !one.sources.some(source => source.nature !== 'identity'))
+const unplayable = recordings.filter(one => one.sources.length === 0)
 console.log(styles.light(`> ${written.length} posts, ${unplayable.length} of them with nothing to play`))
 
 // Every archived post has to come out the other side. Counting is not enough — two
-// records could carry the same origin — so the check is on the set of permalinks.
-const origins = new Set(recordings.flatMap(one => one.sources
-  .filter(source => source.nature === 'identity')
-  .map(source => source.url)))
+// posts could carry the same origin — so the check is on the set of permalinks.
+const origins = new Set(written.flatMap(one => one.sources.map(source => source.url)))
 const missing = posts.filter(one => !origins.has(one.url))
 if (missing.length > 0 || origins.size !== posts.length) {
   console.log('')

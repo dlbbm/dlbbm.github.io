@@ -81,6 +81,9 @@ function show (post: Post, recording: Recording, db: Db, flags: string[]): void 
   }
   if (recording.sources.length === 0) console.log(field('sources', null))
   console.log(field('body', post.body))
+  for (const [index, source] of post.sources.entries()) {
+    console.log(field(index === 0 ? 'from' : '', `${source.service} · ${source.url}`))
+  }
 }
 
 if (!existsSync(REVIEW)) {

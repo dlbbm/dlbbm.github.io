@@ -178,8 +178,9 @@ export type Song = {
  * was played and is often unknown.
  * @property durationMs - Length. `Duration` in schema.org is an ISO 8601 string; it is
  * kept as a number here and formatted at the edge.
- * @property sources - Where to hear it and where to read about it, in the order they were
- * found.
+ * @property sources - Where to hear it, and what it is the same thing as elsewhere — a
+ * MusicBrainz recording, say. Never the permalink of the entry it was found on: that
+ * identifies the entry and lives on {@link Post.sources}.
  */
 export type Recording = {
   id: RecordingId
@@ -326,6 +327,10 @@ export type FileSource = {
  * post is only its title, which is what almost every post is. It belongs to the writing
  * and not to the music: a tracklist stored here is what this post wrote down, not a
  * property of the record.
+ * @property sources - Identity assertions about the entry itself: `sameAs`, pointing at
+ * the tumblr permalink the import read it from. It sits here rather than on the recording
+ * because what it identifies is this entry — the same recording posted twice would
+ * otherwise pile both URLs onto one record with nothing saying which is which.
  */
 export type Post = {
   id: PostId
@@ -333,4 +338,5 @@ export type Post = {
   hidden: boolean
   recordingId: RecordingId
   body: string | null
+  sources: IdentitySource[]
 }

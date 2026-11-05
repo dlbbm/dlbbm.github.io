@@ -669,7 +669,12 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     performedAt,
     releasedOn: editing?.recording.releasedOn ?? null,
     durationMs: editing?.recording.durationMs ?? null,
-    sources: source === null ? [] : [source]
+    // The funnel asks about the playable source and nothing else, so an identity sitting
+    // on the record is kept rather than rebuilt away.
+    sources: [
+      ...source === null ? [] : [source],
+      ...editing?.recording.sources.filter(candidate => candidate.nature === 'identity') ?? []
+    ]
   }
 
   const post: Post = {
@@ -677,7 +682,8 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     publishedOn,
     hidden,
     recordingId: recording.id,
-    body
+    body,
+    sources: editing?.post.sources ?? []
   }
 
   // Every artist named for the first time gets its URL now, so nothing addressable ever
