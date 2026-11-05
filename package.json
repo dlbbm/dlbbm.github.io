@@ -35,6 +35,7 @@
     "list:slugs": "npm run list -- slugs",
     "data:generate-slugs": "npm run build:scripts && node scripts/data-generate-slugs/index.js",
     "data:import": "npm run build:scripts && node scripts/data-import/index.js",
+    "data:move-identities": "npm run build:scripts && node scripts/data-move-identities/index.js",
     "data:review": "npm run build:scripts && node scripts/data-review/index.js",
     "data:generate-test-data": "npm run build:scripts && node scripts/data-generate-test-data/index.js"
   },
