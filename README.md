@@ -222,8 +222,8 @@ in this repository that pushes.
   shared rather than repeated — then a release record between `Recording` and `Source`
   has paid for itself. Until then the field is free text, and a vocabulary gets extracted
   from it the way `recordingKinds` describes: a value earns its place by recurring.
-- **The tumblr identity belongs to the post, not to the recording.** 231 of the 406
-  recordings carry one — `{ nature: 'identity', service: 'tumblr', url: '…/post/<id>/…' }`
+- **The tumblr identity belongs to the post, not to the recording.** 162 of the 407
+  recordings still carry one — `{ nature: 'identity', service: 'tumblr', url: '…/post/<id>/…' }`
   — and what it identifies is the old post, which is the one record with no `sources`
   field at all. The import had no reason to care: one post pointed at one recording, so
   the two were interchangeable. They stop being the day the same recording is posted
@@ -244,11 +244,12 @@ in this repository that pushes.
   fix.** `scripts/_ask/index.ts:672` writes `sources: source === null ? [] : [source]`,
   rebuilding the array from the one media source the funnel asked about — so every edit
   silently deletes the tumblr entry that says which post the recording came from. One
-  review pass took 105 of them, 275 down to 170. The fix keeps what the funnel never
-  asked about: `[...editing.recording.sources.filter(candidate => candidate.nature ===
-  'identity'), source]`, or the same thing written out. Everything else below waits on
-  this, since an edit undoes any repair.
-- **Restoring the 105 tumblr identities**, matched by recording id against
+  review pass took 105 of them, and the next ones another 8: 275 down to 162. The fix
+  keeps what the funnel never asked about:
+  `[...editing.recording.sources.filter(candidate => candidate.nature === 'identity'),
+  source]`, or the same thing written out. Everything else below waits on this, since an
+  edit undoes any repair.
+- **Restoring the 113 tumblr identities**, matched by recording id against
   `424fdb8:data/recordings.ndjson` — the last commit before the pass that dropped them.
   A one-shot migration and not a cleaner: it runs once, and it is worth nothing until
   the line above is fixed.
