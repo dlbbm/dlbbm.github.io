@@ -86,18 +86,6 @@ in this repository that pushes.
 
 # Roadmap
 
-- **`npm run data:move-identities`, and it has not run yet.** The one thing to do before
-  anything else. The code side is done: `Post` carries `sources: IdentitySource[]`, the
-  edit funnel keeps what it never asked about, and the import writes the permalink onto
-  the post. The 407 records on disk are untouched, so no post knows which tumblr entry it
-  came from and 239 of the 401 permalinks exist only in git — `post:edit` rebuilt a
-  recording's `sources` from the one answer it had, dropping the identity every time, over
-  four review passes. The command walks the history of `data/recordings.ndjson` newest
-  first, keeps the first identity it finds for each recording id, writes it onto the post
-  that names that recording and strips the recordings; it refuses if two posts share a
-  recording or a permalink, and it asks before writing. Afterwards 401 posts of the 407
-  carry their entry, the six written since the import carry none, and
-  `scripts/data-move-identities` is spent and goes, with its line in `package.json`.
 - **One design system across several sites.** The token layer, the theme in five colors
   and the five font slots are meant to carry over to the other small sites to come, where
   only the colors and the fonts change. Whether that becomes shared code — a package, or
