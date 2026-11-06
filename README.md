@@ -41,12 +41,12 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run typecheck` | `check:scripts` and `check:src` |
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`) |
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
+| `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
 | `npm run data:review` | Walks the imported posts one by one, editing the ones that need it. Takes `-- <flag>` |
-| `npm run data:generate-test-data` | Replaces the database with fifty test posts |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
@@ -222,10 +222,6 @@ in this repository that pushes.
   shared rather than repeated — then a release record between `Recording` and `Source`
   has paid for itself. Until then the field is free text, and a vocabulary gets extracted
   from it the way `recordingKinds` describes: a value earns its place by recurring.
-- **`song:edit`**, for a work on its own. `post:edit` reaches a work only through a post,
-  and since `Title` came to mean the take's name, nothing renames a work at all — which is
-  why `Into the Black` had to be repaired by hand. Asks the four questions a work owns: its
-  title, its other names, its original artists, and what it is built on.
 - **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
   `arrangement`. Left out on purpose: the count carries the only distinction the front
   makes today, and a work built on exactly one other work shows nothing rather than
@@ -261,13 +257,9 @@ in this repository that pushes.
   whether `Brooklyn, New York City` ends up `Brooklyn, New York City, NY` or stops where
   it is. Waits on the review pass, like the sweep above: a convention applied to a city
   that is about to be reread twice is a city reread twice.
-- **`post:delete`**, which rewrites the file the way `post:edit` already does.
 - **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
 - **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
   an artist nothing points at any more.
-- **`data:generate-test-data` is temporary**, and the real posts now outnumber what it can
-  teach. It stays only until the import is consolidated, since it is the quickest way back
-  to a database that is not 401 records long.
 - **Media weight.** A local file lives twice, in `data/files` and in the published branch,
   and Pages caps a site at 1 GB. If local files become the norm rather than the exception,
   they will have to be served from somewhere else, with only the reference kept here.
