@@ -669,12 +669,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     performedAt,
     releasedOn: editing?.recording.releasedOn ?? null,
     durationMs: editing?.recording.durationMs ?? null,
-    // The funnel asks about the playable source and nothing else, so an identity sitting
-    // on the record is kept rather than rebuilt away.
-    sources: [
-      ...source === null ? [] : [source],
-      ...editing?.recording.sources.filter(candidate => candidate.nature === 'identity') ?? []
-    ]
+    sources: source === null ? [] : [source]
   }
 
   const post: Post = {
