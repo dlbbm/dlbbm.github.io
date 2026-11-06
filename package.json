@@ -36,8 +36,7 @@
     "list:slugs": "npm run list -- slugs",
     "data:generate-slugs": "npm run build:scripts && node scripts/data-generate-slugs/index.js",
     "data:import": "npm run build:scripts && node scripts/data-import/index.js",
-    "data:review": "npm run build:scripts && node scripts/data-review/index.js",
-    "data:generate-test-data": "npm run build:scripts && node scripts/data-generate-test-data/index.js"
+    "data:review": "npm run build:scripts && node scripts/data-review/index.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",
