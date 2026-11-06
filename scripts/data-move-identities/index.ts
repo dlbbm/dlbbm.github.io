@@ -1,13 +1,12 @@
 /**
- * Moves every tumblr identity off the recordings and onto the posts they identify.
+ * Copies every tumblr identity onto the post it identifies.
  *
  * The import stored the permalink of the archived entry on the recording, where it never
  * belonged: what it identifies is the post. The ones `post:edit` has been dropping since
  * are read back out of the file's own history — the newest revision that still holds one
- * for a given recording id wins — so this both moves and restores.
+ * for a given recording id wins — so this both copies and restores.
  *
- * A one-shot migration, not a cleaner: once it has run, the recordings carry nothing to
- * move and this command can go.
+ * Additive on purpose: the recordings keep theirs, and stripping them is a second pass.
  */
 
 import { execFile } from 'node:child_process'
@@ -53,18 +52,6 @@ const db: Db = await readDb()
 console.log('')
 console.log(styles.title('Moving the tumblr identities onto the posts...'))
 
-const postsByRecording = new Map<RecordingId, Post[]>()
-for (const post of db.posts) {
-  postsByRecording.set(post.recordingId, [...postsByRecording.get(post.recordingId) ?? [], post])
-}
-
-const contested = [...postsByRecording].filter(([, posts]) => posts.length > 1)
-if (contested.length > 0) {
-  console.log(styles.error(`${contested.length} recordings are posted twice, so nothing says which post an identity belongs to.`))
-  for (const [recordingId] of contested) { console.log(styles.light(`> ${recordingId}`)) }
-  process.exit(1)
-}
-
 const live = new Map<RecordingId, IdentitySource[]>()
 for (const recording of db.recordings) {
   const identities = identitiesOf(recording)
@@ -83,7 +70,7 @@ for await (const records of history()) {
 
 console.log(styles.light(`> ${live.size} still on a recording, ${recovered.size} read back out of the history`))
 
-const movedPosts: Post[] = db.posts.map(post => {
+const nextPosts: Post[] = db.posts.map(post => {
   const identities = [
     ...post.sources ?? [],
     ...live.get(post.recordingId) ?? [],
@@ -101,40 +88,32 @@ const movedPosts: Post[] = db.posts.map(post => {
 })
 
 const claimed = new Map<string, Post[]>()
-for (const post of movedPosts) {
+for (const post of nextPosts) {
   for (const source of post.sources) {
     claimed.set(source.url, [...claimed.get(source.url) ?? [], post])
   }
 }
 const collisions = [...claimed].filter(([, posts]) => posts.length > 1)
 if (collisions.length > 0) {
-  console.log(styles.error(`${collisions.length} permalinks would land on two posts at once.`))
+  console.log(styles.warning(`${collisions.length} permalinks land on more than one post, which two posts of one recording do.`))
   for (const [url, posts] of collisions) { console.log(styles.light(`> ${url} — ${posts.map(post => post.id).join(', ')}`)) }
-  process.exit(1)
 }
 
-const cleanedRecordings: Recording[] = db.recordings.map(recording => ({
-  ...recording,
-  sources: recording.sources.filter(source => source.nature !== 'identity')
-}))
-
-const withIdentity = movedPosts.filter(post => post.sources.length > 0)
+const withIdentity = nextPosts.filter(post => post.sources.length > 0)
 console.log(styles.info('\nTo be written'))
 console.log(styles.light(`${withIdentity.length} of ${db.posts.length} posts carry an identity, ${db.posts.length - withIdentity.length} none`))
-console.log(styles.light(`${live.size} recordings lose theirs`))
 console.log('')
-console.log(styles.danger('recordings.ndjson and posts.ndjson are rewritten whole.'))
+console.log(styles.danger('posts.ndjson is rewritten whole. The recordings are left untouched.'))
 
-const confirmed = await confirm({ message: 'Move?', default: true })
+const confirmed = await confirm({ message: 'Write?', default: true })
 if (!confirmed) {
   console.log(styles.warning('Nothing written.'))
   process.exit(0)
 }
 
-await write('posts', movedPosts)
-await write('recordings', cleanedRecordings)
+await write('posts', nextPosts)
 
 console.log('')
-console.log(styles.title('Identities moved.'))
+console.log(styles.title('Identities attached.'))
 console.log(styles.success(`${withIdentity.length} posts know which tumblr entry they came from`))
 console.log('')
