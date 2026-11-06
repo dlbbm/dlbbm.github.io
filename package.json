@@ -26,6 +26,7 @@
     "post": "npm run post:create",
     "post:create": "npm run build:scripts && node scripts/post-create/index.js",
     "post:edit": "npm run build:scripts && node scripts/post-edit/index.js",
+    "post:delete": "npm run build:scripts && node scripts/post-delete/index.js",
     "song:edit": "npm run build:scripts && node scripts/song-edit/index.js",
     "list": "npm run build:scripts && node scripts/list/index.js",
     "list:posts": "npm run list -- posts",
