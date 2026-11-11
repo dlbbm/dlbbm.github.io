@@ -6,11 +6,12 @@
  */
 
 import process from 'node:process'
-import { confirm } from '@inquirer/prompts'
+import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
 import { append, readDb, saveSong, type Db } from '../_db/index.js'
 import { printPending } from '../_describe/index.js'
+import { readIdeas, removeIdeas, type Idea } from '../_ideas/index.js'
 
 const db: Db = await readDb()
 
@@ -21,6 +22,20 @@ console.log(styles.light(`> ${db.posts.length} posts, ${db.songs.length} songs, 
 // Before the first question, because a slot taken is what the prompts cannot show.
 printPending(db)
 console.log('')
+
+const ideas = await readIdeas()
+let noted: Idea | null = null
+if (ideas.length > 0) {
+  console.log(styles.light('> an idea noted in IDEAS.md, struck off once the post is written'))
+  noted = await select<Idea | null>({
+    message: 'Idea',
+    choices: [
+      { name: 'null', value: null },
+      ...ideas.map(idea => ({ name: idea.text, value: idea as Idea | null }))
+    ]
+  })
+  console.log('')
+}
 
 const draft = await askDraft(db, null)
 
@@ -55,9 +70,13 @@ await saveSong(draft.song, draft.createdSongs, db.songs)
 await append('recordings', [draft.recording])
 await append('posts', [draft.post])
 
+// Last, and only once the post it stood for exists.
+if (noted !== null) await removeIdeas([noted.line])
+
 console.log('')
 console.log(styles.title('Post written.'))
 console.log(styles.success(`${db.posts.length + 1} posts in the data`))
+if (noted !== null) { console.log(styles.light(`> struck off IDEAS.md: ${noted.text}`)) }
 
 printRecords({
   artists: draft.createdArtists,
