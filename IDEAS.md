@@ -12,3 +12,15 @@
 - Gerry Mulligan - Night Lights
 - Madame rêve - Bashung
 - Leonard Cohen - Blue Rain Coat ? Light as the breeze ? Rebecca ?
+- I Live Off You · X-Ray Spex
+- More time - Madeleine Peyroux
+- This Magic Moment - Lou Reed
+- I'm Deranged - Bowie
+- Waymore Blues - JJ Cale ? Ça fait doublon avec le live de Waylon ?
+- Dry Cleaning
+- Waylon Jennings - Dreaming My Dreams
+- Bill Callahan
+- John Prine
+- Tropical Fuck Storm
+- The The - Slow Emotion (KEXP)
+- John Cale
