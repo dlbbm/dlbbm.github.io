@@ -16,7 +16,8 @@ how it maps onto schema.org and where it deliberately diverges.
   flags opening it are ever parsed.
 - **`IDEAS.md`** — posts to write one day, one markdown bullet each, free text. Not a
   collection: nothing parses it, `post:create` only offers the list and strikes off the
-  line it was handed. Hand-editable, and `idea` is the shortcut.
+  line it was handed. Hand-editable, and `idea` is the shortcut — it prints what is
+  noted, then asks for one idea after another until `quit`.
 - **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
 - **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the
@@ -46,7 +47,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
-| `npm run idea` | Notes an idea for a post in `IDEAS.md`, or lists them. Takes `-- <text>` |
+| `npm run idea` | Notes ideas for posts in `IDEAS.md`, asking until `quit`. Takes `-- <text>` for one |
 | `npm run idea:delete` | Strikes ideas off `IDEAS.md` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
