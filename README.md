@@ -14,6 +14,9 @@ how it maps onto schema.org and where it deliberately diverges.
   It is also the worklist `data:review` walks: that command takes the order and the flags
   from here and everything else from the database, so only the id closing a row and the
   flags opening it are ever parsed.
+- **`IDEAS.md`** — posts to write one day, one markdown bullet each, free text. Not a
+  collection: nothing parses it, `post:create` only offers the list and strikes off the
+  line it was handed. Hand-editable, and `idea` is the shortcut.
 - **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
 - **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the
@@ -43,6 +46,8 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
+| `npm run idea` | Notes an idea for a post in `IDEAS.md`, or lists them. Takes `-- <text>` |
+| `npm run idea:delete` | Strikes ideas off `IDEAS.md` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
