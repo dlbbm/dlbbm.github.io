@@ -17,6 +17,10 @@ export const FILES_SHARD_DEPTH = 4
 
 export const ABOUT_FILE = path.join(DATA, 'about.json')
 
+// Outside `data/`, because it is not a record: free markdown, read and edited by hand
+// as readily as by `idea`.
+export const IDEAS_FILE = path.join(CWD, 'IDEAS.md')
+
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
   slugs: path.join(DATA, 'slugs.ndjson'),
