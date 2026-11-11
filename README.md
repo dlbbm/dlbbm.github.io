@@ -92,24 +92,83 @@ in this repository that pushes.
 
 # Roadmap
 
-- **One design system across several sites.** The token layer, the theme in five colors
-  and the five font slots are meant to carry over to the other small sites to come, where
-  only the colors and the fonts change. Whether that becomes shared code — a package, or
-  `basics/` lifted into `mf-tools` — or just the same conventions rewritten each time is
-  open, and deciding it before two interfaces exist would be guessing.
-- **A tour of the helpers, to see what climbs.** `scripts/_date`, `_slug`, `_describe`,
-  `_db`, `_ask`, and `src/utils/` on the front side: a pass over all of them asking which
-  belongs where. `lm-tools` is the ultra-generic bank, `mf-tools` what it would make no
-  sense for Le Monde to own, and the rest stays here. A piece earns the climb by having
-  proven itself a step below, so this is a pass to make once the import is consolidated
-  and the shapes have stopped moving — not before.
-- **A scheduled post coming of age while the tab is open.** `posts.json` gives the trigger
-  for free: the nearest `publishedOn` ahead of now. Schedule one timer at a time, capped at
-  around ten minutes and re-armed on each fire, and re-check on `visibilitychange` — a
-  sleeping laptop makes a long timer fire late, and `setTimeout` overflows past 24.8 days
-  anyway. When it fires, prepend rather than re-slice: a page showing eleven posts until
-  the reader navigates is gentler than a post vanishing under their eyes. A client whose
-  clock is behind shows it late, which is nobody's problem.
+**Four phases to the first publication, in this order**, then the ideas that come after.
+The order is the point: each phase leaves the data or the code in a state the next one
+takes for granted, and an item that could sit in two phases sits in the later one.
+
+## 1. Finishing the review — in progress
+
+[`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) is the worklist and `data:review` walks it: 170 of
+the 401 archived posts need a hand. In order of how much they cost — **127 posts have
+nothing to play**, the embed already gone when the blog was crawled, seven of them carrying
+a dead Grooveshark or Mixcloud URL in the body, kept in the report rather than stored;
+**47 trailing parentheses** were read as a kind, a place or a date and want checking;
+**17 credits hold an ampersand or a comma** and were entered as one artist, because no rule
+tells `Polo & Pan` from `Murcof & Vanessa Wagner`; **5 posts are whole albums**, stored as a
+`full album` recording with the tracklist kept in the post's `body`, and their names want
+checking; and **one title has no dash** at all.
+
+## 2. Consolidating the data
+
+None of it is worth doing before the review ends — a convention applied to a record about
+to be reread is a record reread twice — and all of it before anything is published. The
+three commands first, since they are what says the rest is done:
+
+- **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
+- **`data:list-orphans`**, for what an edit leaves behind when a credit is replaced: an
+  artist, a work, a slug or a stored file nothing points at any more. `post:delete` already
+  reports what it strands, which is the shape the sweep can read.
+- **`data:list-duplicates`**, and then **`data:merge <from> <into>`**, for the artists the
+  import entered twice — `The Velvet Underground` against `Velvet Underground`,
+  `Connan Mockasin` against `Connan Mockassin` — each splitting an artist's page in two with
+  nothing noticing. **Works too**: `Gallows Pole` and `Gallows Tree` are two records of one
+  ballad. Listing is only half of it, since merging two works means repointing every
+  recording's `songId`, then dropping the orphan and its slug — a command, not a report.
+  Two known cases wait on it: `Gallows Pole` (`43f903513803d9b8`) is a work with no post at
+  all, so `post:delete` cannot reach it, and `data/slugs.ndjson` holds the `baxter-dury`
+  line twice byte for byte, left in place deliberately because whatever minted it twice is
+  what the checks should find — worth seeing whether `post:edit` re-mints a slug it has
+  already minted.
+
+Then the two sweeps over the hand-written strings, which nothing validates. Each is read
+one by one: a blind substitution would eat `The End`, which is a club called that, and
+`The Beatles`, which keeps its article in both languages.
+
+- **The article in a name.** 37 of the 432 artists carry one, and `/artists` alphabetises
+  on the raw name, so all 37 pile under T. `The Flamin’ Groovies` is `Flamin’ Groovies` on
+  the English side and takes the article in French, so the convention is one decision
+  applied to all 37, not a per-name judgement. Seven of the eighteen venues begin with an
+  article too, two of them lowercase, which says the question was never settled — the
+  article belongs to the sentence a venue is read in, not to its name. Same pass: the
+  phrasing of a broadcast, where `Live for KCUV-FM` sits in a source `name` while the
+  bodies already say `Live on BBC Two`, and `on` is the form to keep.
+- **A two-letter state after a US city** — `Austin, TX`. It is the form an American
+  dateline takes, and the one disambiguation a US reader expects, since nothing else tells
+  Portland from Portland. `Place` has no region field and is not gaining one for it: the
+  state rides in the city string, the way `Brooklyn, New York City` already puts a borough
+  there. Nine recordings name a US city, seven distinct strings, and `Austin` is done in
+  one of the two posts that say it. The boroughs are the case to settle — whether
+  `Brooklyn, New York City` ends up `Brooklyn, New York City, NY` or stops where it is.
+
+## 3. Publishing
+
+**`deploy` is written and has never run; the first run is the step.** It copies `dist/`
+into a worktree on the `production` branch, which is what GitHub Pages serves, and it is
+the only command here that pushes. What a first run asks for beyond pressing go: Pages
+pointed at that branch, a read of a handful of shells and their OpenGraph tags as they
+actually render, and a look at the 404.
+
+- **`?preview`, decided and still unwritten.** A bare `?preview` key read once at import
+  into a module-level flag, exposed as `isVisible (entry)` replacing the four `Date.now()`
+  comparisons in `src/utils/fetch/index.ts`. In memory on purpose. It is what makes a
+  scheduled post readable before its date, which is worth having the day the blog is live.
+- **`describePost` prints a raw timestamp**, in `post:edit`'s list and in `npm run list`.
+  `timestampAsWords` exists and was left out because the two commands share the line.
+
+## 4. After publication
+
+The thematic classification is the large one and the rest is in no fixed order.
+
 - **Genres, styles and tags.** Three axes rather than two levels, and the leaning is
   **genres and styles decoupled**: two independent lists on a record, no parent link
   between them, the incoherences accepted rather than designed out. There is no official
@@ -191,17 +250,22 @@ in this repository that pushes.
 [circumplex]: https://en.wikipedia.org/wiki/Emotion_classification#Circumplex_model
 [gems]: https://en.wikipedia.org/wiki/Music_and_emotion
 [genome]: https://en.wikipedia.org/wiki/Music_Genome_Project
-- **Consolidating the import.** The 401 archived posts are in, and
-  [`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) lists the 170 that need a hand. In order of how
-  much they cost: **127 posts have nothing to play** — the embed was already gone when the
-  blog was crawled, and seven of those carry a dead Grooveshark or Mixcloud URL in the
-  body, kept in the report rather than stored; **17 credits hold an ampersand or a comma**
-  and were written as a single artist, because no rule tells `Polo & Pan` from
-  `Murcof & Vanessa Wagner`; **5 posts are whole albums**, stored as a `full album`
-  recording with the tracklist kept in the post's `body` — their names want checking;
-  **47 trailing parentheses**
-  were read as a kind, a place or a date and want checking; and **one title has no dash**
-  at all.
+
+- **A release layer, the day one is earned.** `Source.name` carries which edition a given
+  audio is — `remaster 2015`, `original mono mix` — because a remaster is the same take
+  and only the thing you point at differs. schema.org's own answer is `MusicRelease`,
+  told apart by `datePublished`, `catalogNumber`, `recordLabel` and `musicReleaseFormat`,
+  and it is deliberately not adopted: it hangs off `MusicAlbum`, which this blog does not
+  model, so taking it would mean inventing an entity for one label. **The trigger to
+  revisit** is the day the same edition is linked on two services and the fact should be
+  shared rather than repeated — then a release record between `Recording` and `Source`
+  has paid for itself. Until then the field is free text, and a vocabulary gets extracted
+  from it the way `recordingKinds` describes: a value earns its place by recurring.
+- **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
+  `arrangement`. Left out on purpose: the count carries the only distinction the front
+  makes today, and a work built on exactly one other work shows nothing rather than
+  claiming to be a medley. MusicBrainz puts that information on the relationship rather
+  than on either record, which is the shape to copy the day it is wanted.
 - **A cover image on a stored file.** `FileSource` carries a `kind` and a `path` and
   nothing else, so a local mp3 has no picture and `FileMedia` shows a flat ground where a
   sleeve should be. Wants a field on the type, a question in `post:create` — the file
@@ -218,56 +282,26 @@ in this repository that pushes.
   a thirty-second preview unless the reader is signed in, which is worse than a link.
   Adding a name to the enum is not enough on its own: without a player in `Embed`, a
   source falls back to a bare link.
-- **A release layer, the day one is earned.** `Source.name` carries which edition a given
-  audio is — `remaster 2015`, `original mono mix` — because a remaster is the same take
-  and only the thing you point at differs. schema.org's own answer is `MusicRelease`,
-  told apart by `datePublished`, `catalogNumber`, `recordLabel` and `musicReleaseFormat`,
-  and it is deliberately not adopted: it hangs off `MusicAlbum`, which this blog does not
-  model, so taking it would mean inventing an entity for one label. **The trigger to
-  revisit** is the day the same edition is linked on two services and the fact should be
-  shared rather than repeated — then a release record between `Recording` and `Source`
-  has paid for itself. Until then the field is free text, and a vocabulary gets extracted
-  from it the way `recordingKinds` describes: a value earns its place by recurring.
-- **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
-  `arrangement`. Left out on purpose: the count carries the only distinction the front
-  makes today, and a work built on exactly one other work shows nothing rather than
-  claiming to be a medley. MusicBrainz puts that information on the relationship rather
-  than on either record, which is the shape to copy the day it is wanted.
-- **`data:list-duplicates`**, for the artists the import entered twice —
-  `The Velvet Underground` against `Velvet Underground`, `Connan Mockasin` against
-  `Connan Mockassin`. Each one splits an artist's page in two, and nothing notices.
-  **Works too**: `Gallows Pole` and `Gallows Tree` are now two records of one ballad,
-  one of them carrying the article audit's own example. And listing is only half of it —
-  merging two works means repointing every recording's `songId`, then dropping the
-  orphan and its slug, which is a `data:merge <from> <into>` rather than a report.
-- **A sweep over the hand-written strings**, which nothing validates. Seven of the
-  eighteen venues begin with an article — `The Beverly Theater`, `the Madison Square
-  Garden` — and two of those are lowercase, which says the question was never settled:
-  the article belongs to the sentence a venue is read in, not to its name. The other
-  pass is the phrasing of a broadcast: `Live for KCUV-FM` sits in a source `name` where
-  the bodies already say `Live on BBC Two`, and `on` is the form to keep. **And the
-  article in an artist's name**, which 37 of the 432 carry: `The Flamin’ Groovies` is
-  `Flamin’ Groovies` on the English side and takes the article in French, so the
-  convention is a decision to make once and apply to all 37, not a per-name judgement.
-  It is also what sorts them: `/artists` alphabetises on the raw name, so every one of
-  the 37 piles under T. Each pass is read one by one — a blind substitution would eat
-  `The End`, which is a club called that, and `The Beatles`, which keeps its article in
-  both languages. Related: the duplicates item below, where `The Velvet Underground` and
-  `Velvet Underground` are already two records.
-- **A two-letter state after a US city** — `Austin, TX`. It is the form an American
-  dateline takes, and the one disambiguation a US reader expects, since nothing else
-  tells Portland from Portland. `Place` has no region field and is not gaining one for
-  it: the state rides in the city string, the way `Brooklyn, New York City` already puts
-  a borough there. Nine recordings name a US city, seven distinct strings, and `Austin`
-  is done in one of the two posts that say it. The boroughs are the case to settle —
-  whether `Brooklyn, New York City` ends up `Brooklyn, New York City, NY` or stops where
-  it is. Waits on the review pass, like the sweep above: a convention applied to a city
-  that is about to be reread twice is a city reread twice.
-- **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
-- **`data:list-orphans`**, for what `post:edit` leaves behind when a credit is replaced:
-  an artist nothing points at any more.
+- **A scheduled post coming of age while the tab is open.** `posts.json` gives the trigger
+  for free: the nearest `publishedOn` ahead of now. Schedule one timer at a time, capped at
+  around ten minutes and re-armed on each fire, and re-check on `visibilitychange` — a
+  sleeping laptop makes a long timer fire late, and `setTimeout` overflows past 24.8 days
+  anyway. When it fires, prepend rather than re-slice: a page showing eleven posts until
+  the reader navigates is gentler than a post vanishing under their eyes. A client whose
+  clock is behind shows it late, which is nobody's problem.
 - **Media weight.** A local file lives twice, in `data/files` and in the published branch,
   and Pages caps a site at 1 GB. If local files become the norm rather than the exception,
   they will have to be served from somewhere else, with only the reference kept here.
+- **One design system across several sites.** The token layer, the theme in five colors
+  and the five font slots are meant to carry over to the other small sites to come, where
+  only the colors and the fonts change. Whether that becomes shared code — a package, or
+  `basics/` lifted into `mf-tools` — or just the same conventions rewritten each time is
+  open, and deciding it before two interfaces exist would be guessing.
+- **A tour of the helpers, to see what climbs.** `scripts/_date`, `_slug`, `_describe`,
+  `_db`, `_ask`, and `src/utils/` on the front side: a pass over all of them asking which
+  belongs where. `lm-tools` is the ultra-generic bank, `mf-tools` what it would make no
+  sense for Le Monde to own, and the rest stays here. A piece earns the climb by having
+  proven itself a step below, so this is a pass to make once the import is consolidated
+  and the shapes have stopped moving — not before.
 - **Postponed on purpose:** `/venue`, `/album`, and anything else that would need a shape
   the data does not have.
