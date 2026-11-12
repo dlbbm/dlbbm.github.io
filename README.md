@@ -53,7 +53,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run idea:delete` | Strikes ideas off `IDEAS.md` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
-| `npm run data:merge-duplicates` | Walks every pair the duplicate pass finds, artists and works alike, and merges the ones answered for |
+| `npm run data:merge-duplicates` | Drops the slug lines written twice, then walks every pair the duplicate pass finds, artists and works alike |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
 | `npm run data:review` | Walks the imported posts one by one, editing the ones that need it. Takes `-- <flag>` |
@@ -138,11 +138,12 @@ a time — and all of it before anything is published.
   The report is read again after each merge rather than walked as a list, since a merge can
   strand a pair that was in it and uncover one that was not; a pair left apart is set aside
   for the run.
-- **371 slug lines written twice.** `data:import` minted each artist's slug and pushed it
+- **340 slug lines written twice.** `data:import` minted each artist's slug and pushed it
   twice; the line is fixed, so nothing new doubles, and `data:check-duplicates` counts what
-  is already there. Removing them is a rewrite of `slugs.ndjson` that nothing does yet:
-  `findSlug` answers with the first line it meets, so the duplicates are dead weight rather
-  than a defect the site can see.
+  is already there. `data:merge-duplicates` drops them, first thing and under one
+  confirmation of its own: the first line of each stays, which is the one `findSlug`
+  answers with, so no address moves and there is nothing to decide one by one. A slug
+  string two records answer to is the other thing entirely, and comes back as a pair.
 - **Two cases already read, and neither is what it looked like.** `Gallows Pole`
   (`43f903513803d9b8`) is not a second record of `Gallows Tree`: Odetta's post already sits
   on the traditional, and `Gallows Pole` holds no recording at all, so it is one of the 39

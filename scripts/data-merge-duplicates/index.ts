@@ -8,12 +8,16 @@
  * carries is what is left to look at now, not a position in anything fixed. A pair left
  * alone, and a merge whose confirmation was declined, are set aside for the run rather
  * than offered again on the next read.
+ *
+ * The slug lines `data:import` wrote twice are dropped first, under one confirmation of
+ * their own: they are a defect with nothing to decide, and the pairs are the questions.
  */
 
-import { select } from '@inquirer/prompts'
+import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
+import type { Slug } from '../../shared/types/index.js'
 import { findDuplicates, type DuplicatePair } from '../_check/index.js'
-import { readDb } from '../_db/index.js'
+import { readDb, write } from '../_db/index.js'
 import {
   askingArtists,
   askingSongs,
@@ -61,6 +65,48 @@ async function answerPair<T> (asking: Asking<T>, one: T, other: T): Promise<Answ
   const into = answer.record
   return { from: into === one ? other : one, into }
 }
+
+/**
+ * The slug lines written twice, dropped under one confirmation.
+ *
+ * A line repeated byte for byte is dead weight rather than a question: `findSlug` answers
+ * with the first line it meets, so every one after it is a URL nothing serves. The first
+ * of each is what stays, which is why dropping the rest changes no address. A slug string
+ * two records answer to is a different thing and comes back as a pair.
+ */
+async function dropRepeatedSlugLines (): Promise<void> {
+  const db = await readDb()
+  const { slugLines } = findDuplicates(db)
+  const over = slugLines.reduce((total, line) => total + line.times - 1, 0)
+  if (over === 0) return
+
+  const kept: Slug[] = []
+  const seen = new Set<string>()
+  for (const slug of db.slugs) {
+    const at = `${slug.kind}/${slug.targetId}/${slug.slug}`
+    if (seen.has(at)) continue
+    seen.add(at)
+    kept.push(slug)
+  }
+
+  console.log('')
+  console.log(styles.info('Written twice'))
+  console.log(styles.light(`> ${over} line${over === 1 ? '' : 's'} over, across ${slugLines.length} slug${slugLines.length === 1 ? '' : 's'}`))
+  console.log(styles.light('> the first line of each stays, so no address moves'))
+
+  console.log('')
+  console.log(styles.danger('slugs.ndjson is rewritten whole.'))
+
+  if (!await confirm({ message: 'Drop them?', default: false })) {
+    console.log(styles.warning('Nothing dropped.'))
+    return
+  }
+
+  await write('slugs', kept)
+  console.log(styles.success(`${over} line${over === 1 ? '' : 's'} dropped, ${kept.length} left`))
+}
+
+await dropRepeatedSlugLines()
 
 const setAside = new Set<string>()
 let merged = 0
