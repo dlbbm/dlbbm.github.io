@@ -51,6 +51,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
 | `npm run data:merge-duplicates` | Drops the slug lines written twice, then walks every pair the duplicate pass finds, artists and works alike |
+| `npm run data:places` | Lists every venue and city string with its count, and renames one everywhere |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
@@ -159,22 +160,27 @@ Then the two sweeps over the hand-written strings, which nothing validates. Each
 one by one: a blind substitution would eat `The End`, which is a club called that, and
 `The Beatles`, which keeps its article in both languages.
 
-- **The article in a name.** 42 of the 455 artists carry one, and `/artists` alphabetises
-  on the raw name, so they pile under T. `The Flamin’ Groovies` is `Flamin’ Groovies` on
-  the English side and takes the article in French, so the convention is one decision
-  applied to all 42, not a per-name judgement. Nine of the 24 venues begin with an article
-  too, two of them lowercase — `the Madison Square Garden` — which says the question was
-  never settled: the article belongs to the sentence a venue is read in, not to its name.
-  Same pass: the phrasing of a broadcast, where `Live for KCUV-FM` sits in a source `name`
-  while the bodies already say `Live on BBC Two`, and `on` is the form to keep.
+- **The article in an artist's name.** 39 of the 423 artists carry one. The piling under T
+  on `/artists` is **not** the question — the display is fine as it is; the question is
+  whether each name is the one the act uses, `Pixies` against `The Pixies`, and there is no
+  industry rule to apply, only each band's own usage. So this one is read name by name
+  against a reference, and the standard to follow is the English one, never the French.
+- **The article in a venue's name.** Nine of the 24 venues begin with one, seven of them
+  capitalised and part of the name on the sign — `The End` is a club called that. The two
+  lowercase ones, `the Madison Square Garden` and `the Blue Parrot Beach Club`, are
+  sentence words that crept in. `data:places` is the pass: it lists every venue and city
+  string with how many recordings carry it, and renames one everywhere in one answer. Same
+  pass: the phrasing of a broadcast, where `Live for KCUV-FM` sits in a source `name` while
+  the bodies already say `Live on BBC Two`, and `on` is the form to keep.
 - **A two-letter state after a US city** — `Austin, TX`. It is the form an American
   dateline takes, and the one disambiguation a US reader expects, since nothing else tells
   Portland from Portland. `Place` has no region field and is not gaining one for it: the
   state rides in the city string, the way `Brooklyn, New York City` already puts a borough
-  there. Five US city strings carry a state and seven do not, and both `Austin` and
-  `Los Angeles` are in the data each way, which is the sweep in one line. The boroughs are
-  the case to settle — whether `Brooklyn, New York City` ends up
-  `Brooklyn, New York City, NY` or stops where it is.
+  there. Of the 16 US city strings five carry a state, and both `Austin` and `Los Angeles`
+  are in the data each way, which is the sweep in one line. Also through `data:places`. The
+  boroughs are the case to settle — whether `Brooklyn, New York City` ends up
+  `Brooklyn, New York City, NY` or stops where it is, `New York City` being unambiguous
+  already.
 
 ## 3. Publishing
 
