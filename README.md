@@ -46,10 +46,13 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`) |
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
+| `npm run artist:merge` | Joins two artists into one. Takes `-- <from> <into>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
+| `npm run song:merge` | Joins two works into one. Takes `-- <from> <into>` |
 | `npm run idea` | Notes ideas for posts in `IDEAS.md`, asking until `quit`. Takes `-- <text>` for one |
 | `npm run idea:delete` | Strikes ideas off `IDEAS.md` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
+| `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
 | `npm run data:review` | Walks the imported posts one by one, editing the ones that need it. Takes `-- <flag>` |
@@ -96,59 +99,71 @@ in this repository that pushes.
 The order is the point: each phase leaves the data or the code in a state the next one
 takes for granted, and an item that could sit in two phases sits in the later one.
 
-## 1. Finishing the review — in progress
+## 1. Finishing the review — done
 
-[`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) is the worklist and `data:review` walks it: 170 of
-the 401 archived posts need a hand. In order of how much they cost — **127 posts have
-nothing to play**, the embed already gone when the blog was crawled, seven of them carrying
-a dead Grooveshark or Mixcloud URL in the body, kept in the report rather than stored;
-**47 trailing parentheses** were read as a kind, a place or a date and want checking;
-**17 credits hold an ampersand or a comma** and were entered as one artist, because no rule
-tells `Polo & Pan` from `Murcof & Vanessa Wagner`; **5 posts are whole albums**, stored as a
-`full album` recording with the tracklist kept in the post's `body`, and their names want
-checking; and **one title has no dash** at all.
+`data:review` walked all 401 archived posts, and **every recording has something to play**:
+406 YouTube and one Mixcloud across 407 recordings, where the import had flagged 106 posts
+with no embed left at all. The trailing parentheses, the ampersand credits, the five whole
+albums and the one title with no dash were answered row by row along the way.
+
+[`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) is left exactly as the import wrote it. It is a
+report and never a record, so its cells no longer describe the database — a `source` column
+still reads empty where the answer went into `data/` — and the only thing that would make
+it current again is another import, which would replace the data it describes.
 
 ## 2. Consolidating the data
 
-None of it is worth doing before the review ends — a convention applied to a record about
-to be reread is a record reread twice — and all of it before anything is published. The
-three commands first, since they are what says the rest is done:
+The commands are written. What is left is running them, which is answering one question at
+a time — and all of it before anything is published.
 
-- **`data:check-references`**, for dangling ids and a `FileSource` whose file is missing.
-- **`data:list-orphans`**, for what an edit leaves behind when a credit is replaced: an
-  artist, a work, a slug or a stored file nothing points at any more. `post:delete` already
-  reports what it strands, which is the shape the sweep can read.
-- **`data:list-duplicates`**, and then **`data:merge <from> <into>`**, for the artists the
-  import entered twice — `The Velvet Underground` against `Velvet Underground`,
-  `Connan Mockasin` against `Connan Mockassin` — each splitting an artist's page in two with
-  nothing noticing. **Works too**: `Gallows Pole` and `Gallows Tree` are two records of one
-  ballad. Listing is only half of it, since merging two works means repointing every
-  recording's `songId`, then dropping the orphan and its slug — a command, not a report.
-  Two known cases wait on it: `Gallows Pole` (`43f903513803d9b8`) is a work with no post at
-  all, so `post:delete` cannot reach it, and `data/slugs.ndjson` holds the `baxter-dury`
-  line twice byte for byte, left in place deliberately because whatever minted it twice is
-  what the checks should find — worth seeing whether `post:edit` re-mints a slug it has
-  already minted.
+- **`data:check` reads the data against itself in three passes** and gates nothing: a
+  finding is a question for a human, and `build:data` is what refuses to emit a broken
+  site. `data:check-references` is green today, ids and stored files both.
+- **62 records nothing points at**, from `data:check-orphans` — 39 works and 23 artists,
+  each one the record an edit replaced rather than corrected. The pass offers them for
+  deletion one at a time, and deletes nothing it was not answered for. No cascade either:
+  dropping a recording can strand its work, and the next run is what says so.
+- **31 pairs to decide on**, from `data:check-duplicates`, and two families cover most of
+  them. An artist the import stored as one credit and a later edit split —
+  `J.J. Cale ft. Leon Russell`, `clipping. (ft. Cocc Pistol Cree)`, `Velvet Underground`
+  against `The Velvet Underground`, `Connan Mockasin` against `Connan Mockassin`. And a
+  work the import minted out of a qualifier that belonged to the take:
+  `Boots (Original Melody)` against `These Boots are Made for Walkin’`. `artist:merge` and
+  `song:merge` answer one pair each, prompting for the survivor whether or not they were
+  handed two ids — it is the one thing a merge cannot take back.
+- **371 slug lines written twice.** `data:import` minted each artist's slug and pushed it
+  twice; the line is fixed, so nothing new doubles, and `data:check-duplicates` counts what
+  is already there. Removing them is a rewrite of `slugs.ndjson` that nothing does yet:
+  `findSlug` answers with the first line it meets, so the duplicates are dead weight rather
+  than a defect the site can see.
+- **Two cases already read, and neither is what it looked like.** `Gallows Pole`
+  (`43f903513803d9b8`) is not a second record of `Gallows Tree`: Odetta's post already sits
+  on the traditional, and `Gallows Pole` holds no recording at all, so it is one of the 39
+  orphans. And the `Boots` family is three records of one work —
+  `These Boots are Made for Walkin’` (`4c89bbcb0ed97c09`), `Boots (Original Melody)`
+  (`b783860668156851`) and `Boots` (`78a7ecad3677cd95`) — where `Boots` is Hazlewood's cover
+  of the first and the parenthesis was never a work of its own.
 
 Then the two sweeps over the hand-written strings, which nothing validates. Each is read
 one by one: a blind substitution would eat `The End`, which is a club called that, and
 `The Beatles`, which keeps its article in both languages.
 
-- **The article in a name.** 37 of the 432 artists carry one, and `/artists` alphabetises
-  on the raw name, so all 37 pile under T. `The Flamin’ Groovies` is `Flamin’ Groovies` on
+- **The article in a name.** 42 of the 455 artists carry one, and `/artists` alphabetises
+  on the raw name, so they pile under T. `The Flamin’ Groovies` is `Flamin’ Groovies` on
   the English side and takes the article in French, so the convention is one decision
-  applied to all 37, not a per-name judgement. Seven of the eighteen venues begin with an
-  article too, two of them lowercase, which says the question was never settled — the
-  article belongs to the sentence a venue is read in, not to its name. Same pass: the
-  phrasing of a broadcast, where `Live for KCUV-FM` sits in a source `name` while the
-  bodies already say `Live on BBC Two`, and `on` is the form to keep.
+  applied to all 42, not a per-name judgement. Nine of the 24 venues begin with an article
+  too, two of them lowercase — `the Madison Square Garden` — which says the question was
+  never settled: the article belongs to the sentence a venue is read in, not to its name.
+  Same pass: the phrasing of a broadcast, where `Live for KCUV-FM` sits in a source `name`
+  while the bodies already say `Live on BBC Two`, and `on` is the form to keep.
 - **A two-letter state after a US city** — `Austin, TX`. It is the form an American
   dateline takes, and the one disambiguation a US reader expects, since nothing else tells
   Portland from Portland. `Place` has no region field and is not gaining one for it: the
   state rides in the city string, the way `Brooklyn, New York City` already puts a borough
-  there. Nine recordings name a US city, seven distinct strings, and `Austin` is done in
-  one of the two posts that say it. The boroughs are the case to settle — whether
-  `Brooklyn, New York City` ends up `Brooklyn, New York City, NY` or stops where it is.
+  there. Five US city strings carry a state and seven do not, and both `Austin` and
+  `Los Angeles` are in the data each way, which is the sweep in one line. The boroughs are
+  the case to settle — whether `Brooklyn, New York City` ends up
+  `Brooklyn, New York City, NY` or stops where it is.
 
 ## 3. Publishing
 
