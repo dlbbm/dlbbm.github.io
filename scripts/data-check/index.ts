@@ -191,7 +191,11 @@ function checkDuplicates (): void {
   }
 
   if (pairs.length === 0) { console.log(styles.light('> no two records look like one')) }
-  else { outstanding.push(`${pairs.length} pair${pairs.length === 1 ? '' : 's'} to decide on`) }
+  else {
+    console.log('')
+    console.log(styles.light('> npm run data:merge-duplicates walks all of them, one question each'))
+    outstanding.push(`${pairs.length} pair${pairs.length === 1 ? '' : 's'} to decide on`)
+  }
 }
 
 for (const pass of running) {

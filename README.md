@@ -53,6 +53,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run idea:delete` | Strikes ideas off `IDEAS.md` |
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
+| `npm run data:merge-duplicates` | Walks every pair the duplicate pass finds, artists and works alike, and merges the ones answered for |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 | `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
 | `npm run data:review` | Walks the imported posts one by one, editing the ones that need it. Takes `-- <flag>` |
@@ -128,9 +129,15 @@ a time — and all of it before anything is published.
   `J.J. Cale ft. Leon Russell`, `clipping. (ft. Cocc Pistol Cree)`, `Velvet Underground`
   against `The Velvet Underground`, `Connan Mockasin` against `Connan Mockassin`. And a
   work the import minted out of a qualifier that belonged to the take:
-  `Boots (Original Melody)` against `These Boots are Made for Walkin’`. `artist:merge` and
-  `song:merge` answer one pair each, prompting for the survivor whether or not they were
-  handed two ids — it is the one thing a merge cannot take back.
+  `Boots (Original Melody)` against `These Boots are Made for Walkin’`.
+  **`data:merge-duplicates` is the pass that answers them**, both collections in one run:
+  each pair is printed with the reason it was found, and saying which record survives is
+  the answer — `leave them apart` and `stop` are the other two. The survivor is always
+  asked, here and in `artist:merge` / `song:merge`, which answer a single pair and are what
+  a copied `-- <from> <into>` line goes to: it is the one thing a merge cannot take back.
+  The report is read again after each merge rather than walked as a list, since a merge can
+  strand a pair that was in it and uncover one that was not; a pair left apart is set aside
+  for the run.
 - **371 slug lines written twice.** `data:import` minted each artist's slug and pushed it
   twice; the line is fixed, so nothing new doubles, and `data:check-duplicates` counts what
   is already there. Removing them is a rewrite of `slugs.ndjson` that nothing does yet:

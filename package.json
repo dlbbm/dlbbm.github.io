@@ -42,6 +42,7 @@
     "data:check-references": "npm run data:check -- references",
     "data:check-orphans": "npm run data:check -- orphans",
     "data:check-duplicates": "npm run data:check -- duplicates",
+    "data:merge-duplicates": "npm run build:scripts && node scripts/data-merge-duplicates/index.js",
     "data:generate-slugs": "npm run build:scripts && node scripts/data-generate-slugs/index.js",
     "data:import": "npm run build:scripts && node scripts/data-import/index.js",
     "data:review": "npm run build:scripts && node scripts/data-review/index.js"
