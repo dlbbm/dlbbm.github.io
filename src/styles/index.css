@@ -5,7 +5,7 @@
   --ff-text: 'Bricolage Grotesque', sans-serif;
   --ff-mono: 'Roboto Mono', ui-monospace, monospace;
 
-  --media-max-width: 680px;
+  --media-max-width: 1024px;
   /* A reading measure, narrower than the media: prose is read, not looked at. */
   --prose-max-width: 480px;
   /* A register is not prose: it may spread, but not to the edge of the screen. Wide
