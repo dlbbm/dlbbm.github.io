@@ -172,15 +172,28 @@ one by one: a blind substitution would eat `The End`, which is a club called tha
   string with how many recordings carry it, and renames one everywhere in one answer. Same
   pass: the phrasing of a broadcast, where `Live for KCUV-FM` sits in a source `name` while
   the bodies already say `Live on BBC Two`, and `on` is the form to keep.
-- **A two-letter state after a US city** — `Austin, TX`. It is the form an American
-  dateline takes, and the one disambiguation a US reader expects, since nothing else tells
-  Portland from Portland. `Place` has no region field and is not gaining one for it: the
-  state rides in the city string, the way `Brooklyn, New York City` already puts a borough
-  there. Of the 16 US city strings five carry a state, and both `Austin` and `Los Angeles`
-  are in the data each way, which is the sweep in one line. Also through `data:places`. The
-  boroughs are the case to settle — whether `Brooklyn, New York City` ends up
-  `Brooklyn, New York City, NY` or stops where it is, `New York City` being unambiguous
-  already.
+- **A two-letter state after a US city** — `Austin, TX`, and **the rule is now settled**:
+  every US city string ends with its state. It is the form an American dateline takes, and
+  the one disambiguation a US reader expects, since nothing else tells Portland from
+  Portland. `Place` has no region field and is not gaining one for it — the state rides in
+  the city string. Run through `data:places`, with `Austin`, `Los Angeles` ×3, `Seattle` ×2
+  and `Denver` to normalise, out of 16 US strings.
+
+  **A borough or a district stops at the state**, rather than naming the city it sits in:
+  `Bronx, NY` and `Brooklyn, NY`, not `Bronx, New York City, NY`, which is three levels no
+  style guide writes. `Hollywood, CA` stays as it is for the same reason. And when the
+  borough is not known, the city level is the answer — `New York City, NY`,
+  `Los Angeles, CA` — never a guess at the district.
+
+  **Three places to check before typing them**, found while reading the US strings:
+  `The Beverly Theater` is James Brown in August 1983, so it is the Beverly Hills theatre
+  demolished in 2005 and not the Las Vegas venue opened in 2023 — which makes its city
+  `Beverly Hills, CA`, Beverly Hills being its own city, and its name probably
+  `Beverly Theatre`, article included out of the sentence. `Leon Russell's Paradise
+  Studios` is filed under Los Angeles and was in Burbank, also its own city. `The End`,
+  Darkside in October 2013, is a name thin enough to have been read off a post title; the
+  YouTube source on that recording is what would settle it. `Independence, MS` looks like a
+  Missouri typo and is not one: R.L. Burnside in 1978, Tate County, Mississippi.
 
 ## 3. Publishing
 
