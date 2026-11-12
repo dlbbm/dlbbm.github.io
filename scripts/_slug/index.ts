@@ -1,5 +1,5 @@
 /**
- * Minting the names things go by in URLs.
+ * Creating the names things go by in URLs.
  *
  * A slug is drawn once, from whatever the thing was called at the time, and then belongs
  * to the record rather than to the name — which is the point: the name can change
@@ -32,7 +32,7 @@ export function slugify (name: string): string {
  * keeps `/artist/crazy-2` legible. The returned record is appended by the caller: nothing
  * here writes.
  */
-export function mintSlug (kind: SlugKind, targetId: string, name: string, pool: Slug[]): Slug {
+export function createSlug (kind: SlugKind, targetId: string, name: string, pool: Slug[]): Slug {
   const existing = pool.find(candidate => candidate.kind === kind && candidate.targetId === targetId)
   if (existing !== undefined) return existing
   const taken = new Set(pool
@@ -45,9 +45,9 @@ export function mintSlug (kind: SlugKind, targetId: string, name: string, pool: 
     suffix += 1
     slug = `${base}-${suffix}`
   }
-  const minted: Slug = { kind, targetId, slug }
-  pool.push(minted)
-  return minted
+  const created: Slug = { kind, targetId, slug }
+  pool.push(created)
+  return created
 }
 
 /** The slug addressing a record, when it has one. */

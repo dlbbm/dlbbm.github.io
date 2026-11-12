@@ -42,7 +42,7 @@ import {
   timestampAsString
 } from '../_date/index.js'
 import { findArtistById } from '../_describe/index.js'
-import { mintSlug } from '../_slug/index.js'
+import { createSlug } from '../_slug/index.js'
 
 export const CREDIT_SEPARATOR = ';'
 
@@ -228,7 +228,7 @@ function songChoice (song: Song, recordingPool: Recording[], artistPool: Artist[
   }
 }
 
-function mintSong (title: string, songPool: Song[], created: Song[]): Song {
+function createSong (title: string, songPool: Song[], created: Song[]): Song {
   const song: Song = {
     id: createId(),
     title,
@@ -274,7 +274,7 @@ async function resolveSong (
       { name: 'another work', value: OTHER_WORK }
     ]
   })
-  if (chosen !== OTHER_WORK) return chosen ?? mintSong(title, songPool, created)
+  if (chosen !== OTHER_WORK) return chosen ?? createSong(title, songPool, created)
 
   hint("the work's own name")
   const asked = (await input({
@@ -285,7 +285,7 @@ async function resolveSong (
   const only = others[0]
   // One work of that name, or none, is an answer and not a question. Listing again here is
   // what made the command ask `Recording of` twice for something already named.
-  if (others.length === 0) return mintSong(asked, songPool, created)
+  if (others.length === 0) return createSong(asked, songPool, created)
   if (others.length === 1 && only !== undefined) {
     console.log(styles.light(`> ${only.title}, already known`))
     return only
@@ -297,7 +297,7 @@ async function resolveSong (
  * One of the works a song is built on, by name.
  *
  * Settles without a list when the name matches one work or none, the way `another work`
- * does. A work minted here is asked whose it is on the spot: nothing else ever will, and a
+ * does. A work created here is asked whose it is on the spot: nothing else ever will, and a
  * component with no original artists leaves the medley's own credits unanswerable.
  */
 async function resolveWork (
@@ -323,13 +323,13 @@ async function resolveWork (
     console.log(styles.light(`> ${only.title}, already known`))
     return only
   }
-  const minted = mintSong(name, songPool, createdSongs)
+  const created = createSong(name, songPool, createdSongs)
   console.log('')
-  console.log(styles.title(minted.title))
+  console.log(styles.title(created.title))
   hint(`whose song it is (split on ${CREDIT_SEPARATOR})`)
   const originals = await askCredits('Original artist', [], artistPool, createdArtists, false)
-  minted.originalArtistIds = originals.map(artist => artist.id)
-  return minted
+  created.originalArtistIds = originals.map(artist => artist.id)
+  return created
 }
 
 /**
@@ -684,7 +684,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   // Every artist named for the first time gets its URL now, so nothing addressable ever
   // reaches the data without one.
   const createdSlugs = createdArtists.map(artist =>
-    mintSlug('artist', artist.id, artist.name, slugPool))
+    createSlug('artist', artist.id, artist.name, slugPool))
 
   const featuring = featuringArtists.length === 0
     ? ''
@@ -774,7 +774,7 @@ export async function askSong (db: Db, song: Song): Promise<SongDraft> {
     edited, null, songPool, recordingPool, artistPool, createdSongs, createdArtists)
 
   const createdSlugs = createdArtists.map(artist =>
-    mintSlug('artist', artist.id, artist.name, slugPool))
+    createSlug('artist', artist.id, artist.name, slugPool))
 
   const details = [
     edited.titleAliases.length === 0 ? null : `also ${edited.titleAliases.join(', ')}`,

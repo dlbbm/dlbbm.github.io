@@ -2,7 +2,7 @@
  * Turns the database into the files the front fetches.
  *
  * Reads `data/` and writes `dist/data/`. The one thing it ever writes back is a missing
- * slug, and only after asking: an artist with no address cannot have a page, minting one
+ * slug, and only after asking: an artist with no address cannot have a page, creating one
  * is deterministic, and the alternative was a command to go and run before building again.
  *
  * A post marked `hidden` never makes it out: it is a standing decision, so there is no
@@ -44,7 +44,7 @@ import type { Artist, Post, Recording, Song } from '../../shared/types/index.js'
 import { ABOUT_FILE, DATA_FILES, DIST_DATA, PAGE_SIZE } from '../_config/index.js'
 import { toTimestamp } from '../_date/index.js'
 import { append, readDb, readJson, type Db } from '../_db/index.js'
-import { findSlug, mintSlug } from '../_slug/index.js'
+import { createSlug, findSlug } from '../_slug/index.js'
 
 const db: Db = await readDb()
 
@@ -58,7 +58,7 @@ if (about === null) {
 }
 
 // An artist with no slug has no URL, which would make its page unreachable and its name
-// unlinkable. Every command that names an artist mints one as it goes, so an artist
+// unlinkable. Every command that names an artist creates one as it goes, so an artist
 // arriving here without a slug was written into `data/` by hand — rare enough to be worth
 // a question rather than a ritual, and named enough for a typo to be caught at it.
 const unslugged = db.artists.filter(artist => findSlug('artist', artist.id, db.slugs) === undefined)
@@ -69,19 +69,19 @@ if (unslugged.length > 0) {
   console.log('')
   console.log(styles.danger('slugs.ndjson is appended to, and a slug is an address that never moves after.'))
 
-  if (!await confirm({ message: 'Mint them?', default: false })) {
-    console.log(styles.error('Nothing minted, and no page can be emitted for an artist with no slug.'))
+  if (!await confirm({ message: 'Create them?', default: false })) {
+    console.log(styles.error('Nothing created, and no page can be emitted for an artist with no slug.'))
     process.exit(1)
   }
 
-  // Minted into the pool the build already read, so the pages below see the new addresses
+  // Created into the pool the build already read, so the pages below see the new addresses
   // without a second read.
   const before = db.slugs.length
-  for (const artist of unslugged) { mintSlug('artist', artist.id, artist.name, db.slugs) }
-  const minted = db.slugs.slice(before)
-  await append('slugs', minted)
-  for (const slug of minted) { console.log(styles.light(`> ${slug.kind}/${slug.slug}`)) }
-  console.log(styles.success(`${minted.length} slug${minted.length === 1 ? '' : 's'} minted`))
+  for (const artist of unslugged) { createSlug('artist', artist.id, artist.name, db.slugs) }
+  const created = db.slugs.slice(before)
+  await append('slugs', created)
+  for (const slug of created) { console.log(styles.light(`> ${slug.kind}/${slug.slug}`)) }
+  console.log(styles.success(`${created.length} slug${created.length === 1 ? '' : 's'} created`))
 }
 
 const now = toTimestamp(new Date())

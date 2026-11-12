@@ -56,10 +56,10 @@ The pieces are meant to be run on their own as much as together: `build:data`, `
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
 composes, and `clean:scripts` is what `build:scripts` runs first.
 
-`build:data` is also the only thing that mints a missing slug, and the only write any
+`build:data` is also the only thing that creates a missing slug, and the only write any
 build makes to `data/`. An artist with no slug has no URL and no page, so the build names
 the ones it found, says `slugs.ndjson` is about to be appended to, and asks — answering no
-stops it as before. Every command that names an artist already mints one as it goes, so
+stops it as before. Every command that names an artist already creates one as it goes, so
 this fires only after `data/` was edited by hand, which is why it is a question and not a
 command of its own to go and run.
 
@@ -131,7 +131,7 @@ a time — and all of it before anything is published.
   them. An artist the import stored as one credit and a later edit split —
   `J.J. Cale ft. Leon Russell`, `clipping. (ft. Cocc Pistol Cree)`, `Velvet Underground`
   against `The Velvet Underground`, `Connan Mockasin` against `Connan Mockassin`. And a
-  work the import minted out of a qualifier that belonged to the take:
+  work the import created out of a qualifier that belonged to the take:
   `Boots (Original Melody)` against `These Boots are Made for Walkin’`.
   **`data:merge-duplicates` is the pass that answers them**, both collections in one run:
   each pair is printed with the reason it was found, and saying which record survives is
@@ -141,7 +141,7 @@ a time — and all of it before anything is published.
   The report is read again after each merge rather than walked as a list, since a merge can
   strand a pair that was in it and uncover one that was not; a pair left apart is set aside
   for the run.
-- **340 slug lines written twice.** `data:import` minted each artist's slug and pushed it
+- **340 slug lines written twice.** `data:import` created each artist's slug and pushed it
   twice; the line is fixed, so nothing new doubles, and `data:check-duplicates` counts what
   is already there. `data:merge-duplicates` drops them, first thing and under one
   confirmation of its own: the first line of each stays, which is the one `findSlug`

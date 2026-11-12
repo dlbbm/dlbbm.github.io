@@ -186,7 +186,7 @@ function checkDuplicates (): void {
     const lines = slugLines.reduce((total, line) => total + line.times - 1, 0)
     console.log('')
     console.log(styles.warning(`${slugLines.length} slug${slugLines.length === 1 ? '' : 's'} written more than once, ${lines} line${lines === 1 ? '' : 's'} over`))
-    console.log(styles.light('> every one of them was minted by data:import, which pushed each slug twice'))
+    console.log(styles.light('> every one of them was created by data:import, which pushed each slug twice'))
     outstanding.push(`${lines} repeated slug line${lines === 1 ? '' : 's'}`)
   }
 

@@ -336,7 +336,7 @@ export type Duplicates = {
  * byte.
  *
  * The exactly repeated slug lines are a defect rather than a question — `data:import`
- * minted each artist's slug and pushed it twice — so they are counted apart from the
+ * created each artist's slug and pushed it twice — so they are counted apart from the
  * pairs, which are the ones a human answers.
  */
 export function findDuplicates (db: Db): Duplicates {
@@ -373,7 +373,7 @@ export function findDuplicates (db: Db): Duplicates {
   }
 
   // Two artists holding one slug string would answer one URL with two pages, which no
-  // minting can produce and a hand edit can.
+  // creating can produce and a hand edit can.
   const bySlug = new Map<string, Set<string>>()
   for (const slug of db.slugs) {
     const at = `${slug.kind}/${slug.slug}`

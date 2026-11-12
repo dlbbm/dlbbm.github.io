@@ -42,7 +42,7 @@ import type {
 } from '../../shared/types/index.js'
 import { CWD } from '../_config/index.js'
 import { append, createId, readDb, write } from '../_db/index.js'
-import { mintSlug, slugify } from '../_slug/index.js'
+import { createSlug, slugify } from '../_slug/index.js'
 
 type ArchivePost = {
   id: string
@@ -351,9 +351,9 @@ function artistId (name: string): ArtistId {
   if (known !== undefined) return known
   const id = createId()
   artists.push({ id, name, nameAliases: [], sources: [] })
-  // mintSlug appends to the pool it is handed, so pushing its return value too is what
+  // createSlug appends to the pool it is handed, so pushing its return value too is what
   // wrote every imported artist's slug twice.
-  mintSlug('artist', id, name, slugs)
+  createSlug('artist', id, name, slugs)
   artistsByName.set(key, id)
   return id
 }

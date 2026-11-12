@@ -18,7 +18,7 @@ export type PostId = string
  * What a thing is called in a URL.
  *
  * Addressing rather than fact, which is why it sits in a file of its own instead of on the
- * entity: `Artist` says who recorded something, not how the blog links to them. Minted
+ * entity: `Artist` says who recorded something, not how the blog links to them. Created
  * once and never recomputed, so renaming an artist leaves their URL alone, and a slug that
  * reads badly is a hand edit like every other correction.
  *
@@ -129,7 +129,7 @@ export type RecordingKind = typeof recordingKinds[number] | string
  * data. It is what makes a cover a cover: a recording credited to these artists is a
  * version of their own song, one credited to anyone else is a cover of it. Empty when
  * nobody claimed. The third named divergence — schema.org says this by pointing
- * `recordedAs` at the original `MusicRecording`, which would mean minting a recording for
+ * `recordedAs` at the original `MusicRecording`, which would mean creating a recording for
  * a version the blog never posted.
  * @property derivedFromSongIds - The works this one is built on, when it is built on any:
  * two or more is a medley, one is an arrangement or a work that borrows another whole.
