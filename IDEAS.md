@@ -26,3 +26,8 @@
 - John Cale
 - fuzzy grand lee buffalo
 - Pixies - Hey
+- Just in my HEad - Marie Davidson
+- Anteloper - "Earthlings"
+- Young Marble Giants
+- Mother's Last Word To Her Son - Washington Phillips
+- plateau - nirvana
