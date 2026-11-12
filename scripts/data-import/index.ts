@@ -342,7 +342,9 @@ function artistId (name: string): ArtistId {
   if (known !== undefined) return known
   const id = createId()
   artists.push({ id, name, nameAliases: [], sources: [] })
-  slugs.push(mintSlug('artist', id, name, slugs))
+  // mintSlug appends to the pool it is handed, so pushing its return value too is what
+  // wrote every imported artist's slug twice.
+  mintSlug('artist', id, name, slugs)
   artistsByName.set(key, id)
   return id
 }
