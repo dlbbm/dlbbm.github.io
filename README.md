@@ -51,11 +51,17 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run list` | Shows what is in the data. Also `list:posts`, `list:artists`, … |
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
 | `npm run data:merge-duplicates` | Drops the slug lines written twice, then walks every pair the duplicate pass finds, artists and works alike |
-| `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
 composes, and `clean:scripts` is what `build:scripts` runs first.
+
+`build:data` is also the only thing that mints a missing slug, and the only write any
+build makes to `data/`. An artist with no slug has no URL and no page, so the build names
+the ones it found, says `slugs.ndjson` is about to be appended to, and asks — answering no
+stops it as before. Every command that names an artist already mints one as it goes, so
+this fires only after `data/` was edited by hand, which is why it is a question and not a
+command of its own to go and run.
 
 Two typecheck passes rather than one, because `src` is a different language setting from
 the rest: it is JSX resolved for the bundler, while `scripts` is NodeNext and emits.

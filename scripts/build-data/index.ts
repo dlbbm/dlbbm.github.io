@@ -1,8 +1,9 @@
 /**
  * Turns the database into the files the front fetches.
  *
- * Reads `data/`, writes `dist/data/`, and never the other way around: a missing slug is an
- * error telling you to run `data:generate-slugs`, not something invented here.
+ * Reads `data/` and writes `dist/data/`. The one thing it ever writes back is a missing
+ * slug, and only after asking: an artist with no address cannot have a page, minting one
+ * is deterministic, and the alternative was a command to go and run before building again.
  *
  * A post marked `hidden` never makes it out: it is a standing decision, so there is no
  * reason to ship it and nothing that would ever reveal it.
@@ -24,6 +25,7 @@ import { existsSync } from 'node:fs'
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
+import { confirm } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import { routeUrl, type RouteKind } from '../../shared/routes/index.js'
 import { pageNames, pageTitle } from '../../shared/titles/index.js'
@@ -41,8 +43,8 @@ import type {
 import type { Artist, Post, Recording, Song } from '../../shared/types/index.js'
 import { ABOUT_FILE, DATA_FILES, DIST_DATA, PAGE_SIZE } from '../_config/index.js'
 import { toTimestamp } from '../_date/index.js'
-import { readDb, readJson, type Db } from '../_db/index.js'
-import { findSlug } from '../_slug/index.js'
+import { append, readDb, readJson, type Db } from '../_db/index.js'
+import { findSlug, mintSlug } from '../_slug/index.js'
 
 const db: Db = await readDb()
 
@@ -56,13 +58,30 @@ if (about === null) {
 }
 
 // An artist with no slug has no URL, which would make its page unreachable and its name
-// unlinkable. Minting one here would hide the omission, so it stops the build instead.
+// unlinkable. Every command that names an artist mints one as it goes, so an artist
+// arriving here without a slug was written into `data/` by hand — rare enough to be worth
+// a question rather than a ritual, and named enough for a typo to be caught at it.
 const unslugged = db.artists.filter(artist => findSlug('artist', artist.id, db.slugs) === undefined)
 if (unslugged.length > 0) {
-  console.log(styles.error(`${unslugged.length} artist(s) have no slug:`))
+  console.log('')
+  console.log(styles.warning(`${unslugged.length} artist${unslugged.length === 1 ? '' : 's'} with no slug, so no URL and no page:`))
   for (const artist of unslugged) { console.log(styles.light(`  ${artist.name}`)) }
-  console.log(styles.warning('> npm run data:generate-slugs'))
-  process.exit(1)
+  console.log('')
+  console.log(styles.danger('slugs.ndjson is appended to, and a slug is an address that never moves after.'))
+
+  if (!await confirm({ message: 'Mint them?', default: false })) {
+    console.log(styles.error('Nothing minted, and no page can be emitted for an artist with no slug.'))
+    process.exit(1)
+  }
+
+  // Minted into the pool the build already read, so the pages below see the new addresses
+  // without a second read.
+  const before = db.slugs.length
+  for (const artist of unslugged) { mintSlug('artist', artist.id, artist.name, db.slugs) }
+  const minted = db.slugs.slice(before)
+  await append('slugs', minted)
+  for (const slug of minted) { console.log(styles.light(`> ${slug.kind}/${slug.slug}`)) }
+  console.log(styles.success(`${minted.length} slug${minted.length === 1 ? '' : 's'} minted`))
 }
 
 const now = toTimestamp(new Date())
