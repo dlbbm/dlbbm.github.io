@@ -50,3 +50,30 @@ Pilot, too: the small sites to come share this whole interface layer and vary on
 colors and their fonts. So a decision taken here is taken for them, which is the reason
 to write a component so it would survive being handed another theme, and the reason a
 piece that proves itself here is a candidate for `mf-tools` rather than a local fixture.
+
+## Place names
+
+**A `city` string holds whatever functions as the city name locally**, and where that is a
+borough or a district, it is the borough or the district: `Brooklyn, NY`, `Bronx, NY`,
+`Hollywood, CA`. The test is whether a US reader would write it on an envelope, which is
+why `Manhattan, NY` is not a form — mail to Manhattan is addressed `New York, NY`, so
+Madison Square Garden is `New York City, NY`. Granularity is kept where it exists because
+it says something: a Brooklyn show in 2013 is not the same fact as a New York one.
+
+**Every US city string ends with its two-letter state** — `Austin, TX`, `Denver, CO` — and
+a borough or district stops there rather than naming the city above it:
+`Bronx, NY`, never `Bronx, New York City, NY`. When the district is not known, the city
+level is the answer and nothing is guessed.
+
+**A city that is its own incorporated place is not folded into its neighbour.**
+`Beverly Hills, CA` and `Burbank, CA` are not Los Angeles.
+
+**Outside the US the city level is it.** London boroughs and Paris arrondissements exist
+and nobody writes them in this register. The exception is a city where the district *is*
+the usage, Tokyo being the one to expect — `Shibuya, Tokyo` the day it turns up.
+
+**Cities are in English**, like everything else written here: `Rome`, not `Roma`;
+`Munich`, not `München`. A venue keeps the name on its own sign, in its own language —
+`La Cigale`, `Teatro dell'Opera di Roma` — and a leading article belongs to the name only
+when the name carries it: `The End` and `The Hospital Club` keep it, a lowercase `the`
+picked up from a sentence does not.
