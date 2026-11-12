@@ -24,3 +24,5 @@
 - Tropical Fuck Storm
 - The The - Slow Emotion (KEXP)
 - John Cale
+- fuzzy grand lee buffalo
+- Pixies - Hey
