@@ -1,5 +1,14 @@
 /**
- * Reads the Tumblr archive and writes it into `data/`.
+ * Reads the Tumblr archive and writes it into `data/`. **Spent, and never to run again.**
+ *
+ * It ran once, the 401 archived posts were imported and then reviewed one by one, and the
+ * database has been edited by hand ever since. A second run would write `data/` whole and
+ * throw that work away, which is why the `_` prefix took it out of the commands and
+ * `data:import` is gone from `package.json`. What is kept here is the reading itself — how
+ * eight years of hand-typed titles were parsed — because nothing else records it.
+ *
+ * It no longer writes `IMPORT-REVIEW.md` anywhere that exists: that report, and the
+ * `data:review` command that walked it, were deleted once the review was finished.
  *
  * What the crawler kept is a title, a moment and — for three posts out of four — one
  * embed. Everything this database wants beyond that has to be read out of the title,

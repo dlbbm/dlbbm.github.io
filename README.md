@@ -9,11 +9,6 @@ how it maps onto schema.org and where it deliberately diverges.
 
 ## Layout
 
-- **`IMPORT-REVIEW.md`** — every imported post, the flagged ones first, with what the
-  import could not read. Written whole on every run, so it is a report and never a record.
-  It is also the worklist `data:review` walks: that command takes the order and the flags
-  from here and everything else from the database, so only the id closing a row and the
-  flags opening it are ever parsed.
 - **`IDEAS.md`** — posts to write one day, one markdown bullet each, free text. Not a
   collection: nothing parses it, `post:create` only offers the list and strikes off the
   line it was handed. Hand-editable, and `idea` is the shortcut — it prints what is
@@ -25,7 +20,9 @@ how it maps onto schema.org and where it deliberately diverges.
   (`index.ts`) and the ones the build emits for the front (`built.ts`), `routes/` the URL
   patterns, so the app and the shell generator cannot disagree about what a URL looks like.
 - **`scripts/`** — one directory per command, named after it: `npm run post:create` is
-  `scripts/post-create`. Compiled in place, next to its sources.
+  `scripts/post-create`. Compiled in place, next to its sources. A `_` prefix means the
+  directory is not a command: the shared helpers, and `_data-import-done`, the migration
+  that ran once and must never run again.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
   the page `build:shells` fills in once per URL, and `basics/`, `components/`, `layouts/`,
   `pages/` and `utils/` are what it is made of. Nothing generated lives here.
@@ -55,8 +52,6 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
 | `npm run data:merge-duplicates` | Drops the slug lines written twice, then walks every pair the duplicate pass finds, artists and works alike |
 | `npm run data:generate-slugs` | Mints a slug for anything addressable that lacks one |
-| `npm run data:import` | Reads a Tumblr archive into `data/`. Takes `-- <path to pages.ndjson>` |
-| `npm run data:review` | Walks the imported posts one by one, editing the ones that need it. Takes `-- <flag>` |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
@@ -107,10 +102,12 @@ takes for granted, and an item that could sit in two phases sits in the later on
 with no embed left at all. The trailing parentheses, the ampersand credits, the five whole
 albums and the one title with no dash were answered row by row along the way.
 
-[`IMPORT-REVIEW.md`](./IMPORT-REVIEW.md) is left exactly as the import wrote it. It is a
-report and never a record, so its cells no longer describe the database — a `source` column
-still reads empty where the answer went into `data/` — and the only thing that would make
-it current again is another import, which would replace the data it describes.
+`IMPORT-REVIEW.md` and the `data:review` command that walked it are **deleted**, along with
+the review's cursor file. The report was written whole by the import and by nothing else,
+so every answer that went into `data/` left it further behind, and the only thing that
+would have made it current again is another import — which would replace the data it
+describes. `post:edit` is what edits one post now, and `scripts/_data-import-done` holds
+the import itself, out of the commands and not to be run.
 
 ## 2. Consolidating the data
 
