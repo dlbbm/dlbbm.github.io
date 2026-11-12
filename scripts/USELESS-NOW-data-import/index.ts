@@ -3,8 +3,8 @@
  *
  * It ran once, the 401 archived posts were imported and then reviewed one by one, and the
  * database has been edited by hand ever since. A second run would write `data/` whole and
- * throw that work away, which is why the `_` prefix took it out of the commands and
- * `data:import` is gone from `package.json`. What is kept here is the reading itself — how
+ * throw that work away, which is why `data:import` is gone from `package.json` and the
+ * directory says so in its name. What is kept here is the reading itself — how
  * eight years of hand-typed titles were parsed — because nothing else records it.
  *
  * It no longer writes `IMPORT-REVIEW.md` anywhere that exists: that report, and the

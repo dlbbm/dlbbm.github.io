@@ -21,8 +21,8 @@ how it maps onto schema.org and where it deliberately diverges.
   patterns, so the app and the shell generator cannot disagree about what a URL looks like.
 - **`scripts/`** — one directory per command, named after it: `npm run post:create` is
   `scripts/post-create`. Compiled in place, next to its sources. A `_` prefix means the
-  directory is not a command: the shared helpers, and `_data-import-done`, the migration
-  that ran once and must never run again.
+  directory is not a command: the shared helpers. `USELESS-NOW-data-import` is the
+  migration that ran once and must never run again, named so that nobody wonders.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
   the page `build:shells` fills in once per URL, and `basics/`, `components/`, `layouts/`,
   `pages/` and `utils/` are what it is made of. Nothing generated lives here.
@@ -106,7 +106,7 @@ albums and the one title with no dash were answered row by row along the way.
 the review's cursor file. The report was written whole by the import and by nothing else,
 so every answer that went into `data/` left it further behind, and the only thing that
 would have made it current again is another import — which would replace the data it
-describes. `post:edit` is what edits one post now, and `scripts/_data-import-done` holds
+describes. `post:edit` is what edits one post now, and `scripts/USELESS-NOW-data-import` holds
 the import itself, out of the commands and not to be run.
 
 ## 2. Consolidating the data
