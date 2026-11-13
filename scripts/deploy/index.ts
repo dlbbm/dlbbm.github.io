@@ -14,7 +14,7 @@
 
 import { spawnSync } from 'node:child_process'
 import { mkdtempSync } from 'node:fs'
-import { cp, readdir, rm } from 'node:fs/promises'
+import { cp, readdir, rm, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import process from 'node:process'
@@ -109,6 +109,11 @@ try {
     await rm(path.join(worktree, entry), { recursive: true, force: true })
   }
   await cp(DIST, worktree, { recursive: true })
+
+  // Pages runs Jekyll on whatever it serves unless this file is there. Nothing the build
+  // emits starts with an underscore today, so this buys insurance rather than fixing
+  // anything — and it skips a build step on every deploy.
+  await writeFile(path.join(worktree, '.nojekyll'), '', { encoding: 'utf-8' })
 
   run('git', ['add', '--all'], worktree)
   const staged = run('git', ['status', '--porcelain'], worktree)
