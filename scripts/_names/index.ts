@@ -230,6 +230,19 @@ export type Looked =
   | { nature: 'deferred', questions: number }
   | { nature: 'stopped' }
   | { nature: 'missing' }
+  | { nature: 'failed', why: string }
+
+/**
+ * The questions MusicBrainz can answer about a post, or why it could not be asked.
+ *
+ * A request that fails is this post's problem and not the run's: a sweep of 400 posts
+ * meets a 503 sooner or later, and one is no reason to end a walk that is unattended by
+ * design. The post stays unread, so the next run offers it again.
+ */
+async function askOrFail (names: Names): Promise<Question[] | { why: string }> {
+  try { return await questionsOf(names) }
+  catch (error) { return { why: error instanceof Error ? error.message : String(error) } }
+}
 
 /**
  * Asks MusicBrainz about one post's names and answers them on the spot.
@@ -242,7 +255,9 @@ export async function lookUpNames (postId: PostId): Promise<Looked> {
   const names = namesOf(postId, db)
   if (names === null) return { nature: 'missing' }
 
-  const questions = await questionsOf(names)
+  const asked = await askOrFail(names)
+  if ('why' in asked) return { nature: 'failed', why: asked.why }
+  const questions = asked
   const renames = new Map<string, string>()
   for (const question of questions) {
     const answered = await ask(question)
@@ -267,7 +282,9 @@ export async function deferNames (postId: PostId): Promise<Looked> {
   const names = namesOf(postId, db)
   if (names === null) return { nature: 'missing' }
 
-  const questions = await questionsOf(names)
+  const asked = await askOrFail(names)
+  if ('why' in asked) return { nature: 'failed', why: asked.why }
+  const questions = asked
   if (questions.length === 0) {
     await markRead(postId, db)
     return { nature: 'read', corrected: 0 }
@@ -344,6 +361,11 @@ export async function offerLookUp (postId: PostId): Promise<void> {
   console.log('')
   if (!await confirm({ message: 'Look the names up?', default: true })) return
   const looked = await lookUpNames(postId)
+  if (looked.nature === 'failed') {
+    console.log(styles.warning(`MusicBrainz could not be read: ${looked.why}`))
+    console.log(styles.light('> the post is left unread, post:names-lookup offers it again'))
+    return
+  }
   if (looked.nature !== 'read') return
   console.log('')
   console.log(styles.success(`${looked.corrected} name${looked.corrected === 1 ? '' : 's'} corrected.`))

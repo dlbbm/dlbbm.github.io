@@ -15,8 +15,13 @@
  * fetch behind them — which the run then goes through, and which is what it is waiting on
  * when you come back.
  *
- * Those put-aside questions are answered first on the next run too, before any request is
- * made: a decision already fetched is cheaper than the one being fetched.
+ * A later run opens on those put-aside questions — offered, not imposed: `answer` goes
+ * through them with nothing to fetch, `look up the rest` leaves them where they are and
+ * goes back to sweeping.
+ *
+ * A request that fails costs its post and nothing more. A sweep of 400 posts meets a 503
+ * sooner or later, and one is no reason to end a walk that is unattended by design: the
+ * post is named, left unread, and the run carries on.
  *
  * A post is marked read once it has been through, whether or not anything changed, so the
  * walk resumes without a cursor file: the data says where it got to. A post whose
@@ -57,10 +62,6 @@ let stopped = false
 async function answerPending (): Promise<void> {
   const pending = await readQuestions()
   if (pending.length === 0) return
-  const posts = new Set(pending.map(question => question.postId)).size
-  console.log('')
-  console.log(styles.info('Put aside'))
-  console.log(styles.light(`> ${pending.length} name${pending.length === 1 ? '' : 's'} across ${posts} post${posts === 1 ? '' : 's'}, nothing to fetch`))
   const answered = await answerQuestions()
   corrected += answered.corrected
   read += answered.posts
@@ -72,11 +73,32 @@ function report (): void {
   console.log(styles.title('Posts read.'))
   if (stopped) console.log(styles.warning('Stopped on a name, and that post is left unread.'))
   console.log(styles.light(`> ${read} post${read === 1 ? '' : 's'} through, ${corrected} name${corrected === 1 ? '' : 's'} corrected`))
+  if (failed > 0) console.log(styles.warning(`${failed} post${failed === 1 ? '' : 's'} MusicBrainz could not be read for, left unread.`))
   console.log('')
 }
 
-// Answered before anything is fetched: a decision already paid for comes first.
-if (askedId === undefined) await answerPending()
+// A decision already paid for is the cheapest thing in the run, so it is offered first —
+// offered, and not imposed: coming back to sweep the rest is as good a reason to run this.
+if (askedId === undefined) {
+  const waiting = await readQuestions()
+  if (waiting.length > 0) {
+    const posts = new Set(waiting.map(question => question.postId)).size
+    console.log('')
+    console.log(styles.info('Put aside'))
+    console.log(styles.light(`> ${waiting.length} name${waiting.length === 1 ? '' : 's'} across ${posts} post${posts === 1 ? '' : 's'}, nothing to fetch`))
+    console.log('')
+    const first = await select<'answer' | 'look up the rest' | 'quit'>({
+      message: 'put aside',
+      choices: [
+        { name: 'answer', value: 'answer' },
+        { name: 'look up the rest', value: 'look up the rest' },
+        { name: 'quit', value: 'quit' }
+      ]
+    })
+    if (first === 'quit') process.exit(0)
+    if (first === 'answer') await answerPending()
+  }
+}
 
 if (stopped) {
   const left = (await readQuestions()).length
@@ -114,6 +136,7 @@ const AUTO = 'auto look up'
 
 let sweeping = false
 let deferred = 0
+let failed = 0
 
 for (const [index, post] of walking.entries()) {
   const names = namesOf(post.id, db)
@@ -147,6 +170,11 @@ for (const [index, post] of walking.entries()) {
   const looked = sweeping ? await deferNames(post.id) : await lookUpNames(post.id)
   if (looked.nature === 'missing') continue
   if (looked.nature === 'stopped') { stopped = true; break }
+  if (looked.nature === 'failed') {
+    console.log(styles.warning(`  MusicBrainz could not be read: ${looked.why}`))
+    failed += 1
+    continue
+  }
   if (looked.nature === 'deferred') { deferred += looked.questions; continue }
   corrected += looked.corrected
   read += 1
