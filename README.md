@@ -227,8 +227,65 @@ one by one: a blind substitution would eat `The End`, which is a club called tha
 
 ## 3. Publishing
 
-**`deploy` is written and has never run; the first run is the step.** It copies `dist/`
-into a worktree on the `production` branch, which is what GitHub Pages serves, and it is
+**The front is audited first, and nothing ships before it.** A read of all 1404 lines of
+`src/` on 13 November 2026 found the base sound — pages fetch, components render,
+`shared/` holds what both halves of the build agree on, no state manager, no context, no
+abstraction invented before it was needed — and four places worth repairing before a first
+deploy makes them permanent. **No behaviour changes in any of it.** In the order to do
+them:
+
+**1. Names.** A function says what it *does*, a variable what it *holds*, and no metaphor
+stands in for either.
+
+| Where | Symbol | What is wrong | What it is |
+| --- | --- | --- | --- |
+| `pages/Home`, `pages/Post`, `pages/Artist` | `loaded` | Reads as a boolean; holds the fetched page, or `null` while fetching | `postPage`, `fetchedPost`, `artistPage` |
+| `pages/Posts` | `said` | Says nothing; holds a parenthesised qualifier | `versionNote` |
+| `pages/Posts` | `qualifier ()` | A noun for a function, and silent about formatting | `formatVersionNote ()` |
+| `components/Post` | `played` | Past participle for the first playable source | `playableSource` |
+| `components/Post` | `occasion`, `occasionAndDate` | Metaphor for kind and place | `kindAndPlace`, `kindPlaceAndDate` |
+| `components/PartialDate` | `statable`, `filled` | An invented word; a `Date` built from the known parts | `isValidDateTime`, `dateWithGapsFilled` |
+| `components/Pagination` | `back`, `forward` | Read as verbs; hold whether a neighbour page exists | `hasPrevious`, `hasNext` |
+| `components/Pagination` | `onPage` prop | Ambiguous — on a page, or a handler | `pageExists` |
+| the six fetching pages | `current` | Holds whether this effect has been superseded | `isLatestRequest` |
+| `pages/Post` | `PostArticle` alias | Exists only because `pages/Post` and `components/Post` share a name | Rename one of the two |
+
+`bem` names a methodology rather than its content and stays: it is the same in every
+component, and consistency is worth more than the name.
+
+**2. The fetching protocol, written six times.** `Home`, `Post`, `Posts`, `Artist`,
+`Artists` and `About` each carry the same `useState(null)` / `useEffect` / `let current =
+true` / `setX(null)` / `then(if current)` / cleanup, and each encodes *loading* a different
+way — `PostPage | null`, `{ post: BuiltPost | null } | null`, `BuiltArtistIndexEntry[] |
+null`. The double wrapper in two of them exists only to tell « not arrived » from
+« arrived, nothing there ». That is six places to get one race right, and a seventh page
+will copy whichever it finds. One hook, one shape with four states — loading, failed,
+missing, loaded — replaces all of it.
+
+**3. Nothing can fail.** `readJson` throws on a non-200. `fetchPost` and `fetchArtistPage`
+catch it and answer `null`, which the pages render as **« There is no such post »** — so a
+dropped connection tells the reader the post does not exist. `fetchPublishedPosts`,
+`fetchArtists` and `fetchAbout` do not catch at all: the promise rejects, the state never
+moves, and the page holds its loading skeleton for ever. No page can say that something
+went wrong. Worth doing with the hook above, since it is the same shape.
+
+**4. Dead code, and one intention written twice.** `components/PartialDate` is imported by
+nothing, while `components/Post` builds a partial date inline by hand — the component that
+solves it sits unused next door. `components/FileMedia` and the `file` branch of `Media`
+are known-dead since this blog stays on embeds: keep them as the shape of a future or
+delete them, but say which. And `pages/NotFound` renders an empty `<div>`, so a mistyped
+URL is a blank page with no message and no way back.
+
+**Smaller, same pass.** `useDocumentTitle` fetches `manifest.json` on every page mount to
+read one string that never changes in a session. Import order is wrong in six files —
+`MainNav`, `Logo`, `Pagination`, `components/Post`, `pages/Posts`, `pages/Artists` — where
+the `Link` import sits before the `shared/` ones, against the farthest-first rule.
+`MainNav`'s `goToRandomPost` reads the whole index on click, which is deliberate and wants
+a line saying so. And `index.tsx`'s throw on a missing `#root` is the only throw in the
+front.
+
+**Then `deploy`, which is written and has never run; the first run is the step.** It copies
+`dist/` into a worktree on the `production` branch, which is what GitHub Pages serves, and it is
 the only command here that pushes. What a first run asks for beyond pressing go: Pages
 pointed at that branch, a read of a handful of shells and their OpenGraph tags as they
 actually render, and a look at the 404.
