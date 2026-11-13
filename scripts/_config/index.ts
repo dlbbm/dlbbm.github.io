@@ -21,10 +21,6 @@ export const ABOUT_FILE = path.join(DATA, 'about.json')
 // as readily as by `idea`.
 export const IDEAS_FILE = path.join(CWD, 'IDEAS.md')
 
-// Outside `data/`: what MusicBrainz answered about each artist name, looked up once and
-// stored, which is the whole input `data:names` compares the data against.
-export const MUSICBRAINZ_FILE = path.join(CWD, '.musicbrainz.ndjson')
-
 // Also outside `data/`: the names `post:names-lookup`'s sweep walked past, waiting for a
 // decision. A cache and not a record — `namesCheckedOn` is what says a post has been read,
 // and deleting this costs the requests that filled it.

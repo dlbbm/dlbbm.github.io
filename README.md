@@ -60,7 +60,6 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
 | `npm run data:merge-duplicates` | Drops the slug lines written twice, then walks every pair the duplicate pass finds, artists and works alike |
 | `npm run data:places` | Lists every venue and city string with its count, and renames one everywhere |
-| `npm run data:names` | Reads every artist name against the stored MusicBrainz answers, and offers ours, theirs, or one typed by hand |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
@@ -182,13 +181,11 @@ one by one: a blind substitution would eat `The End`, which is a club called tha
   one is read name by name against a reference, and the standard to follow is the English
   one, never the French.
 
-  **`data:names` is the pass**, and MusicBrainz is the reference. The lookups were made
-  once and stored in `.musicbrainz.ndjson` at the root, one line per artist; the command
-  asks nothing of the network, it reads that file against the data and shows the two names
-  side by side wherever they differ character for character — ours, theirs, or one typed by
-  hand, `stop` to end the walk. Slugs are left alone, a slug belonging to the record rather
-  than to the name. An artist renamed since its lookup is left out rather than compared
-  against an answer about another name.
+  **It was read, and the pass that read it is gone.** Every name went through MusicBrainz
+  once, from a file of stored lookups and a `data:names` command that compared the two
+  lists; both were deleted afterwards, the file being unrebuildable and the command having
+  nothing left to read. `post:names-lookup` is what asks now, post by post and live, which
+  is also what a post written tomorrow goes through.
 
   **The article turned out to be a non-question**: of 423 names, two lack an article
   MusicBrainz carries — `TOYS` against `The Toys`, `Brian Jonestown Massacre` against

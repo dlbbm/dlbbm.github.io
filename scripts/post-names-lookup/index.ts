@@ -29,9 +29,6 @@
  *
  * `npm run post:names-lookup -- <postId>` reads that one post instead, read already or
  * not, and marks it the same way.
- *
- * `data:names` is the same question over every artist at once, from the lookups stored in
- * `.musicbrainz.ndjson`; this one asks live, about the handful of names one post carries.
  */
 
 import process from 'node:process'
