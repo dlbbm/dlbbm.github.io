@@ -140,7 +140,7 @@
 {"kind":"artist","targetId":"f0948299bedd92a7","slug":"bobbie-gentry"}
 {"kind":"artist","targetId":"b845f8d5b82daf6f","slug":"adriano-celentano"}
 {"kind":"artist","targetId":"b7b32c17642ba766","slug":"azealia-banks"}
-{"kind":"artist","targetId":"99954bb9c67dfc56","slug":"in-a-manner-of-speaking"}
+{"kind":"artist","targetId":"99954bb9c67dfc56","slug":"nouvelle-vague"}
 {"kind":"artist","targetId":"1d1ec2e53795be99","slug":"david-august"}
 {"kind":"artist","targetId":"f4c1bf787f6c9690","slug":"dillinger"}
 {"kind":"artist","targetId":"9aa5911c04f09046","slug":"bruce-springsteen"}
@@ -279,7 +279,7 @@
 {"kind":"artist","targetId":"8c40b29388703fed","slug":"r-l-burnside"}
 {"kind":"artist","targetId":"99ad578d43e525dd","slug":"average-rap-band"}
 {"kind":"artist","targetId":"daca4bb230348cec","slug":"letta-mbulu"}
-{"kind":"artist","targetId":"4ef9b2a44efbfafc","slug":"le-temps-est-bon"}
+{"kind":"artist","targetId":"4ef9b2a44efbfafc","slug":"isabelle-pierre"}
 {"kind":"artist","targetId":"b61181d4adeb7cc0","slug":"sophie-daumier"}
 {"kind":"artist","targetId":"fddfbba7cabc929b","slug":"louise-bourgeois"}
 {"kind":"artist","targetId":"f6f011299481a89e","slug":"reykjavikurd-tur"}
@@ -421,3 +421,4 @@
 {"kind":"artist","targetId":"cc9f18daf3609ad8","slug":"billy-preston"}
 {"kind":"artist","targetId":"f95a78501f16a80d","slug":"sonny-cher"}
 {"kind":"artist","targetId":"f302a6b51932f9b9","slug":"morgan"}
+{"kind":"artist","targetId":"a30b39bc6c34882f","slug":"tuxedomoon"}
