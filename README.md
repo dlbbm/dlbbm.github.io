@@ -7,6 +7,13 @@ One post is one recording of one song, credited to one or more artists, with som
 hear it. The shapes live in [`types/index.ts`](./types/index.ts), which says for each one
 how it maps onto schema.org and where it deliberately diverges.
 
+**Nothing in the archive is authoritative about itself.** Every name, title and place came
+out of a Tumblr post typed by hand at the time, and the import only split those strings in
+two — so a spelling in `data/` is one person's typing from years ago and not a record of
+what the act calls itself. It is evidence, often the best there is, never a source of
+truth: that is why every pass over these strings asks rather than substitutes, and why
+`keep ours` is an answer and not a refusal.
+
 ## Layout
 
 - **`IDEAS.md`** — posts to write one day, one markdown bullet each, free text. Not a
