@@ -50,7 +50,7 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`), then offers the MusicBrainz lookup |
 | `npm run post:edit` | Asks a post again, prefilled, and offers the lookup when its names have never been read. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
-| `npm run post:names-lookup` | Walks the posts never read against MusicBrainz, `look up` / `skip` / `quit`, and offers ours, theirs, or one typed by hand. Takes `-- <postId>` |
+| `npm run post:names-lookup` | Walks the posts never read against MusicBrainz — `look up` one, or `auto look up` to sweep and leave the decisions for the end. Takes `-- <postId>` |
 | `npm run artist:merge` | Joins two artists into one. Takes `-- <from> <into>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
 | `npm run song:merge` | Joins two works into one. Takes `-- <from> <into>` |

@@ -4,3 +4,4 @@ scripts/**/*.js
 shared/**/*.js
 .DS_Store
 .musicbrainz.ndjson
+.names-pending.ndjson

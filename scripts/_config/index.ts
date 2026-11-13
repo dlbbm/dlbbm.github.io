@@ -25,6 +25,11 @@ export const IDEAS_FILE = path.join(CWD, 'IDEAS.md')
 // stored, which is the whole input `data:names` compares the data against.
 export const MUSICBRAINZ_FILE = path.join(CWD, '.musicbrainz.ndjson')
 
+// Also outside `data/`: the names `post:names-lookup`'s sweep walked past, waiting for a
+// decision. A cache and not a record — `namesCheckedOn` is what says a post has been read,
+// and deleting this costs the requests that filled it.
+export const NAMES_PENDING_FILE = path.join(CWD, '.names-pending.ndjson')
+
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
   slugs: path.join(DATA, 'slugs.ndjson'),
