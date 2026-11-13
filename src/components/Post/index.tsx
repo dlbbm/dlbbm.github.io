@@ -80,7 +80,7 @@ export function Post ({ post }: PostProps) {
     </Link>
     <div class={bem('media')}>
       {played === undefined
-        ? <a class={bem('missing')} href={post.url}>no playable source</a>
+        ? <Link href={post.url} className={bem('missing')}>no playable source</Link>
         : <Media source={played} title={post.title} />}
     </div>
     <div class={bem('meta')}>
