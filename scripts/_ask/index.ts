@@ -676,6 +676,7 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     id: editing?.post.id ?? createId(),
     publishedOn,
     hidden,
+    namesCheckedOn: editing?.post.namesCheckedOn ?? null,
     recordingId: recording.id,
     body,
     sources: editing?.post.sources ?? []

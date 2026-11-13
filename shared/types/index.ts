@@ -320,6 +320,12 @@ export type FileSource = {
  * the front has to be able to compare it with now.
  * @property hidden - Kept out of the blog without being deleted. Nothing in schema.org
  * says this, since it is a fact about this site rather than about the writing.
+ * @property namesCheckedOn - When this post's artist and title names were last read
+ * against MusicBrainz, `null` while they never were. A date rather than a flag because the
+ * register moves: a name checked in 2026 is a name checked against what MusicBrainz said
+ * in 2026. `post:names-lookup` is what sets it, and it is what that walk skips a post by.
+ * A hand edit through `post:edit` leaves it alone — correcting a date does not unread the
+ * names, and what would is a question nobody asked.
  * @property recordingId - What this post is about. Exactly one: the old blog posted one
  * track at a time and there is no reason to loosen that.
  * @property body - `articleBody`. Whatever the post says beyond naming the song — a
@@ -336,6 +342,7 @@ export type Post = {
   id: PostId
   publishedOn: Timestamp
   hidden: boolean
+  namesCheckedOn: Timestamp | null
   recordingId: RecordingId
   body: string | null
   sources: IdentitySource[]

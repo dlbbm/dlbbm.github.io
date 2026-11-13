@@ -456,6 +456,7 @@ for (const archive of posts) {
     id: postId,
     publishedOn,
     hidden: false,
+    namesCheckedOn: null,
     recordingId: recording.id,
     body,
     sources: [origin]
