@@ -1,11 +1,10 @@
 /**
- * Every artist name read against MusicBrainz, and corrected one name at a time.
+ * The artist names read against what MusicBrainz answered, and corrected one at a time.
  *
- * A name here is hand-typed and nothing validates it, so `Death In Vegas` and
- * `Sebastien Tellier` sit in the data looking exactly as right as the 364 names that are.
- * MusicBrainz is the one free register of how an act spells itself, so the pass asks it
- * for each name and shows the two side by side wherever they are not identical character
- * for character.
+ * Nothing here asks MusicBrainz anything: the lookups were made once and stored in
+ * `.musicbrainz.ndjson`, one line per artist, and this walks the two lists side by side.
+ * A name whose stored line no longer matches it was renamed since the lookup, so it is
+ * left out rather than compared against an answer about another name.
  *
  * **It answers nothing.** MusicBrainz stylises — `SALEM`, `alt-J`, `halina heron` — writes
  * `and the` where this data writes `& The`, and its search scores a tribute band 100 for
@@ -23,7 +22,7 @@
  */
 
 import { existsSync } from 'node:fs'
-import { appendFile, readFile, writeFile } from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import process from 'node:process'
 import { confirm, input, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
@@ -32,13 +31,7 @@ import { comparisonKey } from '../_check/index.js'
 import { MUSICBRAINZ_FILE } from '../_config/index.js'
 import { readDb, write, type Db } from '../_db/index.js'
 
-/** MusicBrainz asks every client to say what it is and where to complain about it. */
-const AGENT = 'dlbbm-data-names/1.0 ( https://dlbbm.github.io )'
-
-// One request a second is the published limit, and it is enforced. The extra tenth is for
-// a clock that rounds the wrong way.
-const WAIT = 1100
-
+// Below it, a search hit is answering about somebody else.
 const SCORE = 85
 
 type Candidate = {
@@ -50,108 +43,41 @@ type Candidate = {
   aliases: string[]
 }
 
-/** One lookup, kept with the name it was made for: a renamed artist is asked again. */
+/** One stored lookup, kept with the name it was made for. */
 type Looked = {
   id: string
   name: string
   candidates: Candidate[]
 }
 
-const sleep = async (ms: number): Promise<void> =>
-  await new Promise(resolve => setTimeout(resolve, ms))
-
-/** Lucene reads the punctuation in a name as syntax, so it is escaped rather than dropped. */
-function escapeQuery (name: string): string {
-  return name.replace(/([\+\-\&\|\!\(\)\{\}\[\]\^"\~\*\?\:\\\/])/gv, '\\$1')
+if (!existsSync(MUSICBRAINZ_FILE)) {
+  console.log('')
+  console.log(styles.error('No .musicbrainz.ndjson to read.'))
+  console.log(styles.light('> one line per artist: { id, name, candidates }'))
+  console.log('')
+  process.exit(1)
 }
 
-async function lookUp (name: string, attempt = 0): Promise<Candidate[]> {
-  const url = 'https://musicbrainz.org/ws/2/artist'
-    + `?query=artist:"${encodeURIComponent(escapeQuery(name))}"`
-    + '&fmt=json&limit=5'
-  const response = await fetch(url, {
-    headers: { 'User-Agent': AGENT, Accept: 'application/json' }
-  })
-  if (response.status === 503 && attempt < 4) {
-    await sleep(WAIT * 5 * (attempt + 1))
-    return await lookUp(name, attempt + 1)
-  }
-  if (!response.ok) throw new Error(`musicbrainz answered ${response.status}`)
-  const body = await response.json() as { artists?: Array<Record<string, unknown>> }
-  return (body.artists ?? []).map(found => ({
-    name: String(found.name ?? ''),
-    score: Number(found.score ?? 0),
-    type: typeof found.type === 'string' ? found.type : null,
-    country: typeof found.country === 'string' ? found.country : null,
-    disambiguation: typeof found.disambiguation === 'string' && found.disambiguation !== ''
-      ? found.disambiguation
-      : null,
-    aliases: Array.isArray(found.aliases)
-      ? found.aliases.map(alias => String((alias as { name?: unknown }).name ?? ''))
-      : []
-  }))
-}
-
-/**
- * What has already been asked, by artist id.
- *
- * The file is append-only and outside `data/`: it is not a record, it goes stale the day
- * MusicBrainz edits a name, and it exists so that a second run costs no requests. A line
- * whose `name` is no longer the artist's is dropped, which is what makes a correction
- * asked once.
- */
-async function readCache (): Promise<Map<string, Looked>> {
-  const cached = new Map<string, Looked>()
-  if (!existsSync(MUSICBRAINZ_FILE)) return cached
-  const raw = await readFile(MUSICBRAINZ_FILE, { encoding: 'utf-8' })
-  for (const line of raw.split('\n')) {
-    const trimmed = line.trim()
-    if (trimmed === '') continue
-    try {
-      const looked = JSON.parse(trimmed) as Looked
-      cached.set(looked.id, looked)
-    } catch { continue }
-  }
-  return cached
+const stored = new Map<string, Looked>()
+for (const line of (await readFile(MUSICBRAINZ_FILE, { encoding: 'utf-8' })).split('\n')) {
+  const trimmed = line.trim()
+  if (trimmed === '') continue
+  const looked = JSON.parse(trimmed) as Looked
+  stored.set(looked.id, looked)
 }
 
 const db: Db = await readDb()
-const cached = await readCache()
-
 const artists = [...db.artists].sort((one, other) => one.name.localeCompare(other.name))
-const asking = artists.filter(artist => cached.get(artist.id)?.name !== artist.name)
-
-console.log('')
-console.log(styles.title('Reading the names against MusicBrainz...'))
-console.log(styles.light(`> ${artists.length} artists, ${artists.length - asking.length} already looked up`))
-
-if (asking.length > 0) {
-  const minutes = Math.ceil(asking.length * WAIT / 60000)
-  console.log(styles.light(`> ${asking.length} to ask, one a second, around ${minutes} minute${minutes === 1 ? '' : 's'}`))
-  if (!existsSync(MUSICBRAINZ_FILE)) await writeFile(MUSICBRAINZ_FILE, '', { encoding: 'utf-8' })
-  for (const [index, artist] of asking.entries()) {
-    let candidates: Candidate[]
-    try { candidates = await lookUp(artist.name) }
-    catch (error) {
-      console.log('')
-      console.log(styles.error(`${artist.name}: ${error instanceof Error ? error.message : String(error)}`))
-      console.log(styles.warning('> what was answered is kept, run it again to carry on'))
-      break
-    }
-    const looked: Looked = { id: artist.id, name: artist.name, candidates }
-    cached.set(artist.id, looked)
-    await appendFile(MUSICBRAINZ_FILE, `${JSON.stringify(looked)}\n`, { encoding: 'utf-8' })
-    if ((index + 1) % 25 === 0) console.log(styles.light(`> ${index + 1}/${asking.length}`))
-    await sleep(WAIT)
-  }
-}
 
 /** The candidate MusicBrainz offers for the same act, under whatever spelling. */
 function sameAct (artist: Artist): Candidate | null {
+  const looked = stored.get(artist.id)
+  if (looked === undefined || looked.name !== artist.name) return null
   const key = comparisonKey(artist.name)
-  const candidates = (cached.get(artist.id)?.candidates ?? []).filter(one => one.score >= SCORE)
-  return candidates.find(one => comparisonKey(one.name) === key
-    || one.aliases.some(alias => comparisonKey(alias) === key)) ?? null
+  return looked.candidates
+    .filter(candidate => candidate.score >= SCORE)
+    .find(candidate => comparisonKey(candidate.name) === key
+      || candidate.aliases.some(alias => comparisonKey(alias) === key)) ?? null
 }
 
 type Differing = { artist: Artist, candidate: Candidate }
@@ -160,11 +86,14 @@ const differing: Differing[] = []
 const unmatched: Artist[] = []
 
 for (const artist of artists) {
-  if (!cached.has(artist.id)) continue
   const candidate = sameAct(artist)
   if (candidate === null) { unmatched.push(artist); continue }
   if (candidate.name !== artist.name) differing.push({ artist, candidate })
 }
+
+console.log('')
+console.log(styles.title('Reading the names against MusicBrainz...'))
+console.log(styles.light(`> ${artists.length} artists, ${stored.size} stored lookups`))
 
 const describe = (candidate: Candidate): string => [
   candidate.type,
@@ -210,8 +139,8 @@ for (const { artist, candidate } of differing) {
 
 if (unmatched.length > 0) {
   console.log('')
-  console.log(styles.info('No match'))
-  console.log(styles.light(`> ${unmatched.length} name${unmatched.length === 1 ? '' : 's'} MusicBrainz answers nothing for, or answers somebody else for`))
+  console.log(styles.info('Not compared'))
+  console.log(styles.light(`> ${unmatched.length} name${unmatched.length === 1 ? '' : 's'} with no stored answer about them, or an answer about somebody else`))
   for (const artist of unmatched) console.log(styles.light(`  ${artist.name}`))
 }
 
