@@ -22,9 +22,31 @@
 
 .post__media .mxfb-embed--spotify .mxfb-embed__player { height: var(--embed-height); }
 
+/* What stands where the player would be, when a recording has nothing left to play. A
+   dashed box rather than a bare line: the stream reads as a column of media, and a slot
+   that says nothing is still a slot. It points at the post, which is where a reader goes
+   looking for what was lost. */
+.post__missing {
+  display: block;
+  padding: var(--gap-4);
+  border: var(--border-width-m) dashed var(--border-color);
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+  opacity: var(--muted-opacity);
+  transition: color var(--hover-duration), opacity var(--hover-duration);
+}
+
+.post__missing:hover,
+.post__missing:focus-visible {
+  color: var(--accent-color);
+  opacity: 1;
+}
+
 .post__date,
 .post__cover,
 .post__medley,
+.post__missing,
 .post__remix,
 .post__details,
 .post__body {
