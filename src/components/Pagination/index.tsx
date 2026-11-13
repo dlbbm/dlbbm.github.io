@@ -1,5 +1,5 @@
-import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { Link } from '../Link/index.js'
 import { routePatterns, routeUrl } from '../../../shared/routes/index.js'
 import './styles.css'
 

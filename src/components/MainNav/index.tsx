@@ -1,6 +1,8 @@
-import { Link, useLocation } from 'wouter-preact'
+import { useLocation } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { routePatterns } from '../../../shared/routes/index.js'
+import { previewHref } from '../../utils/preview/index.js'
+import { Link } from '../Link/index.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
 import './styles.css'
 
@@ -20,7 +22,7 @@ export function MainNav () {
   async function goToRandomPost (): Promise<void> {
     const posts = await fetchPublishedPosts()
     const picked = posts[Math.floor(Math.random() * posts.length)]
-    if (picked !== undefined) navigate(picked.url)
+    if (picked !== undefined) navigate(previewHref(picked.url))
   }
 
   return <nav class={bem()}>
@@ -28,7 +30,7 @@ export function MainNav () {
       {links.map(link => <li class={bem('item')} key={link.href}>
         <Link
           href={link.href}
-          className={isCurrent => bem('link', { current: isCurrent })}>{link.label}</Link>
+          className={(isCurrent: boolean) => bem('link', { current: isCurrent })}>{link.label}</Link>
       </li>)}
       <li class={bem('item')}>
         <button

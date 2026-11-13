@@ -13,19 +13,13 @@ import type {
   BuiltPostPage
 } from '../../../shared/types/built.js'
 import type { PostId, Timestamp } from '../../../shared/types/index.js'
+import { previewing } from '../preview/index.js'
 
 async function readJson<T> (url: string): Promise<T> {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`${url} answered ${response.status}.`)
   return await response.json() as T
 }
-
-/**
- * Read once, at import, and held in memory on purpose: the mode lasts as long as the tab
- * and leaves nothing behind. The router replaces the URL as the reader navigates, so a
- * flag read on every call would end at the first link followed.
- */
-const previewing = new URLSearchParams(window.location.search).has('preview')
 
 /**
  * Whether a post is the reader's to see — its moment has come, or the page is previewing.

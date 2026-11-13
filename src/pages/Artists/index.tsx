@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
-import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { Link } from '../../components/Link/index.js'
 import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltArtistIndexEntry } from '../../../shared/types/built.js'
 import { fetchArtists } from '../../utils/fetch/index.js'

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
-import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { DateComponent } from '@mxfb/tools/components/Date/index.js'
+import { Link } from '../../components/Link/index.js'
 import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltPostIndexEntry } from '../../../shared/types/built.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
