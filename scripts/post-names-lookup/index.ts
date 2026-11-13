@@ -7,6 +7,11 @@
  * the work's original artists — and then the work's title, narrowed by who plays it. Two
  * or three requests a post, a second apart.
  *
+ * **`look up` is asked once, and then it runs.** Every post after it is looked up without
+ * being offered, and the walk only stops where a name actually differs — so it can be left
+ * running while you do something else, and what it is waiting on when you come back is a
+ * question. `stop`, on any of those questions, ends the run.
+ *
  * A post is marked read as soon as it has been through, whether or not anything changed —
  * which is what makes the walk resumable without a cursor file: the data says where it got
  * to. The questions themselves are `_names`, which `post:create` and `post:edit` offer on
@@ -64,6 +69,8 @@ if (askedId !== undefined) {
 
 let read = 0
 let corrected = 0
+let running = false
+let stopped = false
 
 for (const [index, post] of walking.entries()) {
   const names = namesOf(post.id, db)
@@ -75,24 +82,30 @@ for (const [index, post] of walking.entries()) {
   console.log(styles.info(described.name))
   console.log(styles.light(`> ${described.description}`))
   console.log(styles.light(`> ${names.credited.length} name${names.credited.length === 1 ? '' : 's'} and one title to ask about`))
-  console.log('')
 
-  const action = await select<'look up' | 'skip' | 'quit'>({
-    message: post.id,
-    choices: [
-      { name: 'look up', value: 'look up' },
-      { name: 'skip', value: 'skip' },
-      { name: 'quit', value: 'quit' }
-    ]
-  })
-  if (action === 'quit') break
-  if (action === 'skip') continue
+  // Asked until it is answered `look up`, and never again after that: the walk running on
+  // its own is the point, and a question is then the only thing that holds it.
+  if (!running) {
+    console.log('')
+    const action = await select<'look up' | 'skip' | 'quit'>({
+      message: post.id,
+      choices: [
+        { name: 'look up', value: 'look up' },
+        { name: 'skip', value: 'skip' },
+        { name: 'quit', value: 'quit' }
+      ]
+    })
+    if (action === 'quit') break
+    if (action === 'skip') continue
+    running = true
+  }
 
   // Read again inside, since the names answered on an earlier post have moved the lines
   // this one may be about to show.
-  const answered = await lookUpNames(post.id)
-  if (answered === null) continue
-  corrected += answered
+  const looked = await lookUpNames(post.id)
+  if (looked.nature === 'missing') continue
+  if (looked.nature === 'stopped') { stopped = true; break }
+  corrected += looked.corrected
   read += 1
 }
 
@@ -100,6 +113,7 @@ const left = walking.length - read
 
 console.log('')
 console.log(styles.title('Posts read.'))
+if (stopped) console.log(styles.warning('Stopped on a name, and that post is left unread.'))
 console.log(styles.light(`> ${read} post${read === 1 ? '' : 's'} through, ${corrected} name${corrected === 1 ? '' : 's'} corrected`))
 if (left > 0) console.log(styles.light(`> ${left} left of what this run walked`))
 else console.log(styles.success('Every post this run walked has been through.'))

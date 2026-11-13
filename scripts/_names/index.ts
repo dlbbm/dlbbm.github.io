@@ -26,16 +26,31 @@ import {
 } from '../_musicbrainz/index.js'
 
 const TYPE = 'type a name'
+const STOP = 'stop'
 
-/** One name against its candidate: what stays, or `null` when there is no question. */
-async function answer (field: string, ours: string, candidate: Candidate | null): Promise<string | null> {
+/** What one name came back as: nothing to change, a new spelling, or the end of the run. */
+type Answer =
+  | { nature: 'kept' }
+  | { nature: 'named', name: string }
+  | { nature: 'stopped' }
+
+const KEPT: Answer = { nature: 'kept' }
+
+/**
+ * One name against its candidate.
+ *
+ * Nothing is asked when MusicBrainz agrees or answers nothing: a name the register spells
+ * the way this data does is not a decision, and printing it is all it is worth. That is
+ * what lets a caller walk post after post unattended and stop only where a name differs.
+ */
+async function answer (field: string, ours: string, candidate: Candidate | null): Promise<Answer> {
   if (candidate === null) {
     console.log(styles.light(`  ${field}: ${ours}, nothing MusicBrainz answers for`))
-    return null
+    return KEPT
   }
   if (candidate.name === ours) {
     console.log(styles.light(`  ${field}: ${ours}, as MusicBrainz has it`))
-    return null
+    return KEPT
   }
   const told = describeCandidate(candidate)
   console.log('')
@@ -46,13 +61,15 @@ async function answer (field: string, ours: string, candidate: Candidate | null)
     choices: [
       { name: ours, value: ours },
       { name: candidate.name, value: candidate.name },
-      { name: TYPE, value: TYPE }
+      { name: TYPE, value: TYPE },
+      { name: STOP, value: STOP }
     ]
   })
+  if (answered === STOP) return { nature: 'stopped' }
   const named = answered === TYPE
     ? (await input({ message: field, default: ours })).trim()
     : answered
-  return named === '' || named === ours ? null : named
+  return named === '' || named === ours ? KEPT : { nature: 'named', name: named }
 }
 
 /** What one post holds that a lookup can answer about: its credits, and the work. */
@@ -91,24 +108,31 @@ export function namesOf (postId: PostId, db: Db): Names | null {
   return { post, recording, song, credited }
 }
 
+/** How a post's lookup ended: read through, stopped on a name, or never readable. */
+export type Looked =
+  | { nature: 'read', corrected: number }
+  | { nature: 'stopped' }
+  | { nature: 'missing' }
+
 /**
  * Asks MusicBrainz about one post's names, writes what is answered, and marks the post.
  *
  * The mark goes on whether or not anything changed: answering nothing is also an answer,
- * these names have been read. Returns how many names were corrected, or `null` when the
- * post could not be read at all.
+ * these names have been read. `stop` on any of its questions abandons the post whole —
+ * nothing written, no mark — so it comes back intact on the next run.
  */
-export async function lookUpNames (postId: PostId): Promise<number | null> {
+export async function lookUpNames (postId: PostId): Promise<Looked> {
   const db: Db = await readDb()
   const names = namesOf(postId, db)
-  if (names === null) return null
+  if (names === null) return { nature: 'missing' }
   const { post, recording, song, credited } = names
 
   const renamedArtists = new Map<string, string>()
   for (const artist of credited) {
     const candidates = await searchArtist(artist.name)
     const answered = await answer('artist', artist.name, sameThing(artist.name, candidates, comparisonKey))
-    if (answered !== null) renamedArtists.set(artist.id, answered)
+    if (answered.nature === 'stopped') return { nature: 'stopped' }
+    if (answered.nature === 'named') renamedArtists.set(artist.id, answered.name)
   }
 
   // Narrowed by whoever plays it, under the name that is going to stay: a title alone
@@ -116,7 +140,9 @@ export async function lookUpNames (postId: PostId): Promise<number | null> {
   const first = credited.find(artist => recording.byArtistIds.includes(artist.id)) ?? credited[0]
   const by = first === undefined ? null : renamedArtists.get(first.id) ?? first.name
   const candidates = await searchRecording(song.title, by)
-  const retitled = await answer('title', song.title, sameThing(song.title, candidates, comparisonKey))
+  const answered = await answer('title', song.title, sameThing(song.title, candidates, comparisonKey))
+  if (answered.nature === 'stopped') return { nature: 'stopped' }
+  const retitled = answered.nature === 'named' ? answered.name : null
 
   let writing = renamedArtists.size > 0 || retitled !== null
   if (writing) {
@@ -157,7 +183,7 @@ export async function lookUpNames (postId: PostId): Promise<number | null> {
   await write('posts', db.posts.map(candidate =>
     candidate.id === post.id ? { ...candidate, namesCheckedOn: checkedOn } : candidate))
 
-  return writing ? renamedArtists.size + (retitled === null ? 0 : 1) : 0
+  return { nature: 'read', corrected: writing ? renamedArtists.size + (retitled === null ? 0 : 1) : 0 }
 }
 
 /**
@@ -169,8 +195,8 @@ export async function lookUpNames (postId: PostId): Promise<number | null> {
 export async function offerLookUp (postId: PostId): Promise<void> {
   console.log('')
   if (!await confirm({ message: 'Look the names up?', default: true })) return
-  const corrected = await lookUpNames(postId)
-  if (corrected === null) return
+  const looked = await lookUpNames(postId)
+  if (looked.nature !== 'read') return
   console.log('')
-  console.log(styles.success(`${corrected} name${corrected === 1 ? '' : 's'} corrected.`))
+  console.log(styles.success(`${looked.corrected} name${looked.corrected === 1 ? '' : 's'} corrected.`))
 }
