@@ -1,15 +1,19 @@
 /**
- * One post's names asked of MusicBrainz, and corrected on the spot.
+ * The posts whose names have never been read against MusicBrainz, walked one at a time.
  *
- * `npm run post:names -- <postId>` goes straight to one; with no argument the posts are
- * listed, most recent first, the way `post:edit` lists them. What gets looked up is every
- * artist the post credits — played by, featuring, remixed by, and the work's original
- * artists — and then the work's title, narrowed by who plays it. Two or three requests,
- * a second apart.
+ * It opens on the oldest post carrying no `namesCheckedOn` and shows it; `next` asks
+ * MusicBrainz about it, `skip` moves on and leaves it unread, `quit` stops there. What
+ * gets looked up is every artist the post credits — played by, featuring, remixed by, and
+ * the work's original artists — and then the work's title, narrowed by who plays it. Two
+ * or three requests a post, a second apart.
  *
  * Where MusicBrainz spells a name otherwise, the question is which one stays: ours, theirs
- * or one typed by hand. `stop` leaves the rest of the post alone. Nothing is written until
- * every name has been answered and the write confirmed.
+ * or one typed by hand. A post is marked read as soon as it has been through, whether or
+ * not anything changed — which is what makes the walk resumable without a cursor file: the
+ * data says where it got to.
+ *
+ * `npm run post:names-lookup -- <postId>` reads that one post instead, read already or
+ * not, and marks it the same way.
  *
  * `data:names` is the same question over every artist at once, from the lookups stored in
  * `.musicbrainz.ndjson`; this one asks live, about the handful of names one post carries,
@@ -25,6 +29,7 @@ import { confirm, input, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Artist, Post, Recording, Song } from '../../shared/types/index.js'
 import { comparisonKey } from '../_check/index.js'
+import { toTimestamp } from '../_date/index.js'
 import { readDb, write, type Db } from '../_db/index.js'
 import { describePost } from '../_describe/index.js'
 import {
@@ -35,10 +40,10 @@ import {
   type Candidate
 } from '../_musicbrainz/index.js'
 
-const db: Db = await readDb()
+let db: Db = await readDb()
 
 console.log('')
-console.log(styles.title('Reading a post against MusicBrainz...'))
+console.log(styles.title('Reading the posts against MusicBrainz...'))
 
 if (db.posts.length === 0) {
   console.log(styles.warning('No post to read.'))
@@ -47,61 +52,32 @@ if (db.posts.length === 0) {
 
 const [, , askedId] = process.argv
 
-let post: Post | undefined
+const unread = (): Post[] => db.posts
+  .filter(post => post.namesCheckedOn === null)
+  .sort((one, other) => one.publishedOn.localeCompare(other.publishedOn))
+
+let walking: Post[]
 if (askedId !== undefined) {
-  post = db.posts.find(candidate => candidate.id === askedId)
-  if (post === undefined) {
+  const asked = db.posts.find(candidate => candidate.id === askedId)
+  if (asked === undefined) {
     console.log(styles.error(`No post with id ${askedId}.`))
     process.exit(1)
   }
+  walking = [asked]
 } else {
-  console.log('')
-  post = await select<Post>({
-    message: 'Post',
-    choices: [...db.posts]
-      .sort((one, other) => other.publishedOn.localeCompare(one.publishedOn))
-      .map(candidate => ({ ...describePost(candidate, db), value: candidate }))
-  })
+  walking = unread()
+  console.log(styles.light(`> ${walking.length} of ${db.posts.length} posts never read`))
+  if (walking.length === 0) {
+    console.log('')
+    console.log(styles.success('Every post has been through.'))
+    console.log('')
+    process.exit(0)
+  }
 }
-
-const recording: Recording | undefined = db.recordings.find(candidate => candidate.id === post.recordingId)
-if (recording === undefined) {
-  console.log(styles.error(`Post ${post.id} points at recording ${post.recordingId}, which is not in the data.`))
-  process.exit(1)
-}
-
-const song: Song | undefined = db.songs.find(candidate => candidate.id === recording.songId)
-if (song === undefined) {
-  console.log(styles.error(`Recording ${recording.id} points at song ${recording.songId}, which is not in the data.`))
-  process.exit(1)
-}
-
-const creditedIds = [...new Set([
-  ...recording.byArtistIds,
-  ...recording.featuringArtistIds,
-  ...recording.remixedByArtistIds,
-  ...song.originalArtistIds
-])]
-
-const credited = creditedIds
-  .map(id => db.artists.find(artist => artist.id === id))
-  .filter((artist): artist is Artist => artist !== undefined)
-
-const described = describePost(post, db)
-console.log('')
-console.log(styles.info(described.name))
-console.log(styles.light(`> ${described.description}`))
-console.log(styles.light(`> ${credited.length} name${credited.length === 1 ? '' : 's'} and one title to ask about`))
 
 const TYPE = 'type a name'
-const STOP = 'stop'
 
-/**
- * One name against its candidate: what stays, or nothing when there is no question.
- *
- * `null` is both answers that change nothing — MusicBrainz agreeing, and the walk being
- * stopped — and `stopped` is what tells them apart to the caller.
- */
+/** One name against its candidate: what stays, or `null` when there is no question. */
 async function answer (field: string, ours: string, candidate: Candidate | null): Promise<string | null> {
   if (candidate === null) {
     console.log(styles.light(`  ${field}: ${ours}, nothing MusicBrainz answers for`))
@@ -120,85 +96,137 @@ async function answer (field: string, ours: string, candidate: Candidate | null)
     choices: [
       { name: ours, value: ours },
       { name: candidate.name, value: candidate.name },
-      { name: TYPE, value: TYPE },
-      { name: STOP, value: STOP }
+      { name: TYPE, value: TYPE }
     ]
   })
-  if (answered === STOP) return STOP
   const named = answered === TYPE
     ? (await input({ message: field, default: ours })).trim()
     : answered
   return named === '' || named === ours ? null : named
 }
 
-const renamedArtists = new Map<string, string>()
-let retitled: string | null = null
-let stopped = false
+/** What one post holds that a lookup can answer about: its credits, and the work. */
+type Names = { recording: Recording, song: Song, credited: Artist[] }
 
-for (const artist of credited) {
-  const candidates = await searchArtist(artist.name)
-  const answered = await answer('artist', artist.name, sameThing(artist.name, candidates, comparisonKey))
-  if (answered === STOP) { stopped = true; break }
-  if (answered !== null) renamedArtists.set(artist.id, answered)
+function namesOf (post: Post): Names | null {
+  const recording = db.recordings.find(candidate => candidate.id === post.recordingId)
+  if (recording === undefined) {
+    console.log(styles.error(`Post ${post.id} points at recording ${post.recordingId}, which is not in the data.`))
+    return null
+  }
+  const song = db.songs.find(candidate => candidate.id === recording.songId)
+  if (song === undefined) {
+    console.log(styles.error(`Recording ${recording.id} points at song ${recording.songId}, which is not in the data.`))
+    return null
+  }
+  const credited = [...new Set([
+    ...recording.byArtistIds,
+    ...recording.featuringArtistIds,
+    ...recording.remixedByArtistIds,
+    ...song.originalArtistIds
+  ])]
+    .map(id => db.artists.find(artist => artist.id === id))
+    .filter((artist): artist is Artist => artist !== undefined)
+  return { recording, song, credited }
 }
 
-if (!stopped) {
+let read = 0
+let corrected = 0
+
+for (const [index, post] of walking.entries()) {
+  const names = namesOf(post)
+  if (names === null) continue
+  const { recording, song, credited } = names
+
+  const described = describePost(post, db)
+  console.log('')
+  console.log(styles.title(`${index + 1} of ${walking.length}`))
+  console.log(styles.info(described.name))
+  console.log(styles.light(`> ${described.description}`))
+  console.log(styles.light(`> ${credited.length} name${credited.length === 1 ? '' : 's'} and one title to ask about`))
+  console.log('')
+
+  const action = await select<'next' | 'skip' | 'quit'>({
+    message: post.id,
+    choices: [
+      { name: 'next', value: 'next' },
+      { name: 'skip', value: 'skip' },
+      { name: 'quit', value: 'quit' }
+    ]
+  })
+  if (action === 'quit') break
+  if (action === 'skip') continue
+
+  const renamedArtists = new Map<string, string>()
+  for (const artist of credited) {
+    const candidates = await searchArtist(artist.name)
+    const answered = await answer('artist', artist.name, sameThing(artist.name, candidates, comparisonKey))
+    if (answered !== null) renamedArtists.set(artist.id, answered)
+  }
+
   // Narrowed by whoever plays it, under the name that is going to stay: a title alone
   // brings back every cover MusicBrainz holds.
   const first = credited.find(artist => recording.byArtistIds.includes(artist.id)) ?? credited[0]
   const by = first === undefined ? null : renamedArtists.get(first.id) ?? first.name
   const candidates = await searchRecording(song.title, by)
-  const answered = await answer('title', song.title, sameThing(song.title, candidates, comparisonKey))
-  if (answered === STOP) stopped = true
-  else if (answered !== null) retitled = answered
+  const retitled = await answer('title', song.title, sameThing(song.title, candidates, comparisonKey))
+
+  let writing = renamedArtists.size > 0 || retitled !== null
+  if (writing) {
+    console.log('')
+    console.log(styles.info('Renamed'))
+    for (const [id, named] of renamedArtists) {
+      const artist = db.artists.find(candidate => candidate.id === id)
+      console.log(`${styles.light('artist')} ${styles.regular(artist?.name ?? id)} ${styles.important(`→ ${named}`)}`)
+    }
+    if (retitled !== null) {
+      console.log(`${styles.light('title')} ${styles.regular(song.title)} ${styles.important(`→ ${retitled}`)}`)
+    }
+    console.log(styles.light('> slugs are left alone, so no address moves'))
+    console.log('')
+    const files = [
+      renamedArtists.size === 0 ? null : 'artists.ndjson',
+      retitled === null ? null : 'songs.ndjson'
+    ].filter((file): file is string => file !== null)
+    console.log(styles.danger(`${files.join(' and ')} ${files.length === 1 ? 'is' : 'are'} rewritten whole.`))
+    writing = await confirm({ message: 'Rename?', default: true })
+    if (!writing) console.log(styles.warning('Nothing renamed.'))
+  }
+
+  if (writing) {
+    if (renamedArtists.size > 0) {
+      const artists = db.artists.map(artist => {
+        const named = renamedArtists.get(artist.id)
+        return named === undefined ? artist : { ...artist, name: named }
+      })
+      await write('artists', artists)
+      db = { ...db, artists }
+    }
+    if (retitled !== null) {
+      const title = retitled
+      const songs = db.songs.map(candidate =>
+        candidate.id === song.id ? { ...candidate, title } : candidate)
+      await write('songs', songs)
+      db = { ...db, songs }
+    }
+    corrected += renamedArtists.size + (retitled === null ? 0 : 1)
+  }
+
+  // Marked as soon as the post has been through, so the walk resumes here and nowhere
+  // else. Answering nothing is also an answer: these names have been read.
+  const checkedOn = toTimestamp(new Date())
+  const posts = db.posts.map(candidate =>
+    candidate.id === post.id ? { ...candidate, namesCheckedOn: checkedOn } : candidate)
+  await write('posts', posts)
+  db = { ...db, posts }
+  read += 1
 }
 
-if (renamedArtists.size === 0 && retitled === null) {
-  console.log('')
-  console.log(styles.title('Post read.'))
-  console.log(styles.warning('Nothing renamed.'))
-  console.log('')
-  process.exit(0)
-}
+const left = unread().length
 
 console.log('')
-console.log(styles.info('Renamed'))
-for (const [id, named] of renamedArtists) {
-  const artist = db.artists.find(candidate => candidate.id === id)
-  console.log(`${styles.light('artist')} ${styles.regular(artist?.name ?? id)} ${styles.important(`→ ${named}`)}`)
-}
-if (retitled !== null) {
-  console.log(`${styles.light('title')} ${styles.regular(song.title)} ${styles.important(`→ ${retitled}`)}`)
-}
-console.log(styles.light('> slugs are left alone, so no address moves'))
-
-console.log('')
-const files = [
-  renamedArtists.size === 0 ? null : 'artists.ndjson',
-  retitled === null ? null : 'songs.ndjson'
-].filter((file): file is string => file !== null)
-console.log(styles.danger(`${files.join(' and ')} ${files.length === 1 ? 'is' : 'are'} rewritten whole.`))
-
-if (!await confirm({ message: 'Rename?', default: false })) {
-  console.log(styles.warning('Nothing written.'))
-  console.log('')
-  process.exit(0)
-}
-
-if (renamedArtists.size > 0) {
-  await write('artists', db.artists.map(artist => {
-    const named = renamedArtists.get(artist.id)
-    return named === undefined ? artist : { ...artist, name: named }
-  }))
-}
-
-if (retitled !== null) {
-  const title = retitled
-  await write('songs', db.songs.map(candidate =>
-    candidate.id === song.id ? { ...candidate, title } : candidate))
-}
-
-console.log('')
-console.log(styles.title('Post read.'))
-console.log(styles.success(`${renamedArtists.size + (retitled === null ? 0 : 1)} name${renamedArtists.size + (retitled === null ? 0 : 1) === 1 ? '' : 's'} corrected.`))
+console.log(styles.title('Posts read.'))
+console.log(styles.light(`> ${read} post${read === 1 ? '' : 's'} through, ${corrected} name${corrected === 1 ? '' : 's'} corrected`))
+if (left > 0) console.log(styles.light(`> ${left} left to read`))
+else console.log(styles.success('Every post has been through.'))
 console.log('')

@@ -27,7 +27,7 @@
     "post:create": "npm run build:scripts && node scripts/post-create/index.js",
     "post:edit": "npm run build:scripts && node scripts/post-edit/index.js",
     "post:delete": "npm run build:scripts && node scripts/post-delete/index.js",
-    "post:names": "npm run build:scripts && node scripts/post-names/index.js",
+    "post:names-lookup": "npm run build:scripts && node scripts/post-names-lookup/index.js",
     "artist:merge": "npm run build:scripts && node scripts/artist-merge/index.js",
     "song:edit": "npm run build:scripts && node scripts/song-edit/index.js",
     "song:merge": "npm run build:scripts && node scripts/song-merge/index.js",
