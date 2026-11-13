@@ -554,7 +554,7 @@ review += '## What the flags mean\n\n'
 for (const flag of ORDER) {
   const concerned = reviewed.filter(one => one.flags.includes(flag))
   if (concerned.length === 0) continue
-  review += `- **\`${flag}\`** — ${concerned.length} · ${REASONS[flag]}\n`
+  review += `- **\`${flag}\`** — ${concerned.length}, ${REASONS[flag]}\n`
 }
 review += '\n## The posts\n\n'
 review += '| flags | artist | song | kind | source | find | note | date | post |\n'
@@ -596,7 +596,7 @@ if (missing.length > 0 || origins.size !== posts.length) {
 console.log(styles.light(`> ${origins.size} of ${posts.length} archived permalinks accounted for`))
 console.log('')
 console.log(styles.info('Review'))
-console.log(styles.light(`> IMPORT-REVIEW.md · ${reviewed.length} posts, ${reviewed.filter(one => one.flags.length > 0).length} of them flagged`))
+console.log(styles.light(`> IMPORT-REVIEW.md — ${reviewed.length} posts, ${reviewed.filter(one => one.flags.length > 0).length} of them flagged`))
 console.log('')
 console.log(styles.success('Archive imported.'))
 console.log('')

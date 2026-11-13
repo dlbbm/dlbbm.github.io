@@ -344,46 +344,18 @@ The thematic classification is the large one and the rest is in no fixed order.
 [gems]: https://en.wikipedia.org/wiki/Music_and_emotion
 [genome]: https://en.wikipedia.org/wiki/Music_Genome_Project
 
-- **A release layer, the day one is earned.** `Source.name` carries which edition a given
-  audio is — `remaster 2015`, `original mono mix` — because a remaster is the same take
-  and only the thing you point at differs. schema.org's own answer is `MusicRelease`,
-  told apart by `datePublished`, `catalogNumber`, `recordLabel` and `musicReleaseFormat`,
-  and it is deliberately not adopted: it hangs off `MusicAlbum`, which this blog does not
-  model, so taking it would mean inventing an entity for one label. **The trigger to
-  revisit** is the day the same edition is linked on two services and the fact should be
-  shared rather than repeated — then a release record between `Recording` and `Source`
-  has paid for itself. Until then the field is free text, and a vocabulary gets extracted
-  from it the way `recordingKinds` describes: a value earns its place by recurring.
-- **A recording of no composition.** `Recording.songId` is required and `Song.title` is a
-  plain string, so every take hangs off a named work — which is right for a song and wrong
-  for a DJ set. `Live at the Paradise Studios`, `Live at the Blue Parrot Club` and the two
-  Boiler Room sets are therefore works named after a performance, since there is nowhere
-  else to put the name. The honest shape is `songId: SongId | null`, and it reaches
-  `build:data`, the front's labels, `describeRecording` and `data:check-references` for the
-  sake of four records. **Left as it is on purpose**, and the trigger to revisit is a fifth:
-  whether sets are a kind of post this blog makes or four accidents of the archive is the
-  thing nobody can answer yet.
 - **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
   `arrangement`. Left out on purpose: the count carries the only distinction the front
   makes today, and a work built on exactly one other work shows nothing rather than
   claiming to be a medley. MusicBrainz puts that information on the relationship rather
   than on either record, which is the shape to copy the day it is wanted.
-- **A cover image on a stored file.** `FileSource` carries a `kind` and a `path` and
-  nothing else, so a local mp3 has no picture and `FileMedia` shows a flat ground where a
-  sleeve should be. Wants a field on the type, a question in `post:create` — the file
-  already goes through `storeFile`, so a second one costs nothing — and the front reading
-  it as the player's `poster`.
-- **The file player has never met a file.** Everything in the database is a YouTube or
-  Vimeo embed, so the `Video` wrapper, its play button, its 4px timeline and its two
-  clocks have only ever been reasoned about. Wants one post with an mp3 and no external
-  source, end to end: `post:create`, `build:data`, the stream, the post page.
-- **More hosts, once a dead source is being replaced.** `mediaServices` names six and
-  `Embed` renders three of them. The two worth adding for this archive are
-  **archive.org**, where a lot of what Tumblr lost actually lives, and **dailymotion**,
-  which a French blog of 2012 would have used. Apple Music, Deezer and Tidal embed only
-  a thirty-second preview unless the reader is signed in, which is worse than a link.
-  Adding a name to the enum is not enough on its own: without a player in `Embed`, a
-  source falls back to a bare link.
+- **Nothing here is played off a local file, and nothing is expected to be.** Every
+  source in the archive is an embed, so `FileSource`, `FileMedia` and the player that
+  reads them are a shape the data has never taken. Which settles several questions by
+  removing them: no cover image on a stored file, no end-to-end run of the file player,
+  no weighing of what a repository can hold, and no second embed host — this blog stays
+  on YouTube, and what `Embed` should render belongs to `Embed` the day it climbs into
+  `mf-tools`.
 - **A scheduled post coming of age while the tab is open.** `posts.json` gives the trigger
   for free: the nearest `publishedOn` ahead of now. Schedule one timer at a time, capped at
   around ten minutes and re-armed on each fire, and re-check on `visibilitychange` — a
@@ -391,9 +363,6 @@ The thematic classification is the large one and the rest is in no fixed order.
   anyway. When it fires, prepend rather than re-slice: a page showing eleven posts until
   the reader navigates is gentler than a post vanishing under their eyes. A client whose
   clock is behind shows it late, which is nobody's problem.
-- **Media weight.** A local file lives twice, in `data/files` and in the published branch,
-  and Pages caps a site at 1 GB. If local files become the norm rather than the exception,
-  they will have to be served from somewhere else, with only the reference kept here.
 - **One design system across several sites.** The token layer, the theme in five colors
   and the five font slots are meant to carry over to the other small sites to come, where
   only the colors and the fonts change. Whether that becomes shared code — a package, or
