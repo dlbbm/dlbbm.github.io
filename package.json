@@ -43,7 +43,8 @@
     "data:check-orphans": "npm run data:check -- orphans",
     "data:check-duplicates": "npm run data:check -- duplicates",
     "data:merge-duplicates": "npm run build:scripts && node scripts/data-merge-duplicates/index.js",
-    "data:places": "npm run build:scripts && node scripts/data-places/index.js"
+    "data:places": "npm run build:scripts && node scripts/data-places/index.js",
+    "data:names": "npm run build:scripts && node scripts/data-names/index.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",

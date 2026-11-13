@@ -52,6 +52,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run data:check` | Reads the data against itself. Also `data:check-references`, `data:check-orphans`, `data:check-duplicates` |
 | `npm run data:merge-duplicates` | Drops the slug lines written twice, then walks every pair the duplicate pass finds, artists and works alike |
 | `npm run data:places` | Lists every venue and city string with its count, and renames one everywhere |
+| `npm run data:names` | Reads every artist name against MusicBrainz and offers ours, theirs, or one typed by hand |
 
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
@@ -160,11 +161,27 @@ Then the two sweeps over the hand-written strings, which nothing validates. Each
 one by one: a blind substitution would eat `The End`, which is a club called that, and
 `The Beatles`, which keeps its article in both languages.
 
-- **The article in an artist's name.** 39 of the 423 artists carry one. The piling under T
-  on `/artists` is **not** the question — the display is fine as it is; the question is
-  whether each name is the one the act uses, `Pixies` against `The Pixies`, and there is no
-  industry rule to apply, only each band's own usage. So this one is read name by name
-  against a reference, and the standard to follow is the English one, never the French.
+- **The article in an artist's name, and the spelling with it.** 39 of the 423 artists
+  carry one. The piling under T on `/artists` is **not** the question — the display is fine
+  as it is; the question is whether each name is the one the act uses, `Pixies` against
+  `The Pixies`, and there is no industry rule to apply, only each band's own usage. So this
+  one is read name by name against a reference, and the standard to follow is the English
+  one, never the French.
+
+  **`data:names` is the pass**, and MusicBrainz is the reference: it asks for each name,
+  one request a second, and shows the two side by side wherever they differ character for
+  character — ours, theirs, or one typed by hand, `stop` to end the walk. Slugs are left
+  alone, a slug belonging to the record rather than to the name. The lookups are cached in
+  `.musicbrainz.ndjson`, out of git, and a renamed artist is asked again on the next run.
+
+  **The article turned out to be a non-question**: of 423 names, two lack an article
+  MusicBrainz carries — `TOYS` against `The Toys`, `Brian Jonestown Massacre` against
+  `The Brian Jonestown Massacre` — and none carries one it does not. What the sweep found
+  instead is spelling: `Sebastien Tellier`, `Death In Vegas`, `Outkast`, `Los Angeles
+  Negros`, `Nicone`, `Dona Dumitru Siminica`. Beside those sit the stylings to refuse —
+  `SALEM`, `LORN`, `DARKSIDE`, `alt‐J`, `halina heron`, and `and the` where this data
+  writes `& The` — which is why the pass answers nothing on its own. Two names MusicBrainz
+  has no entry for are wrong all the same: `Billie Holliday` and `Mickael Jackson`.
 - **The article in a venue's name.** Nine of the 24 venues begin with one, seven of them
   capitalised and part of the name on the sign — `The End` is a club called that. The two
   lowercase ones, `the Madison Square Garden` and `the Blue Parrot Beach Club`, are

@@ -21,6 +21,10 @@ export const ABOUT_FILE = path.join(DATA, 'about.json')
 // as readily as by `idea`.
 export const IDEAS_FILE = path.join(CWD, 'IDEAS.md')
 
+// Outside `data/` and out of git: what MusicBrainz answered about each artist name, kept
+// only so that a second `data:names` run costs no requests. It goes stale on its own.
+export const MUSICBRAINZ_FILE = path.join(CWD, '.musicbrainz.ndjson')
+
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
   slugs: path.join(DATA, 'slugs.ndjson'),
