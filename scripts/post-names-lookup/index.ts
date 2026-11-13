@@ -1,9 +1,9 @@
 /**
  * The posts whose names have never been read against MusicBrainz, walked one at a time.
  *
- * It opens on the oldest post carrying no `namesCheckedOn` and shows it; `next` asks
- * MusicBrainz about it, `skip` moves on and leaves it unread, `quit` stops there. What
- * gets looked up is every artist the post credits — played by, featuring, remixed by, and
+ * It opens on the oldest post carrying no `namesCheckedOn` and shows it; `look up` asks
+ * MusicBrainz about it, `skip` moves on and leaves it unread, `quit` stops there. What gets
+ * looked up is every artist the post credits — played by, featuring, remixed by, and
  * the work's original artists — and then the work's title, narrowed by who plays it. Two
  * or three requests a post, a second apart.
  *
@@ -77,10 +77,10 @@ for (const [index, post] of walking.entries()) {
   console.log(styles.light(`> ${names.credited.length} name${names.credited.length === 1 ? '' : 's'} and one title to ask about`))
   console.log('')
 
-  const action = await select<'next' | 'skip' | 'quit'>({
+  const action = await select<'look up' | 'skip' | 'quit'>({
     message: post.id,
     choices: [
-      { name: 'next', value: 'next' },
+      { name: 'look up', value: 'look up' },
       { name: 'skip', value: 'skip' },
       { name: 'quit', value: 'quit' }
     ]

@@ -50,7 +50,7 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`), then offers the MusicBrainz lookup |
 | `npm run post:edit` | Asks a post again, prefilled, and offers the lookup when its names have never been read. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
-| `npm run post:names-lookup` | Walks the posts never read against MusicBrainz, `next` / `skip` / `quit`, and offers ours, theirs, or one typed by hand. Takes `-- <postId>` |
+| `npm run post:names-lookup` | Walks the posts never read against MusicBrainz, `look up` / `skip` / `quit`, and offers ours, theirs, or one typed by hand. Takes `-- <postId>` |
 | `npm run artist:merge` | Joins two artists into one. Takes `-- <from> <into>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
 | `npm run song:merge` | Joins two works into one. Takes `-- <from> <into>` |
@@ -218,8 +218,8 @@ one by one: a blind substitution would eat `The End`, which is a club called tha
   `Beverly Hills, CA`, Beverly Hills being its own city, and its name probably
   `Beverly Theatre`, article included out of the sentence. `Leon Russell's Paradise
   Studios` is filed under Los Angeles and was in Burbank, also its own city. `The End`,
-  Darkside in October 2013, is a name thin enough to have been read off a post title; the
-  YouTube source on that recording is what would settle it. `Independence, MS` looks like a
+  Darkside in October 2013, read thin enough to have been taken off a post title, and it
+  was: the venue is `The End Rooftop`, which the record now says. `Independence, MS` looks like a
   Missouri typo and is not one: R.L. Burnside in 1978, Tate County, Mississippi.
 
 ## 3. Publishing
@@ -342,6 +342,15 @@ The thematic classification is the large one and the rest is in no fixed order.
   shared rather than repeated — then a release record between `Recording` and `Source`
   has paid for itself. Until then the field is free text, and a vocabulary gets extracted
   from it the way `recordingKinds` describes: a value earns its place by recurring.
+- **A recording of no composition.** `Recording.songId` is required and `Song.title` is a
+  plain string, so every take hangs off a named work — which is right for a song and wrong
+  for a DJ set. `Live at the Paradise Studios`, `Live at the Blue Parrot Club` and the two
+  Boiler Room sets are therefore works named after a performance, since there is nowhere
+  else to put the name. The honest shape is `songId: SongId | null`, and it reaches
+  `build:data`, the front's labels, `describeRecording` and `data:check-references` for the
+  sake of four records. **Left as it is on purpose**, and the trigger to revisit is a fifth:
+  whether sets are a kind of post this blog makes or four accidents of the archive is the
+  thing nobody can answer yet.
 - **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
   `arrangement`. Left out on purpose: the count carries the only distinction the front
   makes today, and a work built on exactly one other work shows nothing rather than
