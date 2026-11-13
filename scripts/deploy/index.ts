@@ -59,6 +59,26 @@ const branch = run('git', ['rev-parse', '--abbrev-ref', 'HEAD'])
 const commit = run('git', ['rev-parse', '--short', 'HEAD'])
 const subject = run('git', ['log', '-1', '--pretty=%s'])
 
+// And that commit has to be somewhere other than this laptop. `production` is derived in
+// full from it, so a deploy from an unpushed commit puts a site online that nobody can
+// rebuild — and the branch would name a commit the remote has never heard of. Compared
+// against the tracking ref as it stands locally: nothing here fetches, so a push of your
+// own is all this asks for.
+const tracking = spawnSync('git', ['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}'], {
+  cwd: CWD,
+  encoding: 'utf-8'
+})
+if (tracking.status !== 0) {
+  console.log(styles.error(`${branch} tracks nothing. Push it before deploying.`))
+  process.exit(1)
+}
+const ahead = run('git', ['rev-list', '--count', '@{u}..HEAD'])
+if (ahead !== '0') {
+  console.log(styles.error(`${ahead} commit${ahead === '1' ? '' : 's'} not on ${tracking.stdout.trim()}. Push before deploying.`))
+  console.log(styles.light(run('git', ['log', '--oneline', '@{u}..HEAD'])))
+  process.exit(1)
+}
+
 console.log(styles.light(`> ${branch} at ${commit} — ${subject}`))
 console.log(styles.danger(`This builds and pushes to ${REMOTE}/${BRANCH}, which is what the site serves.`))
 console.log('')
