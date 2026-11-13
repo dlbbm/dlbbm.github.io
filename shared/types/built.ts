@@ -106,10 +106,17 @@ export type BuiltArtistIndexEntry = BuiltArtist & {
   postCount: number
 }
 
-/** What the blog says about itself, and the only built file that is prose. */
+/**
+ * What the blog says about itself, and the only built file that is prose.
+ *
+ * `shortTitle` is the name the blog goes by in a sentence — `on dlbbm` — where the full
+ * one would be a mouthful. It is what the share lines are written with, and it lives here
+ * because every other site-level string does.
+ */
 export type BuiltAbout = {
   url: string
   title: string
+  shortTitle: string
   description: string
   paragraphs: string[]
 }

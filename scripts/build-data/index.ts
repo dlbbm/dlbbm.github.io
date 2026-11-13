@@ -57,6 +57,10 @@ if (about === null) {
   process.exit(1)
 }
 
+// Named here rather than read from `about` where it is used: a function closing over it
+// is outside the narrowing the check above gives.
+const shortTitle = about.shortTitle
+
 // An artist with no slug has no URL, which would make its page unreachable and its name
 // unlinkable. Every command that names an artist creates one as it goes, so an artist
 // arriving here without a slug was written into `data/` by hand — rare enough to be worth
@@ -192,13 +196,17 @@ async function emit (relativePath: string, contents: unknown): Promise<void> {
   await writeFile(file, `${JSON.stringify(contents)}\n`, { encoding: 'utf-8' })
 }
 
+/**
+ * The line under a link where it is pasted, which is read by someone deciding whether to
+ * follow it rather than by anyone cataloguing anything.
+ *
+ * A sentence, and a short one. What was here before — the kind, the cover, the medley, the
+ * date — was the record describing itself to a machine, which is what the page is for.
+ */
 function describePost (post: BuiltPost): string {
-  return [
-    post.recording.kind,
-    post.isCover ? `${post.originalArtists.map(artist => artist.name).join(', ')} cover` : null,
-    post.isMedley ? `medley of ${post.derivedFrom.map(work => work.title).join(', ')}` : null,
-    `posted on ${post.publishedOn.slice(0, 10)}`
-  ].filter((part): part is string => part !== null && part !== undefined).join(' · ')
+  const credited = post.credits.map(artist => artist.name).join(', ')
+  const title = post.recording.title ?? post.song.title
+  return `${title}, by ${credited}, on ${shortTitle}`
 }
 
 // Everything is rewritten from scratch, so a post deleted or hidden since the last build
@@ -248,22 +256,22 @@ for (const artist of db.artists) {
   // What they are heard on, which is not what their page holds: a cover of theirs is on it
   // and is not one of their posts.
   const performed = theirs.filter(post => performsOn(built, post)).length
-  const covered = theirs.length - performed
   artistEntries.push({ ...built, postCount: performed })
-  const counts = [
-    performed === 0 ? null : `${performed} post(s)`,
-    covered === 0 ? null : `${covered} cover(s) of their songs`
-  ].filter((part): part is string => part !== null).join(', ')
-  route('artist', built.url, pageTitle(built.name, about.title), counts)
+  route(
+    'artist',
+    built.url,
+    pageTitle(built.name, about.title),
+    `All the songs from ${built.name} on ${about.shortTitle}`
+  )
 }
 
 // The stream itself, in order and whole: this is what pagination is computed from.
 await emit('posts.json', posts.map(indexEntry))
-route('posts', routeUrl('posts'), pageTitle(pageNames.posts, about.title), `${posts.length} posts`)
+route('posts', routeUrl('posts'), pageTitle(pageNames.posts, about.title), `Every song on ${about.shortTitle}`)
 
 artistEntries.sort((one, other) => one.name.localeCompare(other.name))
 await emit('artists.json', artistEntries)
-route('artists', routeUrl('artists'), pageTitle(pageNames.artists, about.title), `${artistEntries.length} artists`)
+route('artists', routeUrl('artists'), pageTitle(pageNames.artists, about.title), `Everyone heard on ${about.shortTitle}`)
 
 await emit('about.json', about)
 route('about', routeUrl('about'), pageTitle(pageNames.about, about.title), about.description)

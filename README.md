@@ -241,6 +241,12 @@ actually render, and a look at the 404.
   scheduled post in `src/utils/fetch/index.ts`. In memory on purpose: the mode lasts as
   long as the tab, and the flag is read once because the router rewrites the URL on the
   first link followed. Never exercised against a live site.
+- **A pasted link says a sentence.** `og:description` is what someone decides to follow a
+  link on, so a post reads `Heartbeats, by The Knife, on dlbbm` and an artist
+  `All the songs from The Velvet Underground on dlbbm`, where both used to list the kind,
+  the date and a count — the record describing itself to a machine, which is what the page
+  is for. `og:type` is `article` on a post and `website` elsewhere. The blog's short name
+  is `about.json`'s, beside the full one: every other site-level string lives there.
 - **`describePost` reads its date in words** — `Sat, dec 12th at 10h51`, through
   `timestampAsWords`, in `post:edit`'s list, in `post:names-lookup`'s header and in
   `npm run list` alike, the three of them sharing the line.
