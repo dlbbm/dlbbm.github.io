@@ -96,7 +96,7 @@ async function checkOrphans (): Promise<void> {
   for (const [index, orphan] of orphans.entries()) {
     const described = describeOrphan(orphan, db)
     console.log('')
-    console.log(styles.info(`${index + 1} of ${orphans.length} · ${orphan.collection}`))
+    console.log(styles.info(`${index + 1} of ${orphans.length} — ${orphan.collection}`))
     console.log(styles.important(described.name))
     console.log(styles.light(described.description))
     if (stopped) continue

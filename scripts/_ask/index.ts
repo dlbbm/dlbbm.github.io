@@ -71,8 +71,8 @@ const MEDIA_HOSTS: Record<MediaService, {
   youtube: {
     hostnames: [/(^|\.)youtube\.com$/, /(^|\.)youtube-nocookie\.com$/, /^youtu\.be$/],
     kind: 'video',
-    forms: 'https://www.youtube.com/watch?v=ID · https://youtu.be/ID'
-      + ' · https://www.youtube.com/{shorts,embed,live,v}/ID'
+    forms: 'https://www.youtube.com/watch?v=ID, https://youtu.be/ID'
+      + ', https://www.youtube.com/{shorts,embed,live,v}/ID'
   },
   spotify: {
     hostnames: [/(^|\.)spotify\.com$/],
@@ -220,9 +220,9 @@ function songChoice (song: Song, recordingPool: Recording[], artistPool: Artist[
   const originals = namesOf(song.originalArtistIds, artistPool).map(artist => artist.name)
   const aliases = song.titleAliases.length === 0
     ? ''
-    : ` · also ${song.titleAliases.join(', ')}`
+    : `, also ${song.titleAliases.join(', ')}`
   return {
-    name: `${song.title} · ${describeSongCredits(song, recordingPool, artistPool)}`,
+    name: `${song.title} — ${describeSongCredits(song, recordingPool, artistPool)}`,
     description: `originally ${originals.length === 0 ? 'unclaimed' : originals.join(', ')}${aliases}`,
     value: song
   }
@@ -617,10 +617,10 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
   }
 
   if (source !== null && source.nature === 'media') {
-    console.log(styles.light(`> ${source.kind} · ${source.service}`))
+    console.log(styles.light(`> ${source.kind}, ${source.service}`))
   }
   if (source !== null && source.nature === 'file') {
-    console.log(styles.light(`> ${source.kind} · to be copied into data/files`))
+    console.log(styles.light(`> ${source.kind}, to be copied into data/files`))
   }
 
   hint('when it goes out — YYYY-MM-DD HH:MM, or said out loud')

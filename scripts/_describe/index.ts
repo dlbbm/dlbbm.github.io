@@ -47,7 +47,7 @@ export function describeRecording (recording: Recording, db: Db): Described {
         : `remixed by ${namesOf(recording.remixedByArtistIds, db.artists)}`,
       recording.performedOn === null ? null : `played ${formatPartialDate(recording.performedOn)}`,
       describeSource(recording)
-    ].filter((part): part is string => part !== null && part !== undefined).join(' · ')
+    ].filter((part): part is string => part !== null && part !== undefined).join(', ')
   }
 }
 
@@ -56,7 +56,7 @@ export function describePost (post: Post, db: Db): Described {
   if (recording === undefined) {
     return {
       name: `${post.hidden ? '(hidden) ' : ''}unknown recording`,
-      description: `${timestampAsWords(post.publishedOn)} · points at ${post.recordingId}`
+      description: `${timestampAsWords(post.publishedOn)} — points at ${post.recordingId}`
     }
   }
   const described = describeRecording(recording, db)
@@ -64,7 +64,7 @@ export function describePost (post: Post, db: Db): Described {
     name: `${post.hidden ? '(hidden) ' : ''}${described.name}`,
     description: [timestampAsWords(post.publishedOn), described.description]
       .filter(part => part !== '')
-      .join(' · ')
+      .join(' — ')
   }
 }
 
@@ -77,7 +77,7 @@ export function describeSong (song: Song, db: Db): Described {
         ? 'unclaimed'
         : `originally ${namesOf(song.originalArtistIds, db.artists)}`,
       `${recordings.length} recording${recordings.length === 1 ? '' : 's'}`
-    ].join(' · ')
+    ].join(', ')
   }
 }
 
@@ -95,7 +95,7 @@ export function describeArtist (artist: Artist, db: Db): Described {
       featured === 0 ? null : `featured on ${featured}`,
       remixed === 0 ? null : `remixed ${remixed}`,
       original === 0 ? null : `originally wrote ${original}`
-    ].filter((part): part is string => part !== null).join(' · ') || 'nothing points at it'
+    ].filter((part): part is string => part !== null).join(', ') || 'nothing points at it'
   }
 }
 
