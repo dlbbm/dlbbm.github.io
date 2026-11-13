@@ -12,6 +12,7 @@ import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/inde
 import { append, readDb, saveSong, type Db } from '../_db/index.js'
 import { printPending } from '../_describe/index.js'
 import { readIdeas, removeIdeas, type Idea } from '../_ideas/index.js'
+import { offerLookUp } from '../_names/index.js'
 
 const db: Db = await readDb()
 
@@ -85,4 +86,8 @@ printRecords({
   recordings: [draft.recording],
   posts: [draft.post]
 })
+
+// The names are read while the post is still in front of you, rather than months later in
+// `post:names-lookup`. Declining leaves the post to that walk.
+await offerLookUp(draft.post.id)
 console.log('')

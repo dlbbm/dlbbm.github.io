@@ -47,8 +47,8 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 | `npm run build` | `build:data`, then `build:src`, then `build:shells` |
 | `npm run deploy` | Builds and pushes `dist` to the `production` branch |
 | `npm run typecheck` | `check:scripts` and `check:src` |
-| `npm run post` | Writes a post, by asking for it (alias of `post:create`) |
-| `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
+| `npm run post` | Writes a post, by asking for it (alias of `post:create`), then offers the MusicBrainz lookup |
+| `npm run post:edit` | Asks a post again, prefilled, and offers the lookup when its names have never been read. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
 | `npm run post:names-lookup` | Walks the posts never read against MusicBrainz, `next` / `skip` / `quit`, and offers ours, theirs, or one typed by hand. Takes `-- <postId>` |
 | `npm run artist:merge` | Joins two artists into one. Takes `-- <from> <into>` |
@@ -265,6 +265,13 @@ The thematic classification is the large one and the rest is in no fixed order.
   Sarah Vaughan's `Blackbird` against the Beatles' — and whether a genre is a closed
   pick-list while a tag is free text, which is what keeps a standard typology from
   drifting into `Electro`, `electronic` and `Électro`. Then `/genres` and `/genre/<slug>`.
+
+  **The lookup process gets revisited here.** `post:names-lookup` reads a post's names
+  against MusicBrainz one post at a time, and MusicBrainz also carries genres on its
+  artists, releases and recordings — so once the three axes above are settled, that same
+  walk is the obvious place to propose them, and this register the obvious bank to propose
+  them from. What the walk should become, and whether a proposed genre is answered the way
+  a name is, is a question to take then rather than now: the shape of the axes decides it.
 
 [lcgft]: https://id.loc.gov/authorities/genreForms.html
 [discogs]: https://support.discogs.com/hc/articles/360005055213-Database-Guidelines-9-Genres-Styles

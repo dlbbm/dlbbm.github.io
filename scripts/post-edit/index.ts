@@ -17,6 +17,7 @@ import type { Post, Recording } from '../../shared/types/index.js'
 import { askDraft, printDraft, printRecords, storeDraftFile } from '../_ask/index.js'
 import { append, readDb, saveSong, write, type Db } from '../_db/index.js'
 import { describePost, printPending } from '../_describe/index.js'
+import { offerLookUp } from '../_names/index.js'
 
 const db: Db = await readDb()
 
@@ -102,4 +103,8 @@ printRecords({
   recordings: [draft.recording],
   posts: [draft.post]
 })
+
+// Offered only on a post whose names have never been read: an edit that renamed nothing
+// is no reason to ask again, and `post:names-lookup -- <postId>` is there for when it is.
+if (draft.post.namesCheckedOn === null) await offerLookUp(draft.post.id)
 console.log('')
