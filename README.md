@@ -44,7 +44,7 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 | Command | What it does |
 | --- | --- |
 | `npm start` | Builds, then watches `src` and serves `dist` on port 3000 |
-| `npm run build` | `build:data`, then `build:src`, then `build:shells` |
+| `npm run build` | `clean:dist`, then `build:data`, `build:src` and `build:shells` |
 | `npm run deploy` | Builds and pushes `dist` to the `production` branch |
 | `npm run typecheck` | `check:scripts` and `check:src` |
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`), then offers the MusicBrainz lookup |
@@ -65,6 +65,12 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 The pieces are meant to be run on their own as much as together: `build:data`, `build:src`
 and `build:shells` each do one thing, `watch:src` and `serve:dist` are what `start`
 composes, and `clean:scripts` is what `build:scripts` runs first.
+
+**A whole `build` starts from an empty `dist`.** Only `build:data` clears what it owns, so
+a shell for a post deleted since would otherwise sit there for ever and ship with the next
+deploy — 2856 of them had piled up by the time anyone looked. Run on its own, `build:shells`
+still only writes, which is what makes it quick to re-run; `clean:dist` is the one that
+makes a build true.
 
 `build:data` is also the only thing that creates a missing slug, and the only write any
 build makes to `data/`. An artist with no slug has no URL and no page, so the build names

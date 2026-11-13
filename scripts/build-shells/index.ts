@@ -56,8 +56,16 @@ function escapeHtml (value: string): string {
     .replace(/'/g, '&#39;')
 }
 
+// A post is the one page here that is a piece of writing about something; the rest are
+// the site showing itself. It is what makes a pasted link render as an article rather
+// than as a site, and the only `og:type` this blog has a use for.
+function typeOf (route: BuiltRoute): string {
+  return route.kind === 'post' ? 'article' : 'website'
+}
+
 function fill (route: BuiltRoute): string {
   return shell
+    .replace(/\{\{type\}\}/g, escapeHtml(typeOf(route)))
     .replace(/\{\{title\}\}/g, escapeHtml(route.title))
     .replace(/\{\{description\}\}/g, escapeHtml(route.description))
     .replace(/\{\{url\}\}/g, escapeHtml(`${siteUrl}${route.url}`))
