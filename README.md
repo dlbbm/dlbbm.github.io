@@ -203,10 +203,11 @@ the only command here that pushes. What a first run asks for beyond pressing go:
 pointed at that branch, a read of a handful of shells and their OpenGraph tags as they
 actually render, and a look at the 404.
 
-- **`?preview`, decided and still unwritten.** A bare `?preview` key read once at import
-  into a module-level flag, exposed as `isVisible (entry)` replacing the four `Date.now()`
-  comparisons in `src/utils/fetch/index.ts`. In memory on purpose. It is what makes a
-  scheduled post readable before its date, which is worth having the day the blog is live.
+- **`?preview` is written.** A bare `?preview` key read once at import into a module-level
+  flag, exposed as `isVisible (entry)` and used by the three passes that withheld a
+  scheduled post in `src/utils/fetch/index.ts`. In memory on purpose: the mode lasts as
+  long as the tab, and the flag is read once because the router rewrites the URL on the
+  first link followed. Never exercised against a live site.
 - **`describePost` prints a raw timestamp**, in `post:edit`'s list and in `npm run list`.
   `timestampAsWords` exists and was left out because the two commands share the line.
 

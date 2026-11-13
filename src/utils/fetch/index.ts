@@ -12,7 +12,7 @@ import type {
   BuiltPostIndexEntry,
   BuiltPostPage
 } from '../../../shared/types/built.js'
-import type { PostId } from '../../../shared/types/index.js'
+import type { PostId, Timestamp } from '../../../shared/types/index.js'
 
 async function readJson<T> (url: string): Promise<T> {
   const response = await fetch(url)
@@ -21,15 +21,27 @@ async function readJson<T> (url: string): Promise<T> {
 }
 
 /**
- * The stream, in order, without the posts whose moment has not come.
- *
- * A scheduled post ships with the build, so dropping it is the front's job. Timestamps
- * carry an offset, which is why the comparison parses rather than compares strings.
+ * Read once, at import, and held in memory on purpose: the mode lasts as long as the tab
+ * and leaves nothing behind. The router replaces the URL as the reader navigates, so a
+ * flag read on every call would end at the first link followed.
  */
+const previewing = new URLSearchParams(window.location.search).has('preview')
+
+/**
+ * Whether a post is the reader's to see — its moment has come, or the page is previewing.
+ *
+ * A scheduled post ships with the build, so withholding it is the front's job, and
+ * `?preview` is what hands it over before its date. Timestamps carry an offset, which is
+ * why the comparison parses rather than compares strings.
+ */
+export function isVisible (entry: { publishedOn: Timestamp }): boolean {
+  return previewing || Date.parse(entry.publishedOn) <= Date.now()
+}
+
+/** The stream, in order, without the posts whose moment has not come. */
 export async function fetchPublishedPosts (): Promise<BuiltPostIndexEntry[]> {
   const entries = await readJson<BuiltPostIndexEntry[]>('/data/posts.json')
-  const now = Date.now()
-  return entries.filter(entry => Date.parse(entry.publishedOn) <= now)
+  return entries.filter(entry => isVisible(entry))
 }
 
 /** What the blog says about itself, which the manifest carries with everything else. */
@@ -54,7 +66,7 @@ export async function fetchArtists (): Promise<BuiltArtistIndexEntry[]> {
 export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
   try {
     const { post } = await readJson<BuiltPostPage>(`/data/post/${id}.json`)
-    return Date.parse(post.publishedOn) <= Date.now() ? post : null
+    return isVisible(post) ? post : null
   } catch {
     return null
   }
@@ -75,9 +87,8 @@ export type ArtistPage = {
 export async function fetchArtistPage (slug: string): Promise<ArtistPage | null> {
   try {
     const page = await readJson<BuiltArtistPage>(`/data/artist/${slug}.json`)
-    const now = Date.now()
     const posts = await Promise.all(page.posts
-      .filter(entry => Date.parse(entry.publishedOn) <= now)
+      .filter(entry => isVisible(entry))
       .map(async entry => (await readJson<BuiltPostPage>(`/data/post/${entry.id}.json`)).post))
     return { artist: page.artist, posts }
   } catch {
