@@ -56,13 +56,15 @@ export function describePost (post: Post, db: Db): Described {
   if (recording === undefined) {
     return {
       name: `${post.hidden ? '(hidden) ' : ''}unknown recording`,
-      description: `${post.publishedOn} · points at ${post.recordingId}`
+      description: `${timestampAsWords(post.publishedOn)} · points at ${post.recordingId}`
     }
   }
   const described = describeRecording(recording, db)
   return {
     name: `${post.hidden ? '(hidden) ' : ''}${described.name}`,
-    description: [post.publishedOn, described.description].filter(part => part !== '').join(' · ')
+    description: [timestampAsWords(post.publishedOn), described.description]
+      .filter(part => part !== '')
+      .join(' · ')
   }
 }
 

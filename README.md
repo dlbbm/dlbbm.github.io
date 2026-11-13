@@ -235,8 +235,9 @@ actually render, and a look at the 404.
   scheduled post in `src/utils/fetch/index.ts`. In memory on purpose: the mode lasts as
   long as the tab, and the flag is read once because the router rewrites the URL on the
   first link followed. Never exercised against a live site.
-- **`describePost` prints a raw timestamp**, in `post:edit`'s list and in `npm run list`.
-  `timestampAsWords` exists and was left out because the two commands share the line.
+- **`describePost` reads its date in words** — `Sat, dec 12th at 10h51`, through
+  `timestampAsWords`, in `post:edit`'s list, in `post:names-lookup`'s header and in
+  `npm run list` alike, the three of them sharing the line.
 
 ## 4. After publication
 
