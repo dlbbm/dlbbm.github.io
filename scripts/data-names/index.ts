@@ -30,25 +30,7 @@ import type { Artist } from '../../shared/types/index.js'
 import { comparisonKey } from '../_check/index.js'
 import { MUSICBRAINZ_FILE } from '../_config/index.js'
 import { readDb, write, type Db } from '../_db/index.js'
-
-// Below it, a search hit is answering about somebody else.
-const SCORE = 85
-
-type Candidate = {
-  name: string
-  score: number
-  type: string | null
-  country: string | null
-  disambiguation: string | null
-  aliases: string[]
-}
-
-/** One stored lookup, kept with the name it was made for. */
-type Looked = {
-  id: string
-  name: string
-  candidates: Candidate[]
-}
+import { describeCandidate, sameThing, type Candidate, type Looked } from '../_musicbrainz/index.js'
 
 if (!existsSync(MUSICBRAINZ_FILE)) {
   console.log('')
@@ -73,11 +55,7 @@ const artists = [...db.artists].sort((one, other) => one.name.localeCompare(othe
 function sameAct (artist: Artist): Candidate | null {
   const looked = stored.get(artist.id)
   if (looked === undefined || looked.name !== artist.name) return null
-  const key = comparisonKey(artist.name)
-  return looked.candidates
-    .filter(candidate => candidate.score >= SCORE)
-    .find(candidate => comparisonKey(candidate.name) === key
-      || candidate.aliases.some(alias => comparisonKey(alias) === key)) ?? null
+  return sameThing(artist.name, looked.candidates, comparisonKey)
 }
 
 type Differing = { artist: Artist, candidate: Candidate }
@@ -95,12 +73,6 @@ console.log('')
 console.log(styles.title('Reading the names against MusicBrainz...'))
 console.log(styles.light(`> ${artists.length} artists, ${stored.size} stored lookups`))
 
-const describe = (candidate: Candidate): string => [
-  candidate.type,
-  candidate.country,
-  candidate.disambiguation
-].filter(part => part !== null).join(', ')
-
 const TYPE = 'type a name'
 const STOP = 'stop'
 
@@ -116,7 +88,7 @@ for (const { artist, candidate } of differing) {
     console.log(styles.light(`  ${artist.name}`))
     continue
   }
-  const told = describe(candidate)
+  const told = describeCandidate(candidate)
   console.log('')
   if (told !== '') console.log(styles.light(`> ${told}`))
   const answer = await select<string>({

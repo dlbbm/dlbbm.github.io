@@ -43,6 +43,7 @@ how it maps onto schema.org and where it deliberately diverges.
 | `npm run post` | Writes a post, by asking for it (alias of `post:create`) |
 | `npm run post:edit` | Asks a post again, prefilled. Takes `-- <postId>` |
 | `npm run post:delete` | Removes a post and its recording. Takes `-- <postId>` |
+| `npm run post:names` | Asks MusicBrainz about one post's artists and title, and offers ours, theirs, or one typed by hand. Takes `-- <postId>` |
 | `npm run artist:merge` | Joins two artists into one. Takes `-- <from> <into>` |
 | `npm run song:edit` | Asks a work again, prefilled. Takes `-- <songId>` |
 | `npm run song:merge` | Joins two works into one. Takes `-- <from> <into>` |
