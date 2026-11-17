@@ -36,3 +36,22 @@
 - Roy Harper - Forever
 - Courtney Barnett
 - Kismett kill
+- demarco
+- girls wanna have fun
+- boy harsher
+- rosalia delirio de grandeza
+- damso
+- taxi kebab
+- colette magny
+- la lupe
+- utrus horas
+- rodrigo amarante
+- kurosh gole yakh
+- Yali yali - Nese karabocek
+- Sensations Jul
+- Heuss
+- Chain fleetwood
+- TRex
+- Jennifer your red hair s burning
+- Mount kimbie / King Krule
+- Sexy Sushy
