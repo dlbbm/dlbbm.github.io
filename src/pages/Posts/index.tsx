@@ -3,6 +3,7 @@ import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltPostIndexEntry } from '../../../shared/types/built.js'
 import { Link } from '../../components/Link/index.js'
+import { FailureNotice } from '../../components/Notice/index.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
 import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
@@ -22,6 +23,11 @@ export function Posts () {
   useDocumentTitle(pageNames.posts)
 
   if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
+  // The index is written by the build, so it is never missing without being broken: there
+  // is nothing to say here that the failure does not already say.
+  if (fetched.status === 'failed') return <div class={bem(null, 'failed')}>
+    <FailureNotice />
+  </div>
   return <div class={bem()}>
     <ul class={bem('list')}>
       {fetched.value.map(entry => {

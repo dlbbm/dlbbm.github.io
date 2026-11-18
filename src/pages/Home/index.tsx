@@ -1,4 +1,5 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
+import { FailureNotice, MissingNotice } from '../../components/Notice/index.js'
 import { Pagination } from '../../components/Pagination/index.js'
 import { PostArticle } from '../../components/PostArticle/index.js'
 import { fetchPostPage } from '../../utils/fetch/index.js'
@@ -17,9 +18,14 @@ export function Home ({ page }: HomeProps) {
   useDocumentTitle(page === 1 ? null : `Page ${page}`)
 
   if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
+  if (fetched.status === 'failed') return <div class={bem(null, 'failed')}>
+    <FailureNotice />
+  </div>
   const postPage = fetched.value
+  // The pagination stays on a page that does not exist: the stream may have moved since
+  // the URL was shared, so the two ends are the way back.
   if (!postPage.exists) return <div class={bem(null, 'missing')}>
-    <p class={bem('message')}>There is no such page.</p>
+    <MissingNotice>There is no such page.</MissingNotice>
     <Pagination page={postPage.page} pageCount={postPage.pageCount} pageExists={false} />
   </div>
   return <div class={bem()}>

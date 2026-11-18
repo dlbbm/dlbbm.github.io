@@ -1,5 +1,6 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { pageNames } from '../../../shared/titles/index.js'
+import { FailureNotice } from '../../components/Notice/index.js'
 import { fetchAbout } from '../../utils/fetch/index.js'
 import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
@@ -12,6 +13,9 @@ export function About () {
   useDocumentTitle(pageNames.about)
 
   if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
+  if (fetched.status === 'failed') return <div class={bem(null, 'failed')}>
+    <FailureNotice />
+  </div>
   return <div class={bem()}>
     {fetched.value.paragraphs.map(paragraph => <p class={bem('paragraph')} key={paragraph}>{paragraph}</p>)}
   </div>

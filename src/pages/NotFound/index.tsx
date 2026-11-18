@@ -1,6 +1,7 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { routePatterns } from '../../../shared/routes/index.js'
 import { Link } from '../../components/Link/index.js'
+import { MissingNotice } from '../../components/Notice/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
@@ -11,7 +12,7 @@ const bem = clss('page-not-found')
 export function NotFound () {
   useDocumentTitle(null)
   return <div class={bem()}>
-    <p class={bem('message')}>There is nothing at this address.</p>
+    <MissingNotice>There is nothing at this address.</MissingNotice>
     <Link href={routePatterns.home} className={bem('link')}>back to the blog</Link>
   </div>
 }
