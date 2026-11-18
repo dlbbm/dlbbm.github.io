@@ -15,8 +15,24 @@ import type {
 import type { PostId, Timestamp } from '../../../shared/types/index.js'
 import { previewing } from '../preview/index.js'
 
+/**
+ * A file the site does not have.
+ *
+ * Told apart from every other way a read can fail, because on a site served as files a
+ * 404 is how absence is spelled: the post is not there, which is a page to render. A 500,
+ * a body that is not JSON, or a browser with no network are failures, and a failure is
+ * nobody's answer to a question about a post.
+ */
+class MissingFile extends Error {
+  constructor (url: string) {
+    super(`${url} is not there.`)
+    this.name = 'MissingFile'
+  }
+}
+
 async function readJson<T> (url: string): Promise<T> {
   const response = await fetch(url)
+  if (response.status === 404) throw new MissingFile(url)
   if (!response.ok) throw new Error(`${url} answered ${response.status}.`)
   return await response.json() as T
 }
@@ -73,15 +89,16 @@ export async function fetchArtists (): Promise<BuiltArtistIndexEntry[]> {
  *
  * A scheduled post is `null` here as it is absent from the stream: it ships with the
  * build and the front is what withholds it, so the test is the same one the index makes.
- * A request that fails is `null` too — on a site served as files, a post that cannot be
- * read is a post that is not there.
+ * A file that is not there is `null` too, and nothing else is: a read that failed throws,
+ * for the page to say so.
  */
 export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
   try {
     const { post } = await readJson<BuiltPostPage>(`/data/post/${id}.json`)
     return isVisible(post) ? post : null
-  } catch {
-    return null
+  } catch (error) {
+    if (error instanceof MissingFile) return null
+    throw error
   }
 }
 
@@ -96,17 +113,23 @@ export type ArtistPage = {
  * The index the build writes holds lean entries; the stream wants whole posts, so each
  * one is fetched. No pagination and no slicing: an artist has a handful of posts here,
  * never a stream's worth. Scheduled posts are dropped the way they are everywhere else.
+ *
+ * Only the artist's own file answers whether there is such an artist. A post of theirs
+ * that cannot be read is a build that shipped broken, not an artist who does not exist,
+ * so it fails rather than emptying the page.
  */
 export async function fetchArtistPage (slug: string): Promise<ArtistPage | null> {
+  let page: BuiltArtistPage
   try {
-    const page = await readJson<BuiltArtistPage>(`/data/artist/${slug}.json`)
-    const posts = await Promise.all(page.posts
-      .filter(entry => isVisible(entry))
-      .map(async entry => (await readJson<BuiltPostPage>(`/data/post/${entry.id}.json`)).post))
-    return { artist: page.artist, posts }
-  } catch {
-    return null
+    page = await readJson<BuiltArtistPage>(`/data/artist/${slug}.json`)
+  } catch (error) {
+    if (error instanceof MissingFile) return null
+    throw error
   }
+  const posts = await Promise.all(page.posts
+    .filter(entry => isVisible(entry))
+    .map(async entry => (await readJson<BuiltPostPage>(`/data/post/${entry.id}.json`)).post))
+  return { artist: page.artist, posts }
 }
 
 export type PostPage = {

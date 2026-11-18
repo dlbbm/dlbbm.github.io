@@ -7,16 +7,16 @@
  * `null` — a value the read answers `null` for is loaded and empty, which two of those
  * pages used to tell apart by wrapping the value in an object.
  *
- * A failed read is not a state here, and that is the state of things rather than a
- * decision: `fetch/index.ts` answers `null` where a file that cannot be read is a thing
- * that is not there, and rejects everywhere else, which leaves the page loading for ever.
- * Giving failure a state of its own is the next pass, and this is the shape it goes into.
+ * Three states and not two, because a read that failed is not a thing that is absent:
+ * `fetch/index.ts` answers `null` for the file the site does not have, and rejects for
+ * everything else, which is what arrives here as `failed`.
  */
 
 import { useEffect, useState } from 'preact/hooks'
 
 export type Fetched<T> =
   | { status: 'loading' }
+  | { status: 'failed', error: unknown }
   | { status: 'loaded', value: T }
 
 /**
@@ -32,7 +32,15 @@ export function useFetched<T> (read: () => Promise<T>, deps: unknown[]): Fetched
     let isLatestRequest = true
     // The same object when it is already loading, so a mount does not render twice.
     setFetched(current => current.status === 'loading' ? current : { status: 'loading' })
-    void read().then(value => { if (isLatestRequest) setFetched({ status: 'loaded', value }) })
+    void read().then(
+      value => { if (isLatestRequest) setFetched({ status: 'loaded', value }) },
+      error => {
+        // Logged because it is caught: an uncaught rejection used to print itself, and
+        // what the reader is shown says nothing about what went wrong.
+        console.error(error)
+        if (isLatestRequest) setFetched({ status: 'failed', error })
+      }
+    )
     return () => { isLatestRequest = false }
   }, deps)
 

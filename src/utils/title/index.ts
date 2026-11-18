@@ -15,7 +15,8 @@ import { useFetched } from '../fetched/index.js'
 /**
  * Names the current page in the tab: `null` for the site's own front page, `undefined`
  * while the page does not yet know what it holds — a title is left as it was rather than
- * flickering through a loading state.
+ * flickering through a loading state. A read that failed leaves it alone too, the shell's
+ * own title being the last thing that was true.
  *
  * Every page mounts this, so it runs on every navigation and costs one request a tab: the
  * manifest the blog's own title comes out of is read once and held in `fetch`.
@@ -24,7 +25,7 @@ export function useDocumentTitle (name: string | null | undefined): void {
   const site = useFetched(async () => await fetchAbout(), [])
 
   useEffect(() => {
-    if (site.status === 'loading' || name === undefined) return
+    if (site.status !== 'loaded' || name === undefined) return
     document.title = pageTitle(name, site.value.title)
   }, [site, name])
 }
