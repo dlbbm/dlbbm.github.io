@@ -1,0 +1,24 @@
+.page-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-3);
+}
+
+.page-not-found__message,
+.page-not-found__link {
+  margin: 0;
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+}
+
+.page-not-found__link {
+  color: inherit;
+  text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) var(--underline-color);
+  text-underline-offset: var(--underline-offset);
+  transition: color var(--hover-duration);
+}
+
+.page-not-found__link:hover,
+.page-not-found__link:focus-visible { color: var(--accent-color); }
