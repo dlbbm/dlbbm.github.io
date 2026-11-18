@@ -1,6 +1,6 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { Link } from '../Link/index.js'
 import { routePatterns, routeUrl } from '../../../shared/routes/index.js'
+import { Link } from '../Link/index.js'
 import './styles.css'
 
 const bem = clss('pagination')
@@ -9,11 +9,11 @@ export type PaginationProps = {
   page: number
   pageCount: number
   /**
-   * Whether `page` is a page the reader is actually on. `false` means the URL named
-   * none, so the two ends are offered and the two steps are not: nowhere has no
-   * neighbour, and a clamped position would make one of the ends look already reached.
+   * Whether `page` is a page there is. `false` means the URL named none, so the two ends
+   * are offered and the two steps are not: nowhere has no neighbour, and a clamped
+   * position would make one of the ends look already reached.
    */
-  onPage?: boolean
+  pageExists?: boolean
 }
 
 // Page one is `/`, never `/page/1`, which redirects to it.
@@ -39,13 +39,13 @@ function Step ({ label, href, chevron }: StepProps) {
   return <Link href={href} className={bem('button')}>{content}</Link>
 }
 
-export function Pagination ({ page, pageCount, onPage = true }: PaginationProps) {
-  const back = onPage && page > 1
-  const forward = onPage && page < pageCount
+export function Pagination ({ page, pageCount, pageExists = true }: PaginationProps) {
+  const hasPrevious = pageExists && page > 1
+  const hasNext = pageExists && page < pageCount
   return <nav class={bem()}>
-    <Step label="first" href={back || !onPage ? pageUrl(1) : null} />
-    <Step label="prev" href={back ? pageUrl(page - 1) : null} chevron="before" />
-    <Step label="next" href={forward ? pageUrl(page + 1) : null} chevron="after" />
-    <Step label="last" href={forward || !onPage ? pageUrl(pageCount) : null} />
+    <Step label="first" href={hasPrevious || !pageExists ? pageUrl(1) : null} />
+    <Step label="prev" href={hasPrevious ? pageUrl(page - 1) : null} chevron="before" />
+    <Step label="next" href={hasNext ? pageUrl(page + 1) : null} chevron="after" />
+    <Step label="last" href={hasNext || !pageExists ? pageUrl(pageCount) : null} />
   </nav>
 }

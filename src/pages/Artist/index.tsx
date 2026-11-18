@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'preact/hooks'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { Post } from '../../components/Post/index.js'
-import { fetchArtistPage, type ArtistPage } from '../../utils/fetch/index.js'
+import { PostArticle } from '../../components/PostArticle/index.js'
+import { fetchArtistPage } from '../../utils/fetch/index.js'
+import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
@@ -12,25 +12,19 @@ export type ArtistProps = {
 }
 
 export function Artist ({ slug }: ArtistProps) {
-  const [loaded, setLoaded] = useState<{ page: ArtistPage | null } | null>(null)
-  useDocumentTitle(loaded === null ? undefined : loaded.page?.artist.name ?? null)
+  const fetched = useFetched(async () => await fetchArtistPage(slug), [slug])
+  useDocumentTitle(fetched.status === 'loading' ? undefined : fetched.value?.artist.name ?? null)
 
-  useEffect(() => {
-    let current = true
-    setLoaded(null)
-    void fetchArtistPage(slug).then(page => { if (current) setLoaded({ page }) })
-    return () => { current = false }
-  }, [slug])
-
-  if (loaded === null) return <div class={bem(null, 'loading')} />
-  if (loaded.page === null) return <div class={bem(null, 'missing')}>
+  if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
+  const artistPage = fetched.value
+  if (artistPage === null) return <div class={bem(null, 'missing')}>
     <p class={bem('message')}>There is no such artist.</p>
   </div>
   return <div class={bem()}>
-    <h1 class={bem('name')}>{loaded.page.artist.name}</h1>
+    <h1 class={bem('name')}>{artistPage.artist.name}</h1>
     <ol class={bem('posts')}>
-      {loaded.page.posts.map(post => <li class={bem('post')} key={post.id}>
-        <Post post={post} />
+      {artistPage.posts.map(post => <li class={bem('post')} key={post.id}>
+        <PostArticle post={post} />
       </li>)}
     </ol>
   </div>

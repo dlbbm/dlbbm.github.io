@@ -2,13 +2,16 @@ import { Fragment } from 'preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import { Embed } from '@mxfb/tools/components/Embed/index.js'
-import { Link } from '../Link/index.js'
 import type { BuiltArtist, BuiltPost } from '../../../shared/types/built.js'
 import type { FileSource, MediaSource, Source } from '../../../shared/types/index.js'
 import { formatPlace } from '../../utils/format/index.js'
 import { FileMedia } from '../FileMedia/index.js'
+import { Link } from '../Link/index.js'
+import { PartialDate } from '../PartialDate/index.js'
 import './styles.css'
 
+// The block is `post`, which is what the markup draws; the module is named apart because
+// `pages/Post` is the route and this is the article it shows.
 const bem = clss('post')
 
 type PlayableSource = MediaSource | FileSource
@@ -20,8 +23,11 @@ function isPlayable (source: Source): source is PlayableSource {
 }
 
 function Media ({ source, title }: { source: PlayableSource, title: string }) {
-  // A stored path is relative to the repository root — `data/files/…` — and `build:data`
-  // copies that tree into `dist` as it stands.
+  // Nothing in the archive is a stored file, so this branch has never run. It stays
+  // rather than going: `post:create` still offers a file and `build:data` still copies
+  // the tree, so the day one is posted the front has to be able to play it. A stored path
+  // is relative to the repository root — `data/files/…` — and is copied into `dist` as it
+  // stands.
   if (source.nature === 'file') return <FileMedia src={`/${source.path}`} kind={source.kind} title={title} />
   return <Embed url={source.url} title={title} />
 }
@@ -45,31 +51,29 @@ function Credits ({ credits, featuring = [] }: { credits: BuiltArtist[], featuri
   </>
 }
 
-export type PostProps = {
+export type PostArticleProps = {
   post: BuiltPost
 }
 
-export function Post ({ post }: PostProps) {
+export function PostArticle ({ post }: PostArticleProps) {
   const { recording } = post
-  const played = recording.sources.find(isPlayable)
+  const playableSource = recording.sources.find(isPlayable)
   const performedAt = recording.performedAt === null ? null : formatPlace(recording.performedAt)
   // `remix` drops out when the remixers are named above: the word is already there.
   const kind = post.remixedBy.length > 0 && recording.kind === 'remix' ? null : recording.kind
-  const occasion = [kind, performedAt].filter(part => part !== null).join(' at ')
-  // The date is shown as the data holds it until `formatDate` learns to write a partial
-  // one out in full.
-  const performedOn = recording.performedOn === null
+  const kindAndPlace = [kind, performedAt].filter(part => part !== null).join(' at ')
+  // The type allows a date that knows nothing, and `PartialDate` renders nothing for one:
+  // dropped here so it does not take its separator along.
+  const { performedOn } = recording
+  const date = performedOn === null
+    || (performedOn.year === null && performedOn.month === null && performedOn.day === null)
     ? null
-    : [recording.performedOn.year, recording.performedOn.month, recording.performedOn.day]
-      .filter(part => part !== null)
-      .join('-')
-  const occasionAndDate = [occasion, performedOn].filter(part => part !== '' && part !== null).join(' — ')
+    : <PartialDate date={performedOn} />
   // The edition belongs to the source rather than to the take, so it is set apart rather
   // than listed alongside: what was played, then in brackets which audio of it this is.
-  const edition = played?.name ?? null
-  const details = [occasionAndDate, edition === null || edition === '' ? null : `(${edition})`]
-    .filter(part => part !== '' && part !== null)
-    .join(' ')
+  const edition = playableSource?.name ?? null
+  const parenthesisedEdition = edition === null || edition === '' ? null : `(${edition})`
+  const hasDetails = kindAndPlace !== '' || date !== null || parenthesisedEdition !== null
 
   return <article class={bem()}>
     <Link href={post.url} className={bem('permalink')}>
@@ -79,9 +83,9 @@ export function Post ({ post }: PostProps) {
         className={bem('date')} />
     </Link>
     <div class={bem('media')}>
-      {played === undefined
+      {playableSource === undefined
         ? <Link href={post.url} className={bem('missing')}>no playable source</Link>
-        : <Media source={played} title={post.title} />}
+        : <Media source={playableSource} title={post.title} />}
     </div>
     <div class={bem('meta')}>
       <div class={bem('heading')}>
@@ -99,7 +103,17 @@ export function Post ({ post }: PostProps) {
           <Credits credits={post.remixedBy} />
           {' remix'}
         </p>}
-        {details === '' ? null : <p class={bem('details')}>{details}</p>}
+        {!hasDetails ? null : <p class={bem('details')}>
+          {kindAndPlace}
+          {date === null ? null : <>
+            {kindAndPlace === '' ? null : ' — '}
+            {date}
+          </>}
+          {parenthesisedEdition === null ? null : <>
+            {kindAndPlace === '' && date === null ? null : ' '}
+            {parenthesisedEdition}
+          </>}
+        </p>}
       </div>
       {post.body === null ? null : <p class={bem('body')}>{post.body}</p>}
     </div>

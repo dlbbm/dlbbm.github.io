@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'preact/hooks'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { Pagination } from '../../components/Pagination/index.js'
-import { Post } from '../../components/Post/index.js'
-import { fetchPostPage, type PostPage } from '../../utils/fetch/index.js'
+import { PostArticle } from '../../components/PostArticle/index.js'
+import { fetchPostPage } from '../../utils/fetch/index.js'
+import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
@@ -13,30 +13,24 @@ export type HomeProps = {
 }
 
 export function Home ({ page }: HomeProps) {
-  const [loaded, setLoaded] = useState<PostPage | null>(null)
+  const fetched = useFetched(async () => await fetchPostPage(page), [page])
   useDocumentTitle(page === 1 ? null : `Page ${page}`)
 
-  useEffect(() => {
-    let current = true
-    setLoaded(null)
-    void fetchPostPage(page).then(next => { if (current) setLoaded(next) })
-    return () => { current = false }
-  }, [page])
-
-  if (loaded === null) return <div class={bem(null, 'loading')} />
-  if (!loaded.exists) return <div class={bem(null, 'missing')}>
+  if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
+  const postPage = fetched.value
+  if (!postPage.exists) return <div class={bem(null, 'missing')}>
     <p class={bem('message')}>There is no such page.</p>
-    <Pagination page={loaded.page} pageCount={loaded.pageCount} onPage={false} />
+    <Pagination page={postPage.page} pageCount={postPage.pageCount} pageExists={false} />
   </div>
   return <div class={bem()}>
-    {loaded.page === 1
+    {postPage.page === 1
       ? null
-      : <Pagination page={loaded.page} pageCount={loaded.pageCount} />}
+      : <Pagination page={postPage.page} pageCount={postPage.pageCount} />}
     <ol class={bem('posts')}>
-      {loaded.posts.map(post => <li class={bem('post')} key={post.id}>
-        <Post post={post} />
+      {postPage.posts.map(post => <li class={bem('post')} key={post.id}>
+        <PostArticle post={post} />
       </li>)}
     </ol>
-    <Pagination page={loaded.page} pageCount={loaded.pageCount} />
+    <Pagination page={postPage.page} pageCount={postPage.pageCount} />
   </div>
 }
