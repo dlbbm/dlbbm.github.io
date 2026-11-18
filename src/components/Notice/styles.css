@@ -1,0 +1,9 @@
+/* The two natures read the same: what sets them apart is the sentence, and this site has
+   one color to spend. The modifiers are there for the day that stops being true. */
+.notice--missing,
+.notice--failed {
+  margin: 0;
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+}
