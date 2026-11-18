@@ -26,11 +26,11 @@ export function PartialDate ({ date }: PartialDateProps) {
   ].filter((token): token is string => token !== null).join('-')
   if (format === '') return null
 
-  const filled = new Date(year ?? 2000, (month ?? 1) - 1, day ?? 1)
-  const statable = year !== null && (month !== null || day === null)
+  const dateWithGapsFilled = new Date(year ?? 2000, (month ?? 1) - 1, day ?? 1)
+  const isValidDateTime = year !== null && (month !== null || day === null)
   return <DateComponent
-    date={filled}
+    date={dateWithGapsFilled}
     format={format}
-    dateTime={statable ? formatDate(filled, format) : null}
+    dateTime={isValidDateTime ? formatDate(dateWithGapsFilled, format) : null}
     className={bem()} />
 }
