@@ -286,6 +286,80 @@ to a failed read and the browser already has that button, so the notice stays a 
 Both natures render alike today, the modifier classes being there for the day that stops
 being true, and the `__message` rule the pages each carried is gone with them.
 
+**A second audit, read fresh on 18 November, and the pass it asks for is the next step.**
+Taken without the paragraphs above in view, against one standard: the code is its own
+documentation, the path says the scope, and a symbol never repeats it. Nothing in it
+changes what a reader sees. The base held up again — pages fetch, components render, no
+state manager, no abstraction invented early — and what follows is in the order it should
+be done.
+
+- **« page » means three things, and two of them meet in one call chain.** `BuiltPostPage`
+  is the JSON file holding one post, `PostPage` in `utils/fetch` is a slice of ten, `pages/`
+  is the route and `routePatterns.page` the pagination index — so `fetchPostPage` returns
+  the second by reading the first. `BuiltArtistPage` against `ArtistPage` is the same pair.
+  Keep « page » for pagination, call the per-entity file a `…File`, and name the view model
+  for what it holds. This is the one that costs reading time.
+- **The same five-line preamble on six pages, guarding a no-op.** `About`, `Artists`,
+  `Artist`, `Home`, `Post` and `Posts` each open with the same `loading` then `failed` pair,
+  and no stylesheet styles either modifier — `--loading` and `--failed` appear in six JSX
+  files and in zero CSS rules, so a loading page is an empty `<div>` carrying the block's
+  own `display: flex`. One component taking the `Fetched` and the loaded renderer collapses
+  all six.
+- **Every shared module prefixes its symbols with its own directory**: `Built*` nine times
+  in `types/built.ts`, `routePatterns` / `routeUrl` / `RouteKind`, `pageTitle` / `pageNames`,
+  five `fetch*`, `previewHref`, `formatPlace`. The prefixes come from the import style and
+  not from the names — with named imports the scope is not implicit at the call site, and a
+  bare `post (id)` in `pages/Post` would read worse than what is there. `import type * as
+  built`, `import * as routes`, `import * as data` is what makes the rule hold:
+  `built.Post`, `routes.url ('page', …)`, `data.post (id)`. It touches every file, so it
+  goes last of the three.
+- **`pages/Home` and `pages/Posts` do not say which is which.** `Home` is the paginated
+  stream of whole articles and renders page seven as readily as `/`; `Posts` is the flat
+  list of every title, which `pageNames.posts` already calls « All posts ».
+- **`PostArticle` draws a block called `post`**, and carries a comment whose only job is to
+  excuse the mismatch with `pages/Post`. `clss ('post-article')` deletes the comment and the
+  question — the stylesheet rewrite is the cost, and it buys markup that names the component
+  drawing it.
+- **`src/utils/` is the junk drawer and the extra level.** `src/utils/fetch/index.ts` is
+  three levels for one module, and the five things under `utils` are the front's own
+  subjects: reading built data, the state of a read, the preview flag, the tab title, one
+  formatter. `lm-link/src` has no `utils/` at its top, and puts several files in one scope
+  directory rather than one directory per function — `events/index.ts` beside
+  `events/types.ts`. Flat under `src/`, and `utils` gone. `layouts/` is a directory of one,
+  next to a `MainNav`, with one layout and one nav in the site.
+- **The front bundles a stale `shared/` and says nothing.** `src/index.tsx` imports
+  `../shared/routes/index.js`, `tsc -p scripts` emits that `.js` next to the `.ts`, and
+  esbuild takes the emitted file when both exist — tested, not inferred. `watch:src` does
+  not run `build:scripts`, so editing `shared/routes/index.ts` under `npm start` leaves the
+  browser on the old routes, with `typecheck` green and no error anywhere. Either stop
+  emitting `shared/` for the front's sake, or have `watch:src` watch it too.
+- **Two encodings that need prose to be read.** `isVisible` means published by now or
+  previewing, which `isPublished` says on its own. `useDocumentTitle (name: string | null |
+  undefined)` spends seven lines of JSDoc saying that `null` is the site's front page and
+  `undefined` is « not known yet » — two files away from `Fetched`, which names its states
+  instead of encoding them.
+- **The comments are the register to drop.** `utils/preview` is twelve comment lines over
+  six of code, `utils/title` seventeen over fourteen, `utils/fetch` sixty over a hundred and
+  nine, `Notice` thirteen over eighteen. And they read as metaphor: « a 404 is how absence
+  is spelled », « a failure is nobody's answer to a question about a post », « a ground that
+  is lit from behind », « kept on the shelf ». The convention is to write nothing by default
+  and to spend a comment on what the code cannot say — which bug a precaution closes, why an
+  import is static. Three or four qualify: why random has no route of its own, the
+  react-to-preact alias, why the layout wraps the router. The rest paraphrase the signature
+  or argue with the alternatives.
+- **The details line of `PostArticle`** assembles `kindAndPlace`, the date and the
+  parenthesised edition with their separators decided inline, in three nested ternaries that
+  re-test each other's emptiness. `formatPlace` does that same job in two lines with a
+  filter and a join, and a separator belongs to the join.
+- **Dead code in four places, all of it deliberate, all of it to decide again.** `FileMedia`
+  has never run and says so twice, in its own docstring and again in `PostArticle`, for 47
+  lines of TSX and 108 of CSS. `--day-bg`, `--day-text`, `--day-shadow` and `--day-mark-green`
+  are referenced by nothing. `.inverted` and `:root[data-theme='light']` are declared and
+  applied nowhere in the app. The `.notice--*` modifiers are there « for the day that stops
+  being true ».
+- **`README.md` above and `CLAUDE.md` still describe `src/basics/`**, emptied in `74b310f`
+  and `a506b81`.
+
 **Then `deploy`, which is written and has never run; the first run is the step.** It copies
 `dist/` into a worktree on the `production` branch, which is what GitHub Pages serves, and it is
 the only command here that pushes. What a first run asks for beyond pressing go: Pages
