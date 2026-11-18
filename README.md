@@ -227,12 +227,13 @@ one by one: a blind substitution would eat `The End`, which is a club called tha
 
 ## 3. Publishing
 
-**The front was audited, and the audit is answered but for one item.** A read of all 1404
-lines of `src/` on 13 November 2026 found the base sound — pages fetch, components render,
-`shared/` holds what both halves of the build agree on, no state manager, no context, no
-abstraction invented before it was needed — and four places worth repairing before a first
-deploy made them permanent. Three of the four and all the smaller ones were done on 18
-November, in one pass, with no behaviour changed but the two noted below.
+**The front was audited, and the audit is answered.** A read of all 1404 lines of `src/`
+on 13 November 2026 found the base sound — pages fetch, components render, `shared/` holds
+what both halves of the build agree on, no state manager, no context, no abstraction
+invented before it was needed — and four places worth repairing before a first deploy made
+them permanent. All four and all the smaller ones were done on 18 November: the renames,
+the hook and the dead code in one pass that changed nothing a reader sees but a date's
+zero-padding, then the failure states, which are the one item that was always going to.
 
 - **Names.** The ten symbols the audit listed are renamed: `loaded` is the page it holds,
   `said` is a `versionNote` and `qualifier ()` a `formatVersionNote ()`, `played` is a
@@ -266,15 +267,24 @@ November, in one pass, with no behaviour changed but the two noted below.
   reading the whole index on each click is the point. `index.tsx`'s throw on a missing
   `#root` is still the only throw in the front.
 
-**What is left is the third item: nothing can fail.** `readJson` throws on a non-200.
-`fetchPost` and `fetchArtistPage` catch it and answer `null`, which the pages render as
-**« There is no such post »** — so a dropped connection tells the reader the post does not
-exist. `fetchPublishedPosts`, `fetchArtists` and `fetchAbout` do not catch at all: the
-promise rejects, the state never moves, and the page holds its loading skeleton for ever.
-No page can say that something went wrong. `Fetched<T>` is the shape it goes into, a
-`failed` state beside `loading` and `loaded`, which is what the hook was written to take.
-It was kept for a pass of its own because it is the only item of the audit that changes
-what a reader sees.
+**A read can fail, and a reader is told which failed.** Before this, a dropped connection
+on a post rendered « There is no such post » and three of the readers did not catch at
+all — the promise rejected, the state never moved, and the page held its skeleton for
+ever. What separates the two now is the status code: `readJson` throws `MissingFile` on a
+**404**, which is how absence is spelled on a site served as files, and an ordinary error
+on anything else — a 500, a body that is not JSON, a browser with no network. `fetchPost`
+and `fetchArtistPage` turn the first into `null` and let the second through; the three
+index readers catch nothing, a 404 on a file the build writes being a broken deploy rather
+than an absence. `useFetched` carries the third state, and logs the error it swallows so
+the console still says what happened.
+
+**`components/Notice` is what says it**, in two voices a reader has to be able to tell
+apart: `MissingNotice`, which the page fills — « There is no such post », « There is
+nothing at this address » — and `FailureNotice`, the same sentence everywhere, « This did
+not load. Reload the page to try again. » **Nothing to press**: a reload is the only answer
+to a failed read and the browser already has that button, so the notice stays a sentence.
+Both natures render alike today, the modifier classes being there for the day that stops
+being true, and the `__message` rule the pages each carried is gone with them.
 
 **Then `deploy`, which is written and has never run; the first run is the step.** It copies
 `dist/` into a worktree on the `production` branch, which is what GitHub Pages serves, and it is
