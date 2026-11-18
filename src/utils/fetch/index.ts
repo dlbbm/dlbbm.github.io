@@ -21,6 +21,25 @@ async function readJson<T> (url: string): Promise<T> {
   return await response.json() as T
 }
 
+let manifestRead: Promise<BuiltManifest> | null = null
+
+/**
+ * The manifest, read once for the life of the tab.
+ *
+ * It is written by the build and cannot change while the page is open, and three things
+ * want it: the page size, what the blog says about itself, and the tab title on every
+ * navigation. A read that failed is not kept, so the next caller asks again.
+ */
+async function readManifest (): Promise<BuiltManifest> {
+  manifestRead ??= readJson<BuiltManifest>('/data/manifest.json')
+  try {
+    return await manifestRead
+  } catch (error) {
+    manifestRead = null
+    throw error
+  }
+}
+
 /**
  * Whether a post is the reader's to see — its moment has come, or the page is previewing.
  *
@@ -40,7 +59,7 @@ export async function fetchPublishedPosts (): Promise<BuiltPostIndexEntry[]> {
 
 /** What the blog says about itself, which the manifest carries with everything else. */
 export async function fetchAbout (): Promise<BuiltAbout> {
-  const manifest = await readJson<BuiltManifest>('/data/manifest.json')
+  const manifest = await readManifest()
   return manifest.about
 }
 
@@ -113,7 +132,7 @@ export type PostPage = {
 export async function fetchPostPage (page: number): Promise<PostPage> {
   const [entries, manifest] = await Promise.all([
     fetchPublishedPosts(),
-    readJson<BuiltManifest>('/data/manifest.json')
+    readManifest()
   ])
   const pageCount = Math.max(1, Math.ceil(entries.length / manifest.pageSize))
   const exists = Number.isInteger(page) && page >= 1 && page <= pageCount
