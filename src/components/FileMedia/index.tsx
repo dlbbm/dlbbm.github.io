@@ -23,6 +23,10 @@ export type FileMediaProps = {
 /**
  * A stored file, played by `Video` and dressed for this blog.
  *
+ * Never run: nothing in the archive is a stored file. It stays because `post:create`
+ * still offers one and `build:data` still copies the tree, so a file posted tomorrow has
+ * something to play it.
+ *
  * Audio goes through the same `<video>` element as video — everything the player drives
  * is `HTMLMediaElement` — so a sound file is a picture-less video here, and what stands
  * in for its picture is a ground of its own until the data carries a cover image.

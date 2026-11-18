@@ -1,6 +1,6 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { Link } from '../Link/index.js'
 import { routePatterns } from '../../../shared/routes/index.js'
+import { Link } from '../Link/index.js'
 import './styles.css'
 
 const bem = clss('logo')

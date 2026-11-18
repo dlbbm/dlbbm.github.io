@@ -1,9 +1,9 @@
 import { useLocation } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { routePatterns } from '../../../shared/routes/index.js'
+import { fetchPublishedPosts } from '../../utils/fetch/index.js'
 import { previewHref } from '../../utils/preview/index.js'
 import { Link } from '../Link/index.js'
-import { fetchPublishedPosts } from '../../utils/fetch/index.js'
 import './styles.css'
 
 const bem = clss('main-nav')
@@ -19,6 +19,9 @@ export function MainNav () {
 
   // Random has no URL of its own: it reads the index, picks, and goes there. A `/random`
   // route would need a shell, and a shared link would land somewhere else on reload.
+  // Reading the whole index on each click is the point — it is one file the browser has
+  // cached by then, and a count held from an earlier read would miss a post that came of
+  // age since.
   async function goToRandomPost (): Promise<void> {
     const posts = await fetchPublishedPosts()
     const picked = posts[Math.floor(Math.random() * posts.length)]
