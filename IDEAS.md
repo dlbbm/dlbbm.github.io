@@ -55,3 +55,21 @@
 - Jennifer your red hair s burning
 - Mount kimbie / King Krule
 - Sexy Sushy
+- Destroyer - kevin Morby
+- I want u - fkj
+- Willie Wright - Telling the truth
+- La perla - rosalia
+- Current joys - symfonia ix
+- Betty everett - you're no good
+- Earthsingchels - daddy died
+- Match nul - Daouda le sentimental
+- Otis Redding
+- You dont love me - dawn penn
+- King Krule - Border Line
+- Rock classics - the knife
+- Better off alone - Alice DJ
+- Matt Bianco
+- Yame - Becane
+- Darondo - didn't i
+- Siboney - Ruben Gonzalez
+- Ian svensonian
