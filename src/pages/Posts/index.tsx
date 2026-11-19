@@ -9,7 +9,7 @@ import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
 import './styles.css'
 
-const bem = clss('page-posts')
+const c = clss('page-posts')
 
 // What the title alone does not say: which version of the song this is. `kind` is free
 // text, so whatever the data wrote is what shows.
@@ -24,19 +24,19 @@ export function Posts () {
 
   // The index is written by the build, so it is never missing without being broken: there
   // is nothing to say here that the failure does not already say.
-  return <WhenLoaded fetched={fetched} bem={bem}>
-    {entries => <div class={bem()}>
-      <ul class={bem('list')}>
+  return <WhenLoaded fetched={fetched} c={c}>
+    {entries => <div class={c()}>
+      <ul class={c('list')}>
         {entries.map(entry => {
           const versionNote = formatVersionNote(entry)
-          return <li class={bem('item')} key={entry.id}>
+          return <li class={c('item')} key={entry.id}>
             <DateComponent
               date={new Date(entry.publishedOn)}
               format="{{MMM}} {{D}}{{th}}, {{YYYY}}"
-              className={bem('date')} />
-            <span class={bem('name')}>
-              <Link href={entry.url} className={bem('link')}>{entry.title}</Link>
-              {versionNote === null ? null : <span class={bem('qualifier')}>{` ${versionNote}`}</span>}
+              className={c('date')} />
+            <span class={c('name')}>
+              <Link href={entry.url} className={c('link')}>{entry.title}</Link>
+              {versionNote === null ? null : <span class={c('qualifier')}>{` ${versionNote}`}</span>}
             </span>
           </li>
         })}

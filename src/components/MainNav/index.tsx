@@ -6,7 +6,7 @@ import { previewHref } from '../../utils/preview/index.js'
 import { Link } from '../Link/index.js'
 import './styles.css'
 
-const bem = clss('main-nav')
+const c = clss('main-nav')
 
 const links = [
   { label: 'about', href: routePatterns.about },
@@ -28,16 +28,16 @@ export function MainNav () {
     if (picked !== undefined) navigate(previewHref(picked.url))
   }
 
-  return <nav class={bem()}>
-    <ul class={bem('list')}>
-      {links.map(link => <li class={bem('item')} key={link.href}>
+  return <nav class={c()}>
+    <ul class={c('list')}>
+      {links.map(link => <li class={c('item')} key={link.href}>
         <Link
           href={link.href}
-          className={(isCurrent: boolean) => bem('link', { current: isCurrent })}>{link.label}</Link>
+          className={(isCurrent: boolean) => c('link', { current: isCurrent })}>{link.label}</Link>
       </li>)}
-      <li class={bem('item')}>
+      <li class={c('item')}>
         <button
-          class={bem('link')}
+          class={c('link')}
           type="button"
           onClick={() => { void goToRandomPost() }}>random</button>
       </li>

@@ -7,7 +7,7 @@ import { fetchPost } from '../../utils/fetch/index.js'
 import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
 
-const bem = clss('page-post')
+const c = clss('page-post')
 
 export type PostProps = {
   id: PostId
@@ -20,12 +20,12 @@ export function Post ({ id }: PostProps) {
   const fetched = useFetched(async () => await fetchPost(id), [id])
   useDocumentTitle(fetched.status === 'loaded' ? fetched.value?.title ?? null : undefined)
 
-  return <WhenLoaded fetched={fetched} bem={bem}>
+  return <WhenLoaded fetched={fetched} c={c}>
     {post => {
-      if (post === null) return <div class={bem(null, 'missing')}>
+      if (post === null) return <div class={c(null, 'missing')}>
         <MissingNotice>There is no such post.</MissingNotice>
       </div>
-      return <div class={bem()}>
+      return <div class={c()}>
         <PostArticle post={post} />
       </div>
     }}

@@ -3,7 +3,7 @@
  *
  * The six pages that fetch wrote the same two guards by hand before anything else they
  * had to say. The classes stay the page's own, so a page styles its own waiting state:
- * `bem` is the block's maker, and the modifiers are `--loading` and `--failed`.
+ * `c` is the block's maker, and the modifiers are `--loading` and `--failed`.
  */
 
 import type { ClssMaker } from '@design-edito/tools/agnostic/css/clss/index.js'
@@ -13,17 +13,17 @@ import { FailureNotice } from '../Notice/index.js'
 
 export type WhenLoadedProps<T> = {
   fetched: Fetched<T>
-  bem: ClssMaker
+  c: ClssMaker
   children: (value: T) => VNode
 }
 
 export function WhenLoaded<T> ({
   fetched,
-  bem,
+  c,
   children
 }: WhenLoadedProps<T>) {
-  if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
-  if (fetched.status === 'failed') return <div class={bem(null, 'failed')}>
+  if (fetched.status === 'loading') return <div class={c(null, 'loading')} />
+  if (fetched.status === 'failed') return <div class={c(null, 'failed')}>
     <FailureNotice />
   </div>
   return children(fetched.value)

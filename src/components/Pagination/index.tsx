@@ -3,7 +3,7 @@ import { routePatterns, routeUrl } from '../../../shared/routes/index.js'
 import { Link } from '../Link/index.js'
 import './styles.css'
 
-const bem = clss('pagination')
+const c = clss('pagination')
 
 export type PaginationProps = {
   page: number
@@ -31,18 +31,18 @@ type StepProps = {
 // running beneath an arrow reads as part of the arrow.
 function Step ({ label, href, chevron }: StepProps) {
   const content = <>
-    {chevron === 'before' ? <span class={bem('chevron')}>{'‹ '}</span> : null}
-    <span class={bem('word')}>{label}</span>
-    {chevron === 'after' ? <span class={bem('chevron')}>{' ›'}</span> : null}
+    {chevron === 'before' ? <span class={c('chevron')}>{'‹ '}</span> : null}
+    <span class={c('word')}>{label}</span>
+    {chevron === 'after' ? <span class={c('chevron')}>{' ›'}</span> : null}
   </>
-  if (href === null) return <span class={bem('button', 'inert')}>{content}</span>
-  return <Link href={href} className={bem('button')}>{content}</Link>
+  if (href === null) return <span class={c('button', 'inert')}>{content}</span>
+  return <Link href={href} className={c('button')}>{content}</Link>
 }
 
 export function Pagination ({ page, pageCount, pageExists = true }: PaginationProps) {
   const hasPrevious = pageExists && page > 1
   const hasNext = pageExists && page < pageCount
-  return <nav class={bem()}>
+  return <nav class={c()}>
     <Step label="first" href={hasPrevious || !pageExists ? pageUrl(1) : null} />
     <Step label="prev" href={hasPrevious ? pageUrl(page - 1) : null} chevron="before" />
     <Step label="next" href={hasNext ? pageUrl(page + 1) : null} chevron="after" />

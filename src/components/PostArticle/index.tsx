@@ -12,7 +12,7 @@ import './styles.css'
 
 // The block is `post`, which is what the markup draws; the module is named apart because
 // `pages/Post` is the route and this is the article it shows.
-const bem = clss('post')
+const c = clss('post')
 
 type PlayableSource = MediaSource | FileSource
 
@@ -33,7 +33,7 @@ function Media ({ source, title }: { source: PlayableSource, title: string }) {
 }
 
 function Credit ({ artist }: { artist: BuiltArtist }) {
-  return <Link href={artist.url} className={bem('artist')}>{artist.name}</Link>
+  return <Link href={artist.url} className={c('artist')}>{artist.name}</Link>
 }
 
 // `Song — Artist, Artist, ft. Artist`, the line `build:data` writes into `title`, except
@@ -75,35 +75,35 @@ export function PostArticle ({ post }: PostArticleProps) {
   const parenthesisedEdition = edition === null || edition === '' ? null : `(${edition})`
   const hasDetails = kindAndPlace !== '' || date !== null || parenthesisedEdition !== null
 
-  return <article class={bem()}>
-    <Link href={post.url} className={bem('permalink')}>
+  return <article class={c()}>
+    <Link href={post.url} className={c('permalink')}>
       <DateComponent
         date={new Date(post.publishedOn)}
         format="{{ddd}}, {{MMM}} {{D}}{{th}}, {{YYYY}}"
-        className={bem('date')} />
+        className={c('date')} />
     </Link>
-    <div class={bem('media')}>
+    <div class={c('media')}>
       {playableSource === undefined
-        ? <Link href={post.url} className={bem('missing')}>no playable source</Link>
+        ? <Link href={post.url} className={c('missing')}>no playable source</Link>
         : <Media source={playableSource} title={post.title} />}
     </div>
-    <div class={bem('meta')}>
-      <div class={bem('heading')}>
-        <h2 class={bem('title')}>
-          <span class={bem('song')}>{post.recording.title ?? post.song.title}</span>
+    <div class={c('meta')}>
+      <div class={c('heading')}>
+        <h2 class={c('title')}>
+          <span class={c('song')}>{post.recording.title ?? post.song.title}</span>
           {' — '}
           <Credits credits={post.credits} featuring={post.featuring} />
         </h2>
-        {!post.isCover ? null : <p class={bem('cover')}>
+        {!post.isCover ? null : <p class={c('cover')}>
           <Credits credits={post.originalArtists} />
           {' cover'}
         </p>}
-        {!post.isMedley ? null : <p class={bem('medley')}>(Medley)</p>}
-        {post.remixedBy.length === 0 ? null : <p class={bem('remix')}>
+        {!post.isMedley ? null : <p class={c('medley')}>(Medley)</p>}
+        {post.remixedBy.length === 0 ? null : <p class={c('remix')}>
           <Credits credits={post.remixedBy} />
           {' remix'}
         </p>}
-        {!hasDetails ? null : <p class={bem('details')}>
+        {!hasDetails ? null : <p class={c('details')}>
           {kindAndPlace}
           {date === null ? null : <>
             {kindAndPlace === '' ? null : ' — '}
@@ -115,7 +115,7 @@ export function PostArticle ({ post }: PostArticleProps) {
           </>}
         </p>}
       </div>
-      {post.body === null ? null : <p class={bem('body')}>{post.body}</p>}
+      {post.body === null ? null : <p class={c('body')}>{post.body}</p>}
     </div>
   </article>
 }

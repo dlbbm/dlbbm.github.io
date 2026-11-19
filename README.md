@@ -241,7 +241,8 @@ zero-padding, then the failure states, which are the one item that was always go
   `kindPlaceAndDate`, `statable` and `filled` are `isValidDateTime` and
   `dateWithGapsFilled`, `back` and `forward` are `hasPrevious` and `hasNext`,
   `Pagination`'s `onPage` prop is `pageExists`, and `current` is `isLatestRequest`, which
-  now exists once. `bem` stays, being the same in every component. The alias went the
+  now exists once. The class maker stays one name in every component — `c` since, which is
+  what `lm-tools/components` and `lm-link` call it. The alias went the
   other way round from the page: the component is `components/PostArticle`, which is what
   the markup draws, and `pages/Post` keeps the route's name. Its BEM block stays `post` —
   the class names what is drawn, and renaming it would rewrite a stylesheet to no effect.
@@ -304,7 +305,7 @@ be done.
 - **The five-line preamble is one component — done.** `About`, `Artists`, `Artist`, `Home`,
   `Post` and `Posts` each opened with the same `loading` then `failed` pair before anything
   they had of their own to say. `components/WhenLoaded` takes the `Fetched` and the loaded
-  renderer, and the page passes its own `bem` so the classes stay the block's: a page that
+  renderer, and the page passes its own `c` so the classes stay the block's: a page that
   wants to draw its waiting state styles `--loading` itself. Nothing a reader sees moved,
   which means a loading page is still an empty `<div>` — no stylesheet has ever matched
   `--loading` or `--failed`, and designing that state was left out of a rename pass. The

@@ -3,7 +3,7 @@ import { formatDate } from '@design-edito/tools/agnostic/time/dates/format-date/
 import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import type { PartialDate as PartialDateValue } from '../../../shared/types/index.js'
 
-const bem = clss('partial-date')
+const c = clss('partial-date')
 
 export type PartialDateProps = {
   date: PartialDateValue
@@ -32,5 +32,5 @@ export function PartialDate ({ date }: PartialDateProps) {
     date={dateWithGapsFilled}
     format={format}
     dateTime={isValidDateTime ? formatDate(dateWithGapsFilled, format) : null}
-    className={bem()} />
+    className={c()} />
 }

@@ -14,7 +14,7 @@ import type { ComponentChildren } from 'preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import './styles.css'
 
-const bem = clss('notice')
+const c = clss('notice')
 
 export type MissingNoticeProps = {
   children: ComponentChildren
@@ -22,10 +22,10 @@ export type MissingNoticeProps = {
 
 /** Something the blog does not have. The page names what was looked for. */
 export function MissingNotice ({ children }: MissingNoticeProps) {
-  return <p class={bem(null, 'missing')}>{children}</p>
+  return <p class={c(null, 'missing')}>{children}</p>
 }
 
 /** A read that did not arrive. The same sentence wherever it happens. */
 export function FailureNotice () {
-  return <p class={bem(null, 'failed')}>This did not load. Reload the page to try again.</p>
+  return <p class={c(null, 'failed')}>This did not load. Reload the page to try again.</p>
 }
