@@ -5,12 +5,12 @@
 import type {
   BuiltAbout,
   BuiltArtist,
+  BuiltArtistFile,
   BuiltArtistIndexEntry,
-  BuiltArtistPage,
   BuiltManifest,
   BuiltPost,
-  BuiltPostIndexEntry,
-  BuiltPostPage
+  BuiltPostFile,
+  BuiltPostIndexEntry
 } from '../../../shared/types/built.js'
 import type { PostId, Timestamp } from '../../../shared/types/index.js'
 import { previewing } from '../preview/index.js'
@@ -94,7 +94,7 @@ export async function fetchArtists (): Promise<BuiltArtistIndexEntry[]> {
  */
 export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
   try {
-    const { post } = await readJson<BuiltPostPage>(`/data/post/${id}.json`)
+    const { post } = await readJson<BuiltPostFile>(`/data/post/${id}.json`)
     return isVisible(post) ? post : null
   } catch (error) {
     if (error instanceof MissingFile) return null
@@ -102,7 +102,7 @@ export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
   }
 }
 
-export type ArtistPage = {
+export type ArtistWithPosts = {
   artist: BuiltArtist
   posts: BuiltPost[]
 }
@@ -118,21 +118,21 @@ export type ArtistPage = {
  * that cannot be read is a build that shipped broken, not an artist who does not exist,
  * so it fails rather than emptying the page.
  */
-export async function fetchArtistPage (slug: string): Promise<ArtistPage | null> {
-  let page: BuiltArtistPage
+export async function fetchArtistWithPosts (slug: string): Promise<ArtistWithPosts | null> {
+  let file: BuiltArtistFile
   try {
-    page = await readJson<BuiltArtistPage>(`/data/artist/${slug}.json`)
+    file = await readJson<BuiltArtistFile>(`/data/artist/${slug}.json`)
   } catch (error) {
     if (error instanceof MissingFile) return null
     throw error
   }
-  const posts = await Promise.all(page.posts
+  const posts = await Promise.all(file.posts
     .filter(entry => isVisible(entry))
-    .map(async entry => (await readJson<BuiltPostPage>(`/data/post/${entry.id}.json`)).post))
-  return { artist: page.artist, posts }
+    .map(async entry => (await readJson<BuiltPostFile>(`/data/post/${entry.id}.json`)).post))
+  return { artist: file.artist, posts }
 }
 
-export type PostPage = {
+export type StreamPage = {
   posts: BuiltPost[]
   page: number
   pageCount: number
@@ -152,7 +152,7 @@ export type PostPage = {
  * URL may be stale, the stream having moved since it was shared — so the caller decides
  * between showing the nearest page and saying there is none.
  */
-export async function fetchPostPage (page: number): Promise<PostPage> {
+export async function fetchStreamPage (page: number): Promise<StreamPage> {
   const [entries, manifest] = await Promise.all([
     fetchPublishedPosts(),
     readManifest()
@@ -162,8 +162,8 @@ export async function fetchPostPage (page: number): Promise<PostPage> {
   const wanted = Number.isFinite(page) ? Math.min(Math.max(1, Math.trunc(page)), pageCount) : 1
   if (!exists) return { posts: [], page: wanted, pageCount, exists }
   const start = (wanted - 1) * manifest.pageSize
-  const pages = await Promise.all(entries
+  const files = await Promise.all(entries
     .slice(start, start + manifest.pageSize)
-    .map(async entry => await readJson<BuiltPostPage>(`/data/post/${entry.id}.json`)))
-  return { posts: pages.map(({ post }) => post), page: wanted, pageCount, exists }
+    .map(async entry => await readJson<BuiltPostFile>(`/data/post/${entry.id}.json`)))
+  return { posts: files.map(({ post }) => post), page: wanted, pageCount, exists }
 }

@@ -74,13 +74,13 @@ export type BuiltPost = {
   }
 }
 
-/** One post on its own. */
-export type BuiltPostPage = {
+/** The file one post is read from, holding nothing else. */
+export type BuiltPostFile = {
   post: BuiltPost
 }
 
-/** One artist, and every post they appear on, credited or featured or remixing. */
-export type BuiltArtistPage = {
+/** The file one artist is read from: them, and every post they appear on. */
+export type BuiltArtistFile = {
   artist: BuiltArtist
   posts: BuiltPostIndexEntry[]
 }
@@ -90,7 +90,7 @@ export type BuiltArtistPage = {
  *
  * The whole list of these is one file, fetched once and filtered on `publishedOn`, which
  * is what makes a page of ten exactly ten. What it takes to display a post comes from
- * {@link BuiltPostPage}, one file per post, cached by id.
+ * {@link BuiltPostFile}, one file per post, cached by id.
  */
 export type BuiltPostIndexEntry = {
   id: PostId

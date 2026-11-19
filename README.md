@@ -260,7 +260,7 @@ zero-padding, then the failure states, which are the one item that was always go
   which rendered an empty `<div>`, says « There is nothing at this address. » over a link
   home.
 - **The manifest is read once a tab**, memoized in `utils/fetch`. `useDocumentTitle` mounts
-  on every page and refetched it for one string that cannot change; `fetchPostPage` read it
+  on every page and refetched it for one string that cannot change; `fetchStreamPage` read it
   again for every page of the stream. A read that failed is not kept.
 - **Import order** is fixed in the six files, and in `pages/Post` where
   `shared/types/index.js` sat before `shared/types/built.js`. `goToRandomPost` now says why
@@ -273,7 +273,7 @@ all — the promise rejected, the state never moved, and the page held its skele
 ever. What separates the two now is the status code: `readJson` throws `MissingFile` on a
 **404**, which is how absence is spelled on a site served as files, and an ordinary error
 on anything else — a 500, a body that is not JSON, a browser with no network. `fetchPost`
-and `fetchArtistPage` turn the first into `null` and let the second through; the three
+and `fetchArtistWithPosts` turn the first into `null` and let the second through; the three
 index readers catch nothing, a 404 on a file the build writes being a broken deploy rather
 than an absence. `useFetched` carries the third state, and logs the error it swallows so
 the console still says what happened.
@@ -293,12 +293,14 @@ changes what a reader sees. The base held up again — pages fetch, components r
 state manager, no abstraction invented early — and what follows is in the order it should
 be done.
 
-- **« page » means three things, and two of them meet in one call chain.** `BuiltPostPage`
-  is the JSON file holding one post, `PostPage` in `utils/fetch` is a slice of ten, `pages/`
-  is the route and `routePatterns.page` the pagination index — so `fetchPostPage` returns
-  the second by reading the first. `BuiltArtistPage` against `ArtistPage` is the same pair.
-  Keep « page » for pagination, call the per-entity file a `…File`, and name the view model
-  for what it holds. This is the one that costs reading time.
+- **« page » is pagination and nothing else now — done.** It used to mean four things:
+  `BuiltPostPage` was the JSON file holding one post, `PostPage` in `utils/fetch` a slice of
+  ten, `pages/` the route, `routePatterns.page` the pagination index — so `fetchPostPage`
+  returned the second by reading the first. The per-entity file is a `…File`
+  (`BuiltPostFile`, `BuiltArtistFile`), the view model is named for what it holds
+  (`StreamPage` behind `fetchStreamPage`, `ArtistWithPosts` behind `fetchArtistWithPosts`),
+  and `pages/` and `routePatterns.page` keep the word. `Built*` and `fetch*` go with the
+  namespace pass below.
 - **The same five-line preamble on six pages, guarding a no-op.** `About`, `Artists`,
   `Artist`, `Home`, `Post` and `Posts` each open with the same `loading` then `failed` pair,
   and no stylesheet styles either modifier — `--loading` and `--failed` appear in six JSX

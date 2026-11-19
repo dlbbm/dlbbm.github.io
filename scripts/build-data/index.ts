@@ -32,12 +32,12 @@ import { pageNames, pageTitle } from '../../shared/titles/index.js'
 import type {
   BuiltAbout,
   BuiltArtist,
+  BuiltArtistFile,
   BuiltArtistIndexEntry,
-  BuiltArtistPage,
   BuiltManifest,
   BuiltPost,
+  BuiltPostFile,
   BuiltPostIndexEntry,
-  BuiltPostPage,
   BuiltRoute
 } from '../../shared/types/built.js'
 import type { Artist, Post, Recording, Song } from '../../shared/types/index.js'
@@ -226,8 +226,8 @@ for (let page = 1; page <= pageCount; page += 1) {
 }
 
 for (const post of posts) {
-  const built: BuiltPostPage = { post }
-  await emit(`post/${post.id}.json`, built)
+  const file: BuiltPostFile = { post }
+  await emit(`post/${post.id}.json`, file)
   route('post', post.url, pageTitle(post.title, about.title), describePost(post))
 }
 
@@ -251,8 +251,8 @@ for (const artist of db.artists) {
   if (built === null) continue
   const theirs = posts.filter(post => appearsOn(built, post))
   if (theirs.length === 0) continue
-  const page: BuiltArtistPage = { artist: built, posts: theirs.map(indexEntry) }
-  await emit(`artist/${built.slug}.json`, page)
+  const file: BuiltArtistFile = { artist: built, posts: theirs.map(indexEntry) }
+  await emit(`artist/${built.slug}.json`, file)
   // What they are heard on, which is not what their page holds: a cover of theirs is on it
   // and is not one of their posts.
   const performed = theirs.filter(post => performsOn(built, post)).length
