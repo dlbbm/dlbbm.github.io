@@ -3,7 +3,7 @@ import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import { pageNames } from '../../../shared/titles/index.js'
 import type { BuiltPostIndexEntry } from '../../../shared/types/built.js'
 import { Link } from '../../components/Link/index.js'
-import { FailureNotice } from '../../components/Notice/index.js'
+import { WhenLoaded } from '../../components/WhenLoaded/index.js'
 import { fetchPublishedPosts } from '../../utils/fetch/index.js'
 import { useFetched } from '../../utils/fetched/index.js'
 import { useDocumentTitle } from '../../utils/title/index.js'
@@ -22,27 +22,25 @@ export function Posts () {
   const fetched = useFetched(async () => await fetchPublishedPosts(), [])
   useDocumentTitle(pageNames.posts)
 
-  if (fetched.status === 'loading') return <div class={bem(null, 'loading')} />
   // The index is written by the build, so it is never missing without being broken: there
   // is nothing to say here that the failure does not already say.
-  if (fetched.status === 'failed') return <div class={bem(null, 'failed')}>
-    <FailureNotice />
-  </div>
-  return <div class={bem()}>
-    <ul class={bem('list')}>
-      {fetched.value.map(entry => {
-        const versionNote = formatVersionNote(entry)
-        return <li class={bem('item')} key={entry.id}>
-          <DateComponent
-            date={new Date(entry.publishedOn)}
-            format="{{MMM}} {{D}}{{th}}, {{YYYY}}"
-            className={bem('date')} />
-          <span class={bem('name')}>
-            <Link href={entry.url} className={bem('link')}>{entry.title}</Link>
-            {versionNote === null ? null : <span class={bem('qualifier')}>{` ${versionNote}`}</span>}
-          </span>
-        </li>
-      })}
-    </ul>
-  </div>
+  return <WhenLoaded fetched={fetched} bem={bem}>
+    {entries => <div class={bem()}>
+      <ul class={bem('list')}>
+        {entries.map(entry => {
+          const versionNote = formatVersionNote(entry)
+          return <li class={bem('item')} key={entry.id}>
+            <DateComponent
+              date={new Date(entry.publishedOn)}
+              format="{{MMM}} {{D}}{{th}}, {{YYYY}}"
+              className={bem('date')} />
+            <span class={bem('name')}>
+              <Link href={entry.url} className={bem('link')}>{entry.title}</Link>
+              {versionNote === null ? null : <span class={bem('qualifier')}>{` ${versionNote}`}</span>}
+            </span>
+          </li>
+        })}
+      </ul>
+    </div>}
+  </WhenLoaded>
 }

@@ -301,12 +301,14 @@ be done.
   (`StreamPage` behind `fetchStreamPage`, `ArtistWithPosts` behind `fetchArtistWithPosts`),
   and `pages/` and `routePatterns.page` keep the word. `Built*` and `fetch*` go with the
   namespace pass below.
-- **The same five-line preamble on six pages, guarding a no-op.** `About`, `Artists`,
-  `Artist`, `Home`, `Post` and `Posts` each open with the same `loading` then `failed` pair,
-  and no stylesheet styles either modifier — `--loading` and `--failed` appear in six JSX
-  files and in zero CSS rules, so a loading page is an empty `<div>` carrying the block's
-  own `display: flex`. One component taking the `Fetched` and the loaded renderer collapses
-  all six.
+- **The five-line preamble is one component — done.** `About`, `Artists`, `Artist`, `Home`,
+  `Post` and `Posts` each opened with the same `loading` then `failed` pair before anything
+  they had of their own to say. `components/WhenLoaded` takes the `Fetched` and the loaded
+  renderer, and the page passes its own `bem` so the classes stay the block's: a page that
+  wants to draw its waiting state styles `--loading` itself. Nothing a reader sees moved,
+  which means a loading page is still an empty `<div>` — no stylesheet has ever matched
+  `--loading` or `--failed`, and designing that state was left out of a rename pass. The
+  three pages that also have a `missing` state keep it, inside the renderer.
 - **Every shared module prefixes its symbols with its own directory**: `Built*` nine times
   in `types/built.ts`, `routePatterns` / `routeUrl` / `RouteKind`, `pageTitle` / `pageNames`,
   five `fetch*`, `previewHref`, `formatPlace`. The prefixes come from the import style and
