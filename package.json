@@ -10,7 +10,7 @@
     "url": "https://github.com/dlbbm/dlbbm.github.io"
   },
   "scripts": {
-    "start": "npm run build && npx concurrently -n watch,serve \"npm run watch:src\" \"npm run serve:dist\"",
+    "start": "npm run build && npx concurrently -n watch,shared,serve \"npm run watch:src\" \"npm run watch:shared\" \"npm run serve:dist\"",
     "build": "npm run clean:dist && npm run build:data && npm run build:src && npm run build:shells",
     "deploy": "npm run build:scripts && node scripts/deploy/index.js",
     "typecheck": "npm run check:scripts && npm run check:src",
@@ -23,6 +23,7 @@
     "build:src": "npm run build:scripts && DLBBM_MODE=production node scripts/build-src/index.js",
     "build:shells": "npm run build:scripts && node scripts/build-shells/index.js",
     "watch:src": "ESBUILD_WATCH=true node scripts/build-src/index.js",
+    "watch:shared": "npx chokidar \"shared/**/*.ts\" -c \"npm run build:scripts\"",
     "serve:dist": "npx http-server dist --port ${PORT:-3000} -c-1 --ext html",
     "post": "npm run post:create",
     "post:create": "npm run build:scripts && node scripts/post-create/index.js",
