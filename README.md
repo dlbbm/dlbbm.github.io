@@ -31,11 +31,9 @@ truth: that is why every pass over these strings asks rather than substitutes, a
   directory is not a command: the shared helpers. `USELESS-NOW-data-import` is the
   migration that ran once and must never run again, named so that nobody wonders.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
-  the page `build:shells` fills in once per URL, and `basics/`, `components/`, `layouts/`,
-  `pages/` and `utils/` are what it is made of. Nothing generated lives here.
-  **`basics/`** holds the components bound for `mf-tools`: none of them knows anything of
-  this blog, which is checkable — a basic imports nothing from `shared/` and nothing from
-  `components/`.
+  the page `build:shells` fills in once per URL, and `components/`, `data/`, `fetched/`,
+  `format/`, `pages/`, `preview/`, `styles/` and `title/` are what it is made of. Nothing
+  generated lives here.
 - **`dist/`** — everything the site is made of, written by the build and served as is, in
   development as well as in production. Never committed.
 
@@ -246,7 +244,7 @@ zero-padding, then the failure states, which are the one item that was always go
   other way round from the page: the component is `components/PostArticle`, which is what
   the markup draws, and `pages/Post` keeps the route's name. Its BEM block stays `post` —
   the class names what is drawn, and renaming it would rewrite a stylesheet to no effect.
-- **One fetching protocol**, in `src/utils/fetched`. `useFetched (read, deps)` answers
+- **One fetching protocol**, in `src/fetched`. `useFetched (read, deps)` answers
   `{ status: 'loading' }` or `{ status: 'loaded', value }` and holds the race once: the six
   pages and `useDocumentTitle` all read through it, and the double wrapper two of them
   carried to tell « not arrived » from « arrived, nothing there » is gone, a value the read
@@ -260,7 +258,7 @@ zero-padding, then the failure states, which are the one item that was always go
   front has to be able to play what the tooling can still write. And `pages/NotFound`,
   which rendered an empty `<div>`, says « There is nothing at this address. » over a link
   home.
-- **The manifest is read once a tab**, memoized in `utils/fetch`. `useDocumentTitle` mounts
+- **The manifest is read once a tab**, memoized in `src/data`. `useDocumentTitle` mounts
   on every page and refetched it for one string that cannot change; `fetchStreamPage` read it
   again for every page of the stream. A read that failed is not kept.
 - **Import order** is fixed in the six files, and in `pages/Post` where
@@ -310,60 +308,60 @@ be done.
   which means a loading page is still an empty `<div>` — no stylesheet has ever matched
   `--loading` or `--failed`, and designing that state was left out of a rename pass. The
   three pages that also have a `missing` state keep it, inside the renderer.
-- **Every shared module prefixes its symbols with its own directory**: `Built*` nine times
-  in `types/built.ts`, `routePatterns` / `routeUrl` / `RouteKind`, `pageTitle` / `pageNames`,
-  five `fetch*`, `previewHref`, `formatPlace`. The prefixes come from the import style and
-  not from the names — with named imports the scope is not implicit at the call site, and a
-  bare `post (id)` in `pages/Post` would read worse than what is there. `import type * as
-  built`, `import * as routes`, `import * as data` is what makes the rule hold:
-  `built.Post`, `routes.url ('page', …)`, `data.post (id)`. It touches every file, so it
-  goes last of the three.
-- **`pages/Home` and `pages/Posts` do not say which is which.** `Home` is the paginated
-  stream of whole articles and renders page seven as readily as `/`; `Posts` is the flat
-  list of every title, which `pageNames.posts` already calls « All posts ».
-- **`PostArticle` draws a block called `post`**, and carries a comment whose only job is to
-  excuse the mismatch with `pages/Post`. `clss ('post-article')` deletes the comment and the
-  question — the stylesheet rewrite is the cost, and it buys markup that names the component
-  drawing it.
-- **`src/utils/` is the junk drawer and the extra level.** `src/utils/fetch/index.ts` is
-  three levels for one module, and the five things under `utils` are the front's own
-  subjects: reading built data, the state of a read, the preview flag, the tab title, one
-  formatter. `lm-link/src` has no `utils/` at its top, and puts several files in one scope
-  directory rather than one directory per function — `events/index.ts` beside
-  `events/types.ts`. Flat under `src/`, and `utils` gone. `layouts/` is a directory of one,
-  next to a `MainNav`, with one layout and one nav in the site.
-- **The front bundles a stale `shared/` and says nothing.** `src/index.tsx` imports
-  `../shared/routes/index.js`, `tsc -p scripts` emits that `.js` next to the `.ts`, and
-  esbuild takes the emitted file when both exist — tested, not inferred. `watch:src` does
-  not run `build:scripts`, so editing `shared/routes/index.ts` under `npm start` leaves the
-  browser on the old routes, with `typecheck` green and no error anywhere. Either stop
-  emitting `shared/` for the front's sake, or have `watch:src` watch it too.
-- **Two encodings that need prose to be read.** `isVisible` means published by now or
-  previewing, which `isPublished` says on its own. `useDocumentTitle (name: string | null |
-  undefined)` spends seven lines of JSDoc saying that `null` is the site's front page and
-  `undefined` is « not known yet » — two files away from `Fetched`, which names its states
-  instead of encoding them.
-- **The comments are the register to drop.** `utils/preview` is twelve comment lines over
-  six of code, `utils/title` seventeen over fourteen, `utils/fetch` sixty over a hundred and
-  nine, `Notice` thirteen over eighteen. And they read as metaphor: « a 404 is how absence
-  is spelled », « a failure is nobody's answer to a question about a post », « a ground that
-  is lit from behind », « kept on the shelf ». The convention is to write nothing by default
-  and to spend a comment on what the code cannot say — which bug a precaution closes, why an
-  import is static. Three or four qualify: why random has no route of its own, the
-  react-to-preact alias, why the layout wraps the router. The rest paraphrase the signature
-  or argue with the alternatives.
-- **The details line of `PostArticle`** assembles `kindAndPlace`, the date and the
-  parenthesised edition with their separators decided inline, in three nested ternaries that
-  re-test each other's emptiness. `formatPlace` does that same job in two lines with a
-  filter and a join, and a separator belongs to the join.
-- **Dead code in four places, all of it deliberate, all of it to decide again.** `FileMedia`
-  has never run and says so twice, in its own docstring and again in `PostArticle`, for 47
-  lines of TSX and 108 of CSS. `--day-bg`, `--day-text`, `--day-shadow` and `--day-mark-green`
-  are referenced by nothing. `.inverted` and `:root[data-theme='light']` are declared and
-  applied nowhere in the app. The `.notice--*` modifiers are there « for the day that stops
-  being true ».
-- **`README.md` above and `CLAUDE.md` still describe `src/basics/`**, emptied in `74b310f`
-  and `a506b81`.
+- **Every shared module prefixes its symbols with its own directory — done.** `Built*` in
+  `types/built.ts` lost the prefix (`Post`, `PostFile`, `ArtistFile`, …), `shared/routes`
+  is `patterns` / `url` / `Kind`, `shared/titles` is `title` / `names`, and the front's own
+  `fetch*`, `previewHref` and `formatPlace` dropped their prefixes too (`post`, `href`,
+  `place`). Consumers import the module itself — `import type * as built`,
+  `import * as routes`, `import * as titles`, `import * as data`, `import * as preview`,
+  `import * as format` — and read `built.Post`, `routes.url ('page', …)`, `data.post (id)`.
+  `scripts/build-data` and `scripts/build-shells` keep plain named imports aliased back to
+  the old names (`Post as BuiltPost`), since those files already use the bare data-layer
+  `Post` and `Artist` and a namespace import would collide.
+- **`pages/Home` and `pages/Posts` do not say which is which — done.** `Home` is renamed
+  `Feed`: the paginated stream of whole articles, rendering page seven as readily as `/`.
+  `Posts` keeps its name — the flat list of every title, which `titles.names.posts`
+  already calls « All posts ».
+- **`PostArticle` draws a block called `post` — done.** `clss ('post-article')`, and the
+  stylesheet's `.post` / `.post__*` follow it to `.post-article` / `.post-article__*`.
+- **`src/utils/` is the junk drawer and the extra level — done.** The five subjects move up
+  flat under `src/`: `fetch` is `src/data`, and `fetched`, `format`, `preview`, `title` keep
+  their names one level up. `utils/` is gone. `layouts/`, a directory of one, is folded into
+  `components/MainLayout`, next to `MainNav`.
+- **The front bundles a stale `shared/` and says nothing — done.** `chokidar-cli` was
+  already a devDependency, installed and never wired to anything. `watch:shared` now runs
+  it against `shared/**/*.ts`, triggering `build:scripts` on every change, and `npm start`
+  runs it alongside `watch:src` and `serve:dist` — so editing `shared/routes/index.ts`
+  under a running `npm start` reaches the browser instead of silently staying on the
+  `.js` `tsc -p scripts` had already emitted.
+- **Two encodings that need prose to be read — done.** `isVisible` is split: `isPublished`
+  is the pure date check, and `preview.active || isPublished (entry)` is written out at
+  each of the three call sites instead of hiding both conditions behind one name.
+  `useDocumentTitle` takes a `PageName` — `{ status: 'unknown' }` or
+  `{ status: 'known', name }` — built by `known (name)` / `unknown`, instead of encoding
+  the same two states as `string | null | undefined`.
+- **The comments are the register to drop — done**, in `preview`, `title`, `data` (former
+  `fetch`) and `Notice`: the metaphor and the paraphrase are gone, and what is left is the
+  handful of lines that say a why the code cannot — the offset in a timestamp, the router
+  never swapping a document, a failed read not being kept.
+- **The details line of `PostArticle` — done.** `kindAndPlace`, the date and the
+  parenthesised edition are now a `details` array — each present part paired with its own
+  separator — built with one filter and rendered with one `.map`, replacing the three
+  nested ternaries that re-tested each other's emptiness.
+- **Dead code in four places, decided:**
+  - `FileMedia` is deleted (47 lines of TSX, 108 of CSS) along with `PostArticle`'s `file`
+    branch: this blog only ever embeds — YouTube, and one legacy Mixcloud link nowhere else
+    findable — and a stored file is a future evolution, not a branch to carry unused. The
+    data-layer `FileSource` type and the scripts that still let `post:create` offer one are
+    untouched; only the front's unreachable render path is gone.
+  - `--day-*` and `--lit-*` stay, but as a plain record rather than a live mechanism:
+    `:root[data-theme='light']` and `.inverted` are deleted, since the blog ships one theme
+    and changing it is a redeploy, not a toggle — nothing in the app ever triggered one.
+  - `.notice--missing` and `.notice--failed` collapse into one `.notice` rule: the two read
+    identically today, and the split was speculative rather than load-bearing.
+- **`README.md` above and `CLAUDE.md` still describe `src/basics/` — done.** The directory
+  was already gone; the layout bullet above now lists what is actually under `src/`, and
+  `CLAUDE.md`'s `## basics/ knows nothing` section is deleted with it.
 
 **Then `deploy`, which is written and has never run; the first run is the step.** It copies
 `dist/` into a worktree on the `production` branch, which is what GitHub Pages serves, and it is
@@ -372,10 +370,10 @@ pointed at that branch, a read of a handful of shells and their OpenGraph tags a
 actually render, and a look at the 404.
 
 - **`?preview` is written.** A bare `?preview` key read once at import into a module-level
-  flag, exposed as `isVisible (entry)` and used by the three passes that withheld a
-  scheduled post in `src/utils/fetch/index.ts`. In memory on purpose: the mode lasts as
-  long as the tab, and the flag is read once because the router rewrites the URL on the
-  first link followed. Never exercised against a live site.
+  flag, exposed as `preview.active` and composed with `isPublished (entry)` at the three
+  places in `src/data/index.ts` that withhold a scheduled post. In memory on purpose: the
+  mode lasts as long as the tab, and the flag is read once because the router rewrites the
+  URL on the first link followed. Never exercised against a live site.
 - **A pasted link says a sentence.** `og:description` is what someone decides to follow a
   link on, so a post reads `Heartbeats, by The Knife, on dlbbm` and an artist
   `All the songs from The Velvet Underground on dlbbm`, where both used to list the kind,
@@ -504,8 +502,8 @@ The thematic classification is the large one and the rest is in no fixed order.
   `basics/` lifted into `mf-tools` — or just the same conventions rewritten each time is
   open, and deciding it before two interfaces exist would be guessing.
 - **A tour of the helpers, to see what climbs.** `scripts/_date`, `_slug`, `_describe`,
-  `_db`, `_ask`, and `src/utils/` on the front side: a pass over all of them asking which
-  belongs where. `lm-tools` is the ultra-generic bank, `mf-tools` what it would make no
+  `_db`, `_ask`, and `src/data`, `src/fetched`, `src/format`, `src/preview`, `src/title` on
+  the front side: a pass over all of them asking which belongs where. `lm-tools` is the ultra-generic bank, `mf-tools` what it would make no
   sense for Le Monde to own, and the rest stays here. A piece earns the climb by having
   proven itself a step below, so this is a pass to make once the import is consolidated
   and the shapes have stopped moving — not before.

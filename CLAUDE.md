@@ -31,13 +31,6 @@ re-themed, and re-theming is the whole point of this layer.
 owns the spacing, margins never collapse, and there is no first-or-last exception to
 write.
 
-## `basics/` knows nothing
-
-The rule `README.md` states — a basic imports nothing from `shared/` and nothing from
-`components/` — extends to the design: a basic names no theme and no sub-scope either. It
-reads the token layer and the `--ff-*` and `--*-color` variables it is given, which is
-what makes it liftable into `mf-tools` unchanged.
-
 ## dlbbm is the pilot, and one section of a larger site
 
 Treat the interface as if this blog were the `dlbbm` section of something much wider,

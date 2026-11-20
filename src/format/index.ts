@@ -5,10 +5,10 @@
  * rather than into a string.
  */
 
-import type { Place } from '../../../shared/types/index.js'
+import type { Place } from '../../shared/types/index.js'
 
 /** `null` when the place knows nothing, so the element can be skipped. */
-export function formatPlace (place: Place): string | null {
-  const parts = [place.venue, place.city, place.country].filter((part): part is string => part !== null)
+export function place (value: Place): string | null {
+  const parts = [value.venue, value.city, value.country].filter((part): part is string => part !== null)
   return parts.length === 0 ? null : parts.join(', ')
 }
