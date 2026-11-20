@@ -40,40 +40,23 @@
   --mark-green: #205243;
   --mark-warm: #a9563a;
 
-  /* Daylight, and the one the mapping below uses: the panel turned over, its two colors
-     swapped and nothing else invented. The warm note is in neither set — the lens keeps
-     its red either way. */
+  /* Daylight, considered and set aside: the panel turned over, its two colors swapped and
+     nothing else invented. The warm note is in neither set — the lens keeps its red
+     either way. This blog ships one theme; changing it is a redeploy, not a toggle — these
+     are kept only as the record of the palette that was tried. */
   --lit-bg: #d7dcc1;
   --lit-text: #060908;
   --lit-shadow: rgb(6 9 8 / .1);
   --lit-mark-green: #0f2a22;
 
-  /* Daylight as it was drawn before the inversion was tried, kept on the shelf. */
+  /* Daylight as it was drawn before the inversion above was tried — an earlier palette,
+     also kept on the shelf. */
   --day-bg: #8cbfa8;
   --day-text: #12201c;
   --day-shadow: rgb(18 32 28 / .1);
   --day-mark-green: #0f2a22;
 
   color-scheme: dark;
-}
-
-/* Daylight, asked for: forced on the document with `data-theme`, or dropped on any node
-   in the tree with `.inverted` — a theme is these values and nothing else, so the two
-   are the same act. Nothing follows the reader's system any more; this site has a
-   ground of its own. */
-:root[data-theme='light'],
-.inverted {
-  --bg-color: var(--lit-bg);
-  --text-color: var(--lit-text);
-  --shadow-color: var(--lit-shadow);
-  --mark-green: var(--lit-mark-green);
-
-  color-scheme: light;
-}
-
-.inverted {
-  background-color: var(--bg-color);
-  color: var(--text-color);
 }
 
 *,
