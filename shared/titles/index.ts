@@ -12,12 +12,12 @@
 const SEPARATOR = ' | '
 
 /** The name of a page, trailed by the name of the site. `null` is the site itself. */
-export function pageTitle (name: string | null, siteTitle: string): string {
+export function title (name: string | null, siteTitle: string): string {
   return name === null ? siteTitle : `${name}${SEPARATOR}${siteTitle}`
 }
 
 /** The pages whose name is not the name of something in the data. */
-export const pageNames = {
+export const names = {
   posts: 'All posts',
   artists: 'Artists',
   about: 'About'

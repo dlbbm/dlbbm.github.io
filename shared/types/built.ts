@@ -7,11 +7,11 @@
  * Pagination is the front's, not the build's. A hidden post never reaches these shapes,
  * but a scheduled one does — it has to, or it could not appear at the minute it names
  * without a rebuild — so how many posts are displayable is only known at runtime. The
- * front reads {@link BuiltPostIndexEntry} once, drops what is still ahead of now, and the
+ * front reads {@link PostIndexEntry} once, drops what is still ahead of now, and the
  * page it wants is a slice of what remains: always ten, whatever the build thought.
  */
 
-import type { RouteKind } from '../routes/index.js'
+import type * as routes from '../routes/index.js'
 import type {
   ArtistId,
   PartialDate,
@@ -26,7 +26,7 @@ import type {
 } from './index.js'
 
 /** An artist as a credit line: named, addressable, nothing else. */
-export type BuiltArtist = {
+export type Artist = {
   id: ArtistId
   name: string
   slug: Slug['slug']
@@ -50,19 +50,19 @@ export type BuiltArtist = {
  * @property song - The work, under its own title. What the post announces is the take's
  * title when it has one, which `title` already carries and `recording.title` holds raw.
  */
-export type BuiltPost = {
+export type Post = {
   id: PostId
   url: string
   publishedOn: Timestamp
   title: string
   body: string | null
   song: { id: SongId, title: string }
-  credits: BuiltArtist[]
-  featuring: BuiltArtist[]
-  remixedBy: BuiltArtist[]
-  originalArtists: BuiltArtist[]
+  credits: Artist[]
+  featuring: Artist[]
+  remixedBy: Artist[]
+  originalArtists: Artist[]
   isCover: boolean
-  derivedFrom: { id: SongId, title: string, originalArtists: BuiltArtist[] }[]
+  derivedFrom: { id: SongId, title: string, originalArtists: Artist[] }[]
   isMedley: boolean
   recording: {
     id: RecordingId
@@ -75,14 +75,14 @@ export type BuiltPost = {
 }
 
 /** The file one post is read from, holding nothing else. */
-export type BuiltPostFile = {
-  post: BuiltPost
+export type PostFile = {
+  post: Post
 }
 
 /** The file one artist is read from: them, and every post they appear on. */
-export type BuiltArtistFile = {
-  artist: BuiltArtist
-  posts: BuiltPostIndexEntry[]
+export type ArtistFile = {
+  artist: Artist
+  posts: PostIndexEntry[]
 }
 
 /**
@@ -90,9 +90,9 @@ export type BuiltArtistFile = {
  *
  * The whole list of these is one file, fetched once and filtered on `publishedOn`, which
  * is what makes a page of ten exactly ten. What it takes to display a post comes from
- * {@link BuiltPostFile}, one file per post, cached by id.
+ * {@link PostFile}, one file per post, cached by id.
  */
-export type BuiltPostIndexEntry = {
+export type PostIndexEntry = {
   id: PostId
   url: string
   publishedOn: Timestamp
@@ -102,7 +102,7 @@ export type BuiltPostIndexEntry = {
 }
 
 /** The lean lines `/artists` lists. */
-export type BuiltArtistIndexEntry = BuiltArtist & {
+export type ArtistIndexEntry = Artist & {
   postCount: number
 }
 
@@ -113,7 +113,7 @@ export type BuiltArtistIndexEntry = BuiltArtist & {
  * one would be a mouthful. It is what the share lines are written with, and it lives here
  * because every other site-level string does.
  */
-export type BuiltAbout = {
+export type About = {
   url: string
   title: string
   shortTitle: string
@@ -122,16 +122,16 @@ export type BuiltAbout = {
 }
 
 /** One URL `build:shells` writes a file for, and what that file should say it is. */
-export type BuiltRoute = {
+export type Route = {
   url: string
-  kind: RouteKind
+  kind: routes.Kind
   title: string
   description: string
 }
 
 /** Everything a page might want before it knows which page it is. */
-export type BuiltManifest = {
-  about: BuiltAbout
+export type Manifest = {
+  about: About
   pageSize: number
   // Everything shipped, scheduled posts included. How many are displayable is a question
   // only the front can answer, and it answers it by filtering the index.

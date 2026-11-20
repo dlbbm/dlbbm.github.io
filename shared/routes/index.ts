@@ -6,7 +6,7 @@
  * which works when clicked cannot 404 when pasted.
  */
 
-export const routePatterns = {
+export const patterns = {
   home: '/',
   page: '/page/:page',
   post: '/post/:id',
@@ -16,13 +16,13 @@ export const routePatterns = {
   about: '/about'
 } as const
 
-export type RouteKind = keyof typeof routePatterns
+export type Kind = keyof typeof patterns
 
-/** The pattern with its `:params` filled in — `routeUrl('post', { id })`. */
-export function routeUrl (kind: RouteKind, params: Record<string, string | number> = {}): string {
-  let url: string = routePatterns[kind]
+/** The pattern with its `:params` filled in — `routes.url('post', { id })`. */
+export function url (kind: Kind, params: Record<string, string | number> = {}): string {
+  let filled: string = patterns[kind]
   for (const [name, value] of Object.entries(params)) {
-    url = url.replace(`:${name}`, `${value}`)
+    filled = filled.replace(`:${name}`, `${value}`)
   }
-  return url
+  return filled
 }

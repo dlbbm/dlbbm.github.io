@@ -27,18 +27,18 @@ import path from 'node:path'
 import process from 'node:process'
 import { confirm } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import { routeUrl, type RouteKind } from '../../shared/routes/index.js'
-import { pageNames, pageTitle } from '../../shared/titles/index.js'
+import { url as routeUrl, type Kind as RouteKind } from '../../shared/routes/index.js'
+import { names as pageNames, title as pageTitle } from '../../shared/titles/index.js'
 import type {
-  BuiltAbout,
-  BuiltArtist,
-  BuiltArtistFile,
-  BuiltArtistIndexEntry,
-  BuiltManifest,
-  BuiltPost,
-  BuiltPostFile,
-  BuiltPostIndexEntry,
-  BuiltRoute
+  About as BuiltAbout,
+  Artist as BuiltArtist,
+  ArtistFile as BuiltArtistFile,
+  ArtistIndexEntry as BuiltArtistIndexEntry,
+  Manifest as BuiltManifest,
+  Post as BuiltPost,
+  PostFile as BuiltPostFile,
+  PostIndexEntry as BuiltPostIndexEntry,
+  Route as BuiltRoute
 } from '../../shared/types/built.js'
 import type { Artist, Post, Recording, Song } from '../../shared/types/index.js'
 import { ABOUT_FILE, DATA_FILES, DIST_DATA, PAGE_SIZE } from '../_config/index.js'
