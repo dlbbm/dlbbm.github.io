@@ -26,6 +26,12 @@ export const IDEAS_FILE = path.join(CWD, 'IDEAS.md')
 // and deleting this costs the requests that filled it.
 export const NAMES_PENDING_FILE = path.join(CWD, '.names-pending.ndjson')
 
+// Not a cache: pairs `data:merge-duplicates` offered and was told apart, so the same two
+// records are not asked about on every run. The decision has no other home — nothing in
+// `data/` says two names were compared and found to be two things — so this is committed,
+// hand-editable like the rest: dropping a line here is what makes a pair askable again.
+export const DISMISSED_PAIRS_FILE = path.join(CWD, 'dismissed-duplicate-pairs.ndjson')
+
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
   slugs: path.join(DATA, 'slugs.ndjson'),

@@ -20,6 +20,10 @@ truth: that is why every pass over these strings asks rather than substitutes, a
   collection: nothing parses it, `post:create` only offers the list and strikes off the
   line it was handed. Hand-editable, and `idea` is the shortcut — it prints what is
   noted, then asks for one idea after another until `quit`.
+- **`dismissed-duplicate-pairs.ndjson`** — pairs `data:merge-duplicates` offered and was
+  told are two things, not one, so the same two records are not asked about again. Not a
+  cache: the decision has no other home, nothing in `data/` says two names were compared
+  and found apart. Hand-editable — dropping a line makes that pair askable again.
 - **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
 - **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the

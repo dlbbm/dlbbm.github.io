@@ -5,18 +5,21 @@
  * The report is read again after every merge rather than walked as a list taken at the
  * start: joining two artists can make two of their works look alike, and joining two works
  * can leave a pair of the list pointing at a record that has gone. So the count a question
- * carries is what is left to look at now, not a position in anything fixed. A pair left
- * alone, and a merge whose confirmation was declined, are set aside for the run rather
- * than offered again on the next read.
+ * carries is what is left to look at now, not a position in anything fixed. A merge whose
+ * confirmation was declined is set aside for the run rather than offered again on the next
+ * read; a pair left alone is set aside for good, in `dismissed-duplicate-pairs.ndjson`.
  *
  * The slug lines `data:import` wrote twice are dropped first, under one confirmation of
  * their own: they are a defect with nothing to decide, and the pairs are the questions.
  */
 
+import { existsSync } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
 import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Slug } from '../../shared/types/index.js'
 import { findDuplicates, type DuplicatePair } from '../_check/index.js'
+import { DISMISSED_PAIRS_FILE } from '../_config/index.js'
 import { readDb, write } from '../_db/index.js'
 import {
   askingArtists,
@@ -34,6 +37,37 @@ console.log(styles.title('Merging duplicates...'))
 /** What a pair is remembered by, so the two records in either order are one answer. */
 function keyOf (pair: DuplicatePair): string {
   return `${pair.collection} ${[pair.one.id, pair.other.id].sort().join(' ')}`
+}
+
+/** A dismissed pair, kept readable by its names rather than by its key alone. */
+type DismissedPair = {
+  key: string
+  names: [string, string]
+}
+
+function nameOf (record: DuplicatePair['one'] | DuplicatePair['other']): string {
+  return 'name' in record ? record.name : record.title
+}
+
+async function readDismissedPairs (): Promise<DismissedPair[]> {
+  if (!existsSync(DISMISSED_PAIRS_FILE)) return []
+  const raw = await readFile(DISMISSED_PAIRS_FILE, { encoding: 'utf-8' })
+  const dismissed: DismissedPair[] = []
+  for (const line of raw.split('\n')) {
+    const trimmed = line.trim()
+    if (trimmed === '') continue
+    try { dismissed.push(JSON.parse(trimmed) as DismissedPair) }
+    catch { continue }
+  }
+  return dismissed
+}
+
+async function writeDismissedPairs (dismissed: DismissedPair[]): Promise<void> {
+  await writeFile(
+    DISMISSED_PAIRS_FILE,
+    dismissed.map(entry => JSON.stringify(entry)).join('\n') + (dismissed.length === 0 ? '' : '\n'),
+    { encoding: 'utf-8' }
+  )
 }
 
 type Answer<T> = Pair<T> | 'leave' | 'stop'
@@ -108,7 +142,16 @@ async function dropRepeatedSlugLines (): Promise<void> {
 
 await dropRepeatedSlugLines()
 
-const setAside = new Set<string>()
+const dismissed = await readDismissedPairs()
+const setAside = new Set(dismissed.map(entry => entry.key))
+
+async function dismiss (pair: DuplicatePair): Promise<void> {
+  const key = keyOf(pair)
+  setAside.add(key)
+  dismissed.push({ key, names: [nameOf(pair.one), nameOf(pair.other)] })
+  await writeDismissedPairs(dismissed)
+}
+
 let merged = 0
 let stopped = false
 
@@ -125,19 +168,19 @@ while (!stopped) {
   if (pair.collection === 'artists') {
     const answer = await answerPair(askingArtists(db), pair.one, pair.other)
     if (answer === 'stop') { stopped = true; continue }
-    if (answer === 'leave') { setAside.add(keyOf(pair)); continue }
+    if (answer === 'leave') { await dismiss(pair); continue }
     if (await mergeArtists(db, answer)) merged += 1
     else setAside.add(keyOf(pair))
   } else {
     const answer = await answerPair(askingSongs(db), pair.one, pair.other)
     if (answer === 'stop') { stopped = true; continue }
-    if (answer === 'leave') { setAside.add(keyOf(pair)); continue }
+    if (answer === 'leave') { await dismiss(pair); continue }
     if (await mergeSongs(db, answer)) merged += 1
     else setAside.add(keyOf(pair))
   }
 }
 
-const left = findDuplicates(await readDb()).pairs.length
+const left = findDuplicates(await readDb()).pairs.filter(pair => !setAside.has(keyOf(pair))).length
 
 console.log('')
 console.log(styles.title(stopped ? 'Stopped.' : 'Duplicates answered.'))
@@ -145,4 +188,5 @@ console.log(merged === 0
   ? styles.warning('Nothing merged.')
   : styles.success(`${merged} pair${merged === 1 ? '' : 's'} merged`))
 if (left > 0) console.log(styles.light(`> ${left} pair${left === 1 ? '' : 's'} still look like one record`))
+if (dismissed.length > 0) console.log(styles.light(`> ${dismissed.length} pair${dismissed.length === 1 ? '' : 's'} dismissed for good, in dismissed-duplicate-pairs.ndjson`))
 console.log('')
