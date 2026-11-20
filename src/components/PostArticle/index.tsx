@@ -1,44 +1,32 @@
-import { Fragment } from 'preact'
+import { Fragment, type VNode } from 'preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import { Embed } from '@mxfb/tools/components/Embed/index.js'
-import type { BuiltArtist, BuiltPost } from '../../../shared/types/built.js'
-import type { FileSource, MediaSource, Source } from '../../../shared/types/index.js'
-import { formatPlace } from '../../utils/format/index.js'
-import { FileMedia } from '../FileMedia/index.js'
+import type * as built from '../../../shared/types/built.js'
+import type { MediaSource, Source } from '../../../shared/types/index.js'
+import * as format from '../../format/index.js'
 import { Link } from '../Link/index.js'
 import { PartialDate } from '../PartialDate/index.js'
 import './styles.css'
 
-// The block is `post`, which is what the markup draws; the module is named apart because
-// `pages/Post` is the route and this is the article it shows.
-const c = clss('post')
+const c = clss('post-article')
 
-type PlayableSource = MediaSource | FileSource
-
-// An identity source is a claim that this is the same thing as that one. Nothing to hear,
-// so it belongs with the metadata and never in the media block.
-function isPlayable (source: Source): source is PlayableSource {
-  return source.nature !== 'identity'
+// This blog only ever embeds: nothing in the archive is a stored file.
+function isPlayable (source: Source): source is MediaSource {
+  return source.nature === 'media'
 }
 
-function Media ({ source, title }: { source: PlayableSource, title: string }) {
-  // Nothing in the archive is a stored file, so this branch has never run. It stays
-  // rather than going: `post:create` still offers a file and `build:data` still copies
-  // the tree, so the day one is posted the front has to be able to play it. A stored path
-  // is relative to the repository root — `data/files/…` — and is copied into `dist` as it
-  // stands.
-  if (source.nature === 'file') return <FileMedia src={`/${source.path}`} kind={source.kind} title={title} />
+function Media ({ source, title }: { source: MediaSource, title: string }) {
   return <Embed url={source.url} title={title} />
 }
 
-function Credit ({ artist }: { artist: BuiltArtist }) {
+function Credit ({ artist }: { artist: built.Artist }) {
   return <Link href={artist.url} className={c('artist')}>{artist.name}</Link>
 }
 
 // `Song — Artist, Artist, ft. Artist`, the line `build:data` writes into `title`, except
 // that each name here is its own link. The two have to say the same thing.
-function Credits ({ credits, featuring = [] }: { credits: BuiltArtist[], featuring?: BuiltArtist[] }) {
+function Credits ({ credits, featuring = [] }: { credits: built.Artist[], featuring?: built.Artist[] }) {
   return <>
     {credits.map((artist, index) => <Fragment key={artist.id}>
       {index === 0 ? null : ', '}
@@ -52,13 +40,13 @@ function Credits ({ credits, featuring = [] }: { credits: BuiltArtist[], featuri
 }
 
 export type PostArticleProps = {
-  post: BuiltPost
+  post: built.Post
 }
 
 export function PostArticle ({ post }: PostArticleProps) {
   const { recording } = post
   const playableSource = recording.sources.find(isPlayable)
-  const performedAt = recording.performedAt === null ? null : formatPlace(recording.performedAt)
+  const performedAt = recording.performedAt === null ? null : format.place(recording.performedAt)
   // `remix` drops out when the remixers are named above: the word is already there.
   const kind = post.remixedBy.length > 0 && recording.kind === 'remix' ? null : recording.kind
   const kindAndPlace = [kind, performedAt].filter(part => part !== null).join(' at ')
@@ -73,7 +61,12 @@ export function PostArticle ({ post }: PostArticleProps) {
   // than listed alongside: what was played, then in brackets which audio of it this is.
   const edition = playableSource?.name ?? null
   const parenthesisedEdition = edition === null || edition === '' ? null : `(${edition})`
-  const hasDetails = kindAndPlace !== '' || date !== null || parenthesisedEdition !== null
+  const rawDetails: Array<{ node: string | VNode, separator: string } | null> = [
+    kindAndPlace === '' ? null : { node: kindAndPlace, separator: '' },
+    date === null ? null : { node: date, separator: ' — ' },
+    parenthesisedEdition === null ? null : { node: parenthesisedEdition, separator: ' ' }
+  ]
+  const details = rawDetails.filter((part): part is { node: string | VNode, separator: string } => part !== null)
 
   return <article class={c()}>
     <Link href={post.url} className={c('permalink')}>
@@ -103,16 +96,11 @@ export function PostArticle ({ post }: PostArticleProps) {
           <Credits credits={post.remixedBy} />
           {' remix'}
         </p>}
-        {!hasDetails ? null : <p class={c('details')}>
-          {kindAndPlace}
-          {date === null ? null : <>
-            {kindAndPlace === '' ? null : ' — '}
-            {date}
-          </>}
-          {parenthesisedEdition === null ? null : <>
-            {kindAndPlace === '' && date === null ? null : ' '}
-            {parenthesisedEdition}
-          </>}
+        {details.length === 0 ? null : <p class={c('details')}>
+          {details.map((part, index) => <Fragment key={index}>
+            {index === 0 ? null : part.separator}
+            {part.node}
+          </Fragment>)}
         </p>}
       </div>
       {post.body === null ? null : <p class={c('body')}>{post.body}</p>}

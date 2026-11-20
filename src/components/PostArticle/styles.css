@@ -1,14 +1,14 @@
-.post {
+.post-article {
   display: flex;
   flex-direction: column;
   gap: var(--gap-2);
 }
 
-.post__media { max-width: var(--media-max-width); }
+.post-article__media { max-width: var(--media-max-width); }
 
-.post__media .mxfb-embed { width: 100%; }
+.post-article__media .mxfb-embed { width: 100%; }
 
-.post__media .mxfb-embed__player {
+.post-article__media .mxfb-embed__player {
   display: block;
   width: 100%;
   border: none;
@@ -17,16 +17,16 @@
 /* A video platform states an aspect ratio, so the height follows the width and a frame
    that failed fills the same box as one that worked. Spotify's widget is a fixed chrome
    with no ratio to follow, so it is the one that takes a height. */
-.post__media .mxfb-embed--youtube .mxfb-embed__player,
-.post__media .mxfb-embed--vimeo .mxfb-embed__player { aspect-ratio: 16 / 9; }
+.post-article__media .mxfb-embed--youtube .mxfb-embed__player,
+.post-article__media .mxfb-embed--vimeo .mxfb-embed__player { aspect-ratio: 16 / 9; }
 
-.post__media .mxfb-embed--spotify .mxfb-embed__player { height: var(--embed-height); }
+.post-article__media .mxfb-embed--spotify .mxfb-embed__player { height: var(--embed-height); }
 
 /* What stands where the player would be, when a recording has nothing left to play. A
    dashed box rather than a bare line: the stream reads as a column of media, and a slot
    that says nothing is still a slot. It points at the post, which is where a reader goes
    looking for what was lost. */
-.post__missing {
+.post-article__missing {
   display: block;
   padding: var(--gap-4);
   border: var(--border-width-m) dashed var(--border-color);
@@ -37,37 +37,37 @@
   transition: color var(--hover-duration), opacity var(--hover-duration);
 }
 
-.post__missing:hover,
-.post__missing:focus-visible {
+.post-article__missing:hover,
+.post-article__missing:focus-visible {
   color: var(--accent-color);
   opacity: 1;
 }
 
-.post__date,
-.post__cover,
-.post__medley,
-.post__missing,
-.post__remix,
-.post__details,
-.post__body {
+.post-article__date,
+.post-article__cover,
+.post-article__medley,
+.post-article__missing,
+.post-article__remix,
+.post-article__details,
+.post-article__body {
   font-family: var(--ff-mono);
   font-size: var(--fs-3);
   line-height: var(--lh-3);
 }
 
-.post__meta {
+.post-article__meta {
   display: flex;
   flex-direction: column;
   gap: var(--gap-3);
 }
 
-.post__heading {
+.post-article__heading {
   display: flex;
   flex-direction: column;
   gap: var(--gap-1);
 }
 
-.post__title {
+.post-article__title {
   margin: 0;
   font-family: var(--ff-text);
   font-size: var(--fs-6);
@@ -77,40 +77,40 @@
 
 /* The date is the permalink, not the song: the title line is already a row of links to
    the artists, and a second kind of link inside it would be read as one of them. */
-.post__permalink { align-self: flex-start; }
+.post-article__permalink { align-self: flex-start; }
 
-.post__permalink,
-.post__artist {
+.post-article__permalink,
+.post-article__artist {
   color: inherit;
   text-decoration: var(--underline-line) var(--underline-thickness) var(--underline-style) transparent;
   text-underline-offset: var(--underline-offset);
   transition: color var(--hover-duration), text-decoration-color var(--hover-duration);
 }
 
-.post__permalink:hover,
-.post__permalink:focus-visible,
-.post__artist:hover,
-.post__artist:focus-visible {
+.post-article__permalink:hover,
+.post-article__permalink:focus-visible,
+.post-article__artist:hover,
+.post-article__artist:focus-visible {
   color: var(--accent-color);
   text-decoration-color: var(--underline-color);
 }
 
-.post__cover,
-.post__medley,
-.post__remix,
-.post__details {
+.post-article__cover,
+.post-article__medley,
+.post-article__remix,
+.post-article__details {
   margin: 0;
   opacity: var(--muted-opacity);
 }
 
-.post__cover::first-letter,
-.post__medley::first-letter,
-.post__remix::first-letter,
-.post__details::first-letter { text-transform: uppercase; }
+.post-article__cover::first-letter,
+.post-article__medley::first-letter,
+.post-article__remix::first-letter,
+.post-article__details::first-letter { text-transform: uppercase; }
 
 /* What the post wrote beyond naming the song — a tracklist, a second link. Its line
    breaks are the whole point of it, so they are kept rather than collapsed. */
-.post__body {
+.post-article__body {
   margin: 0;
   max-width: var(--media-max-width);
   white-space: pre-line;
