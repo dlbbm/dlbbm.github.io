@@ -396,29 +396,43 @@ actually render, and a look at the 404.
 
 The thematic classification is the large one and the rest is in no fixed order.
 
-- **Genres, styles and tags.** Three axes rather than two levels, and the leaning is
-  **genres and styles decoupled**: two independent lists on a record, no parent link
-  between them, the incoherences accepted rather than designed out. There is no official
-  authority — the nearest thing is the Library of Congress' [LCGFT][lcgft], published in
-  SKOS with a real `broader` relation, authoritative and maintained, and coarse about
-  popular music exactly where this blog is fine. What the three de facto references teach:
-  **[Discogs][discogs] is the two-level model and declines to nest it**, around fifteen
-  genres against a few hundred styles, carried as separate lists — which is why `Disco`
-  turns up under Electronic and under Funk / Soul alike. Its fifteen are Blues, Brass &
-  Military, Children's, Classical, Electronic, Folk, World, & Country, Funk / Soul, Hip
-  Hop, Jazz, Latin, Non-Music, Pop, Reggae, Rock and Stage & Screen, a list half format
-  and half genre, which is what only having fifteen costs. **[MusicBrainz][mbgenres] is
-  flat**, one alphabetical vocabulary of some 1800 terms from `2 tone` to `zydeco`, no
-  levels at all, grown out of community tags and curated by ticket — open data, and the
-  one list here importable wholesale. **Rate Your Music keeps the biggest tree and splits
-  it in three** — genres, descriptors for mood and texture, scenes & movements — which is
-  the strongest argument that a tag is a third axis and not a loose genre; its hierarchy
-  is also frozen, nothing removable without moderation, which is what a tree costs once
-  people depend on it. **Still open:** whether the term hangs off `Song` or `Recording` —
-  schema.org has `genre` on both, and a cover can belong to another genre than the work,
-  Sarah Vaughan's `Blackbird` against the Beatles' — and whether a genre is a closed
-  pick-list while a tag is free text, which is what keeps a standard typology from
-  drifting into `Electro`, `electronic` and `Électro`. Then `/genres` and `/genre/<slug>`.
+- **Genres, styles and tags — a reflection phase, not urgent: the blog is in no hurry to
+  publish.** Three axes, decided, qualifying a `Recording` in all three cases — which is
+  what lets a cover sit in a different genre than the work it covers, Sarah Vaughan's
+  `Blackbird` against the Beatles'.
+
+  **Genre is the tightest and the first to settle**: one per recording, a closed list aimed
+  at twenty and ideally closer to eight. **Style is secondary**: several per recording, a
+  much wider vocabulary, no cap in mind. **Tag (or label) is a third axis again, and reads
+  as a playlist rather than a category**: a recording carries several, and each tag is the
+  page listing everything that carries it — closer to `/tag/<slug>` behaving like a
+  playlist than like `/genre/<slug>` classifying something.
+
+  **First step: an inventory of the genres this archive actually needs**, read off the 401
+  posts rather than adopted from a reference, so the closed list of ~8–20 is calibrated on
+  what is here before it is written down.
+
+  There is no official authority to lean on instead — the nearest thing is the Library of
+  Congress' [LCGFT][lcgft], published in SKOS with a real `broader` relation, authoritative
+  and maintained, and coarse about popular music exactly where this blog is fine. What the
+  three de facto references teach, genre and style both: **[Discogs][discogs] is the
+  two-level model and declines to nest it**, around fifteen genres against a few hundred
+  styles, carried as separate lists — which is why `Disco` turns up under Electronic and
+  under Funk / Soul alike. Its fifteen are Blues, Brass & Military, Children's, Classical,
+  Electronic, Folk, World, & Country, Funk / Soul, Hip Hop, Jazz, Latin, Non-Music, Pop,
+  Reggae, Rock and Stage & Screen, a list half format and half genre, which is what only
+  having fifteen costs — and the nearest existing shape to the genre tier here, a notch
+  tighter still. **[MusicBrainz][mbgenres] is flat**, one alphabetical vocabulary of some
+  1800 terms from `2 tone` to `zydeco`, no levels at all, grown out of community tags and
+  curated by ticket — open data, and the one list here importable wholesale, mostly as a
+  style bank given its size. **Rate Your Music keeps the biggest tree and splits it in
+  three** — genres, descriptors for mood and texture, scenes & movements — which is the
+  strongest argument that a tag is a third axis and not a loose genre; its hierarchy is
+  also frozen, nothing removable without moderation, which is what a tree costs once
+  people depend on it. **Still open:** whether genre and style are closed pick-lists while
+  a tag is free text, which is what keeps a standard typology from drifting into `Electro`,
+  `electronic` and `Électro` — and the exact shape of `/genre/<slug>` once the inventory
+  says what it has to list.
 
   **The lookup process gets revisited here.** `post:names-lookup` reads a post's names
   against MusicBrainz one post at a time, and MusicBrainz also carries genres on its
