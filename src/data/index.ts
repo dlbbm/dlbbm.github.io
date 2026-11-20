@@ -2,27 +2,11 @@
  * What the front reads at runtime, from `dist/data` as `build:data` wrote it.
  */
 
-import type {
-  BuiltAbout,
-  BuiltArtist,
-  BuiltArtistFile,
-  BuiltArtistIndexEntry,
-  BuiltManifest,
-  BuiltPost,
-  BuiltPostFile,
-  BuiltPostIndexEntry
-} from '../../../shared/types/built.js'
-import type { PostId, Timestamp } from '../../../shared/types/index.js'
-import { previewing } from '../preview/index.js'
+import type * as built from '../../shared/types/built.js'
+import type { PostId, Timestamp } from '../../shared/types/index.js'
+import * as preview from '../preview/index.js'
 
-/**
- * A file the site does not have.
- *
- * Told apart from every other way a read can fail, because on a site served as files a
- * 404 is how absence is spelled: the post is not there, which is a page to render. A 500,
- * a body that is not JSON, or a browser with no network are failures, and a failure is
- * nobody's answer to a question about a post.
- */
+/** A 404: the file is not there, which is different from a read that failed. */
 class MissingFile extends Error {
   constructor (url: string) {
     super(`${url} is not there.`)
@@ -37,17 +21,11 @@ async function readJson<T> (url: string): Promise<T> {
   return await response.json() as T
 }
 
-let manifestRead: Promise<BuiltManifest> | null = null
+let manifestRead: Promise<built.Manifest> | null = null
 
-/**
- * The manifest, read once for the life of the tab.
- *
- * It is written by the build and cannot change while the page is open, and three things
- * want it: the page size, what the blog says about itself, and the tab title on every
- * navigation. A read that failed is not kept, so the next caller asks again.
- */
-async function readManifest (): Promise<BuiltManifest> {
-  manifestRead ??= readJson<BuiltManifest>('/data/manifest.json')
+/** Read once for the tab's life, since it cannot change while the page is open. A failed read is not kept, so the next caller asks again. */
+async function readManifest (): Promise<built.Manifest> {
+  manifestRead ??= readJson<built.Manifest>('/data/manifest.json')
   try {
     return await manifestRead
   } catch (error) {
@@ -56,46 +34,33 @@ async function readManifest (): Promise<BuiltManifest> {
   }
 }
 
-/**
- * Whether a post is the reader's to see — its moment has come, or the page is previewing.
- *
- * A scheduled post ships with the build, so withholding it is the front's job, and
- * `?preview` is what hands it over before its date. Timestamps carry an offset, which is
- * why the comparison parses rather than compares strings.
- */
-export function isVisible (entry: { publishedOn: Timestamp }): boolean {
-  return previewing || Date.parse(entry.publishedOn) <= Date.now()
+/** Timestamps carry an offset, which is why this parses rather than compares strings. */
+function isPublished (entry: { publishedOn: Timestamp }): boolean {
+  return Date.parse(entry.publishedOn) <= Date.now()
 }
 
 /** The stream, in order, without the posts whose moment has not come. */
-export async function fetchPublishedPosts (): Promise<BuiltPostIndexEntry[]> {
-  const entries = await readJson<BuiltPostIndexEntry[]>('/data/posts.json')
-  return entries.filter(entry => isVisible(entry))
+export async function publishedPosts (): Promise<built.PostIndexEntry[]> {
+  const entries = await readJson<built.PostIndexEntry[]>('/data/posts.json')
+  return entries.filter(entry => preview.active || isPublished(entry))
 }
 
 /** What the blog says about itself, which the manifest carries with everything else. */
-export async function fetchAbout (): Promise<BuiltAbout> {
+export async function about (): Promise<built.About> {
   const manifest = await readManifest()
   return manifest.about
 }
 
 /** Every artist with a page of their own, alphabetical as `build:data` sorted them. */
-export async function fetchArtists (): Promise<BuiltArtistIndexEntry[]> {
-  return await readJson<BuiltArtistIndexEntry[]>('/data/artists.json')
+export async function artists (): Promise<built.ArtistIndexEntry[]> {
+  return await readJson<built.ArtistIndexEntry[]>('/data/artists.json')
 }
 
-/**
- * One post, or `null` when there is none to show.
- *
- * A scheduled post is `null` here as it is absent from the stream: it ships with the
- * build and the front is what withholds it, so the test is the same one the index makes.
- * A file that is not there is `null` too, and nothing else is: a read that failed throws,
- * for the page to say so.
- */
-export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
+/** `null` covers both a scheduled post and a file that is not there; a failed read throws instead. */
+export async function post (id: PostId): Promise<built.Post | null> {
   try {
-    const { post } = await readJson<BuiltPostFile>(`/data/post/${id}.json`)
-    return isVisible(post) ? post : null
+    const { post: found } = await readJson<built.PostFile>(`/data/post/${id}.json`)
+    return preview.active || isPublished(found) ? found : null
   } catch (error) {
     if (error instanceof MissingFile) return null
     throw error
@@ -103,58 +68,41 @@ export async function fetchPost (id: PostId): Promise<BuiltPost | null> {
 }
 
 export type ArtistWithPosts = {
-  artist: BuiltArtist
-  posts: BuiltPost[]
+  artist: built.Artist
+  posts: built.Post[]
 }
 
 /**
- * One artist and everything they appear on, newest first.
- *
- * The index the build writes holds lean entries; the stream wants whole posts, so each
- * one is fetched. No pagination and no slicing: an artist has a handful of posts here,
- * never a stream's worth. Scheduled posts are dropped the way they are everywhere else.
- *
- * Only the artist's own file answers whether there is such an artist. A post of theirs
- * that cannot be read is a build that shipped broken, not an artist who does not exist,
- * so it fails rather than emptying the page.
+ * No pagination: an artist has a handful of posts, never a stream's worth. A post of
+ * theirs that fails to read is a broken build, not a sign the artist does not exist, so it
+ * throws rather than emptying the page.
  */
-export async function fetchArtistWithPosts (slug: string): Promise<ArtistWithPosts | null> {
-  let file: BuiltArtistFile
+export async function artistWithPosts (slug: string): Promise<ArtistWithPosts | null> {
+  let file: built.ArtistFile
   try {
-    file = await readJson<BuiltArtistFile>(`/data/artist/${slug}.json`)
+    file = await readJson<built.ArtistFile>(`/data/artist/${slug}.json`)
   } catch (error) {
     if (error instanceof MissingFile) return null
     throw error
   }
   const posts = await Promise.all(file.posts
-    .filter(entry => isVisible(entry))
-    .map(async entry => (await readJson<BuiltPostFile>(`/data/post/${entry.id}.json`)).post))
+    .filter(entry => preview.active || isPublished(entry))
+    .map(async entry => (await readJson<built.PostFile>(`/data/post/${entry.id}.json`)).post))
   return { artist: file.artist, posts }
 }
 
 export type StreamPage = {
-  posts: BuiltPost[]
+  posts: built.Post[]
   page: number
   pageCount: number
-  /**
-   * Whether the URL named a page there is. `false` leaves `posts` empty, and `page`
-   * clamped to the nearest one that exists, so a reader is told they are nowhere and
-   * still handed the way back.
-   */
+  /** `false` leaves `posts` empty and clamps `page` to the nearest one that exists. */
   exists: boolean
 }
 
-/**
- * One page of the stream, posts included.
- *
- * The index says how many pages there are and which ten this one holds; the ten files are
- * then fetched together. A page outside the range is **reported** and not refused — the
- * URL may be stale, the stream having moved since it was shared — so the caller decides
- * between showing the nearest page and saying there is none.
- */
-export async function fetchStreamPage (page: number): Promise<StreamPage> {
+/** A page outside the range is reported rather than refused: the stream may have moved since the URL was shared, and the caller decides what to show. */
+export async function streamPage (page: number): Promise<StreamPage> {
   const [entries, manifest] = await Promise.all([
-    fetchPublishedPosts(),
+    publishedPosts(),
     readManifest()
   ])
   const pageCount = Math.max(1, Math.ceil(entries.length / manifest.pageSize))
@@ -164,6 +112,6 @@ export async function fetchStreamPage (page: number): Promise<StreamPage> {
   const start = (wanted - 1) * manifest.pageSize
   const files = await Promise.all(entries
     .slice(start, start + manifest.pageSize)
-    .map(async entry => await readJson<BuiltPostFile>(`/data/post/${entry.id}.json`)))
-  return { posts: files.map(({ post }) => post), page: wanted, pageCount, exists }
+    .map(async entry => await readJson<built.PostFile>(`/data/post/${entry.id}.json`)))
+  return { posts: files.map(({ post: found }) => found), page: wanted, pageCount, exists }
 }
