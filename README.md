@@ -20,10 +20,11 @@ truth: that is why every pass over these strings asks rather than substitutes, a
   collection: nothing parses it, `post:create` only offers the list and strikes off the
   line it was handed. Hand-editable, and `idea` is the shortcut — it prints what is
   noted, then asks for one idea after another until `quit`.
-- **`dismissed-duplicate-pairs.ndjson`** — pairs `data:merge-duplicates` offered and was
-  told are two things, not one, so the same two records are not asked about again. Not a
-  cache: the decision has no other home, nothing in `data/` says two names were compared
-  and found apart. Hand-editable — dropping a line makes that pair askable again.
+- **`reviewed-duplicate-pairs.ndjson`** — pairs `data:merge-duplicates` offered and was
+  told are two things, not one — only those, a merged pair leaving nothing to remember —
+  so the same two records are not asked about again. Not a cache: the decision has no
+  other home, nothing in `data/` says two names were compared and found apart.
+  Hand-editable — dropping a line makes that pair askable again.
 - **`reviewed-places.ndjson`** — every venue and city string `data:places` has offered and
   was told to keep or rename, so the walk does not ask about it again. Same reasoning,
   same shape: hand-editable, and dropping a line reopens that string.

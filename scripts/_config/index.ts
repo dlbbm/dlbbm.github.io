@@ -27,13 +27,15 @@ export const IDEAS_FILE = path.join(CWD, 'IDEAS.md')
 export const NAMES_PENDING_FILE = path.join(CWD, '.names-pending.ndjson')
 
 // Not a cache: pairs `data:merge-duplicates` offered and was told apart, so the same two
-// records are not asked about on every run. The decision has no other home — nothing in
-// `data/` says two names were compared and found to be two things — so this is committed,
-// hand-editable like the rest: dropping a line here is what makes a pair askable again.
-export const DISMISSED_PAIRS_FILE = path.join(CWD, 'dismissed-duplicate-pairs.ndjson')
+// records are not asked about on every run. Only the ones left apart — a merged pair
+// leaves nothing to remember, the two records being one by then. The decision has no
+// other home — nothing in `data/` says two names were compared and found to be two things
+// — so this is committed, hand-editable like the rest: dropping a line here is what makes
+// a pair askable again.
+export const REVIEWED_DUPLICATE_PAIRS_FILE = path.join(CWD, 'reviewed-duplicate-pairs.ndjson')
 
-// Same idea for `data:places`: a venue or city string `Enter` kept, or the name it was
-// renamed to, so the walk does not offer either again. Committed and hand-editable.
+// Same idea for `data:places`: every venue or city string answered, `Enter` kept or
+// renamed, so the walk does not offer it again. Committed and hand-editable.
 export const REVIEWED_PLACES_FILE = path.join(CWD, 'reviewed-places.ndjson')
 
 export const DATA_FILES = {

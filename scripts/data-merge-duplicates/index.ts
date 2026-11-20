@@ -7,7 +7,7 @@
  * can leave a pair of the list pointing at a record that has gone. So the count a question
  * carries is what is left to look at now, not a position in anything fixed. A merge whose
  * confirmation was declined is set aside for the run rather than offered again on the next
- * read; a pair left alone is set aside for good, in `dismissed-duplicate-pairs.ndjson`.
+ * read; a pair left alone is set aside for good, in `reviewed-duplicate-pairs.ndjson`.
  *
  * The slug lines `data:import` wrote twice are dropped first, under one confirmation of
  * their own: they are a defect with nothing to decide, and the pairs are the questions.
@@ -19,7 +19,7 @@ import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Slug } from '../../shared/types/index.js'
 import { findDuplicates, type DuplicatePair } from '../_check/index.js'
-import { DISMISSED_PAIRS_FILE } from '../_config/index.js'
+import { REVIEWED_DUPLICATE_PAIRS_FILE } from '../_config/index.js'
 import { readDb, write } from '../_db/index.js'
 import {
   askingArtists,
@@ -50,8 +50,8 @@ function nameOf (record: DuplicatePair['one'] | DuplicatePair['other']): string 
 }
 
 async function readDismissedPairs (): Promise<DismissedPair[]> {
-  if (!existsSync(DISMISSED_PAIRS_FILE)) return []
-  const raw = await readFile(DISMISSED_PAIRS_FILE, { encoding: 'utf-8' })
+  if (!existsSync(REVIEWED_DUPLICATE_PAIRS_FILE)) return []
+  const raw = await readFile(REVIEWED_DUPLICATE_PAIRS_FILE, { encoding: 'utf-8' })
   const dismissed: DismissedPair[] = []
   for (const line of raw.split('\n')) {
     const trimmed = line.trim()
@@ -64,7 +64,7 @@ async function readDismissedPairs (): Promise<DismissedPair[]> {
 
 async function writeDismissedPairs (dismissed: DismissedPair[]): Promise<void> {
   await writeFile(
-    DISMISSED_PAIRS_FILE,
+    REVIEWED_DUPLICATE_PAIRS_FILE,
     dismissed.map(entry => JSON.stringify(entry)).join('\n') + (dismissed.length === 0 ? '' : '\n'),
     { encoding: 'utf-8' }
   )
@@ -188,5 +188,5 @@ console.log(merged === 0
   ? styles.warning('Nothing merged.')
   : styles.success(`${merged} pair${merged === 1 ? '' : 's'} merged`))
 if (left > 0) console.log(styles.light(`> ${left} pair${left === 1 ? '' : 's'} still look like one record`))
-if (dismissed.length > 0) console.log(styles.light(`> ${dismissed.length} pair${dismissed.length === 1 ? '' : 's'} dismissed for good, in dismissed-duplicate-pairs.ndjson`))
+if (dismissed.length > 0) console.log(styles.light(`> ${dismissed.length} pair${dismissed.length === 1 ? '' : 's'} dismissed for good, in reviewed-duplicate-pairs.ndjson`))
 console.log('')
