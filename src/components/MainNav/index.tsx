@@ -1,17 +1,17 @@
 import { useLocation } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { routePatterns } from '../../../shared/routes/index.js'
-import { fetchPublishedPosts } from '../../utils/fetch/index.js'
-import { previewHref } from '../../utils/preview/index.js'
+import * as routes from '../../../shared/routes/index.js'
+import * as data from '../../data/index.js'
+import * as preview from '../../preview/index.js'
 import { Link } from '../Link/index.js'
 import './styles.css'
 
 const c = clss('main-nav')
 
 const links = [
-  { label: 'about', href: routePatterns.about },
-  { label: 'artists', href: routePatterns.artists },
-  { label: 'posts', href: routePatterns.posts }
+  { label: 'about', href: routes.patterns.about },
+  { label: 'artists', href: routes.patterns.artists },
+  { label: 'posts', href: routes.patterns.posts }
 ]
 
 export function MainNav () {
@@ -23,9 +23,9 @@ export function MainNav () {
   // cached by then, and a count held from an earlier read would miss a post that came of
   // age since.
   async function goToRandomPost (): Promise<void> {
-    const posts = await fetchPublishedPosts()
+    const posts = await data.publishedPosts()
     const picked = posts[Math.floor(Math.random() * posts.length)]
-    if (picked !== undefined) navigate(previewHref(picked.url))
+    if (picked !== undefined) navigate(preview.href(picked.url))
   }
 
   return <nav class={c()}>

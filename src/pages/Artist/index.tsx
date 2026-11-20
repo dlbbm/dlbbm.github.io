@@ -2,9 +2,9 @@ import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { MissingNotice } from '../../components/Notice/index.js'
 import { PostArticle } from '../../components/PostArticle/index.js'
 import { WhenLoaded } from '../../components/WhenLoaded/index.js'
-import { fetchArtistWithPosts } from '../../utils/fetch/index.js'
-import { useFetched } from '../../utils/fetched/index.js'
-import { useDocumentTitle } from '../../utils/title/index.js'
+import * as data from '../../data/index.js'
+import { useFetched } from '../../fetched/index.js'
+import { known, unknown, useDocumentTitle } from '../../title/index.js'
 import './styles.css'
 
 const c = clss('page-artist')
@@ -14,8 +14,8 @@ export type ArtistProps = {
 }
 
 export function Artist ({ slug }: ArtistProps) {
-  const fetched = useFetched(async () => await fetchArtistWithPosts(slug), [slug])
-  useDocumentTitle(fetched.status === 'loaded' ? fetched.value?.artist.name ?? null : undefined)
+  const fetched = useFetched(async () => await data.artistWithPosts(slug), [slug])
+  useDocumentTitle(fetched.status === 'loaded' ? known(fetched.value?.artist.name ?? null) : unknown)
 
   return <WhenLoaded fetched={fetched} c={c}>
     {artistWithPosts => {

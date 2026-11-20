@@ -1,16 +1,16 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { pageNames } from '../../../shared/titles/index.js'
+import * as titles from '../../../shared/titles/index.js'
 import { WhenLoaded } from '../../components/WhenLoaded/index.js'
-import { fetchAbout } from '../../utils/fetch/index.js'
-import { useFetched } from '../../utils/fetched/index.js'
-import { useDocumentTitle } from '../../utils/title/index.js'
+import * as data from '../../data/index.js'
+import { useFetched } from '../../fetched/index.js'
+import { known, useDocumentTitle } from '../../title/index.js'
 import './styles.css'
 
 const c = clss('page-about')
 
 export function About () {
-  const fetched = useFetched(async () => await fetchAbout(), [])
-  useDocumentTitle(pageNames.about)
+  const fetched = useFetched(async () => await data.about(), [])
+  useDocumentTitle(known(titles.names.about))
 
   return <WhenLoaded fetched={fetched} c={c}>
     {about => <div class={c()}>

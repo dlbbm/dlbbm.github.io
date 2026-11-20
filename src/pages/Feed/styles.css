@@ -1,12 +1,12 @@
 /* One step under the gap between two posts: the pagination belongs to the stream it
    closes, and should not read as another post. */
-.page-home {
+.page-feed {
   display: flex;
   flex-direction: column;
   gap: var(--gap-6);
 }
 
-.page-home__posts {
+.page-feed__posts {
   display: flex;
   flex-direction: column;
   gap: var(--gap-7);

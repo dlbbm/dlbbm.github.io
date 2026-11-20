@@ -8,7 +8,7 @@
 
 import type { ClssMaker } from '@design-edito/tools/agnostic/css/clss/index.js'
 import type { VNode } from 'preact'
-import type { Fetched } from '../../utils/fetched/index.js'
+import type { Fetched } from '../../fetched/index.js'
 import { FailureNotice } from '../Notice/index.js'
 
 export type WhenLoadedProps<T> = {

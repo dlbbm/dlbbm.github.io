@@ -1,5 +1,5 @@
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { routePatterns, routeUrl } from '../../../shared/routes/index.js'
+import * as routes from '../../../shared/routes/index.js'
 import { Link } from '../Link/index.js'
 import './styles.css'
 
@@ -18,7 +18,7 @@ export type PaginationProps = {
 
 // Page one is `/`, never `/page/1`, which redirects to it.
 function pageUrl (page: number): string {
-  return page <= 1 ? routePatterns.home : routeUrl('page', { page })
+  return page <= 1 ? routes.patterns.home : routes.url('page', { page })
 }
 
 type StepProps = {

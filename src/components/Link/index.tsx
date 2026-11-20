@@ -8,8 +8,8 @@
 
 import type { ComponentProps } from 'preact'
 import { Link as RouterLink } from 'wouter-preact'
-import { previewHref } from '../../utils/preview/index.js'
+import * as preview from '../../preview/index.js'
 
 export function Link ({ href, ...rest }: ComponentProps<typeof RouterLink>): ReturnType<typeof RouterLink> {
-  return <RouterLink href={previewHref(href)} {...rest} />
+  return <RouterLink href={preview.href(href)} {...rest} />
 }

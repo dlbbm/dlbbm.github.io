@@ -3,20 +3,20 @@ import { MissingNotice } from '../../components/Notice/index.js'
 import { Pagination } from '../../components/Pagination/index.js'
 import { PostArticle } from '../../components/PostArticle/index.js'
 import { WhenLoaded } from '../../components/WhenLoaded/index.js'
-import { fetchStreamPage } from '../../utils/fetch/index.js'
-import { useFetched } from '../../utils/fetched/index.js'
-import { useDocumentTitle } from '../../utils/title/index.js'
+import * as data from '../../data/index.js'
+import { useFetched } from '../../fetched/index.js'
+import { known, useDocumentTitle } from '../../title/index.js'
 import './styles.css'
 
-const c = clss('page-home')
+const c = clss('page-feed')
 
-export type HomeProps = {
+export type FeedProps = {
   page: number
 }
 
-export function Home ({ page }: HomeProps) {
-  const fetched = useFetched(async () => await fetchStreamPage(page), [page])
-  useDocumentTitle(page === 1 ? null : `Page ${page}`)
+export function Feed ({ page }: FeedProps) {
+  const fetched = useFetched(async () => await data.streamPage(page), [page])
+  useDocumentTitle(known(page === 1 ? null : `Page ${page}`))
 
   return <WhenLoaded fetched={fetched} c={c}>
     {streamPage => {
