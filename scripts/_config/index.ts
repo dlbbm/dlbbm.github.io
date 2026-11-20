@@ -32,6 +32,10 @@ export const NAMES_PENDING_FILE = path.join(CWD, '.names-pending.ndjson')
 // hand-editable like the rest: dropping a line here is what makes a pair askable again.
 export const DISMISSED_PAIRS_FILE = path.join(CWD, 'dismissed-duplicate-pairs.ndjson')
 
+// Same idea for `data:places`: a venue or city string `Enter` kept, or the name it was
+// renamed to, so the walk does not offer either again. Committed and hand-editable.
+export const REVIEWED_PLACES_FILE = path.join(CWD, 'reviewed-places.ndjson')
+
 export const DATA_FILES = {
   artists: path.join(DATA, 'artists.ndjson'),
   slugs: path.join(DATA, 'slugs.ndjson'),

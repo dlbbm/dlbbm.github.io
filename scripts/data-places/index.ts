@@ -9,16 +9,21 @@
  *
  * Each distinct string is offered with itself as the default: `Enter` keeps it, anything
  * else renames it in every recording that carries it, and `quit` ends the walk the way
- * `idea` does. Nothing is written until the whole walk has been answered and confirmed.
+ * `idea` does. A string answered either way is remembered in `reviewed-places.ndjson`, so
+ * a later run does not offer it again — kept as soon as it is answered, renamed once the
+ * write below is confirmed, since that is when the new string becomes real.
  *
  * The country is left out on purpose: eight values across 27 recordings, and a country is
  * not a string anyone mistypes twice.
  */
 
+import { existsSync } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
 import process from 'node:process'
 import { confirm, input } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Recording } from '../../shared/types/index.js'
+import { REVIEWED_PLACES_FILE } from '../_config/index.js'
 import { readDb, write, type Db } from '../_db/index.js'
 
 const db: Db = await readDb()
@@ -49,11 +54,37 @@ function keyOf (field: Field, value: string): string {
   return `${field}\n${value}`
 }
 
+type Reviewed = { field: Field, value: string }
+
+async function readReviewed (): Promise<Reviewed[]> {
+  if (!existsSync(REVIEWED_PLACES_FILE)) return []
+  const raw = await readFile(REVIEWED_PLACES_FILE, { encoding: 'utf-8' })
+  const reviewed: Reviewed[] = []
+  for (const line of raw.split('\n')) {
+    const trimmed = line.trim()
+    if (trimmed === '') continue
+    try { reviewed.push(JSON.parse(trimmed) as Reviewed) }
+    catch { continue }
+  }
+  return reviewed
+}
+
+async function writeReviewed (reviewed: Reviewed[]): Promise<void> {
+  await writeFile(
+    REVIEWED_PLACES_FILE,
+    reviewed.map(entry => JSON.stringify(entry)).join('\n') + (reviewed.length === 0 ? '' : '\n'),
+    { encoding: 'utf-8' }
+  )
+}
+
+const reviewed = await readReviewed()
+const seen = new Set(reviewed.map(entry => keyOf(entry.field, entry.value)))
+
 const renames = new Map<string, string>()
 let stopped = false
 
 for (const field of fields) {
-  const values = distinct(field)
+  const values = distinct(field).filter(({ value }) => !seen.has(keyOf(field, value)))
   const carried = values.reduce((total, value) => total + value.times, 0)
 
   console.log('')
@@ -69,7 +100,12 @@ for (const field of fields) {
     console.log(styles.light(`> ${times} recording${times === 1 ? '' : 's'}, ${QUIT} to stop here`))
     const answer = (await input({ message: field, default: value })).trim()
     if (answer === QUIT) { stopped = true; continue }
-    if (answer === '' || answer === value) continue
+    if (answer === '' || answer === value) {
+      seen.add(keyOf(field, value))
+      reviewed.push({ field, value })
+      await writeReviewed(reviewed)
+      continue
+    }
     renames.set(keyOf(field, value), answer)
   }
 }
@@ -116,6 +152,12 @@ if (!await confirm({ message: 'Rename?', default: false })) {
 }
 
 await write('recordings', recordings)
+
+for (const key of renames.keys()) {
+  const [field, from] = key.split('\n') as [Field, string]
+  reviewed.push({ field, value: renames.get(key) ?? from })
+}
+await writeReviewed(reviewed)
 
 console.log('')
 console.log(styles.title('Places renamed.'))
