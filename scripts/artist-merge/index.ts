@@ -29,7 +29,7 @@ if (fromId !== undefined || intoId !== undefined) {
   given = { from, into }
 }
 
-const picked = await askPair<Artist>(askingArtists(db), given)
+const picked = await askPair<Artist>(await askingArtists(db), given)
 
 if (picked === null) {
   console.log(styles.warning('Nothing written.'))

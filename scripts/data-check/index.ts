@@ -166,10 +166,10 @@ async function checkOrphans (): Promise<void> {
   if (left > 0) outstanding.push(`${left} orphan${left === 1 ? '' : 's'}`)
 }
 
-function checkDuplicates (): void {
+async function checkDuplicates (): Promise<void> {
   console.log('')
   console.log(styles.title('Checking duplicates...'))
-  const { pairs, slugLines } = findDuplicates(db)
+  const { pairs, slugLines } = await findDuplicates(db)
 
   for (const pair of pairs) {
     const [one, other] = describePair(pair, db)
@@ -201,7 +201,7 @@ function checkDuplicates (): void {
 for (const pass of running) {
   if (pass === 'references') await checkReferences()
   if (pass === 'orphans') await checkOrphans()
-  if (pass === 'duplicates') checkDuplicates()
+  if (pass === 'duplicates') await checkDuplicates()
 }
 
 console.log('')

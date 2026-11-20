@@ -8,10 +8,10 @@
  */
 
 import { existsSync } from 'node:fs'
-import { readdir } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import type { Artist, Recording, Slug, Song } from '../../shared/types/index.js'
-import { CWD, FILES } from '../_config/index.js'
+import { CWD, FILES, REVIEWED_DUPLICATE_PAIRS_FILE } from '../_config/index.js'
 import type { Db } from '../_db/index.js'
 import { slugify } from '../_slug/index.js'
 
@@ -331,15 +331,40 @@ export type Duplicates = {
   slugLines: Array<{ slug: Slug, times: number }>
 }
 
+/** What a pair is remembered by, so the two records in either order are one answer. */
+export function keyOfPair (pair: DuplicatePair): string {
+  return `${pair.collection} ${[pair.one.id, pair.other.id].sort().join(' ')}`
+}
+
+/** A pair `data:merge-duplicates` offered and was told apart, read from `reviewed-duplicate-pairs.ndjson`. */
+export type ReviewedPair = {
+  key: string
+  names: [string, string]
+}
+
+export async function readReviewedPairs (): Promise<ReviewedPair[]> {
+  if (!existsSync(REVIEWED_DUPLICATE_PAIRS_FILE)) return []
+  const raw = await readFile(REVIEWED_DUPLICATE_PAIRS_FILE, { encoding: 'utf-8' })
+  const reviewed: ReviewedPair[] = []
+  for (const line of raw.split('\n')) {
+    const trimmed = line.trim()
+    if (trimmed === '') continue
+    try { reviewed.push(JSON.parse(trimmed) as ReviewedPair) }
+    catch { continue }
+  }
+  return reviewed
+}
+
 /**
  * What may be one thing entered twice: artists, works, and the slug file read byte for
  * byte.
  *
  * The exactly repeated slug lines are a defect rather than a question — `data:import`
  * created each artist's slug and pushed it twice — so they are counted apart from the
- * pairs, which are the ones a human answers.
+ * pairs, which are the ones a human answers. A pair already told apart in
+ * `reviewed-duplicate-pairs.ndjson` is left out rather than offered again.
  */
-export function findDuplicates (db: Db): Duplicates {
+export async function findDuplicates (db: Db): Promise<Duplicates> {
   const artists = new Map(db.artists.map(artist => [artist.id, artist]))
   const songs = new Map(db.songs.map(song => [song.id, song]))
 
@@ -396,8 +421,10 @@ export function findDuplicates (db: Db): Duplicates {
     else seen.times += 1
   }
 
+  const reviewed = new Set((await readReviewedPairs()).map(entry => entry.key))
+
   return {
-    pairs,
+    pairs: pairs.filter(pair => !reviewed.has(keyOfPair(pair))),
     slugLines: [...counted.values()].filter(line => line.times > 1)
   }
 }

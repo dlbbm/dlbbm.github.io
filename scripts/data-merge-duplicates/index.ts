@@ -7,18 +7,24 @@
  * can leave a pair of the list pointing at a record that has gone. So the count a question
  * carries is what is left to look at now, not a position in anything fixed. A merge whose
  * confirmation was declined is set aside for the run rather than offered again on the next
- * read; a pair left alone is set aside for good, in `reviewed-duplicate-pairs.ndjson`.
+ * read; a pair left alone is set aside for good, in `reviewed-duplicate-pairs.ndjson` —
+ * `findDuplicates` itself leaves such a pair out, which is what keeps it from coming back.
  *
  * The slug lines `data:import` wrote twice are dropped first, under one confirmation of
  * their own: they are a defect with nothing to decide, and the pairs are the questions.
  */
 
-import { existsSync } from 'node:fs'
-import { readFile, writeFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 import { confirm, select } from '@inquirer/prompts'
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
 import type { Slug } from '../../shared/types/index.js'
-import { findDuplicates, type DuplicatePair } from '../_check/index.js'
+import {
+  findDuplicates,
+  keyOfPair,
+  readReviewedPairs,
+  type DuplicatePair,
+  type ReviewedPair
+} from '../_check/index.js'
 import { REVIEWED_DUPLICATE_PAIRS_FILE } from '../_config/index.js'
 import { readDb, write } from '../_db/index.js'
 import {
@@ -34,38 +40,14 @@ import {
 console.log('')
 console.log(styles.title('Merging duplicates...'))
 
-/** What a pair is remembered by, so the two records in either order are one answer. */
-function keyOf (pair: DuplicatePair): string {
-  return `${pair.collection} ${[pair.one.id, pair.other.id].sort().join(' ')}`
-}
-
-/** A dismissed pair, kept readable by its names rather than by its key alone. */
-type DismissedPair = {
-  key: string
-  names: [string, string]
-}
-
 function nameOf (record: DuplicatePair['one'] | DuplicatePair['other']): string {
   return 'name' in record ? record.name : record.title
 }
 
-async function readDismissedPairs (): Promise<DismissedPair[]> {
-  if (!existsSync(REVIEWED_DUPLICATE_PAIRS_FILE)) return []
-  const raw = await readFile(REVIEWED_DUPLICATE_PAIRS_FILE, { encoding: 'utf-8' })
-  const dismissed: DismissedPair[] = []
-  for (const line of raw.split('\n')) {
-    const trimmed = line.trim()
-    if (trimmed === '') continue
-    try { dismissed.push(JSON.parse(trimmed) as DismissedPair) }
-    catch { continue }
-  }
-  return dismissed
-}
-
-async function writeDismissedPairs (dismissed: DismissedPair[]): Promise<void> {
+async function writeReviewedPairs (reviewed: ReviewedPair[]): Promise<void> {
   await writeFile(
     REVIEWED_DUPLICATE_PAIRS_FILE,
-    dismissed.map(entry => JSON.stringify(entry)).join('\n') + (dismissed.length === 0 ? '' : '\n'),
+    reviewed.map(entry => JSON.stringify(entry)).join('\n') + (reviewed.length === 0 ? '' : '\n'),
     { encoding: 'utf-8' }
   )
 }
@@ -110,7 +92,7 @@ async function answerPair<T> (asking: Asking<T>, one: T, other: T): Promise<Answ
  */
 async function dropRepeatedSlugLines (): Promise<void> {
   const db = await readDb()
-  const { slugLines } = findDuplicates(db)
+  const { slugLines } = await findDuplicates(db)
   const over = slugLines.reduce((total, line) => total + line.times - 1, 0)
   if (over === 0) return
 
@@ -142,14 +124,14 @@ async function dropRepeatedSlugLines (): Promise<void> {
 
 await dropRepeatedSlugLines()
 
-const dismissed = await readDismissedPairs()
-const setAside = new Set(dismissed.map(entry => entry.key))
+const reviewed = await readReviewedPairs()
+// Only for a merge whose confirmation was declined: `findDuplicates` already leaves out
+// anything in reviewed-duplicate-pairs.ndjson, so a pair left apart needs nothing here.
+const setAside = new Set<string>()
 
 async function dismiss (pair: DuplicatePair): Promise<void> {
-  const key = keyOf(pair)
-  setAside.add(key)
-  dismissed.push({ key, names: [nameOf(pair.one), nameOf(pair.other)] })
-  await writeDismissedPairs(dismissed)
+  reviewed.push({ key: keyOfPair(pair), names: [nameOf(pair.one), nameOf(pair.other)] })
+  await writeReviewedPairs(reviewed)
 }
 
 let merged = 0
@@ -157,7 +139,7 @@ let stopped = false
 
 while (!stopped) {
   const db = await readDb()
-  const pairs = findDuplicates(db).pairs.filter(pair => !setAside.has(keyOf(pair)))
+  const pairs = (await findDuplicates(db)).pairs.filter(pair => !setAside.has(keyOfPair(pair)))
   const pair = pairs[0]
   if (pair === undefined) break
 
@@ -166,21 +148,21 @@ while (!stopped) {
   console.log(styles.warning(`> ${pair.reason}`))
 
   if (pair.collection === 'artists') {
-    const answer = await answerPair(askingArtists(db), pair.one, pair.other)
+    const answer = await answerPair(await askingArtists(db), pair.one, pair.other)
     if (answer === 'stop') { stopped = true; continue }
     if (answer === 'leave') { await dismiss(pair); continue }
     if (await mergeArtists(db, answer)) merged += 1
-    else setAside.add(keyOf(pair))
+    else setAside.add(keyOfPair(pair))
   } else {
-    const answer = await answerPair(askingSongs(db), pair.one, pair.other)
+    const answer = await answerPair(await askingSongs(db), pair.one, pair.other)
     if (answer === 'stop') { stopped = true; continue }
     if (answer === 'leave') { await dismiss(pair); continue }
     if (await mergeSongs(db, answer)) merged += 1
-    else setAside.add(keyOf(pair))
+    else setAside.add(keyOfPair(pair))
   }
 }
 
-const left = findDuplicates(await readDb()).pairs.filter(pair => !setAside.has(keyOf(pair))).length
+const left = (await findDuplicates(await readDb())).pairs.filter(pair => !setAside.has(keyOfPair(pair))).length
 
 console.log('')
 console.log(styles.title(stopped ? 'Stopped.' : 'Duplicates answered.'))
@@ -188,5 +170,5 @@ console.log(merged === 0
   ? styles.warning('Nothing merged.')
   : styles.success(`${merged} pair${merged === 1 ? '' : 's'} merged`))
 if (left > 0) console.log(styles.light(`> ${left} pair${left === 1 ? '' : 's'} still look like one record`))
-if (dismissed.length > 0) console.log(styles.light(`> ${dismissed.length} pair${dismissed.length === 1 ? '' : 's'} dismissed for good, in reviewed-duplicate-pairs.ndjson`))
+if (reviewed.length > 0) console.log(styles.light(`> ${reviewed.length} pair${reviewed.length === 1 ? '' : 's'} dismissed for good, in reviewed-duplicate-pairs.ndjson`))
 console.log('')

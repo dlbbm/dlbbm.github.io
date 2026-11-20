@@ -127,11 +127,12 @@ export function union<T> (kept: T[], added: T[], sameAs: (one: T, other: T) => b
 const same = (one: string, other: string): boolean => one === other
 
 /** The artists of a database, as a pair is asked for. */
-export function askingArtists (db: Db): Asking<Artist> {
+export async function askingArtists (db: Db): Promise<Asking<Artist>> {
+  const { pairs } = await findDuplicates(db)
   return {
     kind: 'artist',
     records: db.artists,
-    pairs: findDuplicates(db).pairs.flatMap(pair => pair.collection === 'artists' ? [pair] : []),
+    pairs: pairs.flatMap(pair => pair.collection === 'artists' ? [pair] : []),
     describe: artist => describeArtist(artist, db),
     nameOf: artist => artist.name,
     aliasesOf: artist => artist.nameAliases
@@ -139,11 +140,12 @@ export function askingArtists (db: Db): Asking<Artist> {
 }
 
 /** The works of a database, as a pair is asked for. */
-export function askingSongs (db: Db): Asking<Song> {
+export async function askingSongs (db: Db): Promise<Asking<Song>> {
+  const { pairs } = await findDuplicates(db)
   return {
     kind: 'song',
     records: db.songs,
-    pairs: findDuplicates(db).pairs.flatMap(pair => pair.collection === 'songs' ? [pair] : []),
+    pairs: pairs.flatMap(pair => pair.collection === 'songs' ? [pair] : []),
     describe: song => describeSong(song, db),
     nameOf: song => song.title,
     aliasesOf: song => song.titleAliases
