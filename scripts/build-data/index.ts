@@ -146,6 +146,9 @@ function builtPost (post: Post, recording: Recording, song: Song): BuiltPost {
     isCover: derivedFrom.length === 0 && original !== '' && original !== credited,
     derivedFrom,
     isMedley: derivedFrom.length > 1,
+    tags: recording.tagIds
+      .map(id => db.tags.find(candidate => candidate.id === id))
+      .filter((tag): tag is typeof db.tags[number] => tag !== undefined),
     recording: {
       id: recording.id,
       title: recording.title,

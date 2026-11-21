@@ -22,6 +22,7 @@ import type {
   Slug,
   SongId,
   Source,
+  Tag,
   Timestamp
 } from './index.js'
 
@@ -64,6 +65,7 @@ export type Post = {
   isCover: boolean
   derivedFrom: { id: SongId, title: string, originalArtists: Artist[] }[]
   isMedley: boolean
+  tags: Tag[]
   recording: {
     id: RecordingId
     title: string | null
