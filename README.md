@@ -28,7 +28,7 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 - **`reviewed-places.ndjson`** — every venue and city string `data:places` has offered and
   was told to keep or rename, so the walk does not ask about it again. Same reasoning,
   same shape: hand-editable, and dropping a line reopens that string.
-- **`data/`** — the database, hand-editable, committed. Five NDJSON files, one record per
+- **`data/`** — the database, hand-editable, committed. Six NDJSON files, one record per
   line, appended in creation order and never rewritten by a build, plus `about.json`.
 - **`shared/`** — the only space `src/` and `scripts/` are allowed to import from, and the
   reason they never import from each other: `types/` holds the shapes `data/` holds
@@ -38,6 +38,10 @@ truth: that is why every pass over these strings asks rather than substitutes, a
   `scripts/post-create`. Compiled in place, next to its sources. A `_` prefix means the
   directory is not a command: the shared helpers. `USELESS-NOW-data-import` is the
   migration that ran once and must never run again, named so that nobody wonders.
+- **`server/`** — a dev-only Express server (`npm start` only, never `build` or `deploy`):
+  while it runs, the front can attach and detach tags on a post's recording through a
+  small HTTP API instead of a CLI prompt. Reads `data/` fresh on every request, so a CLI
+  edit made while it is running is never shadowed by a stale copy.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
   the page `build:shells` fills in once per URL, and `components/`, `data/`, `fetched/`,
   `format/`, `pages/`, `preview/`, `styles/` and `title/` are what it is made of. Nothing
@@ -49,7 +53,7 @@ truth: that is why every pass over these strings asks rather than substitutes, a
 
 | Command | What it does |
 | --- | --- |
-| `npm start` | Builds, then watches `src` and serves `dist` on port 3000 |
+| `npm start` | Builds, then watches `src` and `server`, serves `dist` on port 3000, and runs the tag-editing server on port 3001 |
 | `npm run build` | `clean:dist`, then `build:data`, `build:src` and `build:shells` |
 | `npm run deploy` | Builds and pushes `dist` to the `production` branch |
 | `npm run typecheck` | `check:scripts` and `check:src` |
@@ -401,16 +405,30 @@ The thematic classification is the large one and the rest is in no fixed order.
   what lets a cover sit in a different genre than the work it covers, Sarah Vaughan's
   `Blackbird` against the Beatles'.
 
-  **Genre is the tightest and the first to settle**: one per recording, a closed list aimed
-  at twenty and ideally closer to eight. **Style is secondary**: several per recording, a
-  much wider vocabulary, no cap in mind. **Tag (or label) is a third axis again, and reads
-  as a playlist rather than a category**: a recording carries several, and each tag is the
-  page listing everything that carries it — closer to `/tag/<slug>` behaving like a
-  playlist than like `/genre/<slug>` classifying something.
+  **Genre is still the first to settle**: a closed list aimed at twenty and ideally closer
+  to eight. **Style is secondary**: several per recording, a much wider vocabulary, no cap
+  in mind. **Tag (or label) is a third axis again, and reads as a playlist rather than a
+  category**: a recording carries several, and each tag is the page listing everything
+  that carries it — closer to `/tag/<slug>` behaving like a playlist than like
+  `/genre/<slug>` classifying something.
+
+  **There is no separate notion of a tag group in the data, genre included.** `Tag` is
+  flat — `{ id, name, group }` — and `group` is a plain string with no closed union: the
+  vocabulary of groups is whatever distinct values the tags happen to carry, the same
+  posture `data:check` already takes everywhere else, advisory rather than type-enforced.
+  Which means nothing stops a recording from carrying several genres; staying at one is a
+  discipline to keep at the point of tagging, not a rule the shape holds for you.
+
+  **The storage and a dev-only write path exist.** `Recording.tagIds`, `scripts/_tags`'
+  find-or-create, and a small Express server (`server/`, `npm start` only) that a UI can
+  call to attach or detach a tag from a post's recording — none of it built or deployed,
+  and no npm script administers a tag directly yet. `build:data` already resolves a
+  recording's tags onto its built JSON, the same join every credit gets.
 
   **First step: an inventory of the genres this archive actually needs**, read off the 401
   posts rather than adopted from a reference, so the closed list of ~8–20 is calibrated on
-  what is here before it is written down.
+  what is here before it is written down. Then the front multiselect itself, which is what
+  actually puts a genre on a recording.
 
   There is no official authority to lean on instead — the nearest thing is the Library of
   Congress' [LCGFT][lcgft], published in SKOS with a real `broader` relation, authoritative
