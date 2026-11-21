@@ -10,20 +10,24 @@
     "url": "https://github.com/dlbbm/dlbbm.github.io"
   },
   "scripts": {
-    "start": "npm run build && npx concurrently -n watch,shared,serve \"npm run watch:src\" \"npm run watch:shared\" \"npm run serve:dist\"",
+    "start": "npm run build && npm run build:server && npx concurrently -n watch,shared,server,server-run,serve \"npm run watch:src\" \"npm run watch:shared\" \"npm run watch:server\" \"npm run serve:server\" \"npm run serve:dist\"",
     "build": "npm run clean:dist && npm run build:data && npm run build:src && npm run build:shells",
     "deploy": "npm run build:scripts && node scripts/deploy/index.js",
     "typecheck": "npm run check:scripts && npm run check:src",
     "check:scripts": "npx tsc -p .",
     "check:src": "npx tsc -p src",
     "clean:scripts": "find scripts shared -name '*.js' -delete",
+    "clean:server": "find server -name '*.js' -delete",
     "clean:dist": "rm -rf dist",
     "build:scripts": "npm run clean:scripts && npx tsc -p scripts",
+    "build:server": "npm run clean:server && npx tsc -p server",
     "build:data": "npm run build:scripts && node scripts/build-data/index.js",
     "build:src": "npm run build:scripts && DLBBM_MODE=production node scripts/build-src/index.js",
     "build:shells": "npm run build:scripts && node scripts/build-shells/index.js",
     "watch:src": "ESBUILD_WATCH=true node scripts/build-src/index.js",
     "watch:shared": "npx chokidar \"shared/**/*.ts\" -c \"npm run build:scripts\"",
+    "watch:server": "npx chokidar \"server/**/*.ts\" -c \"npm run build:server\"",
+    "serve:server": "node --watch server/app.js",
     "serve:dist": "npx http-server dist --port ${PORT:-3000} -c-1 --ext html",
     "post": "npm run post:create",
     "post:create": "npm run build:scripts && node scripts/post-create/index.js",
@@ -41,6 +45,7 @@
     "list:songs": "npm run list -- songs",
     "list:artists": "npm run list -- artists",
     "list:slugs": "npm run list -- slugs",
+    "list:tags": "npm run list -- tags",
     "data:check": "npm run build:scripts && node scripts/data-check/index.js",
     "data:check-references": "npm run data:check -- references",
     "data:check-orphans": "npm run data:check -- orphans",
@@ -49,6 +54,8 @@
     "data:places": "npm run build:scripts && node scripts/data-places/index.js"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^25.0.3",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.6",
@@ -60,6 +67,8 @@
     "@design-edito/tools": "^0.5.42",
     "@inquirer/prompts": "^8.7.4",
     "@mxfb/tools": "^1.0.8",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
     "preact": "^10.29.8",
     "wouter-preact": "^3.13.0"
   }

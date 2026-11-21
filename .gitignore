@@ -2,5 +2,6 @@ node_modules/
 dist/
 scripts/**/*.js
 shared/**/*.js
+server/**/*.js
 .DS_Store
 .names-pending.ndjson
