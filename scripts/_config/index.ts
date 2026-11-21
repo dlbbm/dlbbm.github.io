@@ -43,5 +43,6 @@ export const DATA_FILES = {
   slugs: path.join(DATA, 'slugs.ndjson'),
   songs: path.join(DATA, 'songs.ndjson'),
   recordings: path.join(DATA, 'recordings.ndjson'),
-  posts: path.join(DATA, 'posts.ndjson')
+  posts: path.join(DATA, 'posts.ndjson'),
+  tags: path.join(DATA, 'tags.ndjson')
 } as const

@@ -669,7 +669,8 @@ export async function askDraft (db: Db, editing: Editing | null): Promise<Draft>
     performedAt,
     releasedOn: editing?.recording.releasedOn ?? null,
     durationMs: editing?.recording.durationMs ?? null,
-    sources: source === null ? [] : [source]
+    sources: source === null ? [] : [source],
+    tagIds: editing?.recording.tagIds ?? []
   }
 
   const post: Post = {

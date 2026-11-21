@@ -13,6 +13,7 @@ import {
   describeRecording,
   describeSlug,
   describeSong,
+  describeTag,
   type Described
 } from '../_describe/index.js'
 import { readDb, type Db, type DbCollection } from '../_db/index.js'
@@ -24,7 +25,8 @@ const describers: Record<DbCollection, (db: Db) => Array<{ id: string } & Descri
   recordings: db => db.recordings.map(recording => ({ id: recording.id, ...describeRecording(recording, db) })),
   songs: db => db.songs.map(song => ({ id: song.id, ...describeSong(song, db) })),
   artists: db => db.artists.map(artist => ({ id: artist.id, ...describeArtist(artist, db) })),
-  slugs: db => db.slugs.map(slug => ({ id: slug.targetId, ...describeSlug(slug, db) }))
+  slugs: db => db.slugs.map(slug => ({ id: slug.targetId, ...describeSlug(slug, db) })),
+  tags: db => db.tags.map(tag => ({ id: tag.id, ...describeTag(tag, db) }))
 }
 
 const collections = Object.keys(describers) as DbCollection[]

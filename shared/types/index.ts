@@ -13,6 +13,7 @@ export type SongId = string
 export type RecordingId = string
 export type ArtistId = string
 export type PostId = string
+export type TagId = string
 
 /**
  * What a thing is called in a URL.
@@ -195,6 +196,7 @@ export type Recording = {
   releasedOn: PartialDate | null
   durationMs: number | null
   sources: Source[]
+  tagIds: TagId[]
 }
 
 /**
@@ -210,6 +212,19 @@ export type Artist = {
   name: string
   nameAliases: string[]
   sources: IdentitySource[]
+}
+
+/**
+ * One entry in a tag group — genre, style, mood, playlist, whatever group a recording is
+ * qualified by.
+ *
+ * @property group - Free text: there is no closed list of groups, which exist only as the
+ * distinct values this field happens to carry across every tag.
+ */
+export type Tag = {
+  id: TagId
+  name: string
+  group: string
 }
 
 /**

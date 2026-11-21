@@ -6,7 +6,7 @@
  */
 
 import { styles } from '@design-edito/tools/agnostic/misc/logs/styles/index.js'
-import type { Artist, Post, Recording, Slug, Song } from '../../shared/types/index.js'
+import type { Artist, Post, Recording, Slug, Song, Tag } from '../../shared/types/index.js'
 import { formatPartialDate, timestampAsWords } from '../_date/index.js'
 import type { Db } from '../_db/index.js'
 
@@ -96,6 +96,14 @@ export function describeArtist (artist: Artist, db: Db): Described {
       remixed === 0 ? null : `remixed ${remixed}`,
       original === 0 ? null : `originally wrote ${original}`
     ].filter((part): part is string => part !== null).join(', ') || 'nothing points at it'
+  }
+}
+
+export function describeTag (tag: Tag, db: Db): Described {
+  const count = db.recordings.filter(recording => recording.tagIds.includes(tag.id)).length
+  return {
+    name: `${tag.group}/${tag.name}`,
+    description: count === 0 ? 'nothing points at it' : `on ${count}`
   }
 }
 

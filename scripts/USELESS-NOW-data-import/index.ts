@@ -448,7 +448,8 @@ for (const archive of posts) {
     performedAt: qualifier?.performedAt ?? null,
     releasedOn: null,
     durationMs: null,
-    sources
+    sources,
+    tagIds: []
   }
   recordings.push(recording)
   const postId = createId()
