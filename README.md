@@ -44,7 +44,7 @@ truth: that is why every pass over these strings asks rather than substitutes, a
   edit made while it is running is never shadowed by a stale copy.
 - **`src/`** — the Preact app: `index.tsx` mounts it and holds the routes, `index.html` is
   the page `build:shells` fills in once per URL, and `components/`, `data/`, `fetched/`,
-  `format/`, `pages/`, `preview/`, `styles/` and `title/` are what it is made of. Nothing
+  `format/`, `mode/`, `pages/`, `styles/` and `title/` are what it is made of. Nothing
   generated lives here.
 - **`dist/`** — everything the site is made of, written by the build and served as is, in
   development as well as in production. Never committed.
@@ -122,7 +122,7 @@ in this repository that pushes.
 
 # Roadmap
 
-**Four phases to the first publication, in this order**, then the ideas that come after.
+**Five phases to the first publication, in this order**, then the ideas that come after.
 The order is the point: each phase leaves the data or the code in a state the next one
 takes for granted, and an item that could sit in two phases sits in the later one.
 
@@ -235,7 +235,115 @@ one by one: a blind substitution would eat `The End`, which is a club called tha
   was: the venue is `The End Rooftop`, which the record now says. `Independence, MS` looks like a
   Missouri typo and is not one: R.L. Burnside in 1978, Tate County, Mississippi.
 
-## 3. Publishing
+## 3. Qualifying the recordings
+
+**The current chantier, and the reason `deploy` now waits.** Genre and style turn out to
+be nothing other than tags — the flat `{ id, name, group }` shape already built for
+Phase 2's tooling, `group` a plain string with no closed union, read advisory rather than
+enforced, the same posture `data:check` takes everywhere else in this data. That answers
+what the previous draft of this roadmap left open: there is no closed list of ~20 genres
+to settle before anything ships, and no separate, uncapped vocabulary for style sitting
+beside it — both are tags, told apart only by which `group` they carry. Nothing stops a
+recording from carrying several of either; staying close to one genre is discipline kept
+at the point of tagging, not a rule the shape enforces. Publication was next in the
+previous draft of this roadmap; it is now after this phase, by choice.
+
+**What the references still teach, even with no closed list to pick from.**
+[Discogs][discogs] splits two levels and declines to nest them — around fifteen genres
+against a few hundred styles, carried as separate lists, which is why `Disco` turns up
+under Electronic and under Funk / Soul alike. [MusicBrainz][mbgenres] is flat, one
+alphabetical vocabulary of some 1800 terms from `2 tone` to `zydeco`, grown out of
+community tags — the one list here importable wholesale, mostly as a style bank given its
+size. Rate Your Music keeps the biggest tree and splits it in three — genres, mood/texture
+descriptors, and scenes & movements — the strongest argument that mood is its own axis and
+not a loose genre, taken up below. The Library of Congress' [LCGFT][lcgft] is the one
+authoritative, maintained vocabulary of the lot, and coarse about popular music exactly
+where this blog does not need the precision.
+
+1. **The front multiselect — blocked, not just unstarted.** It waits on `mf-tools`
+   growing a `Select` rich enough for it (searchable, creatable, multi) — see the root
+   workspace [`README.md`](../../README.md)'s «mf-tools form component library» section.
+   Once that exists: reads the two write routes `server/app.ts` already exposes
+   (`POST /api/posts/:postId/tags`, `DELETE /api/posts/:postId/tags/:tagId`), suggests a
+   group's existing vocabulary as a tag is typed rather than offering a blank field, gated
+   off `DLBBM_MODE` (the plumbing for that gate is built — `src/mode`, the esbuild `define`
+   — only the UI itself is not) so it never reaches the production bundle. `npm run
+   list:tags` is what reads the vocabulary back once there is one.
+2. **Qualify the 401 posts' recordings, genre and style, through that UI.** The vocabulary
+   is read off what the archive actually needs as the tagging happens, not decided up
+   front and imported — the inventory the previous draft of this roadmap called for turns
+   out to be the tagging pass itself, not a step before it.
+3. **Then the axes question, once genre and style are in hand.** The axes to add to the
+   data over the coming months, and what is already known about each. Paused here rather
+   than settled.
+
+   **The axes under consideration.** *Era*, which wants splitting in two. *Geography*.
+   *Lyrical themes*, relative to the words. *Mood*, very broad, whatever the sound gives
+   off. And *bipolar axes*, five levels from `very X` through neutral to `very Y`, X and Y
+   being opposites — `joyeux / triste`, `énergique / léthargique`.
+
+   **The bipolar axes are the most studied thing in the list.** The five-step form is
+   Osgood's semantic differential, 1957, and it is still the standard instrument. The two
+   axes named above are [Russell's circumplex][circumplex]: valence and arousal, the
+   dominant frame in music emotion research. The literature is consistent on which parts
+   work — arousal gets rated reliably, valence less so, anything more abstract worse. A
+   [2010 comparison][gems] of valence-arousal against basic emotions and the Geneva
+   Emotional Music Scale found the plain two-dimensional model the most consistent of the
+   three.
+
+   **[Pandora's Music Genome Project][genome] is the maximal version of the same idea,
+   already built.** 400 to 450 attributes per track, half-integer steps on a 0 to 5 scale,
+   trained musicians at 20 to 30 minutes a song, a tenth of the catalogue double-rated for
+   control. The proof it works and the warning in one: thirty salaried analysts, against
+   one person and 401 posts here.
+
+   **Two traps worth knowing before committing.** Raters avoid the extremes, so five levels
+   behave like three — the neutral middle is right, the outer steps get used rarely. And the
+   circumplex collapses its positive-valence, low-arousal corner, putting tenderness and
+   nostalgia in one cell. For this blog that is the interesting corner, not an edge case.
+
+   **Era wants splitting in two**, and Rate Your Music reached the same conclusion
+   independently with a separate `scenes & movements` tree. A decade is rigid and derivable
+   from a date; `summer of love` or `madchester` is a scene, a named vocabulary tied to a
+   place *and* a moment. One field cannot do both.
+
+   **Geography has a shape to copy, and half of it is already here.** MusicBrainz models
+   `area` as a place entity with a real hierarchy — Detroit inside Michigan inside the US —
+   which is what makes `Detroit techno` also answer a question about American music.
+   `Place` already carries venue, city and country for `performedAt`.
+
+   **Lyrical themes is the one with nothing to borrow.** [AllMusic][allmusic] has Themes,
+   but they are occasions — late night, road trip — not subjects. No controlled vocabulary
+   of lyrical subject matter is in general use, so that axis is where something would be
+   invented, and probably where a loose tag beats a scale.
+
+   **What to hold onto:** separate the factual axes from the judged ones. Region and decade
+   are verifiable and stable. Mood and theme are personal, they will drift over months of
+   rating, and the research puts 10 to 20 raters at the threshold of a stable estimate — so
+   one rater's numbers are a point of view, which for a personal blog is arguably the
+   valuable part, as long as the data does not pretend otherwise.
+
+   **One fork never resolved: Mood as a tag group, or as the bipolar scale above.** Today's
+   storage makes Mood a free-label group trivially, same as Playlist — simpler, and the
+   path of least resistance once step 2 above is under way — but the scale idea is still
+   written down and nobody has chosen between them.
+
+   **The lookup process gets revisited here.** `post:names-lookup` reads a post's names
+   against MusicBrainz one post at a time, and MusicBrainz also carries genres on its
+   artists, releases and recordings — so once the axes above are settled, that same walk is
+   the obvious place to propose them, and this register the obvious bank to propose them
+   from. What the walk should become, and whether a proposed genre is answered the way a
+   name is, is a question to take then rather than now: the shape of the axes decides it.
+
+[lcgft]: https://id.loc.gov/authorities/genreForms.html
+[discogs]: https://support.discogs.com/hc/articles/360005055213-Database-Guidelines-9-Genres-Styles
+[mbgenres]: https://musicbrainz.org/genres
+[allmusic]: https://www.allmusic.com/moods
+[circumplex]: https://en.wikipedia.org/wiki/Emotion_classification#Circumplex_model
+[gems]: https://en.wikipedia.org/wiki/Music_and_emotion
+[genome]: https://en.wikipedia.org/wiki/Music_Genome_Project
+
+## 4. Publishing
 
 **The front was audited, and the audit is answered.** A read of all 1404 lines of `src/`
 on 13 November 2026 found the base sound — pages fetch, components render, `shared/` holds
@@ -381,11 +489,12 @@ the only command here that pushes. What a first run asks for beyond pressing go:
 pointed at that branch, a read of a handful of shells and their OpenGraph tags as they
 actually render, and a look at the 404.
 
-- **`?preview` is written.** A bare `?preview` key read once at import into a module-level
-  flag, exposed as `preview.active` and composed with `isPublished (entry)` at the three
-  places in `src/data/index.ts` that withhold a scheduled post. In memory on purpose: the
-  mode lasts as long as the tab, and the flag is read once because the router rewrites the
-  URL on the first link followed. Never exercised against a live site.
+- **`/pending` is written, replacing the `?preview` this section used to describe.** A
+  dedicated route rather than a global unlock: `GET /pending` lists every scheduled post in
+  full, through `data.pendingPosts()`, soonest first. In no nav and in no link — the URL
+  itself is what grants it. `build:shells` still writes it a shell, Pages serving files and
+  not routes, so `/post/:id` for one of these posts still reads as absent until its date;
+  `/pending` is the only place to read it early.
 - **A pasted link says a sentence.** `og:description` is what someone decides to follow a
   link on, so a post reads `Heartbeats, by The Knife, on dlbbm` and an artist
   `All the songs from The Velvet Underground on dlbbm`, where both used to list the kind,
@@ -396,126 +505,10 @@ actually render, and a look at the 404.
   `timestampAsWords`, in `post:edit`'s list, in `post:names-lookup`'s header and in
   `npm run list` alike, the three of them sharing the line.
 
-## 4. After publication
+## 5. After publication
 
-The thematic classification is the large one and the rest is in no fixed order.
-
-- **Genres, styles and tags — a reflection phase, not urgent: the blog is in no hurry to
-  publish.** Three axes, decided, qualifying a `Recording` in all three cases — which is
-  what lets a cover sit in a different genre than the work it covers, Sarah Vaughan's
-  `Blackbird` against the Beatles'.
-
-  **Genre is still the first to settle**: a closed list aimed at twenty and ideally closer
-  to eight. **Style is secondary**: several per recording, a much wider vocabulary, no cap
-  in mind. **Tag (or label) is a third axis again, and reads as a playlist rather than a
-  category**: a recording carries several, and each tag is the page listing everything
-  that carries it — closer to `/tag/<slug>` behaving like a playlist than like
-  `/genre/<slug>` classifying something.
-
-  **There is no separate notion of a tag group in the data, genre included.** `Tag` is
-  flat — `{ id, name, group }` — and `group` is a plain string with no closed union: the
-  vocabulary of groups is whatever distinct values the tags happen to carry, the same
-  posture `data:check` already takes everywhere else, advisory rather than type-enforced.
-  Which means nothing stops a recording from carrying several genres; staying at one is a
-  discipline to keep at the point of tagging, not a rule the shape holds for you.
-
-  **The storage and a dev-only write path exist.** `Recording.tagIds`, `scripts/_tags`'
-  find-or-create, and a small Express server (`server/`, `npm start` only) that a UI can
-  call to attach or detach a tag from a post's recording — none of it built or deployed,
-  and no npm script administers a tag directly yet. `build:data` already resolves a
-  recording's tags onto its built JSON, the same join every credit gets.
-
-  **First step: an inventory of the genres this archive actually needs**, read off the 401
-  posts rather than adopted from a reference, so the closed list of ~8–20 is calibrated on
-  what is here before it is written down. Then the front multiselect itself, which is what
-  actually puts a genre on a recording.
-
-  There is no official authority to lean on instead — the nearest thing is the Library of
-  Congress' [LCGFT][lcgft], published in SKOS with a real `broader` relation, authoritative
-  and maintained, and coarse about popular music exactly where this blog is fine. What the
-  three de facto references teach, genre and style both: **[Discogs][discogs] is the
-  two-level model and declines to nest it**, around fifteen genres against a few hundred
-  styles, carried as separate lists — which is why `Disco` turns up under Electronic and
-  under Funk / Soul alike. Its fifteen are Blues, Brass & Military, Children's, Classical,
-  Electronic, Folk, World, & Country, Funk / Soul, Hip Hop, Jazz, Latin, Non-Music, Pop,
-  Reggae, Rock and Stage & Screen, a list half format and half genre, which is what only
-  having fifteen costs — and the nearest existing shape to the genre tier here, a notch
-  tighter still. **[MusicBrainz][mbgenres] is flat**, one alphabetical vocabulary of some
-  1800 terms from `2 tone` to `zydeco`, no levels at all, grown out of community tags and
-  curated by ticket — open data, and the one list here importable wholesale, mostly as a
-  style bank given its size. **Rate Your Music keeps the biggest tree and splits it in
-  three** — genres, descriptors for mood and texture, scenes & movements — which is the
-  strongest argument that a tag is a third axis and not a loose genre; its hierarchy is
-  also frozen, nothing removable without moderation, which is what a tree costs once
-  people depend on it. **Still open:** whether genre and style are closed pick-lists while
-  a tag is free text, which is what keeps a standard typology from drifting into `Electro`,
-  `electronic` and `Électro` — and the exact shape of `/genre/<slug>` once the inventory
-  says what it has to list.
-
-  **The lookup process gets revisited here.** `post:names-lookup` reads a post's names
-  against MusicBrainz one post at a time, and MusicBrainz also carries genres on its
-  artists, releases and recordings — so once the three axes above are settled, that same
-  walk is the obvious place to propose them, and this register the obvious bank to propose
-  them from. What the walk should become, and whether a proposed genre is answered the way
-  a name is, is a question to take then rather than now: the shape of the axes decides it.
-
-[lcgft]: https://id.loc.gov/authorities/genreForms.html
-[discogs]: https://support.discogs.com/hc/articles/360005055213-Database-Guidelines-9-Genres-Styles
-[mbgenres]: https://musicbrainz.org/genres
-
-- **Qualifying a sound, beyond genre.** The axes to add to the data over the coming
-  months, and what is already known about each. Paused here rather than settled.
-
-  **The axes under consideration.** *Era*, which wants splitting in two. *Geography*.
-  *Lyrical themes*, relative to the words. *Mood*, very broad, whatever the sound gives
-  off. And *bipolar axes*, five levels from `very X` through neutral to `very Y`, X and Y
-  being opposites — `joyeux / triste`, `énergique / léthargique`.
-
-  **The bipolar axes are the most studied thing in the list.** The five-step form is
-  Osgood's semantic differential, 1957, and it is still the standard instrument. The two
-  axes named above are [Russell's circumplex][circumplex]: valence and arousal, the
-  dominant frame in music emotion research. The literature is consistent on which parts
-  work — arousal gets rated reliably, valence less so, anything more abstract worse. A
-  [2010 comparison][gems] of valence-arousal against basic emotions and the Geneva
-  Emotional Music Scale found the plain two-dimensional model the most consistent of the
-  three.
-
-  **[Pandora's Music Genome Project][genome] is the maximal version of the same idea,
-  already built.** 400 to 450 attributes per track, half-integer steps on a 0 to 5 scale,
-  trained musicians at 20 to 30 minutes a song, a tenth of the catalogue double-rated for
-  control. The proof it works and the warning in one: thirty salaried analysts, against
-  one person and 401 posts here.
-
-  **Two traps worth knowing before committing.** Raters avoid the extremes, so five levels
-  behave like three — the neutral middle is right, the outer steps get used rarely. And the
-  circumplex collapses its positive-valence, low-arousal corner, putting tenderness and
-  nostalgia in one cell. For this blog that is the interesting corner, not an edge case.
-
-  **Era wants splitting in two**, and Rate Your Music reached the same conclusion
-  independently with a separate `scenes & movements` tree. A decade is rigid and derivable
-  from a date; `summer of love` or `madchester` is a scene, a named vocabulary tied to a
-  place *and* a moment. One field cannot do both.
-
-  **Geography has a shape to copy, and half of it is already here.** MusicBrainz models
-  `area` as a place entity with a real hierarchy — Detroit inside Michigan inside the US —
-  which is what makes `Detroit techno` also answer a question about American music.
-  `Place` already carries venue, city and country for `performedAt`.
-
-  **Lyrical themes is the one with nothing to borrow.** [AllMusic][allmusic] has Themes,
-  but they are occasions — late night, road trip — not subjects. No controlled vocabulary
-  of lyrical subject matter is in general use, so that axis is where something would be
-  invented, and probably where a loose tag beats a scale.
-
-  **What to hold onto:** separate the factual axes from the judged ones. Region and decade
-  are verifiable and stable. Mood and theme are personal, they will drift over months of
-  rating, and the research puts 10 to 20 raters at the threshold of a stable estimate — so
-  one rater's numbers are a point of view, which for a personal blog is arguably the
-  valuable part, as long as the data does not pretend otherwise.
-
-[allmusic]: https://www.allmusic.com/moods
-[circumplex]: https://en.wikipedia.org/wiki/Emotion_classification#Circumplex_model
-[gems]: https://en.wikipedia.org/wiki/Music_and_emotion
-[genome]: https://en.wikipedia.org/wiki/Music_Genome_Project
+What is left once the blog is live, in no fixed order — the thematic classification moved
+up to Phase 3, and comes before `deploy` rather than after it.
 
 - **A `nature` beside each `derivedFromSongIds` entry** — `medley`, `sample`,
   `arrangement`. Left out on purpose: the count carries the only distinction the front
@@ -542,7 +535,7 @@ The thematic classification is the large one and the rest is in no fixed order.
   `basics/` lifted into `mf-tools` — or just the same conventions rewritten each time is
   open, and deciding it before two interfaces exist would be guessing.
 - **A tour of the helpers, to see what climbs.** `scripts/_date`, `_slug`, `_describe`,
-  `_db`, `_ask`, and `src/data`, `src/fetched`, `src/format`, `src/preview`, `src/title` on
+  `_db`, `_ask`, and `src/data`, `src/fetched`, `src/format`, `src/mode`, `src/title` on
   the front side: a pass over all of them asking which belongs where. `lm-tools` is the ultra-generic bank, `mf-tools` what it would make no
   sense for Le Monde to own, and the rest stays here. A piece earns the climb by having
   proven itself a step below, so this is a pass to make once the import is consolidated
