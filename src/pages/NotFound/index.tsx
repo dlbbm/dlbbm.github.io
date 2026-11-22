@@ -1,6 +1,6 @@
+import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import * as routes from '../../../shared/routes/index.js'
-import { Link } from '../../components/Link/index.js'
 import { MissingNotice } from '../../components/Notice/index.js'
 import { known, useDocumentTitle } from '../../title/index.js'
 import './styles.css'

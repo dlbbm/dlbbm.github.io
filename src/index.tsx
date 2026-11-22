@@ -7,6 +7,7 @@ import { Artist } from './pages/Artist/index.js'
 import { Artists } from './pages/Artists/index.js'
 import { Feed } from './pages/Feed/index.js'
 import { NotFound } from './pages/NotFound/index.js'
+import { Pending } from './pages/Pending/index.js'
 import { Post } from './pages/Post/index.js'
 import { Posts } from './pages/Posts/index.js'
 import './styles/index.css'
@@ -18,6 +19,7 @@ function App () {
       <Route path={routes.patterns.home}><Feed page={1} /></Route>
       <Route path={routes.patterns.page}>{({ page }) => <Feed page={Number(page)} />}</Route>
       <Route path={routes.patterns.posts} component={Posts} />
+      <Route path={routes.patterns.pending} component={Pending} />
       <Route path={routes.patterns.post}>{({ id }) => <Post id={id} />}</Route>
       <Route path={routes.patterns.artists} component={Artists} />
       <Route path={routes.patterns.artist}>{({ slug }) => <Artist slug={slug} />}</Route>

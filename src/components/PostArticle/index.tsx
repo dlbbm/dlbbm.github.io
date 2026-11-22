@@ -1,11 +1,11 @@
 import { Fragment, type VNode } from 'preact'
+import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import { DateComponent } from '@mxfb/tools/components/Date/index.js'
 import { Embed } from '@mxfb/tools/components/Embed/index.js'
 import type * as built from '../../../shared/types/built.js'
 import type { MediaSource, Source } from '../../../shared/types/index.js'
 import * as format from '../../format/index.js'
-import { Link } from '../Link/index.js'
 import { PartialDate } from '../PartialDate/index.js'
 import './styles.css'
 

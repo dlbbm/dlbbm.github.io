@@ -4,7 +4,6 @@
 
 import type * as built from '../../shared/types/built.js'
 import type { PostId, Timestamp } from '../../shared/types/index.js'
-import * as preview from '../preview/index.js'
 
 /** A 404: the file is not there, which is different from a read that failed. */
 class MissingFile extends Error {
@@ -42,7 +41,18 @@ function isPublished (entry: { publishedOn: Timestamp }): boolean {
 /** The stream, in order, without the posts whose moment has not come. */
 export async function publishedPosts (): Promise<built.PostIndexEntry[]> {
   const entries = await readJson<built.PostIndexEntry[]>('/data/posts.json')
-  return entries.filter(entry => preview.active || isPublished(entry))
+  return entries.filter(isPublished)
+}
+
+/** The posts whose moment has not come yet, soonest first — what `/pending` reads. */
+export async function pendingPosts (): Promise<built.Post[]> {
+  const entries = await readJson<built.PostIndexEntry[]>('/data/posts.json')
+  const pending = entries
+    .filter(entry => !isPublished(entry))
+    .sort((one, other) => one.publishedOn.localeCompare(other.publishedOn))
+  const files = await Promise.all(pending
+    .map(async entry => await readJson<built.PostFile>(`/data/post/${entry.id}.json`)))
+  return files.map(({ post: found }) => found)
 }
 
 /** What the blog says about itself, which the manifest carries with everything else. */
@@ -60,7 +70,7 @@ export async function artists (): Promise<built.ArtistIndexEntry[]> {
 export async function post (id: PostId): Promise<built.Post | null> {
   try {
     const { post: found } = await readJson<built.PostFile>(`/data/post/${id}.json`)
-    return preview.active || isPublished(found) ? found : null
+    return isPublished(found) ? found : null
   } catch (error) {
     if (error instanceof MissingFile) return null
     throw error
@@ -86,7 +96,7 @@ export async function artistWithPosts (slug: string): Promise<ArtistWithPosts | 
     throw error
   }
   const posts = await Promise.all(file.posts
-    .filter(entry => preview.active || isPublished(entry))
+    .filter(isPublished)
     .map(async entry => (await readJson<built.PostFile>(`/data/post/${entry.id}.json`)).post))
   return { artist: file.artist, posts }
 }

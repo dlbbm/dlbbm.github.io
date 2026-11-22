@@ -1,6 +1,6 @@
+import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import * as titles from '../../../shared/titles/index.js'
-import { Link } from '../../components/Link/index.js'
 import { WhenLoaded } from '../../components/WhenLoaded/index.js'
 import * as data from '../../data/index.js'
 import { useFetched } from '../../fetched/index.js'

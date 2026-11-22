@@ -19,6 +19,7 @@ export function title (name: string | null, siteTitle: string): string {
 /** The pages whose name is not the name of something in the data. */
 export const names = {
   posts: 'All posts',
+  pending: 'Pending',
   artists: 'Artists',
   about: 'About'
 } as const

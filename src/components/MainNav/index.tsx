@@ -1,9 +1,7 @@
-import { useLocation } from 'wouter-preact'
+import { Link, useLocation } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
 import * as routes from '../../../shared/routes/index.js'
 import * as data from '../../data/index.js'
-import * as preview from '../../preview/index.js'
-import { Link } from '../Link/index.js'
 import './styles.css'
 
 const c = clss('main-nav')
@@ -25,7 +23,7 @@ export function MainNav () {
   async function goToRandomPost (): Promise<void> {
     const posts = await data.publishedPosts()
     const picked = posts[Math.floor(Math.random() * posts.length)]
-    if (picked !== undefined) navigate(preview.href(picked.url))
+    if (picked !== undefined) navigate(picked.url)
   }
 
   return <nav class={c()}>

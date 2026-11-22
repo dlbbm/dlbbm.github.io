@@ -279,6 +279,10 @@ route('artists', routeUrl('artists'), pageTitle(pageNames.artists, about.title),
 await emit('about.json', about)
 route('about', routeUrl('about'), pageTitle(pageNames.about, about.title), about.description)
 
+// Reads the same posts.json the stream does; nothing of its own to emit. The shell still
+// has to exist, since Pages serves files and not routes — only the URL stays unlisted.
+route('pending', routeUrl('pending'), pageTitle(pageNames.pending, about.title), 'Posts not live yet.')
+
 const manifest: BuiltManifest = {
   about,
   pageSize: PAGE_SIZE,

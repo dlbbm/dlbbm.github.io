@@ -11,6 +11,9 @@ export const patterns = {
   page: '/page/:page',
   post: '/post/:id',
   posts: '/posts',
+  // Scheduled posts, read before their date. In no nav and in no link — the URL itself is
+  // what grants it, so knowing it is the only way in.
+  pending: '/pending',
   artists: '/artists',
   artist: '/artist/:slug',
   about: '/about'
