@@ -6,9 +6,9 @@
 
 .post-article__media { max-width: var(--media-max-width); }
 
-.post-article__media .mxfb-embed { width: 100%; }
+.post-article__media .mf-embed { width: 100%; }
 
-.post-article__media .mxfb-embed__player {
+.post-article__media .mf-embed__player {
   display: block;
   width: 100%;
   border: none;
@@ -17,10 +17,10 @@
 /* A video platform states an aspect ratio, so the height follows the width and a frame
    that failed fills the same box as one that worked. Spotify's widget is a fixed chrome
    with no ratio to follow, so it is the one that takes a height. */
-.post-article__media .mxfb-embed--youtube .mxfb-embed__player,
-.post-article__media .mxfb-embed--vimeo .mxfb-embed__player { aspect-ratio: 16 / 9; }
+.post-article__media .mf-embed--youtube .mf-embed__player,
+.post-article__media .mf-embed--vimeo .mf-embed__player { aspect-ratio: 16 / 9; }
 
-.post-article__media .mxfb-embed--spotify .mxfb-embed__player { height: var(--embed-height); }
+.post-article__media .mf-embed--spotify .mf-embed__player { height: var(--embed-height); }
 
 /* What stands where the player would be, when a recording has nothing left to play. A
    dashed box rather than a bare line: the stream reads as a column of media, and a slot
