@@ -35,6 +35,11 @@ const options: BuildOptions = {
     'react-dom': 'preact/compat',
     'react/jsx-runtime': 'preact/jsx-runtime'
   },
+  // Inlined as a string literal, not read off a real `process.env` at runtime: `src/mode`
+  // is what the rest of the front reads instead of this directly.
+  define: {
+    'process.env.DLBBM_MODE': JSON.stringify(PROD ? 'production' : 'development')
+  },
   minify: PROD,
   sourcemap: !PROD,
   metafile: true,
