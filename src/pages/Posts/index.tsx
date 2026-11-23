@@ -1,6 +1,6 @@
 import { Link } from 'wouter-preact'
 import { clss } from '@design-edito/tools/agnostic/css/clss/index.js'
-import { DateComponent } from '@mxfb/tools/components/Date/index.js'
+import { DateComponent } from '@mxfb/tools/components/display/Date/index.js'
 import * as titles from '../../../shared/titles/index.js'
 import type * as built from '../../../shared/types/built.js'
 import { WhenLoaded } from '../../components/WhenLoaded/index.js'
