@@ -66,7 +66,11 @@
   line-height: var(--lh-9);
 }
 
-/* mf-tools form-items — generic chrome, no color invented beyond the theme's own. */
+/* mf-tools form-items — filled, elevated surfaces rather than bordered ones: an input
+   is a small lift off the page, not a line drawn on it. One mono font runs through
+   every piece of a field (label, value, placeholder, error), after the maxfab.github.io
+   prototype this is modelled on. No color here is invented beyond the theme's own two
+   new pairs (--elevation-1-*, --error-*) — see src/styles/index.css. */
 
 .mf-input,
 .mf-textarea,
@@ -75,14 +79,27 @@
   width: 100%;
   max-width: var(--prose-max-width);
   box-sizing: border-box;
-  border: var(--border-width) solid var(--border-color);
-  background: none;
+  border: none;
+  border-radius: var(--round-xs);
+  background-color: var(--elevation-1-bg-color);
   padding: var(--gap-2) var(--gap-3);
-  color: var(--text-color);
-  font-family: var(--ff-text);
+  color: var(--elevation-1-text-color);
+  font-family: var(--ff-mono);
   font-size: var(--fs-6);
   line-height: var(--lh-6);
+  transition: filter var(--hover-duration);
 }
+
+.mf-input::placeholder,
+.mf-textarea::placeholder,
+.mf-select__input::placeholder { font-style: italic; opacity: var(--muted-opacity); }
+
+.mf-input:hover,
+.mf-textarea:hover,
+.mf-select:hover,
+.mf-input:focus,
+.mf-textarea:focus,
+.mf-select:focus-within { filter: brightness(1.25); }
 
 .mf-input:disabled,
 .mf-textarea:disabled,
@@ -96,7 +113,7 @@
 
 /* Select's suggestion-panel mode: the root becomes a flex container around the real
    text field and the chips, so the chrome above moves here and the inner input goes
-   flush — one border, not two. */
+   flush — one fill, not two stacked. */
 .mf-select {
   display: flex;
   flex-wrap: wrap;
@@ -111,7 +128,7 @@
   border: none;
   background: none;
   padding: 0;
-  color: var(--text-color);
+  color: inherit;
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
@@ -126,12 +143,18 @@
   list-style: none;
 }
 
+/* A chip is a small elevation of its own, nested in the field's — one step further
+   off the page, same mechanism, no new tokens: a filter does the lift rather than a
+   third bg/text pair, since the result only ever needs to read as "a bit more raised,"
+   never a specific color. */
 .mf-select__value {
   display: flex;
   align-items: center;
   gap: var(--gap-1);
-  border: var(--border-width) dashed var(--border-color);
-  padding: 0 var(--gap-1);
+  border-radius: var(--round-xs);
+  background-color: var(--elevation-1-bg-color);
+  filter: brightness(1.4);
+  padding: var(--gap-0) var(--gap-2);
   font-family: var(--ff-mono);
   font-size: var(--fs-4);
 }
@@ -140,7 +163,7 @@
   border: none;
   background: none;
   padding: 0;
-  color: var(--text-color);
+  color: var(--elevation-1-text-color);
   font-family: inherit;
   font-size: inherit;
   cursor: pointer;
@@ -152,15 +175,17 @@
 
 .mf-select__create-option { font-style: italic; }
 
+/* The panel is a second elevation stacked on the field's own — further off the page
+   again, so it needs an actual shadow to read as floating rather than just lifted. */
 .mf-suggestions {
   position: absolute;
   z-index: 1;
-  top: 100%;
+  top: calc(100% + var(--gap-1));
   left: 0;
   right: 0;
-  margin-top: var(--gap-1);
-  border: var(--border-width) solid var(--border-color);
-  background-color: var(--bg-color);
+  border-radius: var(--round-xs);
+  background-color: var(--elevation-1-bg-color);
+  filter: brightness(1.15);
   box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) var(--shadow-color);
   padding: var(--gap-1) 0;
   max-height: calc(var(--lh-6) * 6);
@@ -170,7 +195,8 @@
 
 .mf-suggestions__option {
   padding: var(--gap-1) var(--gap-3);
-  font-family: var(--ff-text);
+  color: var(--elevation-1-text-color);
+  font-family: var(--ff-mono);
   font-size: var(--fs-6);
   line-height: var(--lh-6);
   cursor: pointer;
@@ -181,14 +207,17 @@
   color: var(--bg-color);
 }
 
-/* Label, error and reset — shared vocabulary across every field. */
+/* Label, error and reset — shared vocabulary across every field. The label sits on
+   the page itself, not on the field's elevation, so it reads in the page's own colors. */
 
 .mf-input__label,
 .mf-textarea__label,
 .mf-select__label {
   display: block;
   margin-bottom: var(--gap-1);
-  font-family: var(--ff-text);
+  color: var(--text-color);
+  opacity: var(--muted-opacity);
+  font-family: var(--ff-mono);
   font-size: var(--fs-5);
   line-height: var(--lh-5);
 }
@@ -198,7 +227,7 @@
 .mf-select__error {
   display: block;
   margin-top: var(--gap-1);
-  color: var(--accent-color);
+  color: var(--error-text-color);
   font-family: var(--ff-mono);
   font-size: var(--fs-4);
   line-height: var(--lh-4);
@@ -246,10 +275,11 @@
   width: 100%;
   max-width: var(--prose-max-width);
   box-sizing: border-box;
-  border: var(--border-width) dashed var(--border-color);
-  background: none;
+  border: none;
+  border-radius: var(--round-xs);
+  background-color: var(--elevation-1-bg-color);
   padding: var(--gap-1) var(--gap-2);
-  color: var(--text-color);
+  color: var(--elevation-1-text-color);
   font-family: var(--ff-mono);
   font-size: var(--fs-4);
 }

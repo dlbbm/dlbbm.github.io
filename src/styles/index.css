@@ -28,6 +28,20 @@
   --underline-color: var(--accent-color);
   --shadow-color: rgb(0 0 0 / .4);
 
+  /* [WIP] A surface raised off the page — an input's own fill, first. Re-points the
+     same bg/text pair a sub-scope like .inverted would, just sourced from one level of
+     lift rather than a flip. Numbered so a second elevation nested inside the first has
+     somewhere to go without inventing a new mechanism. */
+  --elevation-1-bg-color: #121a17;
+  --elevation-1-text-color: var(--text-color);
+
+  /* [WIP] Status is a theme decision like any other color here — not a fixed universal
+     red, a pair this theme happens to choose red for. --error-text-color is legible
+     both as plain text on --bg-color (today's only consumer, a message under a field)
+     and on --error-bg-color (a future filled notice this pair is already shaped for). */
+  --error-bg-color: #4a1712;
+  --error-text-color: #e8604a;
+
   /* What "secondary" means here. An opacity and not a fourth color: it holds whatever
      the theme says, in light or in dark, and costs the palette nothing. */
   --muted-opacity: .74;
