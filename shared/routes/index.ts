@@ -14,6 +14,9 @@ export const patterns = {
   // Scheduled posts, read before their date. In no nav and in no link — the URL itself is
   // what grants it, so knowing it is the only way in.
   pending: '/pending',
+  // [WIP] Temporary — a playground for mf-tools' form-items, gone before the blog
+  // publishes. No link anywhere; the URL itself is the only way in.
+  compsDemo: '/comps-demo',
   artists: '/artists',
   artist: '/artist/:slug',
   about: '/about'

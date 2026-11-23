@@ -20,6 +20,8 @@ export function title (name: string | null, siteTitle: string): string {
 export const names = {
   posts: 'All posts',
   pending: 'Pending',
+  // [WIP] Temporary — gone before the blog publishes.
+  compsDemo: 'Components demo',
   artists: 'Artists',
   about: 'About'
 } as const

@@ -5,6 +5,7 @@ import { MainLayout } from './components/MainLayout/index.js'
 import { About } from './pages/About/index.js'
 import { Artist } from './pages/Artist/index.js'
 import { Artists } from './pages/Artists/index.js'
+import { CompsDemo } from './pages/CompsDemo/index.js'
 import { Feed } from './pages/Feed/index.js'
 import { NotFound } from './pages/NotFound/index.js'
 import { Pending } from './pages/Pending/index.js'
@@ -20,6 +21,7 @@ function App () {
       <Route path={routes.patterns.page}>{({ page }) => <Feed page={Number(page)} />}</Route>
       <Route path={routes.patterns.posts} component={Posts} />
       <Route path={routes.patterns.pending} component={Pending} />
+      <Route path={routes.patterns.compsDemo} component={CompsDemo} />
       <Route path={routes.patterns.post}>{({ id }) => <Post id={id} />}</Route>
       <Route path={routes.patterns.artists} component={Artists} />
       <Route path={routes.patterns.artist}>{({ slug }) => <Artist slug={slug} />}</Route>

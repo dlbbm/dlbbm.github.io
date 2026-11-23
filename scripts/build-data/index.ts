@@ -283,6 +283,9 @@ route('about', routeUrl('about'), pageTitle(pageNames.about, about.title), about
 // has to exist, since Pages serves files and not routes — only the URL stays unlisted.
 route('pending', routeUrl('pending'), pageTitle(pageNames.pending, about.title), 'Posts not live yet.')
 
+// [WIP] Temporary, same reasoning as `pending` above — gone before the blog publishes.
+route('compsDemo', routeUrl('compsDemo'), pageTitle(pageNames.compsDemo, about.title), 'A throwaway look at the mf-tools form components.')
+
 const manifest: BuiltManifest = {
   about,
   pageSize: PAGE_SIZE,

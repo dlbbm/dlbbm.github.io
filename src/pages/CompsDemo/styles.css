@@ -1,0 +1,255 @@
+/* [WIP] Temporary page — a first pass at a generic, dlbbm-flavoured look for the
+   mf-tools form-items, read through their own public class names rather than through a
+   wrapper component. Meant to generalize: the spirit (border/shadow/underline, the gap
+   rhythm, no invented colors beyond the theme's own) is what should survive into a real
+   stylesheet elsewhere, this page itself is not. */
+
+.page-comps-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-4);
+  max-width: var(--register-max-width);
+  margin: 0 auto;
+  padding: var(--gap-4) var(--gap-3);
+}
+
+.page-comps-demo__intro {
+  margin: 0;
+  max-width: var(--prose-max-width);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-4);
+  line-height: var(--lh-4);
+  opacity: var(--muted-opacity);
+}
+
+.page-comps-demo__shared-controls,
+.page-comps-demo__section-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-3);
+  border: var(--border-width-m) dashed var(--border-color);
+  padding: var(--gap-3);
+}
+
+.page-comps-demo__control {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-1);
+  font-family: var(--ff-text);
+  font-size: var(--fs-5);
+  line-height: var(--lh-5);
+  cursor: pointer;
+}
+
+.page-comps-demo__control input[type='text'] {
+  border: none;
+  border-bottom: var(--border-width) solid var(--border-color);
+  background: none;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.page-comps-demo__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-3);
+  padding-top: var(--gap-4);
+  border-top: var(--border-width) solid var(--border-color);
+}
+
+.page-comps-demo__heading {
+  margin: 0;
+  font-family: var(--ff-display);
+  font-size: var(--fs-9);
+  line-height: var(--lh-9);
+}
+
+/* mf-tools form-items — generic chrome, no color invented beyond the theme's own. */
+
+.mf-input,
+.mf-textarea,
+.mf-select {
+  display: block;
+  width: 100%;
+  max-width: var(--prose-max-width);
+  box-sizing: border-box;
+  border: var(--border-width) solid var(--border-color);
+  background: none;
+  padding: var(--gap-2) var(--gap-3);
+  color: var(--text-color);
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+}
+
+.mf-input:disabled,
+.mf-textarea:disabled,
+.mf-select:disabled,
+.mf-select--disabled { opacity: var(--muted-opacity); }
+
+.mf-input:focus-visible,
+.mf-textarea:focus-visible,
+.mf-select:focus-visible,
+.mf-select__input:focus-visible { outline: var(--border-width-m) solid var(--accent-color); }
+
+/* Select's suggestion-panel mode: the root becomes a flex container around the real
+   text field and the chips, so the chrome above moves here and the inner input goes
+   flush — one border, not two. */
+.mf-select {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-2);
+  position: relative;
+}
+
+.mf-select__input {
+  flex: 1 1 auto;
+  min-width: 6em;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.mf-select__values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mf-select__value {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-1);
+  border: var(--border-width) dashed var(--border-color);
+  padding: 0 var(--gap-1);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-4);
+}
+
+.mf-select__value-remove {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  opacity: var(--muted-opacity);
+}
+
+.mf-select__value-remove:hover,
+.mf-select__value-remove:focus-visible { opacity: 1; color: var(--accent-color); }
+
+.mf-select__create-option { font-style: italic; }
+
+.mf-suggestions {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--gap-1);
+  border: var(--border-width) solid var(--border-color);
+  background-color: var(--bg-color);
+  box-shadow: var(--shadow-x) var(--shadow-y) var(--shadow-blur) var(--shadow-spread) var(--shadow-color);
+  padding: var(--gap-1) 0;
+  max-height: calc(var(--lh-6) * 6);
+  overflow-y: auto;
+  list-style: none;
+}
+
+.mf-suggestions__option {
+  padding: var(--gap-1) var(--gap-3);
+  font-family: var(--ff-text);
+  font-size: var(--fs-6);
+  line-height: var(--lh-6);
+  cursor: pointer;
+}
+
+.mf-suggestions__option--active {
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+}
+
+/* Label, error and reset — shared vocabulary across every field. */
+
+.mf-input__label,
+.mf-textarea__label,
+.mf-select__label {
+  display: block;
+  margin-bottom: var(--gap-1);
+  font-family: var(--ff-text);
+  font-size: var(--fs-5);
+  line-height: var(--lh-5);
+}
+
+.mf-input__error,
+.mf-textarea__error,
+.mf-select__error {
+  display: block;
+  margin-top: var(--gap-1);
+  color: var(--accent-color);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-4);
+  line-height: var(--lh-4);
+}
+
+.mf-input__reset,
+.mf-textarea__reset,
+.mf-select__reset {
+  display: block;
+  margin-top: var(--gap-1);
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--text-color);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-4);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: var(--underline-offset);
+  transition: text-decoration-color var(--hover-duration);
+  cursor: pointer;
+  opacity: var(--muted-opacity);
+}
+
+.mf-input__reset:hover,
+.mf-input__reset:focus-visible,
+.mf-textarea__reset:hover,
+.mf-textarea__reset:focus-visible,
+.mf-select__reset:hover,
+.mf-select__reset:focus-visible {
+  opacity: 1;
+  text-decoration-color: var(--underline-color);
+}
+
+.mf-input__range-start,
+.mf-input__range-end {
+  font-family: var(--ff-mono);
+  font-size: var(--fs-4);
+  opacity: var(--muted-opacity);
+}
+
+.mf-input__free-text {
+  display: block;
+  margin-top: var(--gap-1);
+  width: 100%;
+  max-width: var(--prose-max-width);
+  box-sizing: border-box;
+  border: var(--border-width) dashed var(--border-color);
+  background: none;
+  padding: var(--gap-1) var(--gap-2);
+  color: var(--text-color);
+  font-family: var(--ff-mono);
+  font-size: var(--fs-4);
+}
