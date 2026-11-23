@@ -269,6 +269,27 @@ where this blog does not need the precision.
    off `DLBBM_MODE` (the plumbing for that gate is built — `src/mode`, the esbuild `define`
    — only the UI itself is not) so it never reaches the production bundle. `npm run
    list:tags` is what reads the vocabulary back once there is one.
+
+   **`comps-demo`, a throwaway page at `/comps-demo`, is the first pass at that UI's
+   look** — the finished `mf-tools` form-items (`Input`, `Textarea`, `Select`,
+   `DateInput`) shown filled, elevated off the page rather than bordered, one mono font
+   running through label/value/placeholder/error, after a 2024 prototype found in
+   `maxfab.github.io` (personal GitHub, not under `mxfb` or in this workspace —
+   `components/TextInput` + `SimpleForm`). Two `[WIP]` tokens landed in `src/styles/
+   index.css` to carry it: `--elevation-1-bg-color`/`--elevation-1-text-color` (a
+   surface raised off the page — an input's own fill) and `--error-bg-color`/
+   `--error-text-color` (status as a per-theme decision, not a fixed universal red).
+
+   **Open, to pick back up:** the root workspace conventions describe `.accented`/
+   `.inverted` as sub-scopes that re-point a theme's own variables onto a filled
+   surface — neither is actually built anywhere, in `lm-tools` or here.
+   `.mf-suggestions__option--active`'s `color: var(--bg-color)` on an accent fill is a
+   stand-in for that missing piece, and only reads right because this theme's
+   `--bg-color` happens to be dark — it would break under the "lit" alternate palette
+   already sitting in the theme file. Candidate: a token for "the text that goes on a
+   filled/accent surface" — tentatively `--on-accent-text-color` rather than
+   `--light-text`, since "light" presumes a contrast direction that won't hold once a
+   lighter accent or a light theme shows up. Not decided.
 2. **Qualify the 401 posts' recordings, genre and style, through that UI.** The vocabulary
    is read off what the archive actually needs as the tagging happens, not decided up
    front and imported — the inventory the previous draft of this roadmap called for turns
